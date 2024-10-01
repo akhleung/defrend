@@ -8,6 +8,7 @@ uniform sampler2D diffuse_sampler;
 uniform sampler2D position_sampler;
 uniform sampler2D normal_sampler;
 uniform sampler2D ssao_sampler;
+// uniform sampler2D depth_sampler;
 
 uniform screen_fp {
     mat4 mtx_view;
@@ -42,9 +43,15 @@ float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
     return falloff * falloff;
 }
 
-float specular(vec3 view_dir, vec3 light_dir, vec3 normal_sample) {
-    vec3 r = reflect(-light_dir, normal_sample); // TODO: fix this
-    return max(dot(r, normal_sample), 0.0);
+// float specular(vec3 view_dir, vec3 light_dir, vec3 normal_sample) {
+//     vec3 r = reflect(-light_dir, normal_sample); // TODO: fix this
+//     return max(dot(r, normal_sample), 0.0);
+// }
+
+float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny){
+    vec3 H = normalize(viewdir + lightdir);
+    float HdotN = max(0.0, dot(H, norm));
+    return pow(HdotN, shiny);
 }
 
 void main() {
@@ -71,21 +78,22 @@ void main() {
 
     // directional (i.e., sun) light
     vec3 sun_dir = mat3(mtx_view) * normalize(-sun_direction.xyz);
-    float sun_spec = specular(view_dir, sun_dir, normal);
+    float sun_spec = specular(view_dir, sun_dir, normal, spec_exp);
     float sun_diff = diffuse(sun_dir, normal) * ao * ao;
-    color += (sun_diff * mat_diff + pow(sun_spec, spec_exp) * mat_spec) * sun_color;
+    color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
         vec4 light_pos = mtx_view * light_positions[i];
         vec3 light_dir = light_direction(var_frag_pos, light_pos.xyz);
-        float spec = specular(view_dir, light_dir, normal);
+        float spec = specular(view_dir, light_dir, normal, spec_exp);
         float diff = diffuse(light_dir, normal);
         float attn = attenuation(var_frag_pos, light_pos.xyz, light_radii[i]);
-        color += (diff * mat_diff + pow(spec, spec_exp) * mat_spec) * light_colors[i] * attn;
+        color += (diff * mat_diff + spec * mat_spec) * light_colors[i] * attn;
     }
 
     color.a = mat_diff.a;
     // color = texture(ssao_sampler, var_texcoord0);
     // color = vec4(blur, blur, blur, 1.0);
+    // color = texture(depth_sampler, var_texcoord0);
     frag_color = clamp(color, 0.0, 1.0);
 }
