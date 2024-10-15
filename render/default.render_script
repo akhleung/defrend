@@ -1,11 +1,25 @@
 local render_state = require "render.render_state"
 local lighting_state = require "lighting.lighting_state"
 local update_constants
+local update_shadows
 --
 -- message constants
 --
 local MSG_WINDOW_RESIZED =      hash("window_resized")
 local MSG_SET_VIEW_PROJ =       hash("set_view_projection")
+
+local UP = vmath.vector3(0, 1, 0)
+local v0 = vmath.vector4(0, 0, 0, 0) -- zero vector4
+
+local BUFFER_RESOLUTION = 2048 -- Size of shadow map. Select value from: 1024/2048/4096. More is better quality.
+
+-- Projection resolution of shadow map to the game world. Smaller size is better shadow quality,
+-- but shadows will cast only around the screen center (or a point that camera looks at).
+-- This value also depends on camera zoom. Feel free to adjust it.
+local PROJECTION_RESOLUTION = 75
+
+local BIG = 2000000000
+local SMALL = -2000000000
 
 local function create_predicates(...)
     local arg = {...}
@@ -17,8 +31,9 @@ local function create_predicates(...)
 end
 
 local i = vmath.matrix4()
+local identity = vmath.matrix4()
 function init(self)
-    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "ice", "sprite", "transparent", "debug_text", "screen")
+    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "ice", "sprite", "transparent", "debug_text", "screen", "shadow")
 
     self.clear_buffers = {
         [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(
@@ -32,20 +47,38 @@ function init(self)
     }
 
     self.camera = {
-        frustum = { frustum = vmath.matrix4() },
-        view = vmath.matrix4(),
-        proj = vmath.matrix4()
+        frustum = { frustum = identity },
+        view = identity,
+        proj = identity,
     }
+    
+    local screen_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
     self.camera_gui = {
-        view = vmath.matrix4(),
-        proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
+        view = identity,
+        proj = screen_proj,
+        frustum = { frustum = screen_proj * identity },
     }
-    self.camera_gui.frustum = { frustum = self.camera_gui.proj * self.camera_gui.view }
+
+    -- for directional lighting and shadow mapping
+    self.light = {
+        view = identity,
+        proj = identity,
+        frustum = { frustum = identity },
+
+        ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
+        sun_color = vmath.vector4(.9, .9, .9, 1.0),
+        sun_direction = vmath.normalize(vmath.vector4(0, -1, -1, 1)),
+    }
+
+    lighting_state.set_ambient_color(self.light.ambient_color)
+    lighting_state.set_sun_color(self.light.sun_color)
+    lighting_state.set_sun_direction(self.light.sun_direction)
+
     self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
-    lighting_state.set_ambient_color(vmath.vector4(0.7, 0.7, 0.7, 1.0))
-    lighting_state.set_sun_color(vmath.vector4(.9, .9, .9, 1.0))
-    lighting_state.set_sun_direction(vmath.normalize(vmath.vector4(1, -1, -1, 1)))
+    -- lighting_state.set_ambient_color(vmath.vector4(0.7, 0.7, 0.7, 1.0))
+    -- lighting_state.set_sun_color(vmath.vector4(.9, .9, .9, 1.0))
+    -- lighting_state.set_sun_direction(vmath.normalize(vmath.vector4(1, -1, -1, 1)))
 
     self.constants = render.constant_buffer()
     update_constants(self.constants)
@@ -78,7 +111,26 @@ function init(self)
         height = render.get_window_height(),
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
     }
+    local shadow_params = {
+        format = graphics.TEXTURE_FORMAT_R32F,
+        width = BUFFER_RESOLUTION,
+        height = BUFFER_RESOLUTION,
+        flags = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
+    }
+    local shadow_depth_params = {
+        format = graphics.TEXTURE_FORMAT_DEPTH,
+        width  = BUFFER_RESOLUTION,
+        height = BUFFER_RESOLUTION,
+        flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
+    }
 
+    self.shadow_map = render.render_target(
+        "shadow_map",
+        {
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = shadow_params,
+            [graphics.BUFFER_TYPE_DEPTH_BIT] = shadow_depth_params,
+        }
+    )
     self.g_buffer = render.render_target(
         "g_buffer",
         {
@@ -95,6 +147,126 @@ function init(self)
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
+
+    -- Use this for directional lights
+    local proj_w = PROJECTION_RESOLUTION
+    local proj_h = PROJECTION_RESOLUTION
+    self.bias_matrix    = vmath.matrix4()
+    self.bias_matrix.c0 = vmath.vector4(0.5, 0.0, 0.0, 0.0)
+    self.bias_matrix.c1 = vmath.vector4(0.0, 0.5, 0.0, 0.0)
+    self.bias_matrix.c2 = vmath.vector4(0.0, 0.0, 0.5, 0.0)
+    self.bias_matrix.c3 = vmath.vector4(0.5, 0.5, 0.5, 1.0)
+    self.bias_matrix = self.bias_matrix
+    -- self.bias_matrix = vmath.matrix4()
+    self.shadow_proj = vmath.matrix4_orthographic(-proj_w/2, proj_w/2, -proj_h/2, proj_h/2, 0, 100)
+    update_shadows(self)
+end
+
+local obj_corners = {
+    vmath.vector4(-1, -1, -1, 1),
+    vmath.vector4(-1, -1, 1, 1),
+    vmath.vector4(-1, 1, -1, 1),
+    vmath.vector4(-1, 1, 1, 1),
+    vmath.vector4(1, -1, -1, 1),
+    vmath.vector4(1, -1, 1, 1),
+    vmath.vector4(1, 1, -1, 1),
+    vmath.vector4(1, 1, 1, 1),
+}
+local wld_corners = {
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+    vmath.vector4(),
+}
+local center = vmath.vector3()
+local z_adjust = 2 -- tweak as needed
+local sun_dir = vmath.vector3()
+update_shadows = function (self)
+    -- TODO: skip the light frustum recalculations if the light and camera haven't moved
+
+    -- get the camera frustum in world space
+    local mtx_inv = vmath.inv(self.camera.frustum.frustum)
+    for i = 1, 8 do
+        local corner = mtx_inv * obj_corners[i]
+        corner = corner / corner.w
+        corner.w = 1
+        wld_corners[i] = corner
+    end
+    -- get the center of the camera frustum
+    center.x, center.y, center.z = 0, 0, 0
+    for i = 1, 8 do
+        local corner = wld_corners[i]
+        center.x = center.x + corner.x
+        center.y = center.y + corner.y
+        center.z = center.z + corner.z
+    end
+    center = center / 8
+    -- calculate the light's view matrix
+    sun_dir.x = self.light.sun_direction.x
+    sun_dir.y = self.light.sun_direction.y
+    sun_dir.z = self.light.sun_direction.z
+    local mtx_light_view = vmath.matrix4_look_at(center - sun_dir, center, UP)
+    -- calculate a bounding box around the camera frustum in light view space
+    local min_x = BIG
+    local max_x = SMALL
+    local min_y = BIG
+    local max_y = SMALL
+    local min_z = BIG
+    local max_z = SMALL
+    for i = 1, 8 do
+        local lvc = mtx_light_view * wld_corners[i]
+        min_x = math.min(min_x, lvc.x)
+        max_x = math.max(max_x, lvc.x)
+        min_y = math.min(min_y, lvc.y)
+        max_y = math.max(max_y, lvc.y)
+        min_z = math.min(min_z, lvc.z)
+        max_z = math.max(max_z, lvc.z)
+    end
+    if min_z < 0 then
+        min_z = min_z * z_adjust
+    else
+        min_z = min_z / z_adjust
+    end
+    if max_z < 0 then
+        max_z = max_z / z_adjust
+    else
+        max_z = max_z * z_adjust
+    end
+    -- use the aforementioned bounding box to create the light projection matrix
+    local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
+    self.light.view = mtx_light_view
+    self.light.proj = mtx_light_proj
+    self.light.frustum.frustum = mtx_light_proj * mtx_light_view
+
+    self.shadow_proj = mtx_light_proj
+    self.shadow_view = mtx_light_view
+
+    self.constants.mtx_shadow_proj = mtx_light_proj
+    self.constants.mtx_shadow_view = mtx_light_view
+    self.constants.mtx_shadow = self.bias_matrix * self.light.frustum.frustum
+
+    -- local cam_pos = render_state.CAM_POS
+    -- look_at.x = cam_pos.x
+    -- look_at.y = 0
+    -- look_at.z = cam_pos.z
+
+    -- sun_dir.x = self.constants.sun_direction.x
+    -- sun_dir.y = self.constants.sun_direction.y
+    -- sun_dir.z = self.constants.sun_direction.z
+
+    -- -- TODO: calculate the light/shadow frustum properly
+    -- local shadow_view = vmath.matrix4_look_at(look_at - (sun_dir * 15), look_at, UP)
+    -- self.shadow_view = shadow_view
+
+    -- local mtx_shadow = self.bias_matrix * self.shadow_proj * self.shadow_view
+    -- self.constants.mtx_bias = self.bias_matrix
+    -- self.constants.mtx_shadow = mtx_shadow
+    -- self.constants.mtx_shadow_proj = self.shadow_proj
+    -- self.constants.mtx_shadow_view = self.shadow_view
 end
 
 local screen_proj = vmath.matrix4_orthographic(-.5, .5, -.5, .5, -1, 1)
@@ -105,6 +277,8 @@ function update(self)
     if not self.valid then return end
 
     update_constants(self.constants)
+    update_shadows(self)
+    render_shadows(self)
 
     local predicates = self.predicates
 
@@ -132,6 +306,7 @@ function update(self)
     render_options.frustum = camera.frustum.frustum
     render_options.constants = self.constants
     render.enable_state(graphics.STATE_CULL_FACE)
+    render.set_cull_face(graphics.FACE_TYPE_BACK)
     render.draw(predicates.model, render_options)
     render.disable_state(graphics.STATE_CULL_FACE)
     render.draw(predicates.sprite, render_options)
@@ -185,13 +360,16 @@ function update(self)
     render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.enable_texture("ssao_sampler", self.ssao_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_COLOR0_BIT)
     lighting_options.constants = self.constants
     lighting_options.constants.mtx_view = camera.view
+    lighting_options.constants.mtx_view_inv = vmath.inv(camera.view)
     render.draw(predicates.screen, lighting_options)
     render.disable_texture("diffuse_sampler")
     render.disable_texture("position_sampler")
     render.disable_texture("normal_sampler")
     render.disable_texture("ssao_sampler")
+    render.disable_texture("shadow_sampler")
     render.disable_material()
 
     -- render GUI
@@ -204,8 +382,10 @@ function update(self)
     render.draw(predicates.debug_text, render_options)
     render.draw(predicates.gui, render_options)
     render.draw(predicates.text, render_options)
+    -- render.enable_state(graphics.STATE_BLEND)
+    -- render.set_blend_func(graphics.BLEND_FACTOR_ONE_MINUS_DST_COLOR, graphics.BLEND_FACTOR_ONE)
     render.disable_state(graphics.STATE_STENCIL_TEST)
-    render.disable_state(graphics.STATE_BLEND)
+    -- render.disable_state(graphics.STATE_BLEND)
 end
 
 function on_message(self, message_id, message)
@@ -219,10 +399,8 @@ function on_message(self, message_id, message)
         render_state.HEIGHT = render.get_window_height()
     elseif message_id == MSG_SET_VIEW_PROJ then
         camera.view = message.view
-        camera.proj = message.projection or i
+        camera.proj = message.projection or identity
         camera.frustum.frustum = camera.proj * camera.view
-        render_state.MTX_VIEW = camera.view
-        self.proj_inv = vmath.inv(camera.proj)
     end
 end
 
@@ -250,4 +428,26 @@ update_constants = function(constants)
     resolution.x = render.get_window_width()
     resolution.y = render.get_window_height()
     constants.resolution = resolution
+end
+
+function render_shadows(self)
+
+    render.set_projection(self.shadow_proj)
+    render.set_view(self.shadow_view)
+    render.set_viewport(0, 0, BUFFER_RESOLUTION, BUFFER_RESOLUTION)
+
+    render.set_depth_mask(true)
+    render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
+    render.enable_state(graphics.STATE_DEPTH_TEST)
+    render.disable_state(graphics.STATE_BLEND)
+    render.enable_state(graphics.STATE_CULL_FACE)
+    render.set_cull_face(graphics.FACE_TYPE_BACK)
+
+    render.set_render_target(self.shadow_map, { transient = {graphics.BUFFER_TYPE_DEPTH_BIT} })
+    render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(0,0,0,1), [graphics.BUFFER_TYPE_DEPTH_BIT] = 1})
+    render.enable_material("shadow_material")
+    --  All objects in render list tagged as "shadow" will change their material to "shadow.material"
+    --  to cast shadows into shadow map texture. This texture will be enabled to all objects at the next render pass.
+    render.draw(self.predicates.shadow, { frustum = self.shadow_proj * self.shadow_view })
+    render.disable_material()
 end

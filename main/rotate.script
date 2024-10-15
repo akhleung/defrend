@@ -2,8 +2,8 @@ local embiggen
 local emsmallen
 
 function init(self)
-	-- go.animate(".", "euler.x", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
-	embiggen()
+	go.animate(".", "euler.y", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
+	-- embiggen()
 end
 
 embiggen = function ()

@@ -1,0 +1,30 @@
+local TRIGGER = require "input.triggers"
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+end
+
+local payload = {}
+function on_input(self, action_id, action)
+	-- events may fire nonstop when the key is in an intermediate state; discard these to avoid spamming the msg queue
+	if not (action.pressed or action.released or action.repeated) then return end
+
+	local pressed = false
+	local released = false
+	local repeated = false
+	-- make these flags mutually exclusive because action.pressed and action.repeated may be true at the same time
+	if action.pressed then
+		pressed = true
+	elseif action.released then
+		released = true
+	elseif action.repeated then
+		repeated = true
+	end
+	local command = TRIGGER[action_id]
+	if command then
+		payload.pressed = pressed
+		payload.released = released
+		payload.repeated = repeated
+		msg.post("/pivot#controller", command, payload)
+	end
+end

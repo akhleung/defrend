@@ -1,5 +1,6 @@
 name: "model"
 tags: "model"
+tags: "shadow"
 vertex_program: "/materials/geometry/model.vp"
 fragment_program: "/materials/geometry/model.fp"
 vertex_constants {

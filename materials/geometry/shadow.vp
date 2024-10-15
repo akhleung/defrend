@@ -1,0 +1,23 @@
+#version 420 core
+
+// positions are in world space
+in vec4 position;
+in vec3 normal;
+
+uniform shadow_vp {
+	mat4 mtx_worldview;
+	mat4 mtx_proj;
+	mat4 mtx_viewproj;
+    mat4 mtx_normal;
+};
+
+out vec3 var_frag_pos;
+out vec3 var_normal;
+
+void main() {
+	vec4 p = mtx_worldview * vec4(position.xyz, 1.0);
+	var_frag_pos = p.xyz;
+	// gl_Position = mtx_viewproj * vec4(position.xyz, 1.0);
+	gl_Position = mtx_proj * p;
+	var_normal = normalize((mtx_normal * vec4(normal, 0.0)).xyz);
+}

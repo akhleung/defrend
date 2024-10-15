@@ -37,19 +37,15 @@ void main() {
 
 	for (int i = 0; i < NUM_SAMPLES; ++i) {
 
-		float rx = kernel[i].x * cos(angle) - kernel[i].y * sin(angle);
-		float ry = kernel[i].y * cos(angle) + kernel[i].x * sin(angle);
-		vec3 samp_pos = frag_pos + vec3(rx, ry, kernel[i].z) * radius;
-
-		// vec3 samp_pos = frag_pos + kernel[i].xyz * radius; // view-space position of the sample near the fragment
+		vec3 samp_pos = frag_pos + kernel[i].xyz * radius; // view-space position of the sample near the fragment
 		vec4 samp_uv = mtx_proj * vec4(samp_pos, 1.0); // screen-space position of the aforementioned sample
 		samp_uv.xy /= samp_uv.w;
 		samp_uv.xy = samp_uv.xy * 0.5 + 0.5;
 		vec3 occluder_pos = texture(position_sampler, samp_uv.xy).xyz; // view-space position of the rendered fragment at the sample position (hypothetical occluder)
 		
-		// vec3 occluder_diff = occluder_pos - frag_pos;
-		// float occluder_dist = length(occluder_diff);
-		// if (occluder_dist > radius) continue;
+		vec3 occluder_diff = occluder_pos - frag_pos;
+		float occluder_dist = length(occluder_diff);
+		if (occluder_dist > radius) continue;
 
 		float occluder_depth = occluder_pos.z;
 		float sample_depth = samp_pos.z;

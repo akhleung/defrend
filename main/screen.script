@@ -14,7 +14,7 @@ function init(self)
 			vmath.vector4(
 				math.random() * 2 - 1,
 				math.random() * 2 - 1,
-				math.random(),
+				math.random() * 2 - 1,
 				1
 			)
 		)

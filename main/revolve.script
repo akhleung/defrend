@@ -1,3 +1,13 @@
+local render_state = require "render.render_state"
+
+local cam_url
+
 function init(self)
 	go.animate("/camera", "euler.y", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 30)
+	cam_url = msg.url(nil, "/offset", "camera")
+end
+
+function update(self, dt)
+	local cam_pos = go.get_world_position(cam_url)
+	render_state.CAM_POS = cam_pos
 end

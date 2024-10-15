@@ -11,3 +11,7 @@ render_resources {
   name: "blur_material"
   path: "/materials/postprocessing/ssao/blur.material"
 }
+render_resources {
+  name: "shadow_material"
+  path: "/materials/geometry/shadow.material"
+}

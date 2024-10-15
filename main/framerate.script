@@ -21,7 +21,9 @@ function update(self, dt)
 	elapsed = elapsed + dt
 	frames = frames + 1
 
-	payload.text = string.format("AVG FPS: %d", avg_fps)
+	local cam_target = render_state.CAM_TARGET
+
+	payload.text = string.format("AVG FPS: %d\tLOOKING AT: (%f, %f, %f)", avg_fps, cam_target.x, cam_target.y, cam_target.z)
 	payload.position = text_pos
 	payload.color = text_col
 	msg.post(
@@ -30,6 +32,12 @@ function update(self, dt)
 		payload
 	)
 	-- draw_frame()
+
+	-- msg.post("@render:", "draw_line", {
+	-- 	start_point = cam_target,
+	-- 	end_point = cam_target + vmath.vector3(0, 50, 0),
+	-- 	color = text_col,
+	-- })
 end
 
 draw_frame = function()
