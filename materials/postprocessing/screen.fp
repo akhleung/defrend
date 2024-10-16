@@ -48,12 +48,14 @@ float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
     return falloff * falloff;
 }
 
+// Blinn-Phong optimized specular lighting (faster, but more approximate)
 // float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
 //     vec3 H = normalize(viewdir + lightdir);
 //     float HdotN = max(0.0, dot(H, norm));
 //     return pow(HdotN, shiny);
 // }
 
+// Classic Phong specular lighting (slower, but more accurate)
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
     vec3 R = reflect(-lightdir, norm);
     return pow(max(dot(R, viewdir), 0.0), shiny);
