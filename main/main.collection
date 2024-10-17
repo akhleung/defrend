@@ -4,12 +4,13 @@ instances {
   prototype: "/assets/logo/logo.go"
   position {
     x: -6.0
-    z: 9.0
+    y: 2.0
+    z: 24.0
   }
   scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+    x: 5.0
+    y: 5.0
+    z: 5.0
   }
 }
 instances {
@@ -209,8 +210,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 4.0
-    z: 7.0
+    x: 8.0
+    z: 11.0
   }
 }
 embedded_instances {
@@ -225,7 +226,7 @@ embedded_instances {
   "  }\n"
   "  properties {\n"
   "    id: \"color\"\n"
-  "    value: \"0.0, 1.0, 0.0, 1.0\"\n"
+  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
   "    type: PROPERTY_TYPE_VECTOR4\n"
   "  }\n"
   "}\n"
@@ -408,8 +409,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -10.0
-    z: -1.0
+    x: -15.0
+    z: 21.0
   }
 }
 embedded_instances {
@@ -604,9 +605,9 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 44.0
+    x: 39.0
     y: 12.0
-    z: -48.0
+    z: -42.0
   }
   rotation {
     x: -0.09256687
@@ -2090,7 +2091,11 @@ embedded_instances {
 }
 embedded_instances {
   id: "ball"
-  data: "embedded_components {\n"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/main/rotate.script\"\n"
+  "}\n"
+  "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
   "  data: \"mesh: \\\"/assets/models/ball.glb\\\"\\n"
@@ -2163,9 +2168,14 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 18.0
+    x: -2.0
     y: -1.0
-    z: 2.0
+    z: -20.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
   }
 }
 embedded_instances {
@@ -2231,13 +2241,75 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 18.0
+    x: -22.0
     y: -1.5
-    z: -33.0
+    z: -24.0
   }
   scale3 {
     x: 5.0
     y: 5.0
     z: 5.0
+  }
+}
+embedded_instances {
+  id: "building01"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -6.0
+    y: -2.35
+    z: 6.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "car"
+  data: "components {\n"
+  "  id: \"car\"\n"
+  "  component: \"/assets/citybuilder/car.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: -1.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building02"
+  data: "components {\n"
+  "  id: \"building02\"\n"
+  "  component: \"/assets/citybuilder/building02.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -6.0
+    y: -2.35
+    z: -8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }

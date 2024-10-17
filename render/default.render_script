@@ -53,40 +53,40 @@ function init(self)
     }
 
     self.camera = {
-        frustum = { frustum = identity },
+        frustum = identity,
         view = identity,
         proj = identity,
-        dirty = true,
+        moved = true,
     }
-    
+
     local screen_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
     self.camera_gui = {
         view = identity,
         proj = screen_proj,
-        frustum = { frustum = screen_proj * identity },
+        frustum = screen_proj * identity,
     }
 
     -- for directional lighting and shadow mapping
     self.light = {
         view = identity,
         proj = identity,
-        frustum = { frustum = identity },
+        frustum = identity,
 
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
         sun_color = vmath.vector4(.95, .95, .95, 1.0),
         sun_direction = vmath.normalize(vmath.vector4(0.5, -1.5, -1, 1)),
-        
-        loose_frustum = {
+
+        loose_bb = {
             min_x = 0, max_x = 0,
             min_y = 0, max_y = 0,
             min_z = 0, max_z = 0,
         },
-        tight_frustum = {
+        tight_bb = {
             min_x = 0, max_x = 0,
             min_y = 0, max_y = 0,
             min_z = 0, max_z = 0,
         },
-        dirty = true,
+        moved = false,
     }
 
     lighting_state.set_ambient_color(self.light.ambient_color)
@@ -223,9 +223,13 @@ local adjust = 1.2 -- tweak as needed; higher values should prevent clipped/miss
 local sun_dir = vmath.vector3()
 local map_rad = 75
 local target = vmath.vector3()
-update_shadows = function (self) -- TODO: skip the light frustum recalculations if the light and camera haven't moved
+update_shadows = function (self)
+    -- skip the light frustum recalculations if the light and camera haven't moved
+    if not (self.camera.moved or self.light.moved) then
+        return
+    end
     -- get the camera frustum in world space
-    local mtx_inv = vmath.inv(self.camera.frustum.frustum)
+    local mtx_inv = vmath.inv(self.camera.frustum)
     for i = 1, 8 do
         local corner = mtx_inv * obj_corners[i]
         corner = corner / corner.w
@@ -262,41 +266,41 @@ update_shadows = function (self) -- TODO: skip the light frustum recalculations 
         min_z = math.min(min_z, lvc.z)
         max_z = math.max(max_z, lvc.z)
     end
-    local tight_frustum = self.light.tight_frustum
-    local loose_frustum = self.light.loose_frustum
-    tight_frustum.min_x = min_x
-    tight_frustum.max_x = max_x
-    tight_frustum.min_y = min_y
-    tight_frustum.max_y = max_y
-    tight_frustum.min_z = min_z
-    tight_frustum.max_z = max_z
-    if not outside(tight_frustum, loose_frustum) then
-        -- if the precise bounding box of the view frustum is still inside the expanded box, then no need to update
+    local tight_bb = self.light.tight_bb
+    local loose_bb = self.light.loose_bb
+    tight_bb.min_x = min_x
+    tight_bb.max_x = max_x
+    tight_bb.min_y = min_y
+    tight_bb.max_y = max_y
+    tight_bb.min_z = min_z
+    tight_bb.max_z = max_z
+    -- if the precise bounding box of the view frustum is still inside the expanded box, then no need to update
+    if not outside(tight_bb, loose_bb) then
         return
     end
     -- otherwise loosen the bounding box to avoid clipping visible shadows from occluders outside the frustum
     min_x, max_x = adjust_min_max(min_x, max_x, adjust)
     min_y, max_y = adjust_min_max(min_y, max_y, adjust)
     min_z, max_z = adjust_min_max(min_z, max_z, adjust)
-    loose_frustum.min_x = min_x
-    loose_frustum.max_x = max_x
-    loose_frustum.min_y = min_y
-    loose_frustum.max_y = max_y
-    loose_frustum.min_z = min_z
-    loose_frustum.max_z = max_z
+    loose_bb.min_x = min_x
+    loose_bb.max_x = max_x
+    loose_bb.min_y = min_y
+    loose_bb.max_y = max_y
+    loose_bb.min_z = min_z
+    loose_bb.max_z = max_z
     -- use the aforementioned bounding box to create the light projection matrix
     local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
     -- local mtx_light_proj = vmath.matrix4_orthographic(center.x - map_rad, center.x + map_rad, center.y - map_rad, center.y + map_rad, center.z - map_rad, center.z + map_rad)
     self.light.view = mtx_light_view
     self.light.proj = mtx_light_proj
-    self.light.frustum.frustum = mtx_light_proj * mtx_light_view
+    self.light.frustum = mtx_light_proj * mtx_light_view
 
     self.shadow_proj = mtx_light_proj
     self.shadow_view = mtx_light_view
 
     self.constants.mtx_shadow_proj = mtx_light_proj
     self.constants.mtx_shadow_view = mtx_light_view
-    self.constants.mtx_shadow = self.bias_matrix * self.light.frustum.frustum
+    self.constants.mtx_shadow = self.bias_matrix * self.light.frustum
 end
 
 local screen_proj = vmath.matrix4_orthographic(-.5, .5, -.5, .5, -1, 1)
@@ -333,7 +337,7 @@ function update(self)
 
     -- render `model` predicate for default 3D material
     -- self.constants.mtx_proj_inv = self.proj_inv or i -- TODO: improve this
-    render_options.frustum = camera.frustum.frustum
+    render_options.frustum = camera.frustum
     render_options.constants = self.constants
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_BACK)
@@ -405,7 +409,7 @@ function update(self)
     -- render GUI
     --
     local camera_gui = self.camera_gui
-    render_options.frustum = camera_gui.frustum.frustum
+    render_options.frustum = camera_gui.frustum
     render.set_view(camera_gui.view)
     render.set_projection(camera_gui.proj)
     render.enable_state(graphics.STATE_STENCIL_TEST)
@@ -422,7 +426,7 @@ function on_message(self, message_id, message)
     local camera = self.camera
     local camera_gui = self.camera_gui
     if message_id == MSG_WINDOW_RESIZED then
-        camera.frustum.frustum = camera.proj * camera.view
+        camera.frustum = camera.proj * camera.view
         camera_gui.proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
         self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
         render_state.WIDTH = render.get_window_width()
@@ -430,7 +434,7 @@ function on_message(self, message_id, message)
     elseif message_id == MSG_SET_VIEW_PROJ then
         camera.view = message.view
         camera.proj = message.projection or identity
-        camera.frustum.frustum = camera.proj * camera.view
+        camera.frustum = camera.proj * camera.view
     end
 end
 

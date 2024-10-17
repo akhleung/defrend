@@ -69,17 +69,24 @@ vec2 rand(vec2 co) {
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
-    // 0. offset fragment view position by surface normal to reduce shadow acne
+    // since we can't set a border color in Defold for clamp-to-border when sampling from the shadow map, short circuit
+    // with no shadow if the rendering exceeds the shadow map boundaries
+    // (this shouldn't be necessary anymore since we're dynamically fitting the shadow frustum to the camera frustum)
+    // if (shadow_texcoord0.x < 0 || shadow_texcoord0.x > 1 || shadow_texcoord0.y < 0 || shadow_texcoord0.y > 1) {
+    //     return 1.0;
+    // } 
+
+    // 1. offset fragment view position by surface normal to reduce shadow acne
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * 0.25, 1);
-    // 1. multiply fragment view position by inverse view matrix of camera to get world space position
+    // 2. multiply fragment view position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
-    // 2. multiply by view matrix of light to get view space position of fragment relative to light
+    // 3. multiply by view matrix of light to get view space position of fragment relative to light
     vec4 view_pos_re_light = mtx_shadow_view * world_pos;
-    // 3. multiply by proj matrix of light to get clip/screen position of fragment relative to light
+    // 4. multiply by proj matrix of light to get clip/screen position of fragment relative to light
     vec4 proj_pos_re_light = mtx_shadow_proj * view_pos_re_light;
     proj_pos_re_light /= proj_pos_re_light.w;
     vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5;
-
+    // 5. re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float texel_size = 1.0 / SHADOW_MAP_SIZE;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
@@ -87,22 +94,10 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
         for (int y = -1; y <= 1; ++y) {
             vec2 uv = shadow_texcoord0 + vec2(x,y) * texel_size;
             float occluder_z = texture(shadow_sampler, uv + rand(uv)).r;
-            if (occluder_z < occludee_z) {
-                continue;
-            } else {
-                shadow += 1.0;
-            }
+            shadow += occluder_z < occludee_z ? 0.0 : 1.0;
         }
     }
-    shadow /= 9.0;
-
-    // since we can't set a border color in Defold for clamp-to-border when sampling from the shadow map, default to
-    // no shadows if the rendering exceeds the shadow map boundaries
-    if (shadow_texcoord0.x < 0) shadow = 1;
-    if (shadow_texcoord0.x > 1) shadow = 1;
-    if (shadow_texcoord0.y < 0) shadow = 1;
-    if (shadow_texcoord0.y > 1) shadow = 1;
-
+    shadow /= 9.0; // divide by number of samples
     return shadow;
 }
 
