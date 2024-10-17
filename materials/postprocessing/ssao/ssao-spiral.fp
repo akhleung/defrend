@@ -11,8 +11,8 @@ out vec4 frag_color;
 #define INTENSITY 1
 #define SCALE 1
 #define BIAS 0.05
-#define SAMPLE_RAD 0.2
-#define MAX_DISTANCE 0.5
+#define SAMPLE_RAD 0.375
+#define MAX_DISTANCE 0.75
 #define OBLIQUE 0.15
 
 const vec3 mod3 = vec3(.1031, .11369, .13787);

@@ -68,7 +68,9 @@ vec2 rand(vec2 co) {
     ) * 0.00047;
 }
 
-float shadow_calc(vec4 view_pos_re_cam, float bias) {
+float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
+    // 0. offset fragment view position by surface normal to reduce shadow acne
+    view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * 0.25, 1);
     // 1. multiply fragment view position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
     // 2. multiply by view matrix of light to get view space position of fragment relative to light
@@ -84,7 +86,7 @@ float shadow_calc(vec4 view_pos_re_cam, float bias) {
     for (int x = -1; x <= 1; ++x) {
         for (int y = -1; y <= 1; ++y) {
             vec2 uv = shadow_texcoord0 + vec2(x,y) * texel_size;
-            float occluder_z = texture(shadow_sampler, uv + rand(uv)).r + bias;
+            float occluder_z = texture(shadow_sampler, uv + rand(uv)).r;
             if (occluder_z < occludee_z) {
                 continue;
             } else {
@@ -94,23 +96,14 @@ float shadow_calc(vec4 view_pos_re_cam, float bias) {
     }
     shadow /= 9.0;
 
-    // since we can't clamp-to-border in Defold, default to no shadows if the rendering exceeds the shadowmap boundaries
+    // since we can't set a border color in Defold for clamp-to-border when sampling from the shadow map, default to
+    // no shadows if the rendering exceeds the shadow map boundaries
     if (shadow_texcoord0.x < 0) shadow = 1;
     if (shadow_texcoord0.x > 1) shadow = 1;
     if (shadow_texcoord0.y < 0) shadow = 1;
     if (shadow_texcoord0.y > 1) shadow = 1;
 
     return shadow;
-
-    // // 4. sample from shadow_sampler using coord from step 3
-    // float occluder_z = texture(shadow_sampler, shadow_texcoord0).r + bias;
-    // // 5. compare sampled z from step 4 to z from step 2 to determine if fragment is shadowed
-    // float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
-    // if (occluder_z < occludee_z) {
-    //     return 0.0;
-    // } else {
-    //     return 1.0;
-    // }
 }
 
 void main() {
@@ -138,9 +131,10 @@ void main() {
     // directional (i.e., sun) light
     vec3 sun_dir = mat3(mtx_view) * normalize(-sun_direction.xyz);
     sun_dir = normalize(sun_dir);
-    float d = dot(normal, sun_dir);
-    float bias = (1.0 - d) * 0.005;
-    float shadow = shadow_calc(vec4(var_frag_pos, 1.0), bias);
+    // float d = dot(normal, sun_dir);
+    // float bias = (1.0 - d) * 0.006;
+    // bias = 0;
+    float shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal);
     float sun_spec = specular(view_dir, sun_dir, normal, spec_exp) * shadow;
     float sun_diff = diffuse(sun_dir, normal) * ao * shadow;
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;

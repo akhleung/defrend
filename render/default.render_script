@@ -56,6 +56,7 @@ function init(self)
         frustum = { frustum = identity },
         view = identity,
         proj = identity,
+        dirty = true,
     }
     
     local screen_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
@@ -73,7 +74,19 @@ function init(self)
 
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
         sun_color = vmath.vector4(.95, .95, .95, 1.0),
-        sun_direction = vmath.normalize(vmath.vector4(0.5, -0.5, -1, 1)),
+        sun_direction = vmath.normalize(vmath.vector4(0.5, -1.5, -1, 1)),
+        
+        loose_frustum = {
+            min_x = 0, max_x = 0,
+            min_y = 0, max_y = 0,
+            min_z = 0, max_z = 0,
+        },
+        tight_frustum = {
+            min_x = 0, max_x = 0,
+            min_y = 0, max_y = 0,
+            min_z = 0, max_z = 0,
+        },
+        dirty = true,
     }
 
     lighting_state.set_ambient_color(self.light.ambient_color)
@@ -161,6 +174,30 @@ function init(self)
     update_shadows(self)
 end
 
+local function adjust_min_max(min, max, adjust) -- eh, maybe just add a hardcoded value
+    if min < 0 then
+        min = min * adjust
+    else
+        min = min / adjust
+    end
+    if max < 0 then
+        max = max / adjust
+    else
+        max = max * adjust
+    end
+    return min, max
+end
+
+local function outside(tight, loose)
+    if tight.min_x < loose.min_x then return true end
+    if tight.max_x > loose.max_x then return true end
+    if tight.min_y < loose.min_y then return true end
+    if tight.max_y > loose.max_y then return true end
+    if tight.min_z < loose.min_z then return true end
+    if tight.max_z > loose.max_z then return true end
+    return false
+end
+
 local obj_corners = {
     vmath.vector4(-1, -1, -1, 1),
     vmath.vector4(-1, -1, 1, 1),
@@ -182,8 +219,10 @@ local wld_corners = {
     vmath.vector4(),
 }
 local center = vmath.vector3()
-local z_adjust = 1 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
+local adjust = 1.2 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
 local sun_dir = vmath.vector3()
+local map_rad = 75
+local target = vmath.vector3()
 update_shadows = function (self) -- TODO: skip the light frustum recalculations if the light and camera haven't moved
     -- get the camera frustum in world space
     local mtx_inv = vmath.inv(self.camera.frustum.frustum)
@@ -207,7 +246,7 @@ update_shadows = function (self) -- TODO: skip the light frustum recalculations 
     sun_dir.y = self.light.sun_direction.y
     sun_dir.z = self.light.sun_direction.z
     local mtx_light_view = vmath.matrix4_look_at(center - sun_dir, center, UP)
-    -- calculate a bounding box around the camera frustum in light view space
+    -- calculate a precise bounding box around the camera frustum in light view space
     local min_x = MAX_NUM
     local max_x = MIN_NUM
     local min_y = MAX_NUM
@@ -223,18 +262,31 @@ update_shadows = function (self) -- TODO: skip the light frustum recalculations 
         min_z = math.min(min_z, lvc.z)
         max_z = math.max(max_z, lvc.z)
     end
-    if min_z < 0 then
-        min_z = min_z * z_adjust
-    else
-        min_z = min_z / z_adjust
+    local tight_frustum = self.light.tight_frustum
+    local loose_frustum = self.light.loose_frustum
+    tight_frustum.min_x = min_x
+    tight_frustum.max_x = max_x
+    tight_frustum.min_y = min_y
+    tight_frustum.max_y = max_y
+    tight_frustum.min_z = min_z
+    tight_frustum.max_z = max_z
+    if not outside(tight_frustum, loose_frustum) then
+        -- if the precise bounding box of the view frustum is still inside the expanded box, then no need to update
+        return
     end
-    if max_z < 0 then
-        max_z = max_z / z_adjust
-    else
-        max_z = max_z * z_adjust
-    end
+    -- otherwise loosen the bounding box to avoid clipping visible shadows from occluders outside the frustum
+    min_x, max_x = adjust_min_max(min_x, max_x, adjust)
+    min_y, max_y = adjust_min_max(min_y, max_y, adjust)
+    min_z, max_z = adjust_min_max(min_z, max_z, adjust)
+    loose_frustum.min_x = min_x
+    loose_frustum.max_x = max_x
+    loose_frustum.min_y = min_y
+    loose_frustum.max_y = max_y
+    loose_frustum.min_z = min_z
+    loose_frustum.max_z = max_z
     -- use the aforementioned bounding box to create the light projection matrix
     local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
+    -- local mtx_light_proj = vmath.matrix4_orthographic(center.x - map_rad, center.x + map_rad, center.y - map_rad, center.y + map_rad, center.z - map_rad, center.z + map_rad)
     self.light.view = mtx_light_view
     self.light.proj = mtx_light_proj
     self.light.frustum.frustum = mtx_light_proj * mtx_light_view

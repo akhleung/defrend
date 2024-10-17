@@ -3,7 +3,7 @@ local render_state = require "render.render_state"
 local cam_url
 
 function init(self)
-	-- go.animate("/camera", "euler.y", go.PLAYBACK_LOOP_FORWARD, -360, go.EASING_LINEAR, 45)
+	go.animate("/camera", "euler.y", go.PLAYBACK_LOOP_FORWARD, -360, go.EASING_LINEAR, 45)
 	cam_url = msg.url(nil, "/offset", "camera")
 end
 
