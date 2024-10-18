@@ -54,11 +54,6 @@ embedded_instances {
   "  component: \"/main/revolve.script\"\n"
   "}\n"
   ""
-  position {
-    x: 5.0
-    y: 15.0
-    z: -4.0
-  }
 }
 embedded_instances {
   id: "logo"
@@ -605,9 +600,9 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 39.0
-    y: 12.0
-    z: -42.0
+    x: 46.0
+    y: 33.0
+    z: -48.0
   }
   rotation {
     x: -0.09256687

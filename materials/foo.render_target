@@ -1,5 +1,0 @@
-depth_stencil_attachment {
-  width: 1600
-  height: 900
-  texture_storage: true
-}

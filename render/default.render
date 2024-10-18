@@ -15,3 +15,7 @@ render_resources {
   name: "shadow_material"
   path: "/materials/geometry/shadow.material"
 }
+render_resources {
+  name: "fxaa_material"
+  path: "/materials/postprocessing/fxaa/fxaa.material"
+}
