@@ -1,15 +1,15 @@
 script: "/render/default.render_script"
 render_resources {
-  name: "screen_material"
-  path: "/materials/postprocessing/screen.material"
+  name: "lighting_material"
+  path: "/materials/screen/lighting.material"
 }
 render_resources {
   name: "ssao_material"
-  path: "/materials/postprocessing/ssao/ssao.material"
+  path: "/materials/screen/ssao/ssao.material"
 }
 render_resources {
   name: "blur_material"
-  path: "/materials/postprocessing/ssao/blur.material"
+  path: "/materials/screen/ssao/blur.material"
 }
 render_resources {
   name: "shadow_material"
@@ -17,5 +17,5 @@ render_resources {
 }
 render_resources {
   name: "fxaa_material"
-  path: "/materials/postprocessing/fxaa/fxaa.material"
+  path: "/materials/screen/fxaa/fxaa.material"
 }

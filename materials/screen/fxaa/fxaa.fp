@@ -14,7 +14,7 @@ float reducemul = 0.125;
 float reducemin = 0.0078125;
 vec3 luma = vec3(0.299, 0.587, 0.114);
 vec2 u_texel = resolution.zw;
-float u_strength = 10;
+float u_strength = 12;
 
 void main() {
     

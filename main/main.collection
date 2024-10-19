@@ -580,7 +580,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/materials/postprocessing/ssao/ssao.material\\\"\\n"
+  "  material: \\\"/materials/screen/ssao/ssao.material\\\"\\n"
   "}\\n"
   "\"\n"
   "}\n"
