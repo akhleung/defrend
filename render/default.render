@@ -1,5 +1,13 @@
 script: "/render/default.render_script"
 render_resources {
+  name: "model_material"
+  path: "/materials/geometry/model.material"
+}
+render_resources {
+  name: "shadow_material"
+  path: "/materials/geometry/shadow.material"
+}
+render_resources {
   name: "lighting_material"
   path: "/materials/screen/lighting.material"
 }
@@ -10,10 +18,6 @@ render_resources {
 render_resources {
   name: "blur_material"
   path: "/materials/screen/ssao/blur.material"
-}
-render_resources {
-  name: "shadow_material"
-  path: "/materials/geometry/shadow.material"
 }
 render_resources {
   name: "fxaa_material"
