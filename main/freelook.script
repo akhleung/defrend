@@ -1,6 +1,4 @@
-local actions = require "main.actions"
 local misc_math = require "main.misc_math"
-local render_state = require "render.render_state"
 
 local FORWARD = go.PLAYBACK_ONCE_FORWARD
 local INOUTQUAD = go.EASING_INOUTQUAD
@@ -10,55 +8,54 @@ local SENSITIVITY = 3
 
 local enabled = false
 
-function on_message(self, message_id, message)
-	if (message_id == actions.FREELOOK) then
-		enabled = not enabled
-		window.set_mouse_lock(enabled)
-		if enabled then
-			camera.release_focus("/camera#camera")
-			camera.acquire_focus("/freelook#camera")
-			render_state.CAM_URL = "/freelook"
-			go.animate("/freelook", "position", FORWARD, CENTER, INOUTQUAD, 0.25, 0, function()
-				msg.post(".", "acquire_input_focus")
-			end)
-		else
-			msg.post(".", "release_input_focus")
-			go.animate("/freelook", "rotation", FORWARD, go.get_rotation("/camera"), INOUTQUAD, 0.25)
-			go.animate("/freelook", "position", FORWARD, BACK, INOUTQUAD, 0.25, 0, function()
-				camera.release_focus("/freelook#camera")
-				camera.acquire_focus("/camera#camera")
-				render_state.CAM_URL = "/camera"
-			end)
-		end
-	end
+local euler_x = hash("euler.x")
+local euler_y = hash("euler.y")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
 end
 
-local adjust_pivot
+-- function on_message(self, message_id, message)
+-- 	if (message_id == actions.FREELOOK) then
+-- 		enabled = not enabled
+-- 		window.set_mouse_lock(enabled)
+-- 		if enabled then
+-- 			camera.release_focus("/camera#camera")
+-- 			camera.acquire_focus("/freelook#camera")
+-- 			go.animate("/freelook", "position", FORWARD, CENTER, INOUTQUAD, 0.25, 0, function()
+-- 				msg.post(".", "acquire_input_focus")
+-- 			end)
+-- 		else
+-- 			msg.post(".", "release_input_focus")
+-- 			go.animate("/freelook", "rotation", FORWARD, go.get_rotation("/camera"), INOUTQUAD, 0.25)
+-- 			go.animate("/freelook", "position", FORWARD, BACK, INOUTQUAD, 0.25, 0, function()
+-- 				camera.release_focus("/freelook#camera")
+-- 				camera.acquire_focus("/camera#camera")
+-- 			end)
+-- 		end
+-- 	end
+-- end
+
 function on_input(self, action_id, action)
 	if not action_id and action.dx and action.dy then
-		local x_rot = go.get("/freelook", "euler.x") + action.dy / SENSITIVITY
-		local y_rot = go.get("/freelook", "euler.y") - action.dx / SENSITIVITY
-		if x_rot > -90 and x_rot < 90 then
-			go.set("/freelook", "euler.x", x_rot)
-		else
-			go.set("/freelook", "euler.x", misc_math.clamp(x_rot, -90, 90))
-		end
-		go.set("/freelook", "euler.y", y_rot)
-		adjust_pivot(y_rot)
+		local y_rot = go.get(".", euler_y) - action.dx / SENSITIVITY
+		local x_rot = go.get(".", euler_x) + action.dy / SENSITIVITY
+		go.set(".", euler_y, y_rot)
+		go.set(".", euler_x, misc_math.clamp(x_rot, -90, 90)) -- prevent the camera from pitching beyond vertical
 	end
 end
 
 -- rotate the player/pivot in 90-degree increments to follow the freelook camera direction
 -- the freelook camera must be rotated in the opposite direction to compensate, since it's a child of the pivot/player
-adjust_pivot = function (y_rot)
-	local adjustment_angle = 0
-	if y_rot < -135 or y_rot > 135 then
-		adjustment_angle = 180 * misc_math.sign(y_rot)
-	elseif y_rot < -45 or y_rot > 45 then
-		adjustment_angle = 90 * misc_math.sign(y_rot)
-	else
-		return
-	end
-	go.set("/pivot", "euler.y", go.get("/pivot", "euler.y") + adjustment_angle)
-	go.set("/freelook", "euler.y", y_rot - adjustment_angle)
-end
+-- local adjust_pivot = function (y_rot)
+-- 	local adjustment_angle = 0
+-- 	if y_rot < -135 or y_rot > 135 then
+-- 		adjustment_angle = 180 * misc_math.sign(y_rot)
+-- 	elseif y_rot < -45 or y_rot > 45 then
+-- 		adjustment_angle = 90 * misc_math.sign(y_rot)
+-- 	else
+-- 		return
+-- 	end
+-- 	go.set("/pivot", "euler.y", go.get("/pivot", "euler.y") + adjustment_angle)
+-- 	go.set("/freelook", "euler.y", y_rot - adjustment_angle)
+-- end

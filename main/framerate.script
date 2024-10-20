@@ -1,5 +1,3 @@
-local render_state = require "render.render_state"
-
 local draw_frame
 
 local frames = 0
@@ -21,9 +19,9 @@ function update(self, dt)
 	elapsed = elapsed + dt
 	frames = frames + 1
 
-	local cam_target = render_state.CAM_TARGET
+	-- local cam_target = render_state.CAM_TARGET
 
-	payload.text = string.format("AVG FPS: %d\tLOOKING AT: (%f, %f, %f)", avg_fps, cam_target.x, cam_target.y, cam_target.z)
+	payload.text = string.format("AVG FPS: %d", avg_fps)
 	payload.position = text_pos
 	payload.color = text_col
 	msg.post(

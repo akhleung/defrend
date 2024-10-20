@@ -17,7 +17,7 @@ render_resources {
 }
 render_resources {
   name: "blur_material"
-  path: "/materials/screen/ssao/blur.material"
+  path: "/materials/screen/blur/blur.material"
 }
 render_resources {
   name: "fxaa_material"

@@ -569,18 +569,14 @@ embedded_instances {
 }
 embedded_instances {
   id: "screen"
-  data: "components {\n"
-  "  id: \"screen\"\n"
-  "  component: \"/main/screen.script\"\n"
-  "}\n"
-  "embedded_components {\n"
+  data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
   "  data: \"mesh: \\\"/builtins/assets/meshes/quad.dae\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/materials/screen/ssao/ssao.material\\\"\\n"
+  "  material: \\\"/materials/screen/lighting.material\\\"\\n"
   "}\\n"
   "\"\n"
   "}\n"
@@ -588,7 +584,11 @@ embedded_instances {
 }
 embedded_instances {
   id: "offset"
-  data: "embedded_components {\n"
+  data: "components {\n"
+  "  id: \"freelook\"\n"
+  "  component: \"/main/freelook.script\"\n"
+  "}\n"
+  "embedded_components {\n"
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
@@ -2269,10 +2269,10 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "car"
+  id: "hatchback"
   data: "components {\n"
   "  id: \"car\"\n"
-  "  component: \"/assets/citybuilder/car.model\"\n"
+  "  component: \"/assets/citybuilder/hatchback.model\"\n"
   "}\n"
   ""
   position {
@@ -2301,6 +2301,24 @@ embedded_instances {
   rotation {
     y: -0.70710677
     w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "sedan"
+  data: "components {\n"
+  "  id: \"sedan\"\n"
+  "  component: \"/assets/citybuilder/sedan.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: -1.0
+    z: -13.0
   }
   scale3 {
     x: 8.0

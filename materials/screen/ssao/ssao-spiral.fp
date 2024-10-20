@@ -8,11 +8,13 @@ uniform sampler2D position_sampler;
 out vec4 frag_color;
 
 #define SAMPLES 16
-#define INTENSITY 1
+#define INTENSITY 1.375
 #define SCALE 1
 #define BIAS 0.05
-#define SAMPLE_RAD 0.375
-#define MAX_DISTANCE 0.75
+// #define SAMPLE_RAD 0.375
+// #define MAX_DISTANCE 0.75
+#define SAMPLE_RAD 0.5
+#define MAX_DISTANCE 1.0
 #define OBLIQUE 0.15
 
 const vec3 mod3 = vec3(.1031, .11369, .13787);
@@ -36,7 +38,8 @@ float doAmbientOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
     return ao;
 }
 
-float spiralAO(vec3 p, vec3 n, float rad) {
+float spiralAO(vec3 p, vec3 n) {
+    float rad = SAMPLE_RAD / abs(p.z);
     float ao = 0.0;
     float radius = 0.0;
 
@@ -53,7 +56,7 @@ float spiralAO(vec3 p, vec3 n, float rad) {
         rotatePhase += goldenAngle;
     }
     ao *= inv;
-    return ao;
+    return 1.0 - ao * INTENSITY;
 }
 
 void main() {
@@ -61,11 +64,7 @@ void main() {
 	vec3 position = texture(position_sampler, var_texcoord0).xyz;
   	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz;
 
-	float ao = 0.0;
-	float rad = SAMPLE_RAD / abs(position.z);
-
-	ao = spiralAO(position, normal, rad);
-	ao = 1.0 - ao * INTENSITY;
+	float ao = spiralAO(position, normal);
 
 	frag_color = vec4(ao, ao, ao, 1.0);
 }

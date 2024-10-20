@@ -1,4 +1,3 @@
-local render_state = require "render.render_state"
 local lighting_state = require "lighting.lighting_state"
 local update_constants
 local update_shadows
@@ -74,7 +73,7 @@ function init(self)
 
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
         sun_color = vmath.vector4(.95, .95, .95, 1.0),
-        sun_direction = vmath.normalize(vmath.vector4(0.5, -1.5, -1, 1)),
+        sun_direction = vmath.normalize(vmath.vector4(0.1, -1.5, -1, 1)),
 
         loose_bb = {
             min_x = 0, max_x = 0,
@@ -97,9 +96,6 @@ function init(self)
 
     self.constants = render.constant_buffer()
     update_constants(self.constants)
-
-    render_state.WIDTH = render.get_window_width()
-    render_state.HEIGHT = render.get_window_height()
 
     -- Creating the RT in a render script:
     local color_params = {
@@ -445,8 +441,6 @@ function on_message(self, message_id, message)
         camera.frustum = camera.proj * camera.view
         camera_gui.proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
         self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
-        render_state.WIDTH = render.get_window_width()
-        render_state.HEIGHT = render.get_window_height()
     elseif message_id == MSG_SET_VIEW_PROJ then
         camera.view = message.view
         camera.proj = message.projection or identity
@@ -471,9 +465,6 @@ update_constants = function(constants)
     constants.light_positions = light_positions
     constants.light_radii = light_radii
     constants.light_colors = light_colors
-
-    constants.kernel = render_state.KERNEL
-    constants.noise = render_state.NOISE
 
     resolution.x = render.get_window_width()
     resolution.y = render.get_window_height()

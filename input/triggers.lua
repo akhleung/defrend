@@ -1,4 +1,4 @@
-local actions = require "main.actions"
+local actions = require "input.actions"
 
 return {
     [hash("key_space")] = hash("key_space"),
@@ -130,7 +130,7 @@ return {
 
     [hash("mouse_wheel_up")] = hash("mouse_wheel_up"),
     [hash("mouse_wheel_down")] = hash("mouse_wheel_down"),
-    [hash("mouse_button_left")] = hash("mouse_button_left"),
+    [hash("mouse_button_left")] = actions.LEFT_CLICK,
     [hash("mouse_button_middle")] = hash("mouse_button_middle"),
     [hash("mouse_button_right")] = hash("mouse_button_right"),
     [hash("mouse_button_1")] = hash("mouse_button_1"),

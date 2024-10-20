@@ -11,7 +11,7 @@ uniform sampler2D normal_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
 
-uniform screen_fp {
+uniform lighting_fp {
     mat4 mtx_view;
     mat4 mtx_view_inv;
     mat4 mtx_shadow;
@@ -108,18 +108,17 @@ void main() {
 
     vec3 var_frag_pos = position_sample.xyz;
     vec3 view_dir = normalize(-var_frag_pos);
-
-    vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
-    float spec_exp = position_sample.w;
-
-    vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec3 normal = normal_sample.xyz;
+
+    float shininess = position_sample.w;
+    vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
+    vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 
 	frag_color = texture(ssao_sampler, var_texcoord0);
 
     float ao = texture(ssao_sampler, var_texcoord0).x;
-    float blur = texture(ssao_sampler, var_texcoord0).y;
-    ao = blur * ao;
+    // float blur = texture(ssao_sampler, var_texcoord0).y;
+    // ao = blur * ao;
 
     vec4 color = ambient_color * mat_diff * ao;
 
@@ -130,14 +129,14 @@ void main() {
     // float bias = (1.0 - d) * 0.006;
     // bias = 0;
     float shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal);
-    float sun_spec = specular(view_dir, sun_dir, normal, spec_exp) * shadow;
+    float sun_spec = specular(view_dir, sun_dir, normal, shininess) * shadow;
     float sun_diff = diffuse(sun_dir, normal) * ao * shadow;
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
         vec4 light_pos = mtx_view * light_positions[i];
         vec3 light_dir = light_direction(var_frag_pos, light_pos.xyz);
-        float spec = specular(view_dir, light_dir, normal, spec_exp);
+        float spec = specular(view_dir, light_dir, normal, shininess);
         float diff = diffuse(light_dir, normal);
         float attn = attenuation(var_frag_pos, light_pos.xyz, light_radii[i]);
         color += (diff * mat_diff + spec * mat_spec) * light_colors[i] * attn;

@@ -1,5 +1,3 @@
-local render_state = require "render.render_state"
-
 local cam_url
 
 function init(self)
@@ -9,5 +7,4 @@ end
 
 function update(self, dt)
 	local cam_pos = go.get_world_position(cam_url)
-	render_state.CAM_POS = cam_pos
 end

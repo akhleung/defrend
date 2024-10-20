@@ -1,7 +1,7 @@
 name: "blur"
 tags: "screen"
 vertex_program: "/materials/screen/screen.vp"
-fragment_program: "/materials/screen/ssao/blur.fp"
+fragment_program: "/materials/screen/blur/blur-kuwahara-1.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
