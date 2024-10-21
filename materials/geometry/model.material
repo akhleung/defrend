@@ -1,6 +1,5 @@
 name: "model"
 tags: "model"
-tags: "shadow"
 vertex_program: "/materials/geometry/model.vp"
 fragment_program: "/materials/geometry/model.fp"
 vertex_constants {
@@ -16,22 +15,6 @@ vertex_constants {
   type: CONSTANT_TYPE_NORMAL
 }
 fragment_constants {
-  name: "mtx_view"
-  type: CONSTANT_TYPE_VIEW
-  value {
-  }
-}
-fragment_constants {
-  name: "ambient_color"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 0.8
-    y: 0.8
-    z: 0.8
-    w: 1.0
-  }
-}
-fragment_constants {
   name: "shininess"
   type: CONSTANT_TYPE_USER
   value {
@@ -39,26 +22,6 @@ fragment_constants {
     y: 0.1
     z: 0.1
     w: 64.0
-  }
-}
-fragment_constants {
-  name: "sun_color"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 0.8
-    y: 0.8
-    z: 0.8
-    w: 1.0
-  }
-}
-fragment_constants {
-  name: "sun_direction"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 1.0
-    y: -1.0
-    z: -1.0
-    w: 1.0
   }
 }
 samplers {

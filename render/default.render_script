@@ -345,7 +345,9 @@ function update(self)
     render_options.constants = self.constants
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_BACK)
+    render.enable_material("model_material")
     render.draw(predicates.model, render_options)
+    render.disable_material()
     render.disable_state(graphics.STATE_CULL_FACE)
     render.draw(predicates.sprite, render_options)
     render.enable_state(graphics.STATE_CULL_FACE)
@@ -489,8 +491,6 @@ function render_shadows(self)
     render.set_render_target(self.shadow_map, { transient = {graphics.BUFFER_TYPE_DEPTH_BIT} })
     render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(1,1,1,1), [graphics.BUFFER_TYPE_DEPTH_BIT] = 1})
     render.enable_material("shadow_material")
-    --  All objects in render list tagged as "shadow" will change their material to "shadow.material"
-    --  to cast shadows into shadow map texture. This texture will be enabled to all objects at the next render pass.
-    render.draw(self.predicates.shadow, { frustum = self.shadow_proj * self.shadow_view })
+    render.draw(self.predicates.model, { frustum = self.shadow_proj * self.shadow_view })
     render.disable_material()
 end

@@ -1,28 +1,20 @@
 name: "shadow"
-tags: "shadow"
+tags: "model"
 vertex_program: "/materials/geometry/shadow.vp"
 fragment_program: "/materials/geometry/shadow.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
-  value {
-  }
 }
 vertex_constants {
   name: "mtx_worldview"
   type: CONSTANT_TYPE_WORLDVIEW
-  value {
-  }
 }
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
-  value {
-  }
 }
 vertex_constants {
   name: "mtx_normal"
   type: CONSTANT_TYPE_NORMAL
-  value {
-  }
 }

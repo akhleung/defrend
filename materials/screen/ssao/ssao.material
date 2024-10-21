@@ -5,20 +5,6 @@ fragment_program: "/materials/screen/ssao/ssao-spiral.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
-  value {
-  }
-}
-fragment_constants {
-  name: "mtx_proj"
-  type: CONSTANT_TYPE_PROJECTION
-  value {
-  }
-}
-fragment_constants {
-  name: "resolution"
-  type: CONSTANT_TYPE_USER
-  value {
-  }
 }
 samplers {
   name: "normal_sampler"
@@ -30,14 +16,6 @@ samplers {
 }
 samplers {
   name: "position_sampler"
-  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
-  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
-  filter_min: FILTER_MODE_MIN_NEAREST
-  filter_mag: FILTER_MODE_MAG_NEAREST
-  max_anisotropy: 0.0
-}
-samplers {
-  name: "color_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
   wrap_v: WRAP_MODE_CLAMP_TO_EDGE
   filter_min: FILTER_MODE_MIN_NEAREST
