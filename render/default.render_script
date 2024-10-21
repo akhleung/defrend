@@ -27,7 +27,7 @@ end
 local i = vmath.matrix4()
 local identity = vmath.matrix4()
 function init(self)
-    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "ice", "sprite", "transparent", "debug_text", "screen", "shadow")
+    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "ice", "sprite", "transparent", "debug_text", "screen")
 
     self.clear_buffers = {
         [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(
@@ -105,7 +105,7 @@ function init(self)
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
     }
     local position_params = {
-        format = graphics.TEXTURE_FORMAT_RGBA32F,
+        format = graphics.TEXTURE_FORMAT_RGBA,
         width  = render.get_window_width(),
         height = render.get_window_height(),
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
@@ -123,7 +123,7 @@ function init(self)
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
     }
     local shadow_params = {
-        format = graphics.TEXTURE_FORMAT_R32F,
+        format = graphics.TEXTURE_FORMAT_R16F,
         width = BUFFER_RESOLUTION,
         height = BUFFER_RESOLUTION,
         flags = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
@@ -311,6 +311,7 @@ local screen_proj = vmath.matrix4_orthographic(-.5, .5, -.5, .5, -1, 1)
 local render_options = {}
 local ssao_options = {}
 local lighting_options = {}
+local transient_option = { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } }
 function update(self)
     if not self.valid then return end
 
@@ -370,7 +371,7 @@ function update(self)
     render.disable_state(graphics.STATE_STENCIL_TEST)
     render.disable_state(graphics.STATE_BLEND)
 
-    render.set_render_target(self.ssao_target, { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } })
+    render.set_render_target(self.ssao_target, transient_option)
     render.clear(self.clear_buffers)
     render.set_view(i)
     render.set_projection(screen_proj)
@@ -475,6 +476,8 @@ update_constants = function(constants)
     constants.resolution = resolution
 end
 
+local shadow_options = {}
+local shadow_clear = {[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(1,1,1,1), [graphics.BUFFER_TYPE_DEPTH_BIT] = 1}
 function render_shadows(self)
 
     render.set_projection(self.shadow_proj)
@@ -488,9 +491,10 @@ function render_shadows(self)
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_BACK)
 
-    render.set_render_target(self.shadow_map, { transient = {graphics.BUFFER_TYPE_DEPTH_BIT} })
-    render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(1,1,1,1), [graphics.BUFFER_TYPE_DEPTH_BIT] = 1})
+    render.set_render_target(self.shadow_map, transient_option)
+    render.clear(shadow_clear)
     render.enable_material("shadow_material")
-    render.draw(self.predicates.model, { frustum = self.shadow_proj * self.shadow_view })
+    shadow_options.frustum = self.shadow_proj * self.shadow_view
+    render.draw(self.predicates.model, shadow_options)
     render.disable_material()
 end

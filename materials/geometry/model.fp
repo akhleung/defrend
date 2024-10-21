@@ -52,7 +52,7 @@ void main() {
     vec4 mat_spec = texture(specular_map, var_texcoord0);
 
     mat3 tbn = get_tbn_mtx();
-    vec3 normal = get_perturb_normal(var_texcoord0, tbn);
+    vec3 normal = get_perturb_normal(var_texcoord0, tbn) * 0.5 + 0.5;
 
     diffuse_out = mat_diff;
     position_out = vec4(var_frag_pos, shininess.w);

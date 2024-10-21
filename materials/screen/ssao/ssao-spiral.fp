@@ -62,7 +62,7 @@ float spiralAO(vec3 p, vec3 n) {
 void main() {
 
 	vec3 position = texture(position_sampler, var_texcoord0).xyz;
-  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz;
+  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
 
 	float ao = spiralAO(position, normal);
 

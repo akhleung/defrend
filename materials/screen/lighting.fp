@@ -143,7 +143,7 @@ void main() {
     }
 
     color.a = mat_diff.a;
-    // color = texture(ssao_sampler, var_texcoord0);
+    color = texture(ssao_sampler, var_texcoord0);
     // color = vec4(blur, blur, blur, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
