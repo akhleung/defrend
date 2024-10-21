@@ -108,7 +108,7 @@ void main() {
 
     vec3 var_frag_pos = position_sample.xyz;
     vec3 view_dir = normalize(-var_frag_pos);
-    vec3 normal = normal_sample.xyz;
+    vec3 normal = normal_sample.xyz * 2.0 - 1.0;
 
     float shininess = position_sample.w;
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
@@ -143,7 +143,7 @@ void main() {
     }
 
     color.a = mat_diff.a;
-    color = texture(ssao_sampler, var_texcoord0);
+    // color = texture(ssao_sampler, var_texcoord0);
     // color = vec4(blur, blur, blur, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
