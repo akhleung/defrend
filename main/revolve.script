@@ -1,10 +1,10 @@
 local cam_url
 
-function init(self)
-	go.animate("/camera", "euler.y", go.PLAYBACK_LOOP_FORWARD, -360, go.EASING_LINEAR, 45)
-	cam_url = msg.url(nil, "/offset", "camera")
-end
+-- function init(self)
+-- 	go.animate("/camera", "euler.y", go.PLAYBACK_LOOP_FORWARD, -360, go.EASING_LINEAR, 45)
+-- 	cam_url = msg.url(nil, "/offset", "camera")
+-- end
 
-function update(self, dt)
-	local cam_pos = go.get_world_position(cam_url)
-end
+-- function update(self, dt)
+-- 	local cam_pos = go.get_world_position(cam_url)
+-- end

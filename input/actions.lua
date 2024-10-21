@@ -5,6 +5,8 @@ return {
     STRAFE_RIGHT = hash("strafe_right"),
     TURN_LEFT = hash("turn_left"),
     TURN_RIGHT = hash("turn_right"),
+    UP = hash("up"),
+    DOWN = hash("down"),
     SHOW_PROFILER = hash("show_profiler"),
     FREELOOK = hash("freelook"),
     FULLSCREEN = hash("fullscreen"),

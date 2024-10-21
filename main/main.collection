@@ -48,12 +48,31 @@ embedded_instances {
 }
 embedded_instances {
   id: "camera"
-  children: "offset"
+  children: "forward"
+  children: "right"
   data: "components {\n"
   "  id: \"revolve\"\n"
   "  component: \"/main/revolve.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"freelook\"\n"
+  "  component: \"/main/freelook.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"camera\"\n"
+  "  type: \"camera\"\n"
+  "  data: \"aspect_ratio: 1.78\\n"
+  "fov: 0.7854\\n"
+  "near_z: 1.0\\n"
+  "far_z: 120.0\\n"
+  "auto_aspect_ratio: 1\\n"
+  "\"\n"
+  "}\n"
   ""
+  position {
+    y: 11.0
+    z: 40.0
+  }
 }
 embedded_instances {
   id: "logo"
@@ -581,35 +600,6 @@ embedded_instances {
   "\"\n"
   "}\n"
   ""
-}
-embedded_instances {
-  id: "offset"
-  data: "components {\n"
-  "  id: \"freelook\"\n"
-  "  component: \"/main/freelook.script\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"camera\"\n"
-  "  type: \"camera\"\n"
-  "  data: \"aspect_ratio: 1.78\\n"
-  "fov: 0.7854\\n"
-  "near_z: 25.0\\n"
-  "far_z: 120.0\\n"
-  "auto_aspect_ratio: 1\\n"
-  "\"\n"
-  "}\n"
-  ""
-  position {
-    x: 46.0
-    y: 33.0
-    z: -48.0
-  }
-  rotation {
-    x: -0.09256687
-    y: 0.902035
-    z: 0.24169955
-    w: 0.34546426
-  }
 }
 embedded_instances {
   id: "the_floor"
@@ -2324,5 +2314,19 @@ embedded_instances {
     x: 8.0
     y: 8.0
     z: 8.0
+  }
+}
+embedded_instances {
+  id: "forward"
+  data: ""
+  position {
+    z: -1.0
+  }
+}
+embedded_instances {
+  id: "right"
+  data: ""
+  position {
+    x: 1.0
   }
 }
