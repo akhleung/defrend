@@ -38,45 +38,45 @@ function update(self, dt)
 	-- })
 end
 
-draw_frame = function()
-	local WIDTH = render_state.WIDTH
-	local HEIGHT = render_state.HEIGHT
-	if not WIDTH or not HEIGHT then return end
-	if WIDTH == 0 or HEIGHT == 0 then return end
-	msg.post(
-		"@render:",
-		"draw_line",
-		{
-			start_point = vmath.vector3(10, 10, 1),
-			end_point = vmath.vector3(WIDTH - 10, 10, 1),
-			color = text_col
-		}
-	)
-	msg.post(
-		"@render:",
-		"draw_line",
-		{
-			start_point = vmath.vector3(WIDTH - 10, 10, 1),
-			end_point = vmath.vector3(WIDTH - 10, HEIGHT - 10, 1),
-			color = text_col
-		}
-	)
-	msg.post(
-		"@render:",
-		"draw_line",
-		{
-			start_point = vmath.vector3(WIDTH - 10, HEIGHT - 10, 1),
-			end_point = vmath.vector3(10, HEIGHT - 10, 1),
-			color = text_col
-		}
-	)
-	msg.post(
-		"@render:",
-		"draw_line",
-		{
-			start_point = vmath.vector3(10, HEIGHT - 10, 1),
-			end_point = vmath.vector3(10, 10, 1),
-			color = text_col
-		}
-	)
-end
+-- draw_frame = function()
+-- 	local WIDTH = render_state.WIDTH
+-- 	local HEIGHT = render_state.HEIGHT
+-- 	if not WIDTH or not HEIGHT then return end
+-- 	if WIDTH == 0 or HEIGHT == 0 then return end
+-- 	msg.post(
+-- 		"@render:",
+-- 		"draw_line",
+-- 		{
+-- 			start_point = vmath.vector3(10, 10, 1),
+-- 			end_point = vmath.vector3(WIDTH - 10, 10, 1),
+-- 			color = text_col
+-- 		}
+-- 	)
+-- 	msg.post(
+-- 		"@render:",
+-- 		"draw_line",
+-- 		{
+-- 			start_point = vmath.vector3(WIDTH - 10, 10, 1),
+-- 			end_point = vmath.vector3(WIDTH - 10, HEIGHT - 10, 1),
+-- 			color = text_col
+-- 		}
+-- 	)
+-- 	msg.post(
+-- 		"@render:",
+-- 		"draw_line",
+-- 		{
+-- 			start_point = vmath.vector3(WIDTH - 10, HEIGHT - 10, 1),
+-- 			end_point = vmath.vector3(10, HEIGHT - 10, 1),
+-- 			color = text_col
+-- 		}
+-- 	)
+-- 	msg.post(
+-- 		"@render:",
+-- 		"draw_line",
+-- 		{
+-- 			start_point = vmath.vector3(10, HEIGHT - 10, 1),
+-- 			end_point = vmath.vector3(10, 10, 1),
+-- 			color = text_col
+-- 		}
+-- 	)
+-- end

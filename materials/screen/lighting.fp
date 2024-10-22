@@ -114,9 +114,9 @@ void main() {
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 
-	frag_color = texture(ssao_sampler, var_texcoord0);
+	// frag_color = texture(ssao_sampler, var_texcoord0);
 
-    float ao = texture(ssao_sampler, var_texcoord0).x;
+    float ao = texture(ssao_sampler, var_texcoord0).r;
     // float blur = texture(ssao_sampler, var_texcoord0).y;
     // ao = blur * ao;
 

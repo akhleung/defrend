@@ -24,7 +24,7 @@ function on_input(self, action_id, action)
 		local y_rot = go.get(".", euler_y) - action.dx / SENSITIVITY
 		local x_rot = go.get(".", euler_x) + action.dy / SENSITIVITY
 		go.set(".", euler_y, y_rot)
-		go.set(".", euler_x, vmath.clamp(x_rot, -90, 90)) -- prevent the camera from pitching beyond
+		go.set(".", euler_x, vmath.clamp(x_rot, -90, 90)) ---@diagnostic disable-line: undefined-field -- prevent the camera from pitching beyond vertical
 		return
 	end
 

@@ -5,7 +5,7 @@ in vec2 var_texcoord0;
 uniform sampler2D normal_sampler;
 uniform sampler2D position_sampler;
 
-out vec4 frag_color;
+out float frag_color;
 
 #define SAMPLES 16
 #define INTENSITY 1.375
@@ -66,5 +66,5 @@ void main() {
 
 	float ao = spiralAO(position, normal);
 
-	frag_color = vec4(ao, ao, ao, 1.0);
+	frag_color = ao;
 }

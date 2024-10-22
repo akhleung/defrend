@@ -27,7 +27,7 @@ end
 local i = vmath.matrix4()
 local identity = vmath.matrix4()
 function init(self)
-    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "ice", "sprite", "transparent", "debug_text", "screen")
+    self.predicates = create_predicates("tile", "gui", "text", "particle", "model", "sprite", "transparent", "debug_text", "screen")
 
     self.clear_buffers = {
         [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(
@@ -57,7 +57,6 @@ function init(self)
         proj = identity,
         moved = true,
     }
-
     local screen_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
     self.camera_gui = {
         view = identity,
@@ -118,6 +117,12 @@ function init(self)
     }
     local depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
+        width  = render.get_window_width(),
+        height = render.get_window_height(),
+        flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
+    }
+    local ssao_params = {
+        format = graphics.TEXTURE_FORMAT_R16F,
         width  = render.get_window_width(),
         height = render.get_window_height(),
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
