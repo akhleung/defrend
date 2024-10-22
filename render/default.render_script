@@ -105,13 +105,13 @@ function init(self)
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
     }
     local position_params = {
-        format = graphics.TEXTURE_FORMAT_RGBA,
+        format = graphics.TEXTURE_FORMAT_RGBA16F,
         width  = render.get_window_width(),
         height = render.get_window_height(),
         flags  = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
     }
     local normal_params = {
-        format = graphics.TEXTURE_FORMAT_RGBA16F,
+        format = graphics.TEXTURE_FORMAT_RGBA,
         width = render.get_window_width(),
         height = render.get_window_height(),
         flags = render.TEXTURE_BIT ---@diagnostic disable-line: undefined-field
@@ -145,9 +145,9 @@ function init(self)
     self.g_buffer = render.render_target(
         "g_buffer",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- color
-            [graphics.BUFFER_TYPE_COLOR1_BIT] = normal_params, -- normals
-            [graphics.BUFFER_TYPE_COLOR2_BIT] = position_params, -- positions
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- diffuse color
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = position_params, -- positions
+            [graphics.BUFFER_TYPE_COLOR2_BIT] = normal_params, -- normals
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
