@@ -51,7 +51,7 @@ local function inside(tight, loose)
     if tight.max_z > loose.max_z then return false end
     return true
 end
-local obj_corners = {
+local model_corners = {
     vmath.vector4(-1, -1, -1, 1),
     vmath.vector4(-1, -1, 1, 1),
     vmath.vector4(-1, 1, -1, 1),
@@ -61,7 +61,7 @@ local obj_corners = {
     vmath.vector4(1, 1, -1, 1),
     vmath.vector4(1, 1, 1, 1),
 }
-local wld_corners = {
+local world_corners = {
     vmath.vector4(), -- placeholders for type checking and preallocation
     vmath.vector4(),
     vmath.vector4(),
@@ -95,25 +95,25 @@ function M.refresh_shadows(self, near, far)
     -- get the camera frustum in world space
     local mtx_inv = vmath.inv(self.camera.viewproj)
     for i = 1, 8 do
-        local obj_corner = obj_corners[i]
-        if obj_corner.z < 0 then
-            obj_corner.z = near_clip_z
+        local model_corner = model_corners[i]
+        if model_corner.z < 0 then
+            model_corner.z = near_clip_z
         else
-            obj_corner.z = far_clip_z
+            model_corner.z = far_clip_z
         end
-        local corner = mtx_inv * obj_corners[i]
+        local corner = mtx_inv * model_corner
         corner = corner / corner.w
         corner.w = 1
-        wld_corners[i] = corner
+        world_corners[i] = corner
     end
 
     -- get the center of the camera frustum
     center.x, center.y, center.z = 0, 0, 0
     for i = 1, 8 do
-        local corner = wld_corners[i]
-        center.x = center.x + corner.x
-        center.y = center.y + corner.y
-        center.z = center.z + corner.z
+        local world_corner = world_corners[i]
+        center.x = center.x + world_corner.x
+        center.y = center.y + world_corner.y
+        center.z = center.z + world_corner.z
     end
     center = center / 8
     -- calculate the light's view matrix
@@ -129,13 +129,13 @@ function M.refresh_shadows(self, near, far)
     local min_z = MAX_NUM
     local max_z = MIN_NUM
     for i = 1, 8 do
-        local lvc = mtx_light_view * wld_corners[i]
-        min_x = math.min(min_x, lvc.x)
-        max_x = math.max(max_x, lvc.x)
-        min_y = math.min(min_y, lvc.y)
-        max_y = math.max(max_y, lvc.y)
-        min_z = math.min(min_z, lvc.z)
-        max_z = math.max(max_z, lvc.z)
+        local light_corner = mtx_light_view * world_corners[i]
+        min_x = math.min(min_x, light_corner.x)
+        max_x = math.max(max_x, light_corner.x)
+        min_y = math.min(min_y, light_corner.y)
+        max_y = math.max(max_y, light_corner.y)
+        min_z = math.min(min_z, light_corner.z)
+        max_z = math.max(max_z, light_corner.z)
     end
     local tight_bb = self.light.tight_bb
     local loose_bb = self.light.loose_bb -- an expanded bounding box calculated during a previous update

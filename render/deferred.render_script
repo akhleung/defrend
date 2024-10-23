@@ -1,6 +1,7 @@
 local defrend = require "render.defrend"
 local lighting_state = require "lighting.lighting_state"
 local update_constants
+local render_shadows
 --
 -- message constants
 --
@@ -39,7 +40,6 @@ local lighting_options = {}
 local transient_option = { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } }
 function update(self)
     if not self.valid then return end
-
 
     local near = camera.get_near_z("main:/camera#camera") ---@diagnostic disable-line: param-type-mismatch
     local far = camera.get_far_z("main:/camera#camera") ---@diagnostic disable-line: param-type-mismatch
@@ -216,7 +216,7 @@ update_constants = function(self)
 end
 
 local shadow_options = {}
-function render_shadows(self)
+render_shadows = function(self)
 
     render.set_projection(self.light.proj)
     render.set_view(self.light.view)
