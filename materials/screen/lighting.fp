@@ -14,9 +14,8 @@ uniform sampler2D shadow_sampler;
 uniform lighting_fp {
     mat4 mtx_view;
     mat4 mtx_view_inv;
-    mat4 mtx_shadow;
-    mat4 mtx_shadow_view;
-    mat4 mtx_shadow_proj;
+    mat4 mtx_light_view;
+    mat4 mtx_light_proj;
     
     vec4 ambient_color;
 
@@ -81,9 +80,9 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
     // 2. multiply fragment view position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
     // 3. multiply by view matrix of light to get view space position of fragment relative to light
-    vec4 view_pos_re_light = mtx_shadow_view * world_pos;
+    vec4 view_pos_re_light = mtx_light_view * world_pos;
     // 4. multiply by proj matrix of light to get clip/screen position of fragment relative to light
-    vec4 proj_pos_re_light = mtx_shadow_proj * view_pos_re_light;
+    vec4 proj_pos_re_light = mtx_light_proj * view_pos_re_light;
     proj_pos_re_light /= proj_pos_re_light.w;
     vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5;
     // 5. re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
@@ -143,8 +142,7 @@ void main() {
     }
 
     color.a = mat_diff.a;
-    // color = texture(ssao_sampler, var_texcoord0);
-    // color = vec4(blur, blur, blur, 1.0);
+    // color = vec4(ao, ao, ao, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     frag_color = clamp(color, 0.0, 1.0);
