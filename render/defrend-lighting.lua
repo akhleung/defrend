@@ -29,16 +29,16 @@ function M.setup_lights(self)
         }
 end
 
-local function adjust_min_max(min, max, adjust) -- eh, maybe just add a hardcoded value
+local function pad(min, max, padding) -- eh, maybe just add a hardcoded value
     if min < 0 then
-        min = min * adjust
+        min = min * padding
     else
-        min = min / adjust
+        min = min / padding
     end
     if max < 0 then
-        max = max / adjust
+        max = max / padding
     else
-        max = max * adjust
+        max = max * padding
     end
     return min, max
 end
@@ -72,16 +72,35 @@ local wld_corners = {
     vmath.vector4(),
 }
 local center = vmath.vector3()
-local adjust = 1.2 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
+local padding = 1.2 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
 local sun_dir = vmath.vector3()
+local near_endpoint = vmath.vector4(0, 0, 0, 1)
+local far_endpoint = vmath.vector4(0, 0, 0, 1)
 function M.refresh_shadows(self, near, far)
     -- skip the light frustum recalculations if the light and camera haven't moved
     if not (self.camera.moved or self.light.moved) then
         return
     end
+
+    near_endpoint.z = -near
+    far_endpoint.z = -far
+    local near_clip = self.camera.proj * near_endpoint
+    local far_clip = self.camera.proj * far_endpoint
+    near_clip = near_clip / near_clip.w
+    far_clip = far_clip / far_clip.w
+    local near_clip_z = near_clip.z
+    local far_clip_z = far_clip.z
+    -- print("NEAR, FAR:", near_clip_z, far_clip_z)
+
     -- get the camera frustum in world space
     local mtx_inv = vmath.inv(self.camera.viewproj)
     for i = 1, 8 do
+        local obj_corner = obj_corners[i]
+        if obj_corner.z < 0 then
+            obj_corner.z = near_clip_z
+        else
+            obj_corner.z = far_clip_z
+        end
         local corner = mtx_inv * obj_corners[i]
         corner = corner / corner.w
         corner.w = 1
@@ -102,7 +121,7 @@ function M.refresh_shadows(self, near, far)
     sun_dir.y = self.light.sun_direction.y
     sun_dir.z = self.light.sun_direction.z
     local mtx_light_view = vmath.matrix4_look_at(center - sun_dir, center, UP)
-    -- calculate a precise bounding box around the camera frustum in light view space
+    -- calculate a precise bounding box around the camera frustum in the light's view space
     local min_x = MAX_NUM
     local max_x = MIN_NUM
     local min_y = MAX_NUM
@@ -119,7 +138,7 @@ function M.refresh_shadows(self, near, far)
         max_z = math.max(max_z, lvc.z)
     end
     local tight_bb = self.light.tight_bb
-    local loose_bb = self.light.loose_bb
+    local loose_bb = self.light.loose_bb -- an expanded bounding box calculated during a previous update
     tight_bb.min_x = min_x
     tight_bb.max_x = max_x
     tight_bb.min_y = min_y
@@ -131,9 +150,10 @@ function M.refresh_shadows(self, near, far)
         return
     end
     -- otherwise loosen the bounding box to avoid clipping visible shadows from occluders outside the frustum
-    min_x, max_x = adjust_min_max(min_x, max_x, adjust)
-    min_y, max_y = adjust_min_max(min_y, max_y, adjust)
-    min_z, max_z = adjust_min_max(min_z, max_z, adjust)
+    min_x, max_x = pad(min_x, max_x, padding)
+    min_y, max_y = pad(min_y, max_y, padding)
+    min_z, max_z = pad(min_z, max_z, padding)
+    -- save the expanded box for subsequent checks
     loose_bb.min_x = min_x
     loose_bb.max_x = max_x
     loose_bb.min_y = min_y

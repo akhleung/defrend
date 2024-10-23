@@ -40,8 +40,9 @@ local transient_option = { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } }
 function update(self)
     if not self.valid then return end
 
-    local near = camera.get_near_z("main:/camera#camera")
-    local far = camera.get_far_z("main:/camera#camera")
+
+    local near = camera.get_near_z("main:/camera#camera") ---@diagnostic disable-line: param-type-mismatch
+    local far = camera.get_far_z("main:/camera#camera") ---@diagnostic disable-line: param-type-mismatch
 
     local mtx_light_view, mtx_light_proj = defrend.refresh_shadows(self, near, far)
     if mtx_light_view and mtx_light_proj then
