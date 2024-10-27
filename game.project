@@ -37,3 +37,9 @@ max_count = 256
 [sprite]
 subpixels = 0
 
+[render]
+clear_color_red = 0.0
+clear_color_green = 0.0
+clear_color_blue = 0.0
+clear_color_alpha = 0.0
+

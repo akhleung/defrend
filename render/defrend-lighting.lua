@@ -7,7 +7,7 @@ local identity = vmath.matrix4()
 function M.setup_lights(self)
         -- for directional lighting and shadow mapping
         self.light = {
-            view = identity,
+            view = identity, -- these will be recalculated for each camera frustum partition as needed
             proj = identity,
             viewproj = identity,
 
@@ -72,41 +72,22 @@ local world_corners = {
     vmath.vector4(),
 }
 local center = vmath.vector3()
-local padding = 1.2 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
+local padding = 3 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
 local sun_dir = vmath.vector3()
-local near_endpoint = vmath.vector4(0, 0, 0, 1)
-local far_endpoint = vmath.vector4(0, 0, 0, 1)
-function M.refresh_shadows(self, near, far)
+function M.refresh_shadows(self, cam_proj)
     -- skip the light frustum recalculations if the light and camera haven't moved
     if not (self.camera.moved or self.light.moved) then
         return
     end
-
-    near_endpoint.z = -near
-    far_endpoint.z = -far
-    local near_clip = self.camera.proj * near_endpoint
-    local far_clip = self.camera.proj * far_endpoint
-    near_clip = near_clip / near_clip.w
-    far_clip = far_clip / far_clip.w
-    local near_clip_z = near_clip.z
-    local far_clip_z = far_clip.z
-    -- print("NEAR, FAR:", near_clip_z, far_clip_z)
-
     -- get the camera frustum in world space
-    local mtx_inv = vmath.inv(self.camera.viewproj)
+    local mtx_inv = vmath.inv(cam_proj * self.camera.view)
     for i = 1, 8 do
         local model_corner = model_corners[i]
-        if model_corner.z < 0 then
-            model_corner.z = near_clip_z
-        else
-            model_corner.z = far_clip_z
-        end
-        local corner = mtx_inv * model_corner
-        corner = corner / corner.w
-        corner.w = 1
-        world_corners[i] = corner
+        local world_corner = mtx_inv * model_corner
+        world_corner = world_corner / world_corner.w
+        world_corner.w = 1
+        world_corners[i] = world_corner
     end
-
     -- get the center of the camera frustum
     center.x, center.y, center.z = 0, 0, 0
     for i = 1, 8 do
@@ -146,12 +127,12 @@ function M.refresh_shadows(self, near, far)
     tight_bb.min_z = min_z
     tight_bb.max_z = max_z
     -- if the precise bounding box of the view frustum is still inside the expanded box, then no need to update
-    if inside(tight_bb, loose_bb) then
-        return
-    end
+    -- if inside(tight_bb, loose_bb) then
+    --     return
+    -- end
     -- otherwise loosen the bounding box to avoid clipping visible shadows from occluders outside the frustum
-    min_x, max_x = pad(min_x, max_x, padding)
-    min_y, max_y = pad(min_y, max_y, padding)
+    -- min_x, max_x = pad(min_x, max_x, padding)
+    -- min_y, max_y = pad(min_y, max_y, padding)
     min_z, max_z = pad(min_z, max_z, padding)
     -- save the expanded box for subsequent checks
     loose_bb.min_x = min_x
