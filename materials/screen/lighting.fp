@@ -1,6 +1,7 @@
 #version 420 core
 
 #define MAX_LIGHTS 16
+#define MAX_PARTITIONS 9
 #define SHADOW_MAP_SIZE 2048.0
 
 in vec2 var_texcoord0;
@@ -26,6 +27,10 @@ uniform lighting_fp {
     vec4 light_positions[MAX_LIGHTS];
     vec4 light_radii[MAX_LIGHTS];
     vec4 light_colors[MAX_LIGHTS];
+    vec4 partitions[MAX_PARTITIONS];
+    mat4 mtx_light_views[MAX_PARTITIONS];
+    mat4 mtx_light_projs[MAX_PARTITIONS];
+    vec4 shadow_colors[MAX_PARTITIONS];
 };
 
 out vec4 frag_color;
@@ -67,7 +72,7 @@ vec2 rand(vec2 co) {
     ) * 0.00047;
 }
 
-float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
+float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 mtx_light_proj, float x_offset, float y_offset) {
     // if (view_pos_re_cam.z < -23) return 1;
     // 1. offset fragment view position by surface normal to reduce shadow acne
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * 0.25, 1);
@@ -79,11 +84,15 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal) {
     vec4 proj_pos_re_light = mtx_light_proj * view_pos_re_light;
     proj_pos_re_light /= proj_pos_re_light.w;
     vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5;
+    shadow_texcoord0 /= 2.0; // TODO: pass in shadow map dim
+    shadow_texcoord0.x = shadow_texcoord0.x + x_offset;
+    shadow_texcoord0.y = shadow_texcoord0.y + y_offset;
 
     // since we can't set a border color in Defold for clamp-to-border when sampling from the shadow map, short circuit
     // with no shadow if the rendering exceeds the shadow map boundaries
     // (this shouldn't be necessary anymore since we're dynamically fitting the shadow frustum to the camera frustum)
-    if (shadow_texcoord0.x < 0 || shadow_texcoord0.x > 1 || shadow_texcoord0.y < 0 || shadow_texcoord0.y > 1) {
+    if (shadow_texcoord0.x < 0 + x_offset || shadow_texcoord0.x > 0.5 + x_offset || 
+    shadow_texcoord0.y < 0 + y_offset || shadow_texcoord0.y > 0.5 + y_offset) {
         return 1.0;
     } 
 
@@ -129,10 +138,28 @@ void main() {
     // float d = dot(normal, sun_dir);
     // float bias = (1.0 - d) * 0.006;
     // bias = 0;
-    float shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal);
-    float sun_spec = specular(view_dir, sun_dir, normal, shininess);// * shadow;
-    float sun_diff = diffuse(sun_dir, normal) * ao;// * shadow;
-    vec4 tint = shadow < 0.01 ? vec4(1, 0, 0, 1) : vec4(1);
+
+    vec4 tint = vec4(1.0);
+    int num_partitions = int(partitions[0].w);
+    float shadow = 1.0;
+    for (int i = 0; i < num_partitions; ++i) {
+        float cutoff = -partitions[i].z;
+        if (var_frag_pos.z > cutoff) {
+            // cast a shadow using the i'th shadow map
+            float x_offset = partitions[i].x / SHADOW_MAP_SIZE / 2.0;
+            float y_offset = partitions[i].y / SHADOW_MAP_SIZE / 2.0;
+            mat4 mtx_light_proj = mtx_light_projs[i];
+            mat4 mtx_light_view = mtx_light_views[i];
+            // TODO: cast the shadow
+            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset);
+            if (shadow < 0.1) tint = shadow_colors[i]; // TODO: check if this fragment is actually in shadow
+            break;
+        }
+    }
+    shadow = 1.0;
+
+    float sun_spec = specular(view_dir, sun_dir, normal, shininess) * shadow;
+    float sun_diff = diffuse(sun_dir, normal) * ao * shadow;
     color += (sun_diff * mat_diff * tint + sun_spec * mat_spec * tint) * sun_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
@@ -146,7 +173,7 @@ void main() {
 
     color.a = mat_diff.a;
     // color = vec4(ao, ao, ao, 1.0);
-    vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
-    color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
+    // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
+    // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     frag_color = clamp(color, 0.0, 1.0);
 }

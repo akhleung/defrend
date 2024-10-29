@@ -8,8 +8,6 @@ local render_shadows
 local MSG_WINDOW_RESIZED =      hash("window_resized")
 local MSG_SET_VIEW_PROJ =       hash("set_view_projection")
 
-local BUFFER_RESOLUTION = 2048 -- Size of shadow map. Select value from: 1024/2048/4096. More is better quality.
-
 local identity = vmath.matrix4()
 function init(self)
 
@@ -25,6 +23,8 @@ function init(self)
 
     self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
     self.constants = render.constant_buffer()
+    self.constants.mtx_light_views = {} ---@diagnostic disable-line: inject-field
+    self.constants.mtx_light_projs = {} ---@diagnostic disable-line: inject-field
 
     -- Use this for directional lights
     self.bias_matrix    = vmath.matrix4()
@@ -180,6 +180,12 @@ end
 
 local num_lights = vmath.vector4()
 local resolution = vmath.vector4()
+local shadow_colors = {
+    vmath.vector4(1, 0, 0, 1),
+    vmath.vector4(0, 1, 0, 1),
+    vmath.vector4(0, 0, 1, 1),
+    vmath.vector4(0, 1, 1, 1),
+}
 update_constants = function(self)
     local constants = self.constants
 
@@ -203,23 +209,24 @@ update_constants = function(self)
     resolution.w = 1 / resolution.y
     constants.resolution = resolution
 
-    constants.mtx_light_proj = self.light.proj
     constants.mtx_light_view = self.light.view
+    constants.mtx_light_proj = self.light.proj
+    constants.shadow_colors = shadow_colors
 end
 
 local shadow_options = {}
 render_shadows = function(self)
-    local light_transforms = self.light_transforms
+    local constants = self.constants
     local projections = self.camera.projections
     for i = 1, #projections do
         local mtx_view, mtx_proj = defrend.refresh_shadows(self, projections[i])
         if mtx_view and mtx_proj then
-            local light_transform = light_transforms[i]
-            light_transform.mtx_proj = mtx_proj
-            light_transform.mtx_view = mtx_view
+            constants.mtx_light_views[i] = mtx_view
+            constants.mtx_light_projs[i] = mtx_proj
         end
     end
     local partitions = self.camera.partitions
+    constants.partitions = partitions
     render.set_render_target(self.shadow_map, transient_option)
     render.set_depth_mask(true)
     render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
@@ -230,14 +237,13 @@ render_shadows = function(self)
     render.clear(self.clear_shadow_buffers)
     render.enable_material("shadow_material")
     for i = 1, #partitions do
-        local light_transform = self.light_transforms[i]
-        render.set_projection(light_transform.mtx_proj)
-        render.set_view(light_transform.mtx_view)
+        render.set_projection(constants.mtx_light_projs[i])
+        render.set_view(constants.mtx_light_views[i])
         local partition = partitions[i]
         local x_offset = partition.x
         local y_offset = partition.y
         render.set_viewport(x_offset, y_offset, self.SHADOW_MAP_RESOLUTION, self.SHADOW_MAP_RESOLUTION)
-        shadow_options.frustum = light_transform.mtx_proj * light_transform.mtx_view
+        shadow_options.frustum = constants.mtx_light_projs[i] * constants.mtx_light_views[i]
         render.draw(self.predicates.model, shadow_options)
     end
     render.disable_material()

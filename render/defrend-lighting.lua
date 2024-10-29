@@ -72,7 +72,7 @@ local world_corners = {
     vmath.vector4(),
 }
 local center = vmath.vector3()
-local padding = 3 -- tweak as needed; higher values should prevent clipped/missing shadows from offscreen occluders
+local padding = 5 -- tweak as needed; higher values should prevent clipped/missing shadows from occluders too close to the light
 local sun_dir = vmath.vector3()
 function M.refresh_shadows(self, cam_proj)
     -- skip the light frustum recalculations if the light and camera haven't moved

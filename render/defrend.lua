@@ -19,26 +19,24 @@ function M.setup_cameras(self)
     }
 
     -- setup camera frustum partitions and shadow map viewports for cascaded shadow mapping
-    -- local ranges = { 0.05, 0.10, 0.30, 0.55 }
+    -- local range_sizes = { 0.25, 0.75 }
+    -- local range_sizes = { 0.05, 0.10, 0.30, 0.55 }
     local range_sizes = { 0.1, 0.2, 0.3, 0.4 }
     local shadow_map_dim = math.ceil(math.sqrt(#range_sizes)) -- 2 in this case, for a 2x2 shadow map
     local near, far = self.camera.near, self.camera.far
     local total_range = far - near
     local partitions = {}
     local projections = {}
-    local transforms = {}
     for i = 1, #range_sizes do
         far = near + total_range * range_sizes[i]
         local y_offset = math.floor((i - 1) / shadow_map_dim) * SHADOW_MAP_RESOLUTION
         local x_offset = ((i - 1) % shadow_map_dim) * SHADOW_MAP_RESOLUTION
-        partitions[i] = vmath.vector4(x_offset, y_offset, near, 0)
+        partitions[i] = vmath.vector4(x_offset, y_offset, far, #range_sizes)
         projections[i] = vmath.matrix4_perspective(self.camera.fov, self.camera.aspect, near, far)
-        transforms[i] = {}
         near = far
     end
     self.camera.partitions = partitions -- to be passed to the lighting shader
     self.camera.projections = projections -- to be used for calculating the light projections for shadow rendering
-    self.light_transforms = transforms -- to be used for storing the light views and projections for shadow rendering
 
     local gui_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
     self.camera_gui = {

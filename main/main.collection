@@ -63,15 +63,16 @@ embedded_instances {
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
   "fov: 0.7854\\n"
-  "near_z: 1.0\\n"
+  "near_z: 0.01\\n"
   "far_z: 120.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
   ""
   position {
-    y: 22.0
-    z: 3.0
+    x: 3.0
+    y: 1.0
+    z: 5.0
   }
 }
 embedded_instances {
