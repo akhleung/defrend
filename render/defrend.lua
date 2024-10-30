@@ -22,6 +22,7 @@ function M.setup_cameras(self)
     -- local range_sizes = { 0.25, 0.75 }
     -- local range_sizes = { 0.05, 0.10, 0.30, 0.55 }
     local range_sizes = { 0.1, 0.2, 0.3, 0.4 }
+    -- local range_sizes = { 1.0 }
     local shadow_map_dim = math.ceil(math.sqrt(#range_sizes)) -- 2 in this case, for a 2x2 shadow map
     local near, far = self.camera.near, self.camera.far
     local total_range = far - near
@@ -51,8 +52,16 @@ function M.setup_cameras(self)
         viewproj = screen_proj * identity,
     }
 
-    self.SHADOW_MAP_RESOLUTION = SHADOW_MAP_RESOLUTION
-    self.SHADOW_BUFFER_RESOLUTION = SHADOW_MAP_RESOLUTION * shadow_map_dim
+    self.SHADOW_MAP_RESOLUTION = SHADOW_MAP_RESOLUTION -- res of each partition
+    self.SHADOW_BUFFER_RESOLUTION = SHADOW_MAP_RESOLUTION * shadow_map_dim -- res of the whole buffer
+    self.SHADOW_MAP_DIMENSION = shadow_map_dim -- partitions per side (e.g., 2 for a 2x2 cascade)
+    self.SHADOW_TEXEL_SIZE = 1 / SHADOW_MAP_RESOLUTION
+    self.SHADOW_MAP_PARAMS = vmath.vector4(
+        self.SHADOW_MAP_RESOLUTION,
+        self.SHADOW_BUFFER_RESOLUTION,
+        self.SHADOW_MAP_DIMENSION,
+        self.SHADOW_TEXEL_SIZE
+    )
 end
 
 function M.setup_clear_buffers(self)
@@ -96,7 +105,7 @@ function M.setup_render_targets(self)
         height = render.get_window_height(),
     }
     local shadow_map_params = {
-        format = graphics.TEXTURE_FORMAT_R16F,
+        format = graphics.TEXTURE_FORMAT_R32F,
         width = self.SHADOW_BUFFER_RESOLUTION,
         height = self.SHADOW_BUFFER_RESOLUTION,
     }

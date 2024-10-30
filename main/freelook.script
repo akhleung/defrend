@@ -9,6 +9,7 @@ local SENSITIVITY = 3
 local euler_x = hash("euler.x")
 local euler_y = hash("euler.y")
 local euler_z = hash("euler.z")
+local mouse_locked = true
 function init(self)
 	self.direction = ZERO
 	go.set(".", euler_x, 0)
@@ -20,7 +21,7 @@ end
 
 function on_input(self, action_id, action)
 	-- handle mouse movement
-	if not action_id and action.dx and action.dy then
+	if not action_id and mouse_locked and action.dx and action.dy then
 		local y_rot = go.get(".", euler_y) - action.dx / SENSITIVITY
 		local x_rot = go.get(".", euler_x) + action.dy / SENSITIVITY
 		go.set(".", euler_y, y_rot)
@@ -49,23 +50,31 @@ function on_input(self, action_id, action)
 		return
 	end
 
+	if command == actions.FREELOOK then
+		mouse_locked = not mouse_locked
+		window.set_mouse_lock(mouse_locked)
+		return
+	end
+
 	local here = go.get_world_position()
-	if command == actions.FORWARD then
-		local forward = go.get_world_position("forward")
-		self.direction = vmath.normalize(forward - here)
-	elseif command == actions.BACKWARD then
-		local forward = go.get_world_position("forward")
-		self.direction = -vmath.normalize(forward - here)
-	elseif command == actions.STRAFE_LEFT then
-		local right = go.get_world_position("right")
-		self.direction = -vmath.normalize(right - here)
-	elseif command == actions.STRAFE_RIGHT then
-		local right = go.get_world_position("right")
-		self.direction = vmath.normalize(right - here)
-	elseif command == actions.UP then
-		self.direction = UP
-	elseif command == actions.DOWN then
-		self.direction = DOWN
+	if mouse_locked then
+		if command == actions.FORWARD then
+			local forward = go.get_world_position("forward")
+			self.direction = vmath.normalize(forward - here)
+		elseif command == actions.BACKWARD then
+			local forward = go.get_world_position("forward")
+			self.direction = -vmath.normalize(forward - here)
+		elseif command == actions.STRAFE_LEFT then
+			local right = go.get_world_position("right")
+			self.direction = -vmath.normalize(right - here)
+		elseif command == actions.STRAFE_RIGHT then
+			local right = go.get_world_position("right")
+			self.direction = vmath.normalize(right - here)
+		elseif command == actions.UP then
+			self.direction = UP
+		elseif command == actions.DOWN then
+			self.direction = DOWN
+		end
 	end
 end
 

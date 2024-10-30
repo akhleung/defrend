@@ -184,7 +184,7 @@ local shadow_colors = {
     vmath.vector4(1, 0, 0, 1),
     vmath.vector4(0, 1, 0, 1),
     vmath.vector4(0, 0, 1, 1),
-    vmath.vector4(0, 1, 1, 1),
+    vmath.vector4(0, 0, 1, 1),
 }
 update_constants = function(self)
     local constants = self.constants
@@ -227,6 +227,7 @@ render_shadows = function(self)
     end
     local partitions = self.camera.partitions
     constants.partitions = partitions
+    constants.shadow_map_params = self.SHADOW_MAP_PARAMS
     render.set_render_target(self.shadow_map, transient_option)
     render.set_depth_mask(true)
     render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
