@@ -3,7 +3,7 @@ instances {
   id: "logo1"
   prototype: "/assets/logo/logo.go"
   position {
-    x: -6.0
+    x: 10.0
     y: 2.0
     z: 24.0
   }
@@ -62,17 +62,23 @@ embedded_instances {
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
-  "fov: 0.7854\\n"
-  "near_z: 0.01\\n"
-  "far_z: 120.0\\n"
+  "fov: 0.3927\\n"
+  "near_z: 120.0\\n"
+  "far_z: 240.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
   ""
   position {
-    x: 3.0
-    y: 1.0
-    z: 5.0
+    x: -170.0
+    y: 64.0
+    z: 3.0
+  }
+  rotation {
+    x: -0.13359673
+    y: -0.6943716
+    z: -0.13359673
+    w: 0.6943716
   }
 }
 embedded_instances {
@@ -424,7 +430,6 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -15.0
     z: 21.0
   }
 }
@@ -578,13 +583,13 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 18.0
-    z: -4.0
+    x: 3.0
+    z: -30.0
   }
   scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
+    x: 4.0
+    y: 4.0
+    z: 4.0
   }
 }
 embedded_instances {
@@ -2154,9 +2159,9 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -2.0
+    x: -39.0
     y: -1.0
-    z: -20.0
+    z: 23.0
   }
   scale3 {
     x: 3.0
@@ -2227,9 +2232,9 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -22.0
+    x: -16.0
     y: -1.5
-    z: -24.0
+    z: -31.0
   }
   scale3 {
     x: 5.0
@@ -2269,7 +2274,7 @@ embedded_instances {
   position {
     x: -19.0
     y: -1.0
-    z: -2.0
+    z: 4.0
   }
   scale3 {
     x: 8.0
@@ -2309,7 +2314,7 @@ embedded_instances {
   position {
     x: -19.0
     y: -1.0
-    z: -13.0
+    z: -8.0
   }
   scale3 {
     x: 8.0
@@ -2329,5 +2334,27 @@ embedded_instances {
   data: ""
   position {
     x: 1.0
+  }
+}
+embedded_instances {
+  id: "building03"
+  data: "components {\n"
+  "  id: \"building03\"\n"
+  "  component: \"/assets/citybuilder/building03.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -23.0
+    y: -2.35
+    z: 22.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }

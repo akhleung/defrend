@@ -112,6 +112,8 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
         }
     }
     shadow /= 9.0; // divide by number of samples
+    // float occluder_z = texture(shadow_sampler, shadow_texcoord0).r;
+    // shadow += occluder_z < occludee_z ? 0.0 : 1.0;
     return shadow;
 }
 
@@ -124,15 +126,10 @@ void main() {
     vec3 view_dir = normalize(-var_frag_pos);
     vec3 normal = normal_sample.xyz * 2.0 - 1.0;
 
+    float ao = texture(ssao_sampler, var_texcoord0).r;
     float shininess = position_sample.w;
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
-
-	// frag_color = texture(ssao_sampler, var_texcoord0);
-
-    float ao = texture(ssao_sampler, var_texcoord0).r;
-    // float blur = texture(ssao_sampler, var_texcoord0).y;
-    // ao = blur * ao;
 
     vec4 color = ambient_color * mat_diff * ao;
 
@@ -157,6 +154,16 @@ void main() {
             // TODO: cast the shadow
             shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, 0.25 + i * 0.05);
             // if (shadow < 0.1) tint = shadow_colors[i]; // TODO: check if this fragment is actually in shadow
+
+            // if (var_frag_pos.z < cutoff + 1.0 && i < num_partitions - 1) {
+            //     float x_offset = partitions[i + 1].x / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
+            //     float y_offset = partitions[i + 1].y / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
+            //     mat4 mtx_light_proj = mtx_light_projs[i + 1];
+            //     mat4 mtx_light_view = mtx_light_views[i + 1];
+            //     float shadow2 = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, 0.25 + i * 0.05);
+            //     shadow = mix(shadow, shadow2, 1.0 - abs(cutoff - var_frag_pos.z)/1.0);
+            // }
+
             break;
         }
     }

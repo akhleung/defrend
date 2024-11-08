@@ -13,7 +13,7 @@ function M.setup_lights(self)
 
             ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
             sun_color = vmath.vector4(.95, .95, .95, 1.0),
-            sun_direction = vmath.normalize(vmath.vector4(0.1, -1.5, 1, 1)),
+            sun_direction = vmath.normalize(vmath.vector4(1, -1.5, 1, 1)),
 
             loose_bb = {
                 min_x = 0, max_x = 0,

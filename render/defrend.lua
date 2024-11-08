@@ -13,15 +13,16 @@ function M.setup_cameras(self)
         moved = true,
 
         near = 1,
-        far = 120,
+        far = 240,
         aspect = render.get_window_width() / render.get_window_height(),
-        fov = 0.7854,
+        fov = 0.3,
     }
 
     -- setup camera frustum partitions and shadow map viewports for cascaded shadow mapping
     -- local range_sizes = { 0.25, 0.75 }
     -- local range_sizes = { 0.05, 0.10, 0.30, 0.55 }
-    local range_sizes = { 0.1, 0.2, 0.3, 0.4 }
+    -- local range_sizes = { 0.1, 0.2, 0.3, 0.4 }
+    local range_sizes = { 0.70, 0.10, 0.10, 0.10 }
     -- local range_sizes = { 1.0 }
     local shadow_map_dim = math.ceil(math.sqrt(#range_sizes)) -- 2 in this case, for a 2x2 shadow map
     local near, far = self.camera.near, self.camera.far

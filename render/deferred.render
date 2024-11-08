@@ -16,10 +16,18 @@ render_resources {
   path: "/materials/screen/ssao/ssao.material"
 }
 render_resources {
-  name: "blur_material"
-  path: "/materials/screen/blur/blur.material"
+  name: "kuwahara_blur_material"
+  path: "/materials/screen/blur/kuwahara.material"
 }
 render_resources {
   name: "fxaa_material"
   path: "/materials/screen/fxaa/fxaa.material"
+}
+render_resources {
+  name: "gamma_material"
+  path: "/materials/screen/gamma/gamma.material"
+}
+render_resources {
+  name: "box_blur_material"
+  path: "/materials/screen/blur/box.material"
 }
