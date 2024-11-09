@@ -13,7 +13,7 @@ function M.setup_lights(self)
 
             ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
             sun_color = vmath.vector4(.95, .95, .95, 1.0),
-            sun_direction = vmath.normalize(vmath.vector4(1, -1.5, 1, 1)),
+            sun_direction = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
 
             loose_bb = {
                 min_x = 0, max_x = 0,
@@ -119,14 +119,14 @@ function M.refresh_shadows(self, cam_proj)
         min_z = math.min(min_z, light_corner.z)
         max_z = math.max(max_z, light_corner.z)
     end
-    local tight_bb = self.light.tight_bb
-    local loose_bb = self.light.loose_bb -- an expanded bounding box calculated during a previous update
-    tight_bb.min_x = min_x
-    tight_bb.max_x = max_x
-    tight_bb.min_y = min_y
-    tight_bb.max_y = max_y
-    tight_bb.min_z = min_z
-    tight_bb.max_z = max_z
+    -- local tight_bb = self.light.tight_bb
+    -- local loose_bb = self.light.loose_bb -- an expanded bounding box calculated during a previous update
+    -- tight_bb.min_x = min_x
+    -- tight_bb.max_x = max_x
+    -- tight_bb.min_y = min_y
+    -- tight_bb.max_y = max_y
+    -- tight_bb.min_z = min_z
+    -- tight_bb.max_z = max_z
     -- if the precise bounding box of the view frustum is still inside the expanded box, then no need to update
     -- if inside(tight_bb, loose_bb) then
     --     return
@@ -137,12 +137,12 @@ function M.refresh_shadows(self, cam_proj)
     -- extend the near/far planes of the light frustum to prevent premature clipping of shadows
     min_z, max_z = pad(min_z, max_z, depth_padding)
     -- save the expanded box for subsequent checks
-    loose_bb.min_x = min_x
-    loose_bb.max_x = max_x
-    loose_bb.min_y = min_y
-    loose_bb.max_y = max_y
-    loose_bb.min_z = min_z
-    loose_bb.max_z = max_z
+    -- loose_bb.min_x = min_x
+    -- loose_bb.max_x = max_x
+    -- loose_bb.min_y = min_y
+    -- loose_bb.max_y = max_y
+    -- loose_bb.min_z = min_z
+    -- loose_bb.max_z = max_z
     -- use the aforementioned bounding box to create the light projection matrix
     local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
     return mtx_light_view, mtx_light_proj
