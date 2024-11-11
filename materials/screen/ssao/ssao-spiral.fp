@@ -8,13 +8,11 @@ uniform sampler2D position_sampler;
 out float frag_color;
 
 #define SAMPLES 16
-#define INTENSITY 1.875 /* was 2.5 */
-#define SCALE 2.5
-#define BIAS 0.3
-// #define SAMPLE_RAD 0.375
-// #define MAX_DISTANCE 0.75
-#define SAMPLE_RAD 1.75
-#define MAX_DISTANCE 1.75
+#define INTENSITY 1.0
+#define SCALE 1.0
+#define BIAS 0.1
+#define SAMPLE_RAD 2.0
+#define MAX_DISTANCE 2.0
 #define OBLIQUE 0.15
 
 const vec3 mod3 = vec3(.1031, .11369, .13787);
@@ -27,14 +25,12 @@ float hash12(vec2 p) {
     return fract((p3.x + p3.y) * p3.z);
 }
 
-float doAmbientOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
+float calculateOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
     vec3 diff = op - p;
     float l = length(diff);
     // float d = l * SCALE;
-    float f = max(0.0, dot(cnorm, normalize(diff))) * (1.0 + OBLIQUE);
-    f = smoothstep(0.15, (1.0 + OBLIQUE), f) - OBLIQUE; // discard oblique occluders to prevent self-occlusion artifacts on mostly-flat surfaces
-    float ao = max(0.0, f - BIAS) /* * (1.0 / (1.0 + d)) */; // re-enable this attenuation if the effect is too abrupt
-    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
+    float ao = max(0.0, dot(cnorm, normalize(diff)) - BIAS) /** (1.0 / (1.0 + d))*/; // re-enable this attenuation if the effect is too abrupt
+    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2.0, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
     return ao;
 }
 
@@ -52,7 +48,7 @@ float spiralAO(vec3 p, vec3 n) {
         spiralUV.y = cos(rotatePhase);
         radius += rStep;
 		vec3 offset_pos = texture(position_sampler, var_texcoord0 + spiralUV * radius).xyz;
-        ao += doAmbientOcclusion(offset_pos, p, n);
+        ao += calculateOcclusion(offset_pos, p, n);
         rotatePhase += goldenAngle;
     }
     ao *= inv;
