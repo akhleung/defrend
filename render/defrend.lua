@@ -100,11 +100,6 @@ function M.setup_render_targets(self)
         height = render.get_window_height(),
         -- flags  = render.TEXTURE_BIT
     }
-    local ssao_params = {
-        format = graphics.TEXTURE_FORMAT_R16F,
-        width  = render.get_window_width(),
-        height = render.get_window_height(),
-    }
     local shadow_map_params = {
         format = graphics.TEXTURE_FORMAT_R32F,
         width = self.SHADOW_BUFFER_RESOLUTION,

@@ -30,7 +30,7 @@ float calculateOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
     float l = length(diff);
     // float d = l * SCALE;
     float ao = max(0.0, dot(cnorm, normalize(diff)) - BIAS) /** (1.0 / (1.0 + d))*/; // re-enable this attenuation if the effect is too abrupt
-    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
+    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2.0, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
     return ao;
 }
 
