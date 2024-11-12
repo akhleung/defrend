@@ -133,14 +133,14 @@ function M.setup_render_targets(self)
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
-    self.ssao_target = render.render_target(
-        "ssao_target",
+    self.post_source = render.render_target(
+        "post_left",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = ssao_params, -- color
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- color
         }
     )
     self.post_target = render.render_target(
-        "post_target",
+        "post_right",
         {
             [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- color
         }

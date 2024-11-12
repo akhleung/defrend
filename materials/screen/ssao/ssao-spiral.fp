@@ -5,7 +5,7 @@ in vec2 var_texcoord0;
 uniform sampler2D normal_sampler;
 uniform sampler2D position_sampler;
 
-out float frag_color;
+out vec4 frag_color;
 
 #define SAMPLES 16
 #define INTENSITY 1.0
@@ -30,7 +30,7 @@ float calculateOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
     float l = length(diff);
     // float d = l * SCALE;
     float ao = max(0.0, dot(cnorm, normalize(diff)) - BIAS) /** (1.0 / (1.0 + d))*/; // re-enable this attenuation if the effect is too abrupt
-    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2.0, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
+    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
     return ao;
 }
 
@@ -62,5 +62,5 @@ void main() {
 
 	float ao = spiralAO(position, normal);
     ao *= ao;
-	frag_color = ao;
+	frag_color = vec4(ao, ao, ao, 1.0);
 }
