@@ -73,7 +73,7 @@ local world_corners = {
 }
 local center = vmath.vector3()
 local depth_padding = 6 -- higher values should prevent clipped/missing shadows from occluders in front of the light frustum
-local lateral_padding = 2 -- necessary for blending discontinuities when sampling at the edge of a map
+local lateral_padding = 1.5 -- necessary for blending discontinuities when sampling at the edge of a map
 local sun_dir = vmath.vector3()
 function M.refresh_shadows(self, cam_proj)
     -- skip the light frustum recalculations if the light and camera haven't moved
@@ -132,8 +132,8 @@ function M.refresh_shadows(self, cam_proj)
     --     return
     -- end
     -- otherwise loosen the bounding box to avoid clipping visible shadows from occluders outside the frustum
-    -- min_x, max_x = pad(min_x, max_x, min_lateral_padding, max_lateral_padding)
-    -- min_y, max_y = pad(min_y, max_y, min_lateral_padding, max_lateral_padding)
+    min_x, max_x = pad(min_x, max_x, lateral_padding)
+    min_y, max_y = pad(min_y, max_y, lateral_padding)
     -- extend the near/far planes of the light frustum to prevent premature clipping of shadows
     min_z, max_z = pad(min_z, max_z, depth_padding)
     -- save the expanded box for subsequent checks
