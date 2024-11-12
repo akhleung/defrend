@@ -51,17 +51,9 @@ float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
     float r_inner = light_radii.x;
     float r_outer = light_radii.y;
     float d = distance(frag_pos, light_pos);
-    // float falloff = clamp((r_outer - d) / (r_outer - r_inner), 0.0, 1.0);
     float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
     return falloff * falloff;
 }
-
-// Blinn-Phong optimized specular lighting (faster, but more approximate)
-// float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
-//     vec3 H = normalize(viewdir + lightdir);
-//     float HdotN = max(0.0, dot(H, norm));
-//     return pow(HdotN, shiny);
-// }
 
 // Classic Phong specular lighting (slower, but more accurate)
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
@@ -91,16 +83,12 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
     shadow_texcoord0 /= SHADOW_MAP_DIM;
     shadow_texcoord0.x += x_offset;
     shadow_texcoord0.y += y_offset;
-
-    // since we can't set a border color in Defold for clamp-to-border when sampling from the shadow map, short circuit
-    // with no shadow if the rendering exceeds the shadow map boundaries
-    // (this shouldn't be necessary anymore since we're dynamically fitting the shadow frustum to the camera frustum)
+    // short circuit with no shadow if the rendering exceeds the shadow map boundaries
     float upper_bound = 1/SHADOW_MAP_DIM;
     if (shadow_texcoord0.x < x_offset || shadow_texcoord0.x > upper_bound + x_offset || 
         shadow_texcoord0.y < y_offset || shadow_texcoord0.y > upper_bound + y_offset) {
         return 1.0;
     } 
-
     // 6. re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
@@ -112,8 +100,6 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
         }
     }
     shadow /= 9.0; // divide by number of samples
-    // float occluder_z = texture(shadow_sampler, shadow_texcoord0).r;
-    // shadow += occluder_z < occludee_z ? 0.0 : 1.0;
     return shadow;
 }
 
@@ -136,11 +122,7 @@ void main() {
     // directional (i.e., sun) light
     vec3 sun_dir = mat3(mtx_view) * normalize(-sun_direction.xyz);
     sun_dir = normalize(sun_dir);
-    // float d = dot(normal, sun_dir);
-    // float bias = (1.0 - d) * 0.006;
-    // bias = 0;
 
-    vec4 tint = vec4(1.0);
     int num_partitions = int(partitions[0].w);
     float shadow = 1.0;
     for (int i = 0; i < num_partitions; ++i) {
@@ -151,27 +133,14 @@ void main() {
             float y_offset = partitions[i].y / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
             mat4 mtx_light_proj = mtx_light_projs[i];
             mat4 mtx_light_view = mtx_light_views[i];
-            // TODO: cast the shadow
             shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, 0.25 + i * 0.05);
-            // if (shadow < 0.1) tint = shadow_colors[i]; // TODO: check if this fragment is actually in shadow
-
-            // if (var_frag_pos.z < cutoff + 1.0 && i < num_partitions - 1) {
-            //     float x_offset = partitions[i + 1].x / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
-            //     float y_offset = partitions[i + 1].y / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
-            //     mat4 mtx_light_proj = mtx_light_projs[i + 1];
-            //     mat4 mtx_light_view = mtx_light_views[i + 1];
-            //     float shadow2 = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, 0.25 + i * 0.05);
-            //     shadow = mix(shadow, shadow2, 1.0 - abs(cutoff - var_frag_pos.z)/1.0);
-            // }
-
             break;
         }
     }
-    // shadow = 1.0;
 
     float sun_spec = specular(view_dir, sun_dir, normal, shininess) * shadow;
     float sun_diff = diffuse(sun_dir, normal) * ao * shadow;
-    color += (sun_diff * mat_diff * tint + sun_spec * mat_spec * tint) * sun_color;
+    color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
         vec4 light_pos = mtx_view * light_positions[i];
