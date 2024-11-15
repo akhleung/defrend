@@ -1,8 +1,16 @@
 local M = {
     resolution_x = 0,
     resolution_y = 0,
+    light = {
+        fog_near = 40,
+        fog_far = 60,
+        fog_color = vmath.vector4(1),
+        ambient_color = vmath.vector4(1),
+        sun_color = vmath.vector4(1),
+        sun_direction = vmath.vector4(),
+    },
     shadow = {
-        cascade = { 0.70, 0.10, 0.10, 0.10 },
+        cascade = { 0.61, 0.13, 0.13, 0.13 },
         map_resolution = 2048,
         map_dimension = 0,
         buffer_resolution = 0,
@@ -13,11 +21,11 @@ local M = {
     ssao = {
         enabled = true,
         samples = 16,
-        intensity = 2.0,
-        scale = 2.5,
-        bias = 0.45,
-        radius = 1.75,
-        max_distance = 1.75,
+        intensity = 1.0,
+        attenuation = 0.0,
+        bias = 0.1,
+        radius = 2.0,
+        max_distance = 2.0,
     },
     blur = {
         box = {

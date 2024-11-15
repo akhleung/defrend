@@ -29,6 +29,15 @@ instances {
     z: -23.0
   }
 }
+collection_instances {
+  id: "neighborhood"
+  collection: "/main/neighborhood.collection"
+  position {
+    x: 4.0
+    y: -2.0
+    z: -16.0
+  }
+}
 scale_along_z: 1
 embedded_instances {
   id: "main"
@@ -63,22 +72,320 @@ embedded_instances {
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
   "fov: 0.3927\\n"
-  "near_z: 120.0\\n"
-  "far_z: 240.0\\n"
+  "near_z: 60.0\\n"
+  "far_z: 360.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
   ""
   position {
-    x: -170.0
-    y: 64.0
+    x: -9.0
+    y: 147.0
     z: 3.0
   }
   rotation {
-    x: -0.13359673
-    y: -0.6943716
-    z: -0.13359673
-    w: 0.6943716
+    x: -0.5
+    y: -0.5
+    z: -0.5
+    w: 0.5
+  }
+}
+embedded_instances {
+  id: "screen"
+  data: "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/builtins/assets/meshes/quad.dae\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"default\\\"\\n"
+  "  material: \\\"/materials/screen/lighting.material\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "forward"
+  data: ""
+  position {
+    z: -1.0
+  }
+}
+embedded_instances {
+  id: "right"
+  data: ""
+  position {
+    x: 1.0
+  }
+}
+embedded_instances {
+  id: "old_stuff"
+  children: "ball"
+  children: "building01"
+  children: "building02"
+  children: "building03"
+  children: "duck"
+  children: "hatchback"
+  children: "logo"
+  children: "logo1"
+  children: "logo2"
+  children: "logo3"
+  children: "logo4"
+  children: "logo5"
+  children: "point_light_green"
+  children: "point_light_red"
+  children: "sedan"
+  children: "the_floor"
+  data: ""
+  position {
+    z: 250.0
+  }
+}
+embedded_instances {
+  id: "ball"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/main/rotate.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/assets/models/ball.glb\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"Blue\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Red.001\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"White.005\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Yellow.001\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: -39.0
+    y: -1.0
+    z: 23.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+embedded_instances {
+  id: "building01"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -6.0
+    y: -2.35
+    z: 6.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building02"
+  data: "components {\n"
+  "  id: \"building02\"\n"
+  "  component: \"/assets/citybuilder/models/building02.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -6.0
+    y: -2.35
+    z: -8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building03"
+  data: "components {\n"
+  "  id: \"building03\"\n"
+  "  component: \"/assets/citybuilder/models/building03.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -23.0
+    y: -2.35
+    z: 22.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "duck"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/main/rotate.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/assets/models/character_duck.glb\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"Black.002\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/black.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"White.004\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Yellow\\\"\\n"
+  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    texture: \\\"/assets/images/brown.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/assets/images/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"specular_map\\\"\\n"
+  "    texture: \\\"/assets/images/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: -16.0
+    y: -1.5
+    z: -31.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+embedded_instances {
+  id: "hatchback"
+  data: "components {\n"
+  "  id: \"car\"\n"
+  "  component: \"/assets/citybuilder/models/car_hatchback.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: -1.0
+    z: 4.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }
 embedded_instances {
@@ -233,51 +540,6 @@ embedded_instances {
   position {
     x: 8.0
     z: 11.0
-  }
-}
-embedded_instances {
-  id: "point_light_green"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.script\"\n"
-  "  properties {\n"
-  "    id: \"radii\"\n"
-  "    value: \"0.0, 1.0, 0.0, 0.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -8.0
-    z: 3.0
-  }
-}
-embedded_instances {
-  id: "point_light_red"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.script\"\n"
-  "  properties {\n"
-  "    id: \"radii\"\n"
-  "    value: \"10.0, 30.0, 0.0, 0.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 8.0
-    y: 2.0
-    z: 3.0
   }
 }
 embedded_instances {
@@ -593,19 +855,67 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "screen"
-  data: "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/builtins/assets/meshes/quad.dae\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"default\\\"\\n"
-  "  material: \\\"/materials/screen/lighting.material\\\"\\n"
-  "}\\n"
-  "\"\n"
+  id: "point_light_green"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.script\"\n"
+  "  properties {\n"
+  "    id: \"radii\"\n"
+  "    value: \"0.0, 1.0, 0.0, 0.0\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"color\"\n"
+  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
   "}\n"
   ""
+  position {
+    x: -8.0
+    z: 3.0
+  }
+}
+embedded_instances {
+  id: "point_light_red"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.script\"\n"
+  "  properties {\n"
+  "    id: \"radii\"\n"
+  "    value: \"10.0, 30.0, 0.0, 0.0\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"color\"\n"
+  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 8.0
+    y: 2.0
+    z: 3.0
+  }
+}
+embedded_instances {
+  id: "sedan"
+  data: "components {\n"
+  "  id: \"sedan\"\n"
+  "  component: \"/assets/citybuilder/models/car_sedan.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: -1.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
 }
 embedded_instances {
   id: "the_floor"
@@ -722,7 +1032,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor52"
+  id: "floor"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -733,9 +1043,23 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -20.0
     y: -2.0
-    z: 30.0
+  }
+}
+embedded_instances {
+  id: "floor1"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: -2.0
   }
 }
 embedded_instances {
@@ -755,207 +1079,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor25"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor24"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor22"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
-  id: "floor15"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor41"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor18"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor17"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor16"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor76"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor71"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor28"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor8"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
   id: "floor3"
   data: "components {\n"
   "  id: \"floor\"\n"
@@ -972,7 +1095,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor45"
+  id: "floor4"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -983,46 +1106,13 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -40.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor11"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor23"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
+    x: 10.0
     y: -2.0
     z: 10.0
   }
 }
 embedded_instances {
-  id: "floor46"
+  id: "floor5"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1033,13 +1123,13 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -40.0
+    x: 20.0
     y: -2.0
-    z: -10.0
+    z: 10.0
   }
 }
 embedded_instances {
-  id: "floor61"
+  id: "floor6"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1050,43 +1140,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 40.0
     y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor66"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor70"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: 40.0
+    z: 20.0
   }
 }
 embedded_instances {
@@ -1107,41 +1162,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor63"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor78"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 40.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor50"
+  id: "floor8"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1154,7 +1175,460 @@ embedded_instances {
   position {
     x: 20.0
     y: -2.0
-    z: 30.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor9"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 20.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor10"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 20.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor11"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor12"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor13"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor14"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor15"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 20.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor16"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor17"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor18"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+  }
+}
+embedded_instances {
+  id: "floor19"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor20"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "floor21"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor22"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor23"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "floor24"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "floor25"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+  }
+}
+embedded_instances {
+  id: "floor26"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+  }
+}
+embedded_instances {
+  id: "floor27"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor28"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor29"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor30"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor31"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor32"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor33"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor34"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor35"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: -30.0
   }
 }
 embedded_instances {
@@ -1174,7 +1648,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor77"
+  id: "floor37"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1187,11 +1661,11 @@ embedded_instances {
   position {
     x: 30.0
     y: -2.0
-    z: -40.0
+    z: 10.0
   }
 }
 embedded_instances {
-  id: "floor6"
+  id: "floor38"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1202,12 +1676,13 @@ embedded_instances {
   "}\n"
   ""
   position {
+    x: 30.0
     y: -2.0
     z: 20.0
   }
 }
 embedded_instances {
-  id: "floor33"
+  id: "floor39"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1218,7 +1693,142 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -10.0
+    x: 30.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor40"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 30.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor41"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 30.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor42"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+  }
+}
+embedded_instances {
+  id: "floor43"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "floor44"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor45"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor46"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor47"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
     y: -2.0
     z: -20.0
   }
@@ -1240,123 +1850,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor40"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor53"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "floor74"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor19"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
-  id: "floor42"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor35"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor47"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
   id: "floor49"
   data: "components {\n"
   "  id: \"floor\"\n"
@@ -1374,7 +1867,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor64"
+  id: "floor50"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1386,193 +1879,6 @@ embedded_instances {
   ""
   position {
     x: 20.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor9"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor44"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
-  id: "floor68"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor21"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
-  id: "floor32"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor20"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor54"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "floor73"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor14"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor69"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 40.0
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor62"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 40.0
     y: -2.0
     z: 30.0
   }
@@ -1595,7 +1901,7 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor72"
+  id: "floor52"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1608,11 +1914,11 @@ embedded_instances {
   position {
     x: -20.0
     y: -2.0
-    z: -40.0
+    z: 30.0
   }
 }
 embedded_instances {
-  id: "floor58"
+  id: "floor53"
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/assets/models/floor.model\"\n"
@@ -1623,9 +1929,26 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 40.0
+    x: -30.0
     y: -2.0
-    z: 20.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "floor54"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 30.0
+    y: -2.0
+    z: 30.0
   }
 }
 embedded_instances {
@@ -1646,39 +1969,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "floor26"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor10"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
   id: "floor56"
   data: "components {\n"
   "  id: \"floor\"\n"
@@ -1692,358 +1982,6 @@ embedded_instances {
   position {
     x: 40.0
     y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor37"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor39"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor30"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor4"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor13"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor79"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor5"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 20.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor59"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 40.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor1"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor29"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "floor80"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor27"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -10.0
-    y: -2.0
-    z: -30.0
-  }
-}
-embedded_instances {
-  id: "floor75"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: -40.0
-  }
-}
-embedded_instances {
-  id: "floor"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-  }
-}
-embedded_instances {
-  id: "floor65"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: -2.0
-    z: 40.0
-  }
-}
-embedded_instances {
-  id: "floor31"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -30.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor43"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -40.0
-    y: -2.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "floor60"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 40.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor38"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 30.0
-    y: -2.0
-    z: 20.0
-  }
-}
-embedded_instances {
-  id: "floor12"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: -2.0
-    z: -10.0
-  }
-}
-embedded_instances {
-  id: "floor34"
-  data: "components {\n"
-  "  id: \"floor\"\n"
-  "  component: \"/assets/models/floor.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: -2.0
-    z: -30.0
   }
 }
 embedded_instances {
@@ -2064,6 +2002,158 @@ embedded_instances {
   }
 }
 embedded_instances {
+  id: "floor58"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: 20.0
+  }
+}
+embedded_instances {
+  id: "floor59"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: -30.0
+  }
+}
+embedded_instances {
+  id: "floor60"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: -10.0
+  }
+}
+embedded_instances {
+  id: "floor61"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "floor62"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "floor63"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: -2.0
+    z: 40.0
+  }
+}
+embedded_instances {
+  id: "floor64"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 20.0
+    y: -2.0
+    z: 40.0
+  }
+}
+embedded_instances {
+  id: "floor65"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: -2.0
+    z: 40.0
+  }
+}
+embedded_instances {
+  id: "floor66"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: 40.0
+  }
+}
+embedded_instances {
   id: "floor67"
   data: "components {\n"
   "  id: \"floor\"\n"
@@ -2081,280 +2171,222 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "ball"
+  id: "floor68"
   data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/main/rotate.script\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/assets/models/ball.glb\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"Blue\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/white.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Red.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/white.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"White.005\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/white.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Yellow.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/white.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -39.0
-    y: -1.0
-    z: 23.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
+    x: 30.0
+    y: -2.0
+    z: 40.0
   }
 }
 embedded_instances {
-  id: "duck"
+  id: "floor69"
   data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/main/rotate.script\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/assets/models/character_duck.glb\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"Black.002\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/black.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/black.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"White.004\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/white.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/black.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Yellow\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
-  "    texture: \\\"/assets/images/brown.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/assets/images/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"specular_map\\\"\\n"
-  "    texture: \\\"/assets/images/black.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -16.0
-    y: -1.5
-    z: -31.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
+    x: 40.0
+    y: -2.0
+    z: 40.0
   }
 }
 embedded_instances {
-  id: "building01"
+  id: "floor70"
   data: "components {\n"
-  "  id: \"building\"\n"
-  "  component: \"/assets/citybuilder/building01.model\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -6.0
-    y: -2.35
-    z: 6.0
-  }
-  rotation {
-    y: 0.70710677
-    w: -0.70710677
-  }
-  scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+    x: -10.0
+    y: -2.0
+    z: 40.0
   }
 }
 embedded_instances {
-  id: "hatchback"
+  id: "floor71"
   data: "components {\n"
-  "  id: \"car\"\n"
-  "  component: \"/assets/citybuilder/hatchback.model\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -19.0
-    y: -1.0
-    z: 4.0
-  }
-  scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+    x: -40.0
+    y: -2.0
+    z: 40.0
   }
 }
 embedded_instances {
-  id: "building02"
+  id: "floor72"
   data: "components {\n"
-  "  id: \"building02\"\n"
-  "  component: \"/assets/citybuilder/building02.model\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -6.0
-    y: -2.35
-    z: -8.0
-  }
-  rotation {
-    y: -0.70710677
-    w: 0.70710677
-  }
-  scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+    x: -20.0
+    y: -2.0
+    z: -40.0
   }
 }
 embedded_instances {
-  id: "sedan"
+  id: "floor73"
   data: "components {\n"
-  "  id: \"sedan\"\n"
-  "  component: \"/assets/citybuilder/sedan.model\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -19.0
-    y: -1.0
-    z: -8.0
-  }
-  scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+    x: 20.0
+    y: -2.0
+    z: -40.0
   }
 }
 embedded_instances {
-  id: "forward"
-  data: ""
-  position {
-    z: -1.0
-  }
-}
-embedded_instances {
-  id: "right"
-  data: ""
-  position {
-    x: 1.0
-  }
-}
-embedded_instances {
-  id: "building03"
+  id: "floor74"
   data: "components {\n"
-  "  id: \"building03\"\n"
-  "  component: \"/assets/citybuilder/building03.model\"\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
   "}\n"
   ""
   position {
-    x: -23.0
-    y: -2.35
-    z: 22.0
+    y: -2.0
+    z: -40.0
   }
-  rotation {
-    y: 1.0
-    w: 6.123234E-17
+}
+embedded_instances {
+  id: "floor75"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -30.0
+    y: -2.0
+    z: -40.0
   }
-  scale3 {
-    x: 8.0
-    y: 8.0
-    z: 8.0
+}
+embedded_instances {
+  id: "floor76"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: -2.0
+    z: -40.0
+  }
+}
+embedded_instances {
+  id: "floor77"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 30.0
+    y: -2.0
+    z: -40.0
+  }
+}
+embedded_instances {
+  id: "floor78"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 40.0
+    y: -2.0
+    z: -40.0
+  }
+}
+embedded_instances {
+  id: "floor79"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -10.0
+    y: -2.0
+    z: -40.0
+  }
+}
+embedded_instances {
+  id: "floor80"
+  data: "components {\n"
+  "  id: \"floor\"\n"
+  "  component: \"/assets/models/floor.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -40.0
+    y: -2.0
+    z: -40.0
   }
 }

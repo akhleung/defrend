@@ -69,13 +69,13 @@ vec2 rand(vec2 co) {
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 mtx_light_proj, float x_offset, float y_offset, float bias) {
-    // 1. offset fragment view position by surface normal to reduce shadow acne
+    // 1. offset fragment view-space position by surface normal to reduce shadow acne
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
-    // 2. multiply fragment view position by inverse view matrix of camera to get world space position
+    // 2. multiply fragment view-space position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
-    // 3. multiply by view matrix of light to get view space position of fragment relative to light
+    // 3. multiply by view matrix of light to get view-space position of fragment relative to light
     vec4 view_pos_re_light = mtx_light_view * world_pos;
-    // 4. multiply by proj matrix of light to get clip/screen position of fragment relative to light
+    // 4. multiply by proj matrix of light to get clip/screen-space position of fragment relative to light
     vec4 proj_pos_re_light = mtx_light_proj * view_pos_re_light;
     proj_pos_re_light /= proj_pos_re_light.w;
     vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5;
@@ -139,7 +139,7 @@ void main() {
     }
 
     float sun_spec = specular(view_dir, sun_dir, normal, shininess) * shadow;
-    float sun_diff = diffuse(sun_dir, normal) * ao * shadow;
+    float sun_diff = diffuse(sun_dir, normal) * (ao /* * 0.5 + 0.5 */) * shadow;
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
