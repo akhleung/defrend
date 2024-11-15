@@ -1,0 +1,18 @@
+mesh: "/assets/citybuilder/gltf/base.gltf"
+name: "base"
+materials {
+  name: "citybits_texture"
+  material: "/materials/geometry/model.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/assets/citybuilder/gltf/citybits_texture.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/assets/images/flat.png"
+  }
+  textures {
+    sampler: "specular_map"
+    texture: "/assets/images/black.png"
+  }
+}
