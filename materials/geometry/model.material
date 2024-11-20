@@ -14,16 +14,6 @@ vertex_constants {
   name: "mtx_normal"
   type: CONSTANT_TYPE_NORMAL
 }
-fragment_constants {
-  name: "shininess"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 0.1
-    y: 0.1
-    z: 0.1
-    w: 64.0
-  }
-}
 samplers {
   name: "diffuse_map"
   wrap_u: WRAP_MODE_REPEAT

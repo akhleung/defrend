@@ -1,3 +1,5 @@
+local settings = require "render.settings"
+
 local M = {}
 
 local UP = vmath.vector3(0, 1, 0)
@@ -11,9 +13,9 @@ function M.setup_lights(self)
             proj = identity,
             viewproj = identity,
 
-            ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
-            sun_color = vmath.vector4(.95, .95, .95, 1.0),
-            sun_direction = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
+            ambient_color = settings.light.ambient_color,
+            sun_color = settings.light.directional_color,
+            sun_direction = settings.light.directional_to,
 
             loose_bb = {
                 min_x = 0, max_x = 0,

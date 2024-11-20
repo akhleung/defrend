@@ -16,7 +16,7 @@ input_method = HiddenInputField
 package = com.defold.example.basic3d
 
 [project]
-title = Basic 3D project
+title = Deferred Rendering Pipeline
 dependencies#0 = https://github.com/subsoap/defos/archive/refs/tags/v2.8.0.zip
 
 [physics]

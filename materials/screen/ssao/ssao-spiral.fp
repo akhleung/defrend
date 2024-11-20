@@ -5,19 +5,23 @@ in vec2 var_texcoord0;
 uniform sampler2D normal_sampler;
 uniform sampler2D position_sampler;
 
-out vec4 frag_color;
+uniform ssao_fp {
+    vec4 params1;
+    vec4 params2;
+};
 
-#define SAMPLES 16
-#define INTENSITY 1.0
-#define ATTENUATION 0.0
-#define BIAS 0.10
-#define SAMPLE_RAD 2.0
-#define MAX_DISTANCE 2.0
-#define OBLIQUE 0.15
+int samples = int(params1.x);
+float intensity = params1.y;
+float bias = params1.z;
+float radius = params1.w;
+float min_distance = params2.x * 0.5;
+float max_distance = params2.x * 2.0;
+float attenuation = params2.y;
+
+out vec4 frag_color;
 
 const vec3 mod3 = vec3(.1031, .11369, .13787);
 const float goldenAngle = 2.4;
-const float inv = 1.0 / float(SAMPLES);
 
 float hash12(vec2 p) {
 	vec3 p3  = fract(vec3(p.xyx) * mod3);
@@ -28,30 +32,30 @@ float hash12(vec2 p) {
 float calculateOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
     vec3 diff = op - p;
     float l = length(diff);
-    float ao = max(0.0, dot(cnorm, normalize(diff)) - BIAS) / (1.0 + l * ATTENUATION);
-    ao *= 1.0 - smoothstep(MAX_DISTANCE * 0.5, MAX_DISTANCE * 2.0, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
+    float ao = max(0.0, dot(cnorm, normalize(diff)) - bias) / (1.0 + l * attenuation);
+    ao *= 1.0 - smoothstep(min_distance, max_distance, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
     return ao;
 }
 
 float spiralAO(vec3 p, vec3 n) {
-    float rad = SAMPLE_RAD / abs(p.z);
+    float rad = radius / abs(p.z);
     float ao = 0.0;
-    float radius = 0.0;
+    float radiusInc = 0.0;
 
     float rotatePhase = hash12(var_texcoord0 * 100.0) * 6.28;
-    float rStep = inv * rad;
+    float rStep = rad / samples;
     vec2 spiralUV;
 
-    for (int i = 0; i < SAMPLES; i++) {
+    for (int i = 0; i < samples; i++) {
         spiralUV.x = sin(rotatePhase);
         spiralUV.y = cos(rotatePhase);
-        radius += rStep;
-		vec3 offset_pos = texture(position_sampler, var_texcoord0 + spiralUV * radius).xyz;
+        radiusInc += rStep;
+		vec3 offset_pos = texture(position_sampler, var_texcoord0 + spiralUV * radiusInc).xyz;
         ao += calculateOcclusion(offset_pos, p, n);
         rotatePhase += goldenAngle;
     }
-    ao *= inv;
-    return 1.0 - ao * INTENSITY;
+    ao /= samples;
+    return 1.0 - ao * intensity;
 }
 
 void main() {
@@ -60,6 +64,6 @@ void main() {
   	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
 
 	float ao = spiralAO(position, normal);
-    ao *= ao;
+    // ao *= ao;
 	frag_color = vec4(ao, ao, ao, 1.0);
 }

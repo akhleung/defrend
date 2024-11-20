@@ -8,6 +8,7 @@ local identity = vmath.matrix4()
 function M.setup_cameras(self)
     self.camera = {
         view = identity,
+        view_inv = identity,
         proj = identity,
         viewproj = identity,
         moved = true,
@@ -22,7 +23,7 @@ function M.setup_cameras(self)
     -- local range_sizes = { 0.25, 0.75 }
     -- local range_sizes = { 0.05, 0.10, 0.30, 0.55 }
     -- local range_sizes = { 0.1, 0.2, 0.3, 0.4 }
-    local range_sizes = { 0.55, 0.15, 0.15, 0.15 }
+    local range_sizes = { 0.46, 0.18, 0.18, 0.18 }
     -- local range_sizes = { 1.0 }
     local shadow_map_dim = math.ceil(math.sqrt(#range_sizes)) -- 2 in this case, for a 2x2 shadow map
     local near, far = self.camera.near, self.camera.far
@@ -73,6 +74,11 @@ function M.setup_clear_buffers(self)
             sys.get_config_number("render.clear_color_blue", 0),
             sys.get_config_number("render.clear_color_alpha", 0)
         ),
+        [graphics.BUFFER_TYPE_DEPTH_BIT] = 1,
+        [graphics.BUFFER_TYPE_STENCIL_BIT] = 0
+    }
+    self.clear_ssao_buffer = {
+        [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(1, 1, 1, 1),
         [graphics.BUFFER_TYPE_DEPTH_BIT] = 1,
         [graphics.BUFFER_TYPE_STENCIL_BIT] = 0
     }

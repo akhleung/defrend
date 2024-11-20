@@ -1,7 +1,5 @@
 #version 420 core
 
-#define MAX_LIGHTS 16
-
 in vec3 var_frag_pos;
 in vec3 var_normal;
 in vec2 var_texcoord0;
@@ -9,10 +7,6 @@ in vec2 var_texcoord0;
 uniform sampler2D diffuse_map;
 uniform sampler2D normal_map;
 uniform sampler2D specular_map;
-
-uniform model_fp {
-    vec4 shininess;
-};
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 position_out;
@@ -39,7 +33,7 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
     // mediump mat3 tbn_mtx = get_tbn_mtx(world_normal, -view_direction, texture_coord);
     vec3 normal_map_color = texture(normal_map, texture_coord).xyz;
     // mediump vec3 perturb_normal = normal_map_color * (255.0 / 127.0) - vec3(128.0 / 127.0);
-    vec3 perturb_normal = normal_map_color * 2.0 - vec3(1.0);
+    vec3 perturb_normal = normal_map_color * 2.0 - 1.0;
     // if (surface.z > 0.5) {
     //     // This is the DirectX normals map format
     //     perturb_normal.y = -perturb_normal.y;
@@ -55,6 +49,6 @@ void main() {
     vec3 normal = get_perturb_normal(var_texcoord0, tbn) * 0.5 + 0.5;
 
     diffuse_out = mat_diff;
-    position_out = vec4(var_frag_pos, shininess.w);
+    position_out = vec4(var_frag_pos, mat_spec.w);
     normal_out = vec4(normal, mat_spec.r);
 }

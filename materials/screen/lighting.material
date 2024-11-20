@@ -5,8 +5,10 @@ fragment_program: "/materials/screen/lighting.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
-  value {
-  }
+}
+fragment_constants {
+  name: "mtx_view"
+  type: CONSTANT_TYPE_VIEW
 }
 samplers {
   name: "diffuse_sampler"

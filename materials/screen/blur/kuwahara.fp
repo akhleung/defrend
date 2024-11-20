@@ -5,12 +5,13 @@
 
 uniform sampler2D color_sampler;
 uniform blur_fp {
-    vec4 resolution;
+    vec4 params;
 };
 
 out vec4 fragColor;
 
-vec2 texSize  = resolution.xy;
+int samples = int(params.z);
+vec2 texSize  = params.xy;
 vec2 texCoord = gl_FragCoord.xy / texSize;
 
 int i     = 0;
@@ -59,14 +60,12 @@ void findMean(int i0, int i1, int j0, int j1) {
 void main() {
     fragColor = texture(color_sampler, texCoord);
 
-    // int radius = int(parameters.x);
-    int radius = 1;
-    if (radius <= 0) { return; }
+    if (samples <= 0) return;
 
-    findMean(-radius, 0, -radius, 0); // Lower Left
-    findMean(0, radius, 0, radius); // Upper Right
-    findMean(-radius, 0, 0, radius); // Upper Left
-    findMean(0, radius, -radius, 0); // Lower Right
+    findMean(-samples, 0, -samples, 0); // Lower Left
+    findMean(0, samples, 0, samples); // Upper Right
+    findMean(-samples, 0, 0, samples); // Upper Left
+    findMean(0, samples, -samples, 0); // Lower Right
 
     fragColor.rgb = mean.rgb;
 }

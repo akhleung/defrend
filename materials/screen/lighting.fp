@@ -14,37 +14,37 @@ uniform sampler2D shadow_sampler;
 uniform lighting_fp {
     mat4 mtx_view;
     mat4 mtx_view_inv;
-    mat4 mtx_light_view;
-    mat4 mtx_light_proj;
     
     vec4 ambient_color;
 
-    vec4 sun_color;
-    vec4 sun_direction;
+    vec4 directional_color;
+    vec4 directional_to;
     
     vec4 num_lights;
     vec4 light_positions[MAX_LIGHTS];
     vec4 light_radii[MAX_LIGHTS];
     vec4 light_colors[MAX_LIGHTS];
-    vec4 partitions[MAX_PARTITIONS];
+    vec4 camera_partitions[MAX_PARTITIONS];
     mat4 mtx_light_views[MAX_PARTITIONS];
     mat4 mtx_light_projs[MAX_PARTITIONS];
-    vec4 shadow_map_params;
+    vec4 shadow_params;
     vec4 shadow_colors[MAX_PARTITIONS];
 };
 
 out vec4 frag_color;
 
-float SHADOW_MAP_SIZE = shadow_map_params.x;
-float SHADOW_MAP_DIM = shadow_map_params.z;
-float SHADOW_TEXEL_SIZE = shadow_map_params.w;
+float SHADOW_MAP_SIZE = shadow_params.x;
+float SHADOW_MAP_DIM = shadow_params.y;
+float SHADOW_TEXEL_SIZE = shadow_params.z;
+float SHADOW_BIAS = shadow_params.w;
+float SHADOW_BIAS_INC = 0.1 * SHADOW_BIAS;
 
 vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
     return normalize(light_pos - frag_pos);
 }
 
-float diffuse(vec3 light_dir, vec3 normal_sample) {
-    return max(dot(normal_sample, light_dir), 0.0);
+float diffuse(vec3 to_light, vec3 normal_sample) {
+    return max(dot(normal_sample, to_light), 0.0);
 }
 
 float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
@@ -120,39 +120,38 @@ void main() {
     vec4 color = ambient_color * mat_diff * ao;
 
     // directional (i.e., sun) light
-    vec3 sun_dir = mat3(mtx_view) * normalize(-sun_direction.xyz);
-    sun_dir = normalize(sun_dir);
+    vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
-    int num_partitions = int(partitions[0].w);
+    int num_partitions = int(camera_partitions[0].w);
     float shadow = 1.0;
     for (int i = 0; i < num_partitions; ++i) {
-        float cutoff = -partitions[i].z;
+        float cutoff = -camera_partitions[i].z;
         if (var_frag_pos.z > cutoff) {
             // cast a shadow using the i'th shadow map
-            float x_offset = partitions[i].x / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
-            float y_offset = partitions[i].y / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
+            float x_offset = camera_partitions[i].x / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
+            float y_offset = camera_partitions[i].y / SHADOW_MAP_SIZE / SHADOW_MAP_DIM;
             mat4 mtx_light_proj = mtx_light_projs[i];
             mat4 mtx_light_view = mtx_light_views[i];
-            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, 0.25 + i * 0.05);
+            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, SHADOW_BIAS + SHADOW_BIAS_INC * i);
             break;
         }
     }
 
-    float sun_spec = specular(view_dir, sun_dir, normal, shininess) * shadow;
-    float sun_diff = diffuse(sun_dir, normal) * (ao /* * 0.5 + 0.5 */) * shadow;
-    color += (sun_diff * mat_diff + sun_spec * mat_spec) * sun_color;
+    float sun_spec = specular(view_dir, directional_from, normal, shininess) * shadow;
+    float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */) * shadow;
+    color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color;
 
     for (int i = 0; i < num_lights.x; ++i) {
         vec4 light_pos = mtx_view * light_positions[i];
-        vec3 light_dir = light_direction(var_frag_pos, light_pos.xyz);
-        float spec = specular(view_dir, light_dir, normal, shininess);
-        float diff = diffuse(light_dir, normal);
+        vec3 to_light = light_direction(var_frag_pos, light_pos.xyz);
+        float spec = specular(view_dir, to_light, normal, shininess);
+        float diff = diffuse(to_light, normal);
         float attn = attenuation(var_frag_pos, light_pos.xyz, light_radii[i]);
         color += (diff * mat_diff + spec * mat_spec) * light_colors[i] * attn;
     }
 
     color.a = mat_diff.a;
-    // color = vec4(ao, ao, ao, 1.0);
+    color = vec4(ao, ao, ao, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     frag_color = clamp(color, 0.0, 1.0);

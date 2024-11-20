@@ -5,12 +5,13 @@ local M = {
         fog_near = 40,
         fog_far = 60,
         fog_color = vmath.vector4(1),
-        ambient_color = vmath.vector4(1),
-        sun_color = vmath.vector4(1),
-        sun_direction = vmath.vector4(),
+        ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
+        directional_color = vmath.vector4(.95, .95, .95, 1.0),
+        directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
-        cascade = { 0.61, 0.13, 0.13, 0.13 },
+        bias = 0.5,
+        cascade = { 0.55, 0.15, 0.15, 0.15 },
         map_resolution = 2048,
         map_dimension = 0,
         buffer_resolution = 0,
@@ -20,23 +21,21 @@ local M = {
     },
     ssao = {
         enabled = true,
+        blur = false,
         samples = 16,
-        intensity = 1.0,
-        attenuation = 0.0,
+        intensity = 1.5,
         bias = 0.1,
         radius = 2.0,
         max_distance = 2.0,
+        attenuation = 0.0,
     },
-    blur = {
-        box = {
-            enabled = false,
-            samples = 1,
-            radius = 2.0,
-        },
-        kuwahara = {
-            enabled = true,
-            samples = 1,
-        },
+    box_blur = {
+        samples = 1,
+        radius = 2.0,
+    },
+    kuwahara_blur = {
+        enabled = true,
+        samples = 1,
     },
     dof = {},
     bloom = {},
@@ -50,8 +49,20 @@ local M = {
     },
 }
 
+local light = M.light
+local light_params = vmath.vector4()
+function M.light.set_uniforms(uniforms)
+    uniforms.ambient_color = light.ambient_color
+    uniforms.directional_color = light.directional_color
+    uniforms.directional_to = light.directional_to
+    uniforms.fog_color = light.fog_color
+    light_params.x = light.fog_near
+    light_params.y = light.fog_far
+    uniforms.light_params = light_params
+end
+
 local shadow = M.shadow
-function shadow.init(fov, aspect, near, far)
+function M.shadow.init(fov, aspect, near, far)
     shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
     shadow.buffer_resolution = shadow.map_resolution * shadow.map_dimension
     shadow.texel_size = 1 / shadow.map_resolution
@@ -67,33 +78,32 @@ function shadow.init(fov, aspect, near, far)
 end
 
 local shadow_params = vmath.vector4()
-function shadow.set_uniforms(uniforms)
+function M.shadow.set_uniforms(uniforms)
     shadow_params.x = shadow.map_resolution
-    shadow_params.y = shadow.buffer_resolution
-    shadow_params.z = shadow.map_dimension
-    shadow_params.w = shadow.texel_size
+    shadow_params.y = shadow.map_dimension
+    shadow_params.z = shadow.texel_size
+    shadow_params.w = shadow.bias
     uniforms.shadow_params = shadow_params
     uniforms.camera_partitions = shadow.partitions
-    uniforms.camera_projections = shadow.projections
 end
 
 local ssao = M.ssao
 local ssao_params1 = vmath.vector4()
 local ssao_params2 = vmath.vector4()
-function ssao.set_uniforms(uniforms)
+function M.ssao.set_uniforms(uniforms)
     ssao_params1.x = ssao.samples
     ssao_params1.y = ssao.intensity
-    ssao_params1.z = ssao.scale
-    ssao_params1.w = ssao.bias
-    ssao_params2.x = ssao.radius
-    ssao_params2.y = ssao.max_distance
+    ssao_params1.z = ssao.bias
+    ssao_params1.w = ssao.radius
+    ssao_params2.x = ssao.max_distance
+    ssao_params2.y = ssao.attenuation
     uniforms.params1 = ssao_params1
     uniforms.params2 = ssao_params2
 end
 
-local box_blur = M.blur.box
+local box_blur = M.box_blur
 local box_blur_params = vmath.vector4()
-function box_blur.set_uniforms(uniforms)
+function M.box_blur.set_uniforms(uniforms)
     box_blur_params.x = M.resolution_x
     box_blur_params.y = M.resolution_y
     box_blur_params.z = box_blur.samples
@@ -101,9 +111,16 @@ function box_blur.set_uniforms(uniforms)
     uniforms.params = box_blur_params
 end
 
-local kuwahara_blur = M.blur.kuwahara
+local gamma = M.gamma
+local gamma_params = vmath.vector4()
+function M.gamma.set_uniforms(uniforms)
+    gamma_params.x = gamma.gamma
+    uniforms.params = gamma_params
+end
+
+local kuwahara_blur = M.kuwahara_blur
 local kuwahara_blur_params = vmath.vector4()
-function kuwahara_blur.set_uniforms(uniforms)
+function M.kuwahara_blur.set_uniforms(uniforms)
     kuwahara_blur_params.x = M.resolution_x
     kuwahara_blur_params.y = M.resolution_y
     kuwahara_blur_params.z = kuwahara_blur.samples
@@ -112,7 +129,7 @@ end
 
 local fxaa = M.fxaa
 local fxaa_params = vmath.vector4()
-function fxaa.set_uniforms(uniforms)
+function M.fxaa.set_uniforms(uniforms)
     fxaa_params.x = M.resolution_x
     fxaa_params.y = M.resolution_y
     fxaa_params.z = fxaa.strength
