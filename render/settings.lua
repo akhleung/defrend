@@ -69,8 +69,8 @@ function M.shadow.init(fov, aspect, near, far)
     local total_range = far - near
     for i = 1, #shadow.cascade do
         far = near + total_range * shadow.cascade[i]
-        local y_offset = math.floor((i - 1) / shadow.map_dimension) * shadow.map_resolution
-        local x_offset = ((i - 1) % shadow.map_dimension) * shadow.map_resolution
+        local y_offset = math.floor((i - 1) / shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
+        local x_offset = ((i - 1) % shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
         shadow.partitions[i] = vmath.vector4(x_offset, y_offset, far, #shadow.cascade)
         shadow.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
         near = far

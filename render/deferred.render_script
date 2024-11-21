@@ -1,18 +1,17 @@
 local defrend = require "render.defrend"
 local settings = require "render.settings"
 local lighting_state = require "lighting.lighting_state"
-local update_constants
 local update_lighting_constants
 local render_shadows
---
+
 -- message constants
---
 local MSG_WINDOW_RESIZED = hash("window_resized")
 local MSG_SET_VIEW_PROJ = hash("set_view_projection")
 local MSG_SSAO_SETTINGS_UPDATED = hash("ssao_settings_updated")
 local MSG_BOX_BLUR_SETTINGS_UPDATED = hash("box_blur_settings_updated")
 
 local identity = vmath.matrix4()
+local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
 local box_blur_options = {}
@@ -20,22 +19,17 @@ local lighting_options = {}
 local kuwahara_blur_options = {}
 local gamma_options = {}
 local fxaa_options = {}
-local transient_option = { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } }
 function init(self)
 
     settings.resolution_x = render.get_window_width()
     settings.resolution_y = render.get_window_height()
 
-    local mtx_light_views = {}
-    local mtx_light_projs = {}
-
     defrend.setup_cameras(self)
     defrend.setup_predicates(self)
     defrend.setup_clear_buffers(self)
+    settings.shadow.init(self.camera.fov, self.camera.aspect, self.camera.near, self.camera.far)
     defrend.setup_render_targets(self)
     defrend.setup_lights(self)
-
-    settings.shadow.init(self.camera.fov, self.camera.aspect, self.camera.near, self.camera.far)
 
     lighting_state.set_ambient_color(self.light.ambient_color)
     lighting_state.set_sun_color(self.light.directional_color)
@@ -50,8 +44,8 @@ function init(self)
     settings.box_blur.set_uniforms(self.box_blur_constants)
 
     self.lighting_constants = render.constant_buffer()
-    self.lighting_constants.mtx_light_views = mtx_light_views ---@diagnostic disable-line: inject-field
-    self.lighting_constants.mtx_light_projs = mtx_light_projs ---@diagnostic disable-line: inject-field
+    self.lighting_constants.mtx_light_views = {} ---@diagnostic disable-line: inject-field
+    self.lighting_constants.mtx_light_projs = {} ---@diagnostic disable-line: inject-field
     settings.shadow.set_uniforms(self.lighting_constants)
     settings.light.set_uniforms(self.lighting_constants)
 
@@ -91,26 +85,22 @@ function update(self)
     render_shadows(self)
 
     render.set_render_target(self.g_buffer)
-    -- clear screen buffers
-    --
+
     -- turn on depth_mask before `render.clear()` to clear it as well
     render.set_depth_mask(true)
     render.set_stencil_mask(0xff)
     render.clear(self.clear_color_buffers)
 
     -- setup camera view and projection
-    --
     local camera = self.camera
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
     render.set_view(camera.view)
     render.set_projection(camera.proj)
 
     -- set states used for all the world predicates
-    -- render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
     render.enable_state(graphics.STATE_DEPTH_TEST)
 
     -- render `model` predicate for default 3D material
-    -- self.constants.mtx_proj_inv = self.proj_inv or i -- TODO: improve this
     render_options.frustum = camera.viewproj
     render_options.constants = self.constants
     render.enable_state(graphics.STATE_CULL_FACE)
@@ -131,7 +121,6 @@ function update(self)
     render.draw(predicates.transparent, render_options)
 
     -- render the other components: sprites, tilemaps, particles etc
-    --
     render.draw(predicates.tile, render_options)
     render.draw(predicates.particle, render_options)
     render.disable_state(graphics.STATE_DEPTH_TEST)
@@ -173,9 +162,6 @@ function update(self)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_COLOR0_BIT)
-    -- lighting_options.constants = self.constants
-    -- lighting_options.constants.mtx_view = camera.view
-    -- lighting_options.constants.mtx_view_inv = vmath.inv(camera.view)
     render.draw(predicates.screen, lighting_options)
     render.disable_texture("diffuse_sampler")
     render.disable_texture("position_sampler")
@@ -225,10 +211,7 @@ function update(self)
     render.draw(predicates.debug_text, render_options)
     render.draw(predicates.gui, render_options)
     render.draw(predicates.text, render_options)
-    render.enable_state(graphics.STATE_BLEND)
-    -- render.set_blend_func(graphics.BLEND_FACTOR_ONE_MINUS_DST_COLOR, graphics.BLEND_FACTOR_ONE)
     render.disable_state(graphics.STATE_STENCIL_TEST)
-    -- render.disable_state(graphics.STATE_BLEND)
 end
 
 function on_message(self, message_id, message)
@@ -251,7 +234,6 @@ function on_message(self, message_id, message)
 end
 
 local num_lights = vmath.vector4()
-local resolution = vmath.vector4()
 local shadow_colors = {
     vmath.vector4(1, 0, 0, 1),
     vmath.vector4(0, 1, 0, 1),
@@ -276,10 +258,10 @@ update_lighting_constants = function(self)
     constants.shadow_colors = shadow_colors
 end
 
-local shadow_options = {}
 render_shadows = function(self)
+    local shadow_settings = settings.shadow
     local constants = self.lighting_constants
-    local projections = settings.shadow.projections
+    local projections = shadow_settings.projections
     for i = 1, #projections do
         local mtx_view, mtx_proj = defrend.refresh_shadows(self, projections[i])
         if mtx_view and mtx_proj then
@@ -287,12 +269,10 @@ render_shadows = function(self)
             constants.mtx_light_projs[i] = mtx_proj
         end
     end
-    -- local partitions = self.camera.partitions
-    local partitions = settings.shadow.partitions
-    -- constants.partitions = partitions
-    -- constants.shadow_map_params = self.SHADOW_MAP_PARAMS
-    -- settings.shadow.set_uniforms(constants)
-    render.set_render_target(self.shadow_map, transient_option)
+    local partitions = shadow_settings.partitions
+    local buffer_resolution = shadow_settings.buffer_resolution
+    local map_resolution = shadow_settings.map_resolution
+    render.set_render_target(self.shadow_map)
     render.set_depth_mask(true)
     render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
     render.enable_state(graphics.STATE_DEPTH_TEST)
@@ -305,9 +285,9 @@ render_shadows = function(self)
         render.set_projection(constants.mtx_light_projs[i])
         render.set_view(constants.mtx_light_views[i])
         local partition = partitions[i]
-        local x_offset = partition.x
-        local y_offset = partition.y
-        render.set_viewport(x_offset, y_offset, self.SHADOW_MAP_RESOLUTION, self.SHADOW_MAP_RESOLUTION)
+        local x_offset = partition.x * buffer_resolution
+        local y_offset = partition.y * buffer_resolution
+        render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
         shadow_options.frustum = constants.mtx_light_projs[i] * constants.mtx_light_views[i]
         render.draw(self.predicates.model, shadow_options)
     end
