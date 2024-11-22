@@ -11,6 +11,7 @@ local M = {
     },
     shadow = {
         bias = 0.5,
+        softness = 1,
         cascade = { 0.55, 0.15, 0.15, 0.15 },
         map_resolution = 2048,
         map_dimension = 0,
@@ -81,7 +82,7 @@ local shadow_params = vmath.vector4()
 function M.shadow.set_uniforms(uniforms)
     shadow_params.x = shadow.map_resolution
     shadow_params.y = shadow.map_dimension
-    shadow_params.z = shadow.texel_size
+    shadow_params.z = shadow.softness
     shadow_params.w = shadow.bias
     uniforms.shadow_params = shadow_params
     uniforms.camera_partitions = shadow.partitions

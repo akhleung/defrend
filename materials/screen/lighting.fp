@@ -35,9 +35,12 @@ out vec4 frag_color;
 
 float SHADOW_MAP_SIZE = shadow_params.x;
 float SHADOW_MAP_DIM = shadow_params.y;
-float SHADOW_TEXEL_SIZE = shadow_params.z;
+int SHADOW_SOFTNESS = int(shadow_params.z);
+float PCF_SAMPLES = pow(2 * SHADOW_SOFTNESS + 1, 2);
 float SHADOW_BIAS = shadow_params.w;
+float HALF_BIAS = SHADOW_BIAS / 2;
 float SHADOW_BIAS_INC = 0.1 * SHADOW_BIAS;
+vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
 vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
     return normalize(light_pos - frag_pos);
@@ -55,7 +58,6 @@ float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
     return falloff * falloff;
 }
 
-// Classic Phong specular lighting (slower, but more accurate)
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
     vec3 R = reflect(-lightdir, norm);
     return pow(max(dot(R, viewdir), 0.0), shiny);
@@ -68,8 +70,10 @@ vec2 rand(vec2 co) {
     ) * 0.00047;
 }
 
-float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 mtx_light_proj, float x_offset, float y_offset, float bias) {
+float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 mtx_light_proj, float x_offset, float y_offset) {
     // 1. offset fragment view-space position by surface normal to reduce shadow acne
+    float d = 1.0 - dot(directional_from, normal);
+    float bias = SHADOW_BIAS + HALF_BIAS * d;
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
     // 2. multiply fragment view-space position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
@@ -92,14 +96,14 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
     // 6. re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
-    for (int x = -1; x <= 1; ++x) {
-        for (int y = -1; y <= 1; ++y) {
-            vec2 uv = shadow_texcoord0 + vec2(x,y) * SHADOW_TEXEL_SIZE;
+    for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
+        for (int y = -SHADOW_SOFTNESS; y <= SHADOW_SOFTNESS; ++y) {
+            vec2 uv = shadow_texcoord0 + vec2(x,y) / SHADOW_MAP_SIZE;
             float occluder_z = texture(shadow_sampler, uv + rand(uv)).r;
             shadow += occluder_z < occludee_z ? 0.0 : 1.0;
         }
     }
-    shadow /= 9.0; // divide by number of samples
+    shadow /= PCF_SAMPLES;
     return shadow;
 }
 
@@ -118,11 +122,11 @@ void main() {
         float cutoff = -camera_partitions[i].z;
         if (var_frag_pos.z > cutoff) {
             // cast a shadow using the i'th shadow map
-            float x_offset = camera_partitions[i].x /* / SHADOW_MAP_SIZE / SHADOW_MAP_DIM */;
-            float y_offset = camera_partitions[i].y /* / SHADOW_MAP_SIZE / SHADOW_MAP_DIM */;
+            float x_offset = camera_partitions[i].x;
+            float y_offset = camera_partitions[i].y;
             mat4 mtx_light_proj = mtx_light_projs[i];
             mat4 mtx_light_view = mtx_light_views[i];
-            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset, SHADOW_BIAS + SHADOW_BIAS_INC * i);
+            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset);
             break;
         }
     }
@@ -132,7 +136,6 @@ void main() {
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
-    vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
     float sun_spec = specular(view_dir, directional_from, normal, shininess) * shadow;
     float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */) * shadow;
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color;
