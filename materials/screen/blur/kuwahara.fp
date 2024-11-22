@@ -1,7 +1,7 @@
 #version 420
 
 #define MAX_SIZE        5
-#define MAX_KERNEL_SIZE ((MAX_SIZE * 2 + 1) * (MAX_SIZE * 2 + 1))
+#define MAX_KERNEL_SIZE ((MAX_SIZE + 1) * (MAX_SIZE + 1))
 
 uniform sampler2D color_sampler;
 uniform blur_fp {
