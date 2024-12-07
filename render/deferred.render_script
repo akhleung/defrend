@@ -44,8 +44,7 @@ function init(self)
     settings.box_blur.set_uniforms(self.box_blur_constants)
 
     self.lighting_constants = render.constant_buffer()
-    self.lighting_constants.mtx_light_views = {} ---@diagnostic disable-line: inject-field
-    self.lighting_constants.mtx_light_projs = {} ---@diagnostic disable-line: inject-field
+    self.lighting_constants.mtx_lights = {} ---@diagnostic disable-line: inject-field
     settings.shadow.set_uniforms(self.lighting_constants)
     settings.light.set_uniforms(self.lighting_constants)
 
@@ -135,6 +134,8 @@ function update(self)
     render.set_projection(self.camera_screen.proj)
 
     if settings.ssao.enabled then
+        local ssao_width = render.get_render_target_width(self.post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+        local ssao_height = render.get_render_target_height(self.post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.enable_material("ssao_material")
         render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
@@ -258,19 +259,22 @@ update_lighting_constants = function(self)
     constants.shadow_colors = shadow_colors
 end
 
+local mtx_light_views = {}
+local mtx_light_projs = {}
 render_shadows = function(self)
     local shadow_settings = settings.shadow
     local constants = self.lighting_constants
     local projections = shadow_settings.projections
     for i = 1, #projections do
-        local mtx_view, mtx_proj = defrend.refresh_shadows(self, projections[i])
+        local mtx_view, mtx_proj = defrend.refresh_shadows2(self, projections[i], i)
         if mtx_view and mtx_proj then
-            constants.mtx_light_views[i] = mtx_view
-            constants.mtx_light_projs[i] = mtx_proj
+            mtx_light_views[i] = mtx_view
+            mtx_light_projs[i] = mtx_proj
+            constants.mtx_lights[i] = mtx_proj * mtx_view
         end
     end
     local partitions = shadow_settings.partitions
-    local buffer_resolution = shadow_settings.buffer_resolution
+    local atlas_resolution = shadow_settings.atlas_resolution
     local map_resolution = shadow_settings.map_resolution
     render.set_render_target(self.shadow_map)
     render.set_depth_mask(true)
@@ -282,13 +286,13 @@ render_shadows = function(self)
     render.clear(self.clear_shadow_buffers)
     render.enable_material("shadow_material")
     for i = 1, #partitions do
-        render.set_projection(constants.mtx_light_projs[i])
-        render.set_view(constants.mtx_light_views[i])
+        render.set_projection(mtx_light_projs[i])
+        render.set_view(mtx_light_views[i])
         local partition = partitions[i]
-        local x_offset = partition.x * buffer_resolution
-        local y_offset = partition.y * buffer_resolution
+        local x_offset = partition.x * atlas_resolution
+        local y_offset = partition.y * atlas_resolution
         render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
-        shadow_options.frustum = constants.mtx_light_projs[i] * constants.mtx_light_views[i]
+        shadow_options.frustum = constants.mtx_lights[i]
         render.draw(self.predicates.model, shadow_options)
     end
     render.disable_material()

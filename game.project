@@ -8,7 +8,7 @@ shared_state = 1
 [display]
 width = 1600
 height = 900
-vsync = 1
+vsync = 0
 display_device_info = 0
 
 [android]
@@ -42,4 +42,8 @@ clear_color_red = 0.0
 clear_color_green = 0.0
 clear_color_blue = 0.0
 clear_color_alpha = 0.0
+
+[graphics]
+verify_graphics_calls = 0
+opengl_version_hint = 42
 

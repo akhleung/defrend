@@ -1,3 +1,4 @@
+local render_settings = require("render.settings")
 local draw_frame
 
 local frames = 0
@@ -21,7 +22,7 @@ function update(self, dt)
 
 	-- local cam_target = render_state.CAM_TARGET
 
-	payload.text = string.format("AVG FPS: %d", avg_fps)
+	payload.text = string.format("AVG FPS: %d, TEXEL SNAPPING: %s", avg_fps, tostring(render_settings.shadow.texel_snapping))
 	payload.position = text_pos
 	payload.color = text_col
 	msg.post(

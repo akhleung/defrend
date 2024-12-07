@@ -29,8 +29,26 @@ function M.setup_lights(self)
             },
             moved = false,
         }
+
+        self.bounding_spheres = {}
+        for i = 1, #settings.shadow.cascade do
+            self.bounding_spheres[i] = {
+                -- initialize the tight bounding sphere to be bigger, so that we force a recalculation in the first render
+                tight = {
+                    center = vmath.vector3(),
+                    radius = 1,
+                },
+                loose = {
+                    center = vmath.vector3(),
+                    radius = 0,
+                },
+            }
+        end
 end
 
+local function set_vec3(to, from)
+    to.x, to.y, to.z = from.x, from.y, from.z
+end
 local function pad(min, max, padding) -- eh, maybe just add a hardcoded value
     if min < 0 then
         min = min * padding
@@ -101,9 +119,7 @@ function M.refresh_shadows(self, cam_proj)
     end
     center = center / 8
     -- calculate the light's view matrix
-    sun_dir.x = self.light.sun_direction.x
-    sun_dir.y = self.light.sun_direction.y
-    sun_dir.z = self.light.sun_direction.z
+    set_vec3(sun_dir, self.light.sun_direction)
     local mtx_light_view = vmath.matrix4_look_at(center - sun_dir, center, UP)
     -- calculate a precise bounding box around the camera frustum in the light's view space
     local min_x = MAX_NUM
@@ -147,6 +163,68 @@ function M.refresh_shadows(self, cam_proj)
     -- loose_bb.max_z = max_z
     -- use the aforementioned bounding box to create the light projection matrix
     local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
+    return mtx_light_view, mtx_light_proj
+end
+
+local diff = vmath.vector3()
+local function inside(small_sphere, big_sphere)
+    local bc, sc = big_sphere.center, small_sphere.center
+    diff.x, diff.y, diff.z = bc.x - sc.x, bc.y - sc.y, bc.z - sc.z
+    local dist_sqr = vmath.length_sqr(diff)
+    local dr = big_sphere.radius - small_sphere.radius
+    return dist_sqr < dr * dr
+end
+local function set_sphere(sphere, center, radius)
+    set_vec3(sphere.center, center)
+    sphere.radius = radius
+end
+local center = vmath.vector3()
+local directional_to = vmath.vector3()
+function M.refresh_shadows2(self, cam_proj, i)
+    -- skip the light frustum recalculations if the light and camera haven't moved
+    if not (self.camera.moved or self.light.moved) then
+        return
+    end
+    -- get the camera frustum in world space
+    local mtx_inv = vmath.inv(cam_proj * self.camera.view)
+    for i = 1, 8 do
+        local model_corner = model_corners[i]
+        local world_corner = mtx_inv * model_corner
+        world_corner = world_corner / world_corner.w
+        world_corner.w = 1
+        world_corners[i] = world_corner
+    end
+    -- get the max diameter and radius of the camera frustum
+    local diameter = math.ceil(vmath.length(world_corners[1] - world_corners[8]))
+    local radius = diameter / 2
+    -- get the center of the camera frustum
+    center.x, center.y, center.z = 0, 0, 0
+    for i = 1, 8 do
+        local world_corner = world_corners[i]
+        center.x = center.x + world_corner.x
+        center.y = center.y + world_corner.y
+        center.z = center.z + world_corner.z
+    end
+    center = center / 8
+    -- fetch out camera frustum bounding spheres calculated in the previous update
+    local tight_sphere = self.bounding_spheres[i].tight
+    local loose_sphere = self.bounding_spheres[i].loose
+    -- update the tight bounding sphere with the current frustum; skip the refresh if it's still inside the loose sphere
+    set_sphere(tight_sphere, center, radius)
+    if inside(tight_sphere, loose_sphere) then
+        return
+    end
+    -- otherwise update the loose bounding sphere and save it for subsequent frames
+    set_sphere(loose_sphere, center, radius * 1.5)
+    -- calculate the light's view and projection matrices
+    set_vec3(directional_to, settings.light.directional_to)
+    local mtx_light_view = vmath.matrix4_look_at(center - (directional_to * diameter), center, UP)
+    local width, depth = radius * 2.5, radius * 6
+    local mtx_light_proj = vmath.matrix4_orthographic(
+        center.x - width, center.x + width,
+        center.y - width, center.y + width,
+        center.z - depth, center.z + depth
+    )
     return mtx_light_view, mtx_light_proj
 end
 

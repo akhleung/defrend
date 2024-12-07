@@ -74,13 +74,13 @@ function M.setup_render_targets(self)
     }
     local shadow_map_params = {
         format = graphics.TEXTURE_FORMAT_R32F,
-        width = settings.shadow.buffer_resolution,
-        height = settings.shadow.buffer_resolution,
+        width = settings.shadow.atlas_resolution,
+        height = settings.shadow.atlas_resolution,
     }
     local shadow_depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
-        width  = settings.shadow.buffer_resolution,
-        height = settings.shadow.buffer_resolution,
+        width  = settings.shadow.atlas_resolution,
+        height = settings.shadow.atlas_resolution,
         -- flags  = render.TEXTURE_BIT
     }
 
@@ -125,5 +125,6 @@ end
 
 M.setup_lights = lighting.setup_lights
 M.refresh_shadows = lighting.refresh_shadows
+M.refresh_shadows2 = lighting.refresh_shadows2
 
 return M

@@ -10,12 +10,15 @@ local M = {
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
-        bias = 0.5,
+        texel_snapping = true,
+        bias = 1.1,
         softness = 1,
-        cascade = { 0.55, 0.15, 0.15, 0.15 },
+        -- cascade = { 0.55, 0.15, 0.15, 0.15 },
+        cascade = { 0.40, 0.20, 0.20, 0.20 },
+        -- cascade = { 0.25, 0.25, 0.25, 0.25 },
         map_resolution = 2048,
         map_dimension = 0,
-        buffer_resolution = 0,
+        atlas_resolution = 0,
         texel_size = 0,
         partitions = {},
         projections = {},
@@ -65,7 +68,7 @@ end
 local shadow = M.shadow
 function M.shadow.init(fov, aspect, near, far)
     shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
-    shadow.buffer_resolution = shadow.map_resolution * shadow.map_dimension
+    shadow.atlas_resolution = shadow.map_resolution * shadow.map_dimension
     shadow.texel_size = 1 / shadow.map_resolution
     local total_range = far - near
     for i = 1, #shadow.cascade do

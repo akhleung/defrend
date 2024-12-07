@@ -1,3 +1,5 @@
+local render_settings = require("render.settings")
+
 function init(self)
 	-- defos.toggle_fullscreen()
 	msg.post(".", "acquire_input_focus")
@@ -31,6 +33,7 @@ function on_input(self, action_id, action)
 	if action_id == hash("key_p") and pressed then
 		profiling = not profiling
 		profiler.enable_ui(profiling)
-		return
+	elseif action_id == hash("key_t") and pressed then
+		render_settings.shadow.texel_snapping = not render_settings.shadow.texel_snapping
 	end
 end

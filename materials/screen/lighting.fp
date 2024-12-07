@@ -25,8 +25,9 @@ uniform lighting_fp {
     vec4 light_radii[MAX_LIGHTS];
     vec4 light_colors[MAX_LIGHTS];
     vec4 camera_partitions[MAX_PARTITIONS];
-    mat4 mtx_light_views[MAX_PARTITIONS];
-    mat4 mtx_light_projs[MAX_PARTITIONS];
+    mat4 mtx_lights[MAX_PARTITIONS];
+    // mat4 mtx_light_views[MAX_PARTITIONS];
+    // mat4 mtx_light_projs[MAX_PARTITIONS];
     vec4 shadow_params;
     vec4 shadow_colors[MAX_PARTITIONS];
 };
@@ -70,20 +71,18 @@ vec2 rand(vec2 co) {
     ) * 0.00047;
 }
 
-float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 mtx_light_proj, float x_offset, float y_offset) {
-    // 1. offset fragment view-space position by surface normal to reduce shadow acne
+float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, float x_offset, float y_offset) {
+    // offset the fragment view-space position by surface normal to reduce shadow acne
     float d = 1.0 - dot(directional_from, normal);
     float bias = SHADOW_BIAS + HALF_BIAS * d;
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
-    // 2. multiply fragment view-space position by inverse view matrix of camera to get world space position
+    // multiply fragment view-space position by inverse view matrix of camera to get world space position
     vec4 world_pos = mtx_view_inv * view_pos_re_cam;
-    // 3. multiply by view matrix of light to get view-space position of fragment relative to light
-    vec4 view_pos_re_light = mtx_light_view * world_pos;
-    // 4. multiply by proj matrix of light to get clip/screen-space position of fragment relative to light
-    vec4 proj_pos_re_light = mtx_light_proj * view_pos_re_light;
+    // multiply by viewproj matrix of light to get clip/screen-space position of fragment relative to light
+    vec4 proj_pos_re_light = mtx_light * world_pos;
     proj_pos_re_light /= proj_pos_re_light.w;
-    vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5;
-    // 5. adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
+    vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5; // re-normalize [-1, 1] -> [0, 1]
+    // adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
     shadow_texcoord0 /= SHADOW_MAP_DIM;
     shadow_texcoord0.x += x_offset;
     shadow_texcoord0.y += y_offset;
@@ -93,7 +92,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
         shadow_texcoord0.y < y_offset || shadow_texcoord0.y > upper_bound + y_offset) {
         return 1.0;
     } 
-    // 6. re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
+    // re-normalize occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
     for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
@@ -104,6 +103,10 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light_view, mat4 m
         }
     }
     shadow /= PCF_SAMPLES;
+
+    // float occluder_z = texture(shadow_sampler, shadow_texcoord0).r;
+    // shadow = occluder_z < occludee_z ? 0.0 : 1.0;
+
     return shadow;
 }
 
@@ -124,9 +127,8 @@ void main() {
             // cast a shadow using the i'th shadow map
             float x_offset = camera_partitions[i].x;
             float y_offset = camera_partitions[i].y;
-            mat4 mtx_light_proj = mtx_light_projs[i];
-            mat4 mtx_light_view = mtx_light_views[i];
-            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light_view, mtx_light_proj, x_offset, y_offset);
+            mat4 mtx_light = mtx_lights[i];
+            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_light, x_offset, y_offset);
             break;
         }
     }
