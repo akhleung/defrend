@@ -7,43 +7,43 @@ local MAX_NUM = 2000000000
 local MIN_NUM = -2000000000
 local identity = vmath.matrix4()
 function M.setup_lights(self)
-        -- for directional lighting and shadow mapping
-        self.light = {
-            view = identity, -- these will be recalculated for each camera frustum partition as needed
-            proj = identity,
-            viewproj = identity,
+    -- for directional lighting and shadow mapping
+    self.light = {
+        view = identity, -- these will be recalculated for each camera frustum partition as needed
+        proj = identity,
+        viewproj = identity,
 
-            ambient_color = settings.light.ambient_color,
-            sun_color = settings.light.directional_color,
-            sun_direction = settings.light.directional_to,
+        ambient_color = settings.light.ambient_color,
+        sun_color = settings.light.directional_color,
+        sun_direction = settings.light.directional_to,
 
-            loose_bb = {
-                min_x = 0, max_x = 0,
-                min_y = 0, max_y = 0,
-                min_z = 0, max_z = 0,
+        loose_bb = {
+            min_x = 0, max_x = 0,
+            min_y = 0, max_y = 0,
+            min_z = 0, max_z = 0,
+        },
+        tight_bb = {
+            min_x = 0, max_x = 0,
+            min_y = 0, max_y = 0,
+            min_z = 0, max_z = 0,
+        },
+        moved = false,
+    }
+
+    self.bounding_spheres = {}
+    for i = 1, #settings.shadow.cascade do
+        self.bounding_spheres[i] = {
+            -- initialize the tight bounding sphere to be bigger, so that we force a recalculation in the first render
+            tight = {
+                center = vmath.vector3(),
+                radius = 1,
             },
-            tight_bb = {
-                min_x = 0, max_x = 0,
-                min_y = 0, max_y = 0,
-                min_z = 0, max_z = 0,
+            loose = {
+                center = vmath.vector3(),
+                radius = 0,
             },
-            moved = false,
         }
-
-        self.bounding_spheres = {}
-        for i = 1, #settings.shadow.cascade do
-            self.bounding_spheres[i] = {
-                -- initialize the tight bounding sphere to be bigger, so that we force a recalculation in the first render
-                tight = {
-                    center = vmath.vector3(),
-                    radius = 1,
-                },
-                loose = {
-                    center = vmath.vector3(),
-                    radius = 0,
-                },
-            }
-        end
+    end
 end
 
 local function set_vec3(to, from)
@@ -191,7 +191,6 @@ function M.refresh_shadows2(self, cam_proj, i)
         local model_corner = model_corners[i]
         local world_corner = mtx_inv * model_corner
         world_corner = world_corner / world_corner.w
-        world_corner.w = 1
         world_corners[i] = world_corner
     end
     -- get the max diameter and radius of the camera frustum
@@ -209,7 +208,7 @@ function M.refresh_shadows2(self, cam_proj, i)
     -- fetch out camera frustum bounding spheres calculated in the previous update
     local tight_sphere = self.bounding_spheres[i].tight
     local loose_sphere = self.bounding_spheres[i].loose
-    -- update the tight bounding sphere with the current frustum; skip the refresh if it's still inside the loose sphere
+    -- set the tight bounding sphere to the current frustum; skip the refresh if it's still inside the loose sphere
     set_sphere(tight_sphere, center, radius)
     if inside(tight_sphere, loose_sphere) then
         return
