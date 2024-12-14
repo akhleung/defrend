@@ -12,13 +12,15 @@ local M = {
     shadow = {
         texel_snapping = true,
         bias = 1.1,
+        -- bias = 0.5,
         softness = 1,
         -- cascade = { 0.55, 0.15, 0.15, 0.15 },
         cascade = { 0.40, 0.20, 0.20, 0.20 },
+        -- cascade = { 0.10, 0.20, 0.30, 0.40 },
         -- cascade = { 0.25, 0.25, 0.25, 0.25 },
-        map_resolution = 2048,
+        atlas_resolution = 4096,
+        map_resolution = 0,
         map_dimension = 0,
-        atlas_resolution = 0,
         texel_size = 0,
         partitions = {},
         projections = {},
@@ -38,7 +40,7 @@ local M = {
         radius = 2.0,
     },
     kuwahara_blur = {
-        enabled = true,
+        enabled = false,
         samples = 1,
     },
     dof = {},
@@ -49,7 +51,7 @@ local M = {
     },
     fxaa = {
         enabled = true,
-        strength = 12,
+        strength = 0,
     },
 }
 
@@ -68,7 +70,7 @@ end
 local shadow = M.shadow
 function M.shadow.init(fov, aspect, near, far)
     shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
-    shadow.atlas_resolution = shadow.map_resolution * shadow.map_dimension
+    shadow.map_resolution = shadow.atlas_resolution / shadow.map_dimension
     shadow.texel_size = 1 / shadow.map_resolution
     local total_range = far - near
     for i = 1, #shadow.cascade do
