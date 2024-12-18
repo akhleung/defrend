@@ -252,20 +252,19 @@ render_shadows = function(self)
     render.clear(self.clear_shadow_buffers)
     render.enable_material("shadow_material")
     for i = 1, #partitions do
-        local mtx_view, mtx_proj = defrend.refresh_shadows2(self, projections[i], i)
-        if mtx_view and mtx_proj then
-            mtx_light_views[i] = mtx_view
-            mtx_light_projs[i] = mtx_proj
-            mtx_lights[i] = mtx_proj * mtx_view
-        end
+        local mtx_view, mtx_proj = defrend.refresh_shadows(self, projections[i])
+        mtx_light_views[i] = mtx_view
+        mtx_light_projs[i] = mtx_proj
+        local mtx_light = mtx_proj * mtx_view
         render.set_projection(mtx_light_projs[i])
         render.set_view(mtx_light_views[i])
         local partition = partitions[i]
         local x_offset = partition.x * atlas_resolution
         local y_offset = partition.y * atlas_resolution
         render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
-        shadow_options.frustum = mtx_lights[i]
+        shadow_options.frustum = mtx_light
         render.draw(self.predicates.model, shadow_options)
+        mtx_lights[i] = mtx_light * self.camera.view_inv
     end
     render.disable_material()
 end
@@ -282,7 +281,6 @@ update_lighting_constants = function(self)
 
     constants.mtx_lights = mtx_lights
     constants.mtx_view = self.camera.view
-    constants.mtx_view_inv = self.camera.view_inv
 
     local n = lighting_state.get_num_lights()
     num_lights.x, num_lights.y, num_lights.z, num_lights.w = n, n, n, n

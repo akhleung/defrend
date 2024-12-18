@@ -124,7 +124,6 @@ function M.setup_predicates(self)
 end
 
 M.setup_lights = lighting.setup_lights
-M.refresh_shadows = lighting.refresh_shadows
-M.refresh_shadows2 = lighting.refresh_shadows2
+M.refresh_shadows = lighting.refresh_shadows_half_stable
 
 return M
