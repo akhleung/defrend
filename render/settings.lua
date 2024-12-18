@@ -10,7 +10,7 @@ local M = {
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
-        texel_snapping = true,
+        stable = true,
         -- bias = 1.1,
         bias = 0.48,
         softness = 0,

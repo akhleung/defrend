@@ -9,6 +9,7 @@ local MSG_WINDOW_RESIZED = hash("window_resized")
 local MSG_SET_VIEW_PROJ = hash("set_view_projection")
 local MSG_SSAO_SETTINGS_UPDATED = hash("ssao_settings_updated")
 local MSG_BOX_BLUR_SETTINGS_UPDATED = hash("box_blur_settings_updated")
+local MSG_TOGGLE_STABLE_SHADOWS = hash("toggle_stable_shadows")
 
 local identity = vmath.matrix4()
 local shadow_options = {}
@@ -214,6 +215,7 @@ function update(self)
     render.disable_state(graphics.STATE_STENCIL_TEST)
 end
 
+local refresh_shadows = defrend.refresh_shadows_stable
 function on_message(self, message_id, message)
     local camera = self.camera
     local camera_gui = self.camera_gui
@@ -230,6 +232,12 @@ function on_message(self, message_id, message)
         settings.ssao.set_uniforms(self.ssao_constants)
     elseif message_id == MSG_BOX_BLUR_SETTINGS_UPDATED then
         settings.box_blur.set_uniforms(self.box_blur_constants)
+    elseif message_id == MSG_TOGGLE_STABLE_SHADOWS then
+        if settings.shadow.stable then
+            refresh_shadows = defrend.refresh_shadows_stable
+        else
+            refresh_shadows = defrend.refresh_shadows_half_stable
+        end
     end
 end
 
@@ -252,7 +260,7 @@ render_shadows = function(self)
     render.clear(self.clear_shadow_buffers)
     render.enable_material("shadow_material")
     for i = 1, #partitions do
-        local mtx_view, mtx_proj = defrend.refresh_shadows(self, projections[i])
+        local mtx_view, mtx_proj = refresh_shadows(self, projections[i])
         mtx_light_views[i] = mtx_view
         mtx_light_projs[i] = mtx_proj
         local mtx_light = mtx_proj * mtx_view

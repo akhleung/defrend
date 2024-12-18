@@ -58,7 +58,7 @@ function M.refresh_shadows_stable(self, cam_proj)
     set_vec3(world_center_vec4, world_center)
     local light_center = mtx_light_view * world_center_vec4
     -- calculate the light's view and projection matrices
-    local width, depth = radius * 1.1, radius * 3
+    local width, depth = radius * 1.08, radius * 3
     local mtx_light_proj = vmath.matrix4_orthographic(
         light_center.x - width, light_center.x + width,
         light_center.y - width, light_center.y + width,
@@ -67,6 +67,8 @@ function M.refresh_shadows_stable(self, cam_proj)
     local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
     return mtx_light_view, mtx_trans * mtx_light_proj
 end
+
+-- helper functions
 
 local model_corners = {
     vmath.vector4(-1, -1, -1, 1),
@@ -88,8 +90,6 @@ local world_corners = {
     vmath.vector4(),
     vmath.vector4(),
 }
-
--- helper functions
 
 get_light_view_mtx_and_camera_frustum = function(self, cam_proj)
     -- get the camera frustum in world space

@@ -22,7 +22,7 @@ function update(self, dt)
 
 	-- local cam_target = render_state.CAM_TARGET
 
-	payload.text = string.format("AVG FPS: %d, TEXEL SNAPPING: %s", avg_fps, tostring(render_settings.shadow.texel_snapping))
+	payload.text = string.format("AVG FPS: %d, STABLE SHADOWS: %s", avg_fps, tostring(render_settings.shadow.stable))
 	payload.position = text_pos
 	payload.color = text_col
 	msg.post(

@@ -34,6 +34,7 @@ function on_input(self, action_id, action)
 		profiling = not profiling
 		profiler.enable_ui(profiling)
 	elseif action_id == hash("key_t") and pressed then
-		render_settings.shadow.texel_snapping = not render_settings.shadow.texel_snapping
+		render_settings.shadow.stable = not render_settings.shadow.stable
+		msg.post("@render:", hash("toggle_stable_shadows"))
 	end
 end
