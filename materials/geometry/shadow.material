@@ -2,7 +2,14 @@ name: "shadow"
 tags: "model"
 vertex_program: "/materials/geometry/shadow.vp"
 fragment_program: "/materials/geometry/shadow.fp"
+vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
-  name: "mtx_worldviewproj"
-  type: CONSTANT_TYPE_WORLDVIEWPROJ
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
+}
+attributes {
+  name: "mtx_world"
+  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
 }

@@ -2,17 +2,14 @@ name: "model"
 tags: "model"
 vertex_program: "/materials/geometry/model.vp"
 fragment_program: "/materials/geometry/model.fp"
+vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
-  name: "mtx_worldview"
-  type: CONSTANT_TYPE_WORLDVIEW
+  name: "mtx_view"
+  type: CONSTANT_TYPE_VIEW
 }
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
-}
-vertex_constants {
-  name: "mtx_normal"
-  type: CONSTANT_TYPE_NORMAL
 }
 samplers {
   name: "diffuse_map"
@@ -35,4 +32,16 @@ samplers {
   wrap_v: WRAP_MODE_REPEAT
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
+}
+attributes {
+  name: "mtx_world"
+  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
+}
+attributes {
+  name: "mtx_normal"
+  semantic_type: SEMANTIC_TYPE_NORMAL_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
 }
