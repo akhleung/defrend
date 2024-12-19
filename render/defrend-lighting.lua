@@ -118,13 +118,14 @@ get_light_view_mtx_and_camera_frustum = function(self, cam_proj)
     return mtx_light_view, world_corners, world_center
 end
 
+local offset = vmath.vector3()
 get_texel_snapping_mtx = function(mtx_light_view, mtx_light_proj)
     -- create a translation matrix to snap the light projection to the nearest texel
     local half_res = shadow_settings.map_resolution / 2
     local shadow_origin = mtx_light_proj * mtx_light_view * origin * half_res
-    local offset_x = (math.floor(shadow_origin.x) - shadow_origin.x) / half_res
-    local offset_y = (math.floor(shadow_origin.y) - shadow_origin.y) / half_res
-    return vmath.matrix4_translation(vmath.vector3(offset_x, offset_y, 0))
+    offset.x = (math.floor(shadow_origin.x) - shadow_origin.x) / half_res
+    offset.y = (math.floor(shadow_origin.y) - shadow_origin.y) / half_res
+    return vmath.matrix4_translation(offset)
 end
 
 set_vec3 = function(to, from)
