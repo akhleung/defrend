@@ -3,12 +3,11 @@
 in vec4 position;
 in vec2 texcoord0;
 in vec3 normal;
-in mat4 mtx_world;
-in mat4 mtx_normal;
 
 uniform model_vp {
-    mat4 mtx_view;
+    mat4 mtx_worldview;
     mat4 mtx_proj;
+    mat4 mtx_normal;
 };
 
 out vec3 var_frag_pos;
@@ -16,7 +15,7 @@ out vec3 var_normal;
 out vec2 var_texcoord0;
 
 void main() {
-    vec4 p = mtx_view * mtx_world * vec4(position.xyz, 1.0);
+    vec4 p = mtx_worldview * vec4(position.xyz, 1.0);
     var_frag_pos = p.xyz;
     var_normal = normalize((mtx_normal * vec4(normal, 0.0)).xyz);
     // var_normal = normalize(normal);
