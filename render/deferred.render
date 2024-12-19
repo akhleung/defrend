@@ -1,11 +1,11 @@
 script: "/render/deferred.render_script"
 render_resources {
   name: "model_material"
-  path: "/materials/geometry/model.material"
+  path: "/materials/geometry/model-instanced.material"
 }
 render_resources {
   name: "shadow_material"
-  path: "/materials/geometry/shadow.material"
+  path: "/materials/geometry/shadow-instanced.material"
 }
 render_resources {
   name: "lighting_material"

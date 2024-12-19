@@ -2,7 +2,7 @@ mesh: "/assets/models/quad-10x10.dae"
 name: "floor"
 materials {
   name: "default"
-  material: "/materials/geometry/model.material"
+  material: "/materials/geometry/model-instanced.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/images/textures-diffuse.png"

@@ -2,7 +2,7 @@ mesh: "/assets/citybuilder/gltf/building_A.gltf"
 name: "building_a"
 materials {
   name: "citybits_texture"
-  material: "/materials/geometry/model.material"
+  material: "/materials/geometry/model-instanced.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/citybuilder/gltf/citybits_texture.png"
