@@ -69,10 +69,10 @@ vec2 rand(vec2 co) {
     ) * 0.00047;
 }
 
-float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset) {
+float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, int i) {
     // offset the fragment's view-space position by the surface normal to reduce shadow acne
     float d = 1.0 - dot(directional_from, normal);
-    float bias = SHADOW_BIAS + QUARTER_BIAS * d;
+    float bias = SHADOW_BIAS + QUARTER_BIAS * d + i * .025;
     view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
     // transform the fragment from the camera's view space into the light's clip/screen space
     vec4 proj_pos_re_light = mtx_light * view_pos_re_cam;
@@ -112,7 +112,7 @@ void main() {
     float shadow = 1.0;
     for (int i = 0; i < num_partitions; ++i) {
         if (var_frag_pos.z > -camera_partitions[i].z) { // cast a shadow using the nearest applicable partition
-            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], camera_partitions[i].xy);
+            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], camera_partitions[i].xy, i);
             break;
         }
     }
