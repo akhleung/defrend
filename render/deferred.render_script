@@ -63,13 +63,6 @@ function init(self)
     kuwahara_blur_options.constants = self.kuwahara_blur_constants
     gamma_options.constants = self.gamma_constants
     fxaa_options.constants = self.fxaa_constants
-
-    -- Use this for directional lights
-    -- self.bias_matrix    = vmath.matrix4()
-    -- self.bias_matrix.c0 = vmath.vector4(0.5, 0.0, 0.0, 0.0)
-    -- self.bias_matrix.c1 = vmath.vector4(0.0, 0.5, 0.0, 0.0)
-    -- self.bias_matrix.c2 = vmath.vector4(0.0, 0.0, 0.5, 0.0)
-    -- self.bias_matrix.c3 = vmath.vector4(0.5, 0.5, 0.5, 1.0)    
 end
 
 local function swap_post_rt(self)
@@ -134,8 +127,6 @@ function update(self)
     render.set_projection(self.camera_screen.proj)
 
     if settings.ssao.enabled then
-        local ssao_width = render.get_render_target_width(self.post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
-        local ssao_height = render.get_render_target_height(self.post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.enable_material("ssao_material")
         render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
