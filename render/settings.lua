@@ -11,14 +11,13 @@ local M = {
     },
     shadow = {
         stable = true,
-        -- bias = 1.1,
-        bias = 0.48,
-        softness = 0,
+        bias = 0.5,
+        softness = 1,
         -- cascade = { 0.55, 0.15, 0.15, 0.15 },
         cascade = { 0.40, 0.20, 0.20, 0.20 },
         -- cascade = { 0.10, 0.20, 0.30, 0.40 },
         -- cascade = { 0.25, 0.25, 0.25, 0.25 },
-        atlas_resolution = 2048,
+        atlas_resolution = 4096,
         map_resolution = 0,
         map_dimension = 0,
         texel_size = 0,
@@ -37,7 +36,7 @@ local M = {
     },
     box_blur = {
         samples = 1,
-        radius = 2.0,
+        radius = 1.0,
     },
     kuwahara_blur = {
         enabled = false,
