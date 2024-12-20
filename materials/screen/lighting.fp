@@ -14,8 +14,8 @@ uniform sampler2D shadow_sampler;
 uniform lighting_fp {
     mat4 mtx_view;
     
+    vec4 light_params;
     vec4 ambient_color;
-
     vec4 directional_color;
     vec4 directional_to;
     
