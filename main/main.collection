@@ -29,13 +29,45 @@ instances {
     z: -23.0
   }
 }
+instances {
+  id: "logo6"
+  prototype: "/assets/logo/logo.go"
+  position {
+    x: -147.0
+    y: 2.0
+    z: -253.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+instances {
+  id: "logo7"
+  prototype: "/assets/logo/logo.go"
+  position {
+    x: -173.0
+    y: 2.0
+    z: -248.0
+  }
+  rotation {
+    x: 0.40529314
+    w: 0.9141868
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/main/neighborhood.collection"
   position {
     x: 4.0
     y: -2.0
-    z: -16.0
+    z: -291.0
   }
 }
 scale_along_z: 1
@@ -122,9 +154,17 @@ embedded_instances {
 embedded_instances {
   id: "old_stuff"
   children: "ball"
+  children: "building"
   children: "building01"
   children: "building02"
   children: "building03"
+  children: "building1"
+  children: "building2"
+  children: "building3"
+  children: "building4"
+  children: "building5"
+  children: "building6"
+  children: "building7"
   children: "duck"
   children: "hatchback"
   children: "logo"
@@ -133,6 +173,8 @@ embedded_instances {
   children: "logo3"
   children: "logo4"
   children: "logo5"
+  children: "logo6"
+  children: "logo7"
   children: "point_light_green"
   children: "point_light_red"
   children: "sedan"
@@ -155,7 +197,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"Blue\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -171,7 +213,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Red.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -187,7 +229,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"White.005\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -203,7 +245,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Yellow.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -310,7 +352,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"Black.002\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/black.png\\\"\\n"
@@ -326,7 +368,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"White.004\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/white.png\\\"\\n"
@@ -342,7 +384,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Yellow\\\"\\n"
-  "  material: \\\"/materials/geometry/model.material\\\"\\n"
+  "  material: \\\"/materials/geometry/model-instanced.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/brown.png\\\"\\n"
@@ -380,7 +422,7 @@ embedded_instances {
   position {
     x: -19.0
     y: -1.0
-    z: -255.0
+    z: -530.0
   }
   rotation {
     y: 0.70710677
@@ -2396,5 +2438,195 @@ embedded_instances {
     x: -40.0
     y: -2.0
     z: -40.0
+  }
+}
+embedded_instances {
+  id: "building"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -237.0
+    y: -2.35
+    z: -258.0
+  }
+  rotation {
+    x: 4.0734516E-16
+    y: -0.16995706
+    z: 4.2475904E-16
+    w: -0.98545146
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building1"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -195.0
+    y: -2.35
+    z: -256.0
+  }
+  rotation {
+    x: 1.013488E-17
+    y: 0.79161507
+    z: -5.089131E-17
+    w: -0.6110201
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building2"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -214.0
+    y: -2.35
+    z: -261.0
+  }
+  rotation {
+    x: 0.19427963
+    y: 0.6798937
+    z: 0.19427964
+    w: -0.6798937
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building3"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -224.0
+    y: -2.35
+    z: -232.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building4"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -205.0
+    y: -2.35
+    z: -230.0
+  }
+  rotation {
+    x: 0.2060619
+    y: 0.6764159
+    z: -0.20606188
+    w: -0.6764159
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building5"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -244.0
+    y: -2.35
+    z: -234.0
+  }
+  rotation {
+    x: 0.1427658
+    y: 0.6925445
+    z: -0.14276579
+    w: -0.6925445
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building6"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -252.0
+    y: -2.35
+    z: -217.0
+  }
+  rotation {
+    x: -1.0559583E-17
+    y: 0.5172209
+    z: 1.253987E-16
+    w: -0.85585195
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+embedded_instances {
+  id: "building7"
+  data: "components {\n"
+  "  id: \"building\"\n"
+  "  component: \"/assets/citybuilder/models/building01.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -229.0
+    y: -2.35
+    z: -214.0
+  }
+  rotation {
+    x: 0.23862958
+    y: 0.66562444
+    z: 0.6948833
+    w: -0.13090914
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }
