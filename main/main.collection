@@ -105,15 +105,15 @@ embedded_instances {
   "  data: \"aspect_ratio: 1.78\\n"
   "fov: 0.3927\\n"
   "near_z: 60.0\\n"
-  "far_z: 360.0\\n"
+  "far_z: 1060.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
   ""
   position {
-    x: -9.0
+    x: -82.0
     y: 147.0
-    z: 3.0
+    z: -260.0
   }
   rotation {
     x: -0.5
