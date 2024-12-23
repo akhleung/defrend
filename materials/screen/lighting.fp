@@ -77,7 +77,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     shadow_texcoord0 /= SHADOW_MAP_DIM;
     shadow_texcoord0 += offset;
     // rescale occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
-    float shadow = 1.0;
+    float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
     int samples = 0;
     for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
