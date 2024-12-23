@@ -6,7 +6,7 @@ local M = {
         fog_far = 60,
         fog_color = vmath.vector4(1),
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
-        directional_color = vmath.vector4(.95, .95, .95, 1.0),
+        directional_color = vmath.vector4(.95, .95, .85, 1.0),
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
@@ -14,9 +14,11 @@ local M = {
         bias = 0.5,
         softness = 1,
         -- cascade = { 0.55, 0.15, 0.15, 0.15 },
-        cascade = { 0.40, 0.20, 0.20, 0.20 },
+        -- cascade = { 0.40, 0.20, 0.20, 0.20 },
+        cascade = { 0.10, 0.10, 0.10, 0.30 },
         -- cascade = { 0.10, 0.20, 0.30, 0.40 },
         -- cascade = { 0.25, 0.25, 0.25, 0.25 },
+        biases = { 0.35, 0.5, 0.75, 1.2 },
         atlas_resolution = 4096,
         map_resolution = 0,
         map_dimension = 0,
@@ -50,7 +52,7 @@ local M = {
     },
     fxaa = {
         enabled = true,
-        strength = 0,
+        strength = 12,
     },
 }
 
@@ -76,7 +78,7 @@ function M.shadow.init(fov, aspect, near, far)
         far = near + total_range * shadow.cascade[i]
         local y_offset = math.floor((i - 1) / shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
         local x_offset = ((i - 1) % shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
-        shadow.partitions[i] = vmath.vector4(x_offset, y_offset, far, #shadow.cascade)
+        shadow.partitions[i] = vmath.vector4(x_offset, y_offset, far, shadow.biases[i])
         shadow.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
         near = far
     end
@@ -87,7 +89,7 @@ function M.shadow.set_uniforms(uniforms)
     shadow_params.x = shadow.map_resolution
     shadow_params.y = shadow.map_dimension
     shadow_params.z = shadow.softness
-    shadow_params.w = shadow.bias
+    shadow_params.w = #shadow.cascade
     uniforms.shadow_params = shadow_params
     uniforms.camera_partitions = shadow.partitions
 end

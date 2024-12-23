@@ -13,7 +13,7 @@ function M.setup_cameras(self)
         moved = true,
 
         near = 60,
-        far = 360,
+        far = 1060,
         aspect = render.get_window_width() / render.get_window_height(),
         fov = 0.3927,
     }
