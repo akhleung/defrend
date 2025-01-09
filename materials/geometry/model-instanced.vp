@@ -23,4 +23,3 @@ void main() {
     var_texcoord0 = texcoord0;
     gl_Position = mtx_proj * p;
 }
-

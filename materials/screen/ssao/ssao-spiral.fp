@@ -65,5 +65,5 @@ void main() {
 
 	float ao = spiralAO(position, normal);
     // ao *= ao;
-	frag_color = vec4(ao, ao, ao, 1.0);
+	frag_color = vec4(ao, ao, ao, ao);
 }

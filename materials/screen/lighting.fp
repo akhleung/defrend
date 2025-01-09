@@ -128,7 +128,7 @@ void main() {
         shadow += (1.0 - shadow) * fade;
     }
 
-    float ao = texture(ssao_sampler, var_texcoord0).r;
+    float ao = texture(ssao_sampler, var_texcoord0).a;
     float shininess = position_sample.w;
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);

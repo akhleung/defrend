@@ -57,6 +57,8 @@ function init(self)
     self.fxaa_constants = render.constant_buffer()
     settings.fxaa.set_uniforms(self.fxaa_constants)
 
+    render_options.frustum_planes = render.FRUSTUM_PLANES_ALL
+    shadow_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     ssao_options.constants = self.ssao_constants
     box_blur_options.constants = self.box_blur_constants
     lighting_options.constants = self.lighting_constants
@@ -108,17 +110,17 @@ function update(self)
     -- disable the depth mask and face culling for things with transparency
     render.set_depth_mask(false)
     -- render.disable_state(render.STATE_CULL_FACE)
-    render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+    -- render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
     render.enable_state(graphics.STATE_BLEND)
-    render.draw(predicates.transparent, render_options)
+    -- render.draw(predicates.transparent, render_options)
 
     -- render the other components: sprites, tilemaps, particles etc
-    render.draw(predicates.tile, render_options)
-    render.draw(predicates.particle, render_options)
+    -- render.draw(predicates.tile, render_options)
+    -- render.draw(predicates.particle, render_options)
     render.disable_state(graphics.STATE_DEPTH_TEST)
     render.disable_state(graphics.STATE_CULL_FACE) -- need to disable this to get the debug_text and profiler to show
 
-    render.disable_state(graphics.STATE_STENCIL_TEST)
+    -- render.disable_state(graphics.STATE_STENCIL_TEST)
     render.disable_state(graphics.STATE_BLEND)
 
     render.set_render_target(self.post_target)
@@ -153,7 +155,7 @@ function update(self)
     render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-    render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.draw(predicates.screen, lighting_options)
     render.disable_texture("diffuse_sampler")
     render.disable_texture("position_sampler")

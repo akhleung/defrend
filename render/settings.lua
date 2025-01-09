@@ -2,23 +2,23 @@ local M = {
     resolution_x = 0,
     resolution_y = 0,
     light = {
-        fog_near = 40,
-        fog_far = 60,
-        fog_color = vmath.vector4(1),
+        fog_near = 800,
+        fog_far = 1060,
+        fog_color = vmath.vector4(0),
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
-        directional_color = vmath.vector4(.95, .95, .85, 1.0),
+        directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
         stable = true,
-        bias = 0.5,
         softness = 1,
         -- cascade = { 0.55, 0.15, 0.15, 0.15 },
         -- cascade = { 0.40, 0.20, 0.20, 0.20 },
-        cascade = { 0.10, 0.10, 0.10, 0.30 },
+        cascade = { 0.20, 0.10, 0.10, 0.20 },
         -- cascade = { 0.10, 0.20, 0.30, 0.40 },
         -- cascade = { 0.25, 0.25, 0.25, 0.25 },
-        biases = { 0.35, 0.5, 0.75, 1.2 },
+        -- cascade = { 0.75 },
+        biases = { 0.5, 0.75, 0.75, 1.2 },
         atlas_resolution = 4096,
         map_resolution = 0,
         map_dimension = 0,
@@ -27,7 +27,7 @@ local M = {
         projections = {},
     },
     ssao = {
-        enabled = true,
+        enabled = false,
         blur = false,
         samples = 16,
         intensity = 1.5,
@@ -52,20 +52,20 @@ local M = {
     },
     fxaa = {
         enabled = true,
-        strength = 12,
+        strength = 0,
     },
 }
 
 local light = M.light
-local light_params = vmath.vector4()
+local fog_params = vmath.vector4()
 function M.light.set_uniforms(uniforms)
     uniforms.ambient_color = light.ambient_color
     uniforms.directional_color = light.directional_color
     uniforms.directional_to = light.directional_to
     uniforms.fog_color = light.fog_color
-    light_params.x = light.fog_near
-    light_params.y = light.fog_far
-    uniforms.light_params = light_params
+    fog_params.x = light.fog_near
+    fog_params.y = light.fog_far
+    uniforms.fog_params = fog_params
 end
 
 local shadow = M.shadow

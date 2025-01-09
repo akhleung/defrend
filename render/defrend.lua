@@ -70,24 +70,18 @@ function M.setup_render_targets(self)
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = render.get_window_width(),
         height = render.get_window_height(),
-        -- flags  = render.TEXTURE_BIT
-    }
-    local shadow_map_params = {
-        format = graphics.TEXTURE_FORMAT_R32F,
-        width = settings.shadow.atlas_resolution,
-        height = settings.shadow.atlas_resolution,
+        -- flags = graphics.TEXTURE_TYPE_IMAGE_2D,
     }
     local shadow_depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = settings.shadow.atlas_resolution,
         height = settings.shadow.atlas_resolution,
-        -- flags  = render.TEXTURE_BIT
+        flags  = graphics.TEXTURE_TYPE_IMAGE_2D,
     }
 
     self.shadow_map = render.render_target(
         "shadow_map",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = shadow_map_params,
             [graphics.BUFFER_TYPE_DEPTH_BIT] = shadow_depth_params,
         }
     )

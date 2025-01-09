@@ -8,7 +8,7 @@ shared_state = 1
 [display]
 width = 1600
 height = 900
-vsync = 0
+vsync = 1
 display_device_info = 0
 
 [android]
