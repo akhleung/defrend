@@ -7,12 +7,10 @@ in vec2 var_texcoord0;
 
 uniform ssao_fp {
 	mat4 mtx_proj;
-	vec4 resolution;
 	vec4 kernel[NUM_SAMPLES];
 	vec4 noise[NUM_NOISE];
 };
 
-uniform sampler2D color_sampler;
 uniform sampler2D normal_sampler;
 uniform sampler2D position_sampler;
 
@@ -23,7 +21,7 @@ void main() {
 	frag_out = vec4(0, 0, 0, 1);
 
 	vec3 position = texture(position_sampler, var_texcoord0).xyz;
-  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz;
+  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
 
 	int u = int(gl_FragCoord.x - 0.5) % 4;
 	int v = int(gl_FragCoord.y - 0.5) % 4;
@@ -63,6 +61,6 @@ void main() {
 
 	occlusion = 1.- (occlusion / NUM_SAMPLES);
 	
-	frag_out = vec4(occlusion,occlusion,occlusion, 1); 
+	frag_out = vec4(occlusion); 
 
 }

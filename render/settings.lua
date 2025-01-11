@@ -27,7 +27,7 @@ local M = {
         projections = {},
     },
     ssao = {
-        enabled = false,
+        enabled = true,
         blur = false,
         samples = 16,
         intensity = 1.5,
@@ -35,6 +35,9 @@ local M = {
         radius = 2.0,
         max_distance = 2.0,
         attenuation = 0.0,
+
+        kernel = {},
+        noise = {},
     },
     box_blur = {
         samples = 1,
@@ -94,9 +97,42 @@ function M.shadow.set_uniforms(uniforms)
     uniforms.camera_partitions = shadow.partitions
 end
 
+local function ssao_init()
+	math.randomseed(os.time())
+	math.random()
+	math.random()
+	math.random()
+	for i = 1, M.ssao.samples do
+		local sample = vmath.normalize(
+			vmath.vector4(
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				1
+			)
+		)
+		local scale = (i - 1) / M.ssao.samples
+		scale = vmath.lerp(scale * scale, 0.1, 1.0)
+		sample = sample * scale
+		table.insert(M.ssao.kernel, sample)
+	end
+	for i = 1, M.ssao.samples/4 do
+		local noise = vmath.normalize(
+			vmath.vector4(
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				0,
+				0
+			)
+		)
+		table.insert(M.ssao.noise, noise)
+	end
+end
+
 local ssao = M.ssao
 local ssao_params1 = vmath.vector4()
 local ssao_params2 = vmath.vector4()
+ssao_init()
 function M.ssao.set_uniforms(uniforms)
     ssao_params1.x = ssao.samples
     ssao_params1.y = ssao.intensity
@@ -106,6 +142,9 @@ function M.ssao.set_uniforms(uniforms)
     ssao_params2.y = ssao.attenuation
     uniforms.params1 = ssao_params1
     uniforms.params2 = ssao_params2
+
+    uniforms.kernel = ssao.kernel
+    uniforms.noise = ssao.noise
 end
 
 local box_blur = M.box_blur

@@ -132,6 +132,7 @@ function update(self)
         render.enable_material("ssao_material")
         render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+        ssao_options.constants.mtx_proj = camera.proj
         render.draw(predicates.screen, ssao_options)
         render.disable_texture("position_sampler")
         render.disable_texture("normal_sampler")
