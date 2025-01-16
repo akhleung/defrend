@@ -31,3 +31,7 @@ render_resources {
   name: "box_blur_material"
   path: "/materials/screen/blur/box.material"
 }
+render_resources {
+  name: "point_light_material"
+  path: "/materials/geometry/point-light.material"
+}

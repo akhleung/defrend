@@ -70,7 +70,7 @@ function M.setup_render_targets(self)
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = render.get_window_width(),
         height = render.get_window_height(),
-        -- flags = graphics.TEXTURE_TYPE_IMAGE_2D,
+        flags = graphics.TEXTURE_TYPE_IMAGE_2D,
     }
     local shadow_depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
@@ -109,7 +109,7 @@ function M.setup_render_targets(self)
 end
 
 function M.setup_predicates(self)
-    local arg = {"tile", "gui", "text", "particle", "model", "sprite", "transparent", "debug_text", "screen"}
+    local arg = {"tile", "gui", "text", "particle", "model", "sprite", "transparent", "debug_text", "screen", "point_light"}
     local predicates = {}
     for _, predicate_name in pairs(arg) do
         predicates[predicate_name] = render.predicate({predicate_name})

@@ -2630,3 +2630,291 @@ embedded_instances {
     z: 8.0
   }
 }
+embedded_instances {
+  id: "point_light"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -82.0
+    y: 5.0
+    z: -251.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light1"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -36.0
+    y: 5.0
+    z: -251.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light2"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: 11.0
+    y: 5.0
+    z: -224.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light3"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: 10.0
+    y: 5.0
+    z: -269.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light4"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: 5.0
+    z: -286.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light5"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -129.0
+    y: 5.0
+    z: -207.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light6"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -130.0
+    y: 5.0
+    z: -239.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light7"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -116.0
+    y: 5.0
+    z: -270.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light8"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -146.0
+    y: 5.0
+    z: -303.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light9"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -179.0
+    y: 5.0
+    z: -205.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light10"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -164.0
+    y: 5.0
+    z: -238.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light11"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -65.0
+    y: 5.0
+    z: -301.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light12"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -72.0
+    y: 5.0
+    z: -205.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light13"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -19.0
+    y: 5.0
+    z: -204.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light14"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: 33.0
+    y: 5.0
+    z: -247.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+embedded_instances {
+  id: "point_light15"
+  data: "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/lighting/point_light.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: 33.0
+    y: 5.0
+    z: -315.0
+  }
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}

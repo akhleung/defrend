@@ -1,0 +1,24 @@
+mesh: "/builtins/assets/meshes/sphere.dae"
+name: "point_light"
+materials {
+  name: "default"
+  material: "/materials/geometry/point-light.material"
+  attributes {
+    name: "color"
+    double_values {
+      v: 1.0
+      v: 1.0
+      v: 1.0
+      v: 1.0
+    }
+  }
+  attributes {
+    name: "radii"
+    double_values {
+      v: 10.0
+      v: 15.0
+      v: 0.0
+      v: 0.0
+    }
+  }
+}

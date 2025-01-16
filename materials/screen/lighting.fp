@@ -76,7 +76,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     // transform the fragment from the camera's view space into the light's clip/screen space
     vec4 proj_pos_re_light = mtx_light * view_pos_re_cam;
     proj_pos_re_light /= proj_pos_re_light.w;
-    vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5; // rescale [-1, 1] -> [0, 1]
+    vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5; // rescale/bias [-1, 1] -> [0, 1]
     // adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
     shadow_texcoord0 /= SHADOW_MAP_DIM;
     shadow_texcoord0 += offset;
@@ -107,7 +107,7 @@ void main() {
 
     vec3 var_frag_pos = position_sample.xyz;
     vec3 view_dir = normalize(-var_frag_pos);
-    vec3 normal = normal_sample.xyz * 2.0 - 1.0; // rescale [0, 1] -> [-1, 1]
+    vec3 normal = normal_sample.xyz * 2.0 - 1.0; // rescale/bias [0, 1] -> [-1, 1]
 
     float shadow = 1;
     float this_cutoff = 0;
@@ -133,9 +133,9 @@ void main() {
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
-    float sun_spec = specular(view_dir, directional_from, normal, shininess) * shadow;
-    float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */) * shadow;
-    color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color;
+    float sun_spec = specular(view_dir, directional_from, normal, shininess);
+    float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */);
+    color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color * shadow;
 
     // for (int i = 0; i < num_lights.x; ++i) {
     //     vec4 light_pos = mtx_view * light_positions[i];

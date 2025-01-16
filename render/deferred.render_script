@@ -12,6 +12,7 @@ local MSG_BOX_BLUR_SETTINGS_UPDATED = hash("box_blur_settings_updated")
 local MSG_TOGGLE_STABLE_SHADOWS = hash("toggle_stable_shadows")
 
 local identity = vmath.matrix4()
+local resolution = vmath.vector4()
 local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
@@ -24,6 +25,8 @@ function init(self)
 
     settings.resolution_x = render.get_window_width()
     settings.resolution_y = render.get_window_height()
+    resolution.x = settings.resolution_x
+    resolution.y = settings.resolution_y
 
     defrend.setup_cameras(self)
     defrend.setup_predicates(self)
@@ -132,7 +135,6 @@ function update(self)
         render.enable_material("ssao_material")
         render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-        ssao_options.constants.mtx_proj = camera.proj
         render.draw(predicates.screen, ssao_options)
         render.disable_texture("position_sampler")
         render.disable_texture("normal_sampler")
@@ -148,23 +150,39 @@ function update(self)
         end
     end
 
-    update_lighting_constants(self)
     swap_post_rt(self)
     render.set_render_target(self.post_target)
-    render.enable_material("lighting_material")
+    render.clear(self.clear_color_buffers)
+
+    update_lighting_constants(self)
+
+    render.enable_state(graphics.STATE_BLEND)
+    render.enable_state(graphics.STATE_CULL_FACE)
+    render.set_cull_face(graphics.FACE_TYPE_FRONT)
+    render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
+    render.enable_material("point_light_material")
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.set_view(camera.view)
+    render.set_projection(camera.proj)
+    render.draw(predicates.point_light, lighting_options)
+    render.disable_state(graphics.STATE_CULL_FACE)
+
+    render.enable_material("lighting_material")
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
+    render.set_view(self.camera_screen.view)
+    render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
     render.disable_texture("diffuse_sampler")
     render.disable_texture("position_sampler")
     render.disable_texture("normal_sampler")
     render.disable_texture("ssao_sampler")
     render.disable_texture("shadow_sampler")
-    render.disable_texture("shadow_sampler")
     render.disable_material()
+
+    render.disable_state(graphics.STATE_BLEND)
 
     if settings.gamma.enabled then
         swap_post_rt(self)
@@ -217,8 +235,11 @@ function on_message(self, message_id, message)
         camera.view = message.view
         camera.view_inv = vmath.inv(message.view)
         camera.proj = message.projection or identity
+        -- camera.proj_inv = vmath.inv(camera.proj)
         camera.viewproj = camera.proj * camera.view
     elseif message_id == MSG_WINDOW_RESIZED then
+        settings.resolution_x = render.get_window_width()
+        settings.resolution_y = render.get_window_height()
         camera.viewproj = camera.proj * camera.view
         camera_gui.proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
         self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
@@ -294,4 +315,7 @@ update_lighting_constants = function(self)
     constants.light_colors = light_colors
 
     constants.shadow_colors = shadow_colors
+    resolution.x = settings.resolution_x
+    resolution.y = settings.resolution_y
+    constants.resolution = resolution
 end
