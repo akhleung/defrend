@@ -5,8 +5,9 @@ local M = {
         fog_near = 800,
         fog_far = 1060,
         fog_color = vmath.vector4(0),
-        ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
-        directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
+        ambient_color = vmath.vector4(0.1, 0.1, 0.2, 1.0),
+        -- directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
+        directional_color = vmath.vector4(0.23, 0.24, 0.25, 1.0),
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
@@ -14,8 +15,8 @@ local M = {
         softness = 1,
         -- cascade = { 0.55, 0.15, 0.15, 0.15 },
         -- cascade = { 0.40, 0.20, 0.20, 0.20 },
-        -- cascade = { 0.20, 0.10, 0.10, 0.20 },
-        cascade = { 0.10, 0.20, 0.30, 0.40 },
+        cascade = { 0.20, 0.10, 0.10, 0.20 },
+        -- cascade = { 0.10, 0.20, 0.30, 0.40 },
         -- cascade = { 0.25, 0.25, 0.25, 0.25 },
         -- cascade = { 0.75 },
         biases = { 0.5, 0.75, 0.75, 1.2 },
@@ -34,7 +35,7 @@ local M = {
         bias = 0.1,
         radius = 2.0,
         max_distance = 2.0,
-        attenuation = 0.0,
+        attenuation = 1.0,
 
         kernel = {},
         noise = {},
@@ -116,12 +117,12 @@ local function ssao_init()
 		sample = sample * scale
 		table.insert(M.ssao.kernel, sample)
 	end
-	for i = 1, M.ssao.samples/4 do
+	for i = 1, M.ssao.samples do
 		local noise = vmath.normalize(
 			vmath.vector4(
 				math.random() * 2 - 1,
 				math.random() * 2 - 1,
-				0,
+				math.random() * 2 - 1,
 				0
 			)
 		)
@@ -142,9 +143,6 @@ function M.ssao.set_uniforms(uniforms)
     ssao_params2.y = ssao.attenuation
     uniforms.params1 = ssao_params1
     uniforms.params2 = ssao_params2
-
-    uniforms.kernel = ssao.kernel
-    uniforms.noise = ssao.noise
 end
 
 local box_blur = M.box_blur

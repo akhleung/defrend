@@ -3,7 +3,6 @@
 in vec2 var_texcoord0;
 
 #define NUM_SAMPLES 16
-#define NUM_NOISE 4
 
 #define RADIUS 15.0
 #define BIAS 0.25
@@ -14,8 +13,8 @@ in vec2 var_texcoord0;
 uniform ssao_fp {
     vec4 params1;
     vec4 params2;
-	vec4 kernel[16];
-	vec4 noise[4];
+	vec4 kernel[NUM_SAMPLES];
+	vec4 noise[NUM_SAMPLES];
 };
 
 // int NUM_SAMPLES = int(params1.x);
@@ -42,8 +41,7 @@ void main() {
 	vec3 position = texture(position_sampler, var_texcoord0).xyz;
   	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
 
-	// int  noiseS = int(sqrt(NUM_NOISE));
-	int  noiseS = 1;
+	int  noiseS = int(sqrt(NUM_SAMPLES));
   	int  noiseX = int(gl_FragCoord.x - 0.5) % noiseS;
   	int  noiseY = int(gl_FragCoord.y - 0.5) % noiseS;
   	vec3 rand = noise[noiseX + (noiseY * noiseS)].xyz;

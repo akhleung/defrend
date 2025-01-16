@@ -21,16 +21,16 @@ void main() {
 
 	radius = max(radius, 1);
 
-	fragColor.rgb = vec3(0);
+	fragColor = vec4(0);
 
 	float count = 0.0;
 
 	for (int i = -samples; i <= samples; ++i) {
 		for (int j = -samples; j <= samples; ++j) {
-			fragColor.rgb += texture(color_sampler, (gl_FragCoord.xy + (vec2(i, j) * radius)) / resolution).rgb;
+			fragColor += texture(color_sampler, (gl_FragCoord.xy + (vec2(i, j) * radius)) / resolution);
 			count += 1.0;
 		}
 	}
 
-	fragColor.rgb /= count;
+	fragColor /= count;
 }

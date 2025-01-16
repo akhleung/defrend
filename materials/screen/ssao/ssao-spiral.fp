@@ -29,18 +29,14 @@ float hash12(vec2 p) {
     return fract((p3.x + p3.y) * p3.z);
 }
 
-float calculateOcclusion(in vec3 op, in vec3 p, in vec3 cnorm) {
-    vec3 diff = op - p;
-    float l = length(diff);
-    float ao = max(0.0, dot(cnorm, normalize(diff)) - bias) / (1.0 + l * attenuation);
-    ao *= 1.0 - smoothstep(min_distance, max_distance, l); // increasing the upper bound seems to allow AO to persist at very oblique angles
-    return ao;
-}
+void main() {
 
-float spiralAO(vec3 p, vec3 n) {
-    float rad = radius / abs(p.z);
-    float ao = 0.0;
+	vec3 position = texture(position_sampler, var_texcoord0).xyz;
+  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
+
+    float rad       = radius / abs(position.z);
     float radiusInc = 0.0;
+    float ao        = 0.0;
 
     float rotatePhase = hash12(var_texcoord0 * 100.0) * 6.28;
     float rStep = rad / samples;
@@ -51,19 +47,17 @@ float spiralAO(vec3 p, vec3 n) {
         spiralUV.y = cos(rotatePhase);
         radiusInc += rStep;
 		vec3 offset_pos = texture(position_sampler, var_texcoord0 + spiralUV * radiusInc).xyz;
-        ao += calculateOcclusion(offset_pos, p, n);
+
+        vec3 diff = offset_pos - position;
+        float l = length(diff);
+        float fadeout = 1.0 - smoothstep(min_distance, max_distance, l * attenuation);
+        float incidence = smoothstep(bias, 1.0, dot(normal, normalize(diff)));
+        ao += incidence * fadeout;
+
         rotatePhase += goldenAngle;
     }
     ao /= samples;
-    return 1.0 - ao * intensity;
-}
+    ao = 1.0 - ao * intensity;
 
-void main() {
-
-	vec3 position = texture(position_sampler, var_texcoord0).xyz;
-  	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
-
-	float ao = spiralAO(position, normal);
-    // ao *= ao;
-	frag_color = vec4(ao, ao, ao, ao);
+	frag_color = vec4(ao);
 }
