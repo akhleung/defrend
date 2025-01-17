@@ -175,8 +175,6 @@ embedded_instances {
   children: "logo5"
   children: "logo6"
   children: "logo7"
-  children: "point_light_green"
-  children: "point_light_red"
   children: "sedan"
   children: "the_floor"
   data: ""
@@ -898,51 +896,6 @@ embedded_instances {
     x: 4.0
     y: 4.0
     z: 4.0
-  }
-}
-embedded_instances {
-  id: "point_light_green"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.script\"\n"
-  "  properties {\n"
-  "    id: \"radii\"\n"
-  "    value: \"0.0, 1.0, 0.0, 0.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -8.0
-    z: 3.0
-  }
-}
-embedded_instances {
-  id: "point_light_red"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.script\"\n"
-  "  properties {\n"
-  "    id: \"radii\"\n"
-  "    value: \"10.0, 30.0, 0.0, 0.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"0.0, 0.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 8.0
-    y: 2.0
-    z: 3.0
   }
 }
 embedded_instances {

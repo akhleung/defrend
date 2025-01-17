@@ -10,9 +10,6 @@ function init(self)
 	-- go.animate("/logo", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
 	-- go.animate("/logo1", "euler.y", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
 	-- go.animate("/logo1", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
-
-	msg.post("/point_light_green#point_light", "disable")
-	msg.post("/point_light_red#point_light", "disable")
 end
 
 local profiling = false
