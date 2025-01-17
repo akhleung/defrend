@@ -1,6 +1,5 @@
 local defrend = require "render.defrend"
 local settings = require "render.settings"
-local lighting_state = require "lighting.lighting_state"
 local update_lighting_constants
 local render_shadows
 
@@ -34,10 +33,6 @@ function init(self)
     settings.shadow.init(self.camera.fov, self.camera.aspect, self.camera.near, self.camera.far)
     defrend.setup_render_targets(self)
     defrend.setup_lights(self)
-
-    lighting_state.set_ambient_color(self.light.ambient_color)
-    lighting_state.set_sun_color(self.light.directional_color)
-    lighting_state.set_sun_direction(self.light.directional_to)
 
     self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
@@ -292,7 +287,6 @@ render_shadows = function(self)
     render.disable_material()
 end
 
-local num_lights = vmath.vector4()
 local shadow_colors = {
     vmath.vector4(1, 0, 0, 1),
     vmath.vector4(0, 1, 0, 1),
@@ -304,15 +298,6 @@ update_lighting_constants = function(self)
 
     constants.mtx_lights = mtx_lights
     constants.mtx_view = self.camera.view
-
-    local n = lighting_state.get_num_lights()
-    num_lights.x, num_lights.y, num_lights.z, num_lights.w = n, n, n, n
-    constants.num_lights = num_lights
-
-    local light_positions, light_radii, light_colors = lighting_state.get_lights()
-    constants.light_positions = light_positions
-    constants.light_radii = light_radii
-    constants.light_colors = light_colors
 
     constants.shadow_colors = shadow_colors
     resolution.x = settings.resolution_x
