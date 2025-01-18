@@ -1,6 +1,5 @@
 #version 420 core
 
-#define MAX_LIGHTS 16
 #define MAX_PARTITIONS 9
 
 in vec2 var_texcoord0;
@@ -20,10 +19,6 @@ uniform lighting_fp {
     vec4 directional_color;
     vec4 directional_to;
     
-    vec4 num_lights;
-    vec4 light_positions[MAX_LIGHTS];
-    vec4 light_radii[MAX_LIGHTS];
-    vec4 light_colors[MAX_LIGHTS];
     vec4 camera_partitions[MAX_PARTITIONS];
     mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
     vec4 shadow_params;
@@ -48,14 +43,6 @@ vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
 
 float diffuse(vec3 to_light, vec3 normal_sample) {
     return max(dot(normal_sample, to_light), 0.0);
-}
-
-float attenuation(vec3 frag_pos, vec3 light_pos, vec4 light_radii) {
-    float r_inner = light_radii.x;
-    float r_outer = light_radii.y;
-    float d = distance(frag_pos, light_pos);
-    float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
-    return falloff * falloff;
 }
 
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
@@ -137,17 +124,8 @@ void main() {
     float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */);
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color * shadow;
 
-    // for (int i = 0; i < num_lights.x; ++i) {
-    //     vec4 light_pos = mtx_view * light_positions[i];
-    //     vec3 to_light = light_direction(var_frag_pos, light_pos.xyz);
-    //     float spec = specular(view_dir, to_light, normal, shininess);
-    //     float diff = diffuse(to_light, normal);
-    //     float attn = attenuation(var_frag_pos, light_pos.xyz, light_radii[i]);
-    //     color += (diff * mat_diff + spec * mat_spec) * light_colors[i] * attn;
-    // }
-
     color.a = mat_diff.a;
-    // color = vec4(ao, ao, ao, 1.0);
+    color = vec4(ao, ao, ao, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     // float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
