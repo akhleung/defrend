@@ -1,5 +1,6 @@
 local TRIGGER = require "input.triggers"
 local actions = require "input.actions"
+local defrend = require "render.defrend"
 
 local ZERO = vmath.vector3()
 local UP = vmath.vector3(0, 1, 0)
@@ -10,6 +11,7 @@ local euler_x = hash("euler.x")
 local euler_y = hash("euler.y")
 local euler_z = hash("euler.z")
 local mouse_locked = true
+local camera_url
 function init(self)
 	self.direction = ZERO
 	go.set(".", euler_x, 0)
@@ -17,6 +19,7 @@ function init(self)
 	go.set(".", euler_z, 0)
 	msg.post(".", "acquire_input_focus")
 	window.set_mouse_lock(true)
+	camera_url = msg.url("/camera#camera")
 end
 
 function on_input(self, action_id, action)
@@ -57,6 +60,8 @@ function on_input(self, action_id, action)
 	end
 
 	local here = go.get_world_position()
+	local pickables = { hash("buildings") }
+	local raycast_options = { all = false }
 	if mouse_locked then
 		if command == actions.FORWARD then
 			local forward = go.get_world_position("forward")
@@ -74,6 +79,15 @@ function on_input(self, action_id, action)
 			self.direction = UP
 		elseif command == actions.DOWN then
 			self.direction = DOWN
+		end
+	else
+		if command == actions.LEFT_CLICK then
+			print("CLICKED")
+			near, far = defrend.screen_to_world(action.x, action.y)
+			local picks = physics.raycast(near, far, pickables, raycast_options)
+			if picks then
+				print("PICKED", picks[1].id, "AT", picks[1].position)
+			end
 		end
 	end
 end

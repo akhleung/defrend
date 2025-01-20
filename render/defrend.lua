@@ -4,6 +4,7 @@ local lighting = require "render.defrend-lighting"
 local M = {}
 
 local identity = vmath.matrix4()
+local camera
 function M.setup_cameras(self)
     self.camera = {
         view = identity,
@@ -17,6 +18,7 @@ function M.setup_cameras(self)
         aspect = render.get_window_width() / render.get_window_height(),
         fov = 0.3927,
     }
+    camera = self.camera
 
     local gui_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
     self.camera_gui = {
@@ -115,6 +117,20 @@ function M.setup_predicates(self)
         predicates[predicate_name] = render.predicate({predicate_name})
     end
     self.predicates = predicates
+end
+
+function M.screen_to_world(x, y)
+    local inv_mtx = vmath.inv(camera.proj * camera.view)
+    local w, h    = window.get_size()
+
+    local near = inv_mtx * vmath.vector4(x / w * 2 - 1, y / h * 2 - 1, -1, 1)
+    local far  = inv_mtx * vmath.vector4(x / w * 2 - 1, y / h * 2 - 1, 1, 1)
+    near       = near / near.w
+    far        = far / far.w
+    near       = vmath.vector3(near.x, near.y, near.z)
+    far        = vmath.vector3(far.x, far.y, far.z)
+
+    return near, far
 end
 
 M.setup_lights = lighting.setup_lights
