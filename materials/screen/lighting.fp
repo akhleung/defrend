@@ -121,7 +121,7 @@ void main() {
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
     float sun_spec = specular(view_dir, directional_from, normal, shininess);
-    float sun_diff = diffuse(directional_from, normal) * (ao /* * 0.5 + 0.5 */);
+    float sun_diff = diffuse(directional_from, normal) * ao; // consider 0.5 * ao + 0.5
     color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color * shadow;
 
     color.a = mat_diff.a;
