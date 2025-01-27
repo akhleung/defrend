@@ -2,10 +2,12 @@
 
 in vec2 var_texcoord0;
 
-#define NUM_SAMPLES 16
-#define NUM_NOISE 4
+#define NUM_SAMPLES 64
+#define NUM_NOISE 16
 
 uniform ssao_fp {
+    vec4 params1;
+    vec4 params2;
 	mat4 mtx_proj;
 	vec4 kernel[NUM_SAMPLES];
 	vec4 noise[NUM_NOISE];
@@ -18,7 +20,7 @@ out vec4 frag_out;
 
 void main() {
 
-	frag_out = vec4(0, 0, 0, 1);
+	frag_out = vec4(1);
 
 	vec3 position = texture(position_sampler, var_texcoord0).xyz;
   	vec3 normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
@@ -26,11 +28,7 @@ void main() {
 	int u = int(gl_FragCoord.x - 0.5) % 4;
 	int v = int(gl_FragCoord.y - 0.5) % 4;
 	vec3 random = noise[u * 4 + v].xyz;
-
-	int  noiseS = int(sqrt(NUM_NOISE));
-  	int  noiseX = int(gl_FragCoord.x - 0.5) % noiseS;
-  	int  noiseY = int(gl_FragCoord.y - 0.5) % noiseS;
-  	random = noise[noiseX + (noiseY * noiseS)].xyz;
+	random = noise[int(gl_FragCoord.x - 0.5) % NUM_NOISE].xyz;
 
  	vec3 tangent  = normalize(random - normal * dot(random, normal));
   	vec3 binormal = cross(normal, tangent);
@@ -59,7 +57,7 @@ void main() {
 		occlusion += (depth >= samp.z + bias ? 1.0 : 0.0) * check;
 	}
 
-	occlusion = 1.- (occlusion / NUM_SAMPLES);
+	occlusion = 1.0 - (occlusion / NUM_SAMPLES);
 	
 	frag_out = vec4(occlusion); 
 
