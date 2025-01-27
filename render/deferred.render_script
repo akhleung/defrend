@@ -57,6 +57,7 @@ function init(self)
 
     render_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     shadow_options.frustum_planes = render.FRUSTUM_PLANES_ALL
+    render_options.constants = render.constant_buffer()
     ssao_options.constants = self.ssao_constants
     box_blur_options.constants = self.box_blur_constants
     lighting_options.constants = self.lighting_constants
@@ -94,15 +95,16 @@ function update(self)
 
     -- render `model` predicate for default 3D material
     render_options.frustum = camera.viewproj
-    render_options.constants = self.constants
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_BACK)
     render.enable_material("model_material")
     render.draw(predicates.model, render_options)
     render.disable_material()
-    render.disable_state(graphics.STATE_CULL_FACE)
-    render.draw(predicates.sprite, render_options)
-    render.enable_state(graphics.STATE_CULL_FACE)
+
+    -- render.set_render_target(self.g_buffer)
+    -- render.disable_state(graphics.STATE_CULL_FACE)
+    -- render.draw(predicates.sprite, render_options)
+    -- render.enable_state(graphics.STATE_CULL_FACE)
     render.draw_debug3d()
 
     -- disable the depth mask and face culling for things with transparency
@@ -115,7 +117,7 @@ function update(self)
     -- render the other components: sprites, tilemaps, particles etc
     -- render.draw(predicates.tile, render_options)
     -- render.draw(predicates.particle, render_options)
-    render.disable_state(graphics.STATE_DEPTH_TEST)
+    -- render.disable_state(graphics.STATE_DEPTH_TEST)
     render.disable_state(graphics.STATE_CULL_FACE) -- need to disable this to get the debug_text and profiler to show
 
     -- render.disable_state(graphics.STATE_STENCIL_TEST)
@@ -146,7 +148,7 @@ function update(self)
     end
 
     swap_post_rt(self)
-    render.set_render_target(self.post_target)
+    render.set_render_target(self.light_target)
     render.clear(self.clear_color_buffers)
 
     update_lighting_constants(self)
@@ -156,17 +158,22 @@ function update(self)
     render.set_cull_face(graphics.FACE_TYPE_FRONT)
     render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
     render.enable_material("point_light_material")
-    render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-    render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.set_view(camera.view)
     render.set_projection(camera.proj)
     render.draw(predicates.point_light, lighting_options)
     render.disable_state(graphics.STATE_CULL_FACE)
+    render.disable_state(graphics.STATE_BLEND)
 
+    render.set_render_target(self.post_target)
+    render.disable_state(graphics.STATE_DEPTH_TEST)
     render.enable_material("lighting_material")
+    render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
+    render.enable_texture("diff_light_sampler", self.light_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("spec_light_sampler", self.light_target, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.set_view(self.camera_screen.view)
     render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
@@ -175,9 +182,9 @@ function update(self)
     render.disable_texture("normal_sampler")
     render.disable_texture("ssao_sampler")
     render.disable_texture("shadow_sampler")
+    render.disable_texture("diff_light_sampler")
+    render.disable_texture("spec_light_sampler")
     render.disable_material()
-
-    render.disable_state(graphics.STATE_BLEND)
 
     if settings.gamma.enabled then
         swap_post_rt(self)

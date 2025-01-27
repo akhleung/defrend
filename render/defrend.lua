@@ -36,12 +36,13 @@ end
 
 function M.setup_clear_buffers(self)
     self.clear_color_buffers = {
-        [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(
-            sys.get_config_number("render.clear_color_red", 0),
-            sys.get_config_number("render.clear_color_green", 0),
-            sys.get_config_number("render.clear_color_blue", 0),
-            sys.get_config_number("render.clear_color_alpha", 0)
-        ),
+        -- [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(
+        --     sys.get_config_number("render.clear_color_red", 0),
+        --     sys.get_config_number("render.clear_color_green", 0),
+        --     sys.get_config_number("render.clear_color_blue", 0),
+        --     sys.get_config_number("render.clear_color_alpha", 0)
+        -- ),
+        [graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(0),
         [graphics.BUFFER_TYPE_DEPTH_BIT] = 1,
         [graphics.BUFFER_TYPE_STENCIL_BIT] = 0
     }
@@ -66,6 +67,11 @@ function M.setup_render_targets(self)
     local position_params = {
         format = graphics.TEXTURE_FORMAT_RGBA32F,
         width  = render.get_window_width(),
+        height = render.get_window_height(),
+    }
+    local light_params = {
+        format = graphics.TEXTURE_FORMAT_RG16F,
+        width = render.get_window_width(),
         height = render.get_window_height(),
     }
     local depth_params = {
@@ -96,6 +102,13 @@ function M.setup_render_targets(self)
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
+    self.light_target = render.render_target(
+        "light_target",
+        {
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- diffuse contribution
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = color_params, -- specular contribution
+        }
+    )
     self.post_source = render.render_target(
         "post_left",
         {
@@ -111,7 +124,10 @@ function M.setup_render_targets(self)
 end
 
 function M.setup_predicates(self)
-    local arg = {"tile", "gui", "text", "particle", "model", "sprite", "transparent", "debug_text", "screen", "point_light"}
+    local arg = {
+        "tile", "gui", "text", "particle", "model", "decal",
+        "sprite", "transparent", "debug_text", "screen", "point_light"
+    }
     local predicates = {}
     for _, predicate_name in pairs(arg) do
         predicates[predicate_name] = render.predicate({predicate_name})

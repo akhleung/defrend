@@ -9,6 +9,8 @@ uniform sampler2D position_sampler;
 uniform sampler2D normal_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
+uniform sampler2D diff_light_sampler;
+uniform sampler2D spec_light_sampler;
 
 uniform lighting_fp {
     mat4 mtx_view;
@@ -91,6 +93,8 @@ void main() {
 
     vec4 position_sample = texture(position_sampler, var_texcoord0);
     vec4 normal_sample = texture(normal_sampler, var_texcoord0);
+    vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
+    vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
     vec3 var_frag_pos = position_sample.xyz;
     vec3 view_dir = normalize(-var_frag_pos);
@@ -121,11 +125,13 @@ void main() {
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
     float sun_spec = specular(view_dir, directional_from, normal, shininess);
-    float sun_diff = diffuse(directional_from, normal) * ao; // consider 0.5 * ao + 0.5
-    color += (sun_diff * mat_diff + sun_spec * mat_spec) * directional_color * shadow;
+    float sun_diff = diffuse(directional_from, normal);
+    vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
+    vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) * ao; // consider 0.5 * ao + 0.5
+    color += mat_diff * light_diff + mat_spec * light_spec;
 
     color.a = mat_diff.a;
-    color = vec4(ao, ao, ao, 1.0);
+    // color = vec4(ao, ao, ao, 1.0);
     // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
     // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     // float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
