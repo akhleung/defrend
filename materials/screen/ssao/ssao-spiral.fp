@@ -2,12 +2,15 @@
 
 in vec2 var_texcoord0;
 
-uniform sampler2D normal_sampler;
+uniform sampler2D depth_buffer;
 uniform sampler2D position_sampler;
+uniform sampler2D normal_sampler;
 
 uniform ssao_fp {
+    mat4 mtx_proj_inv;
     vec4 params1;
     vec4 params2;
+    vec4 frustum_corner;
 };
 
 int   samples      = int(params1.x);
@@ -22,28 +25,51 @@ const float goldenAngle = 2.4;
 
 out vec4 frag_color;
 
+float linearizeDepth(float d) {
+    float zNear = frustum_corner.w;
+    float zFar  = frustum_corner.z;
+    float zNdc  = 2.0 * d - 1.0;
+    return 2.0 * zNear * zFar / (zFar + zNear - zNdc * (zFar - zNear));
+}
+
+vec3 viewPosFromLinearDepth(float z, vec2 uv) {
+    vec2  uvNdc = 2 * uv - 1;
+    vec2  xyFar = frustum_corner.xy * uvNdc;
+    float zNorm = z / frustum_corner.z;
+    return vec3(xyFar * zNorm, z);
+}
+
 float hash(vec2 v) {
     return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void main() {
 
-	vec3  origin   = texture(position_sampler, var_texcoord0).xyz;
+    float depth    = texture(depth_buffer, var_texcoord0).r;
+    if (depth == 1.0) {
+        frag_color = vec4(1);
+        return;
+    }
+    float z        = linearizeDepth(depth);
+    vec3  origin   = viewPosFromLinearDepth(z, var_texcoord0);
+    float z_norm   = (origin.z - frustum_corner.w) / (frustum_corner.z - frustum_corner.w);
   	vec3  normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
     float rotation = hash(var_texcoord0) * 6.28;
-    float rStep    = radius / abs(origin.z) / samples;
+    float r        = radius / abs(origin.z);
+    float rStart   = r * z_norm;
+    float rStep    = (r - rStart) / samples;
     float ao       = 0.0;
 
-    for (int i = 0; i < samples; i++) {
-        vec2 spiralUV = vec2(cos(rotation), sin(rotation)) * rStep * i;
-		vec3 offset = texture(position_sampler, var_texcoord0 + spiralUV).xyz;
+    for (int i = 0; i < samples; ++i, rotation += goldenAngle) {
+        vec2  offsetUV    = var_texcoord0 + vec2(sin(rotation), cos(rotation)) * (rStart + rStep * (i + 1));
+        float offsetDepth = texture(depth_buffer, offsetUV).r;
+        float offsetZ     = linearizeDepth(offsetDepth);
+        vec3  offset      = viewPosFromLinearDepth(offsetZ, offsetUV);
 
-        vec3 diff = offset - origin;
-        float fadeout = 1.0 - smoothstep(min_distance, max_distance, length(diff) * attenuation);
+        vec3  diff      = offset - origin;
+        float fadeout   = 1.0 - smoothstep(min_distance, max_distance, length(diff) * attenuation);
         float incidence = smoothstep(bias, 1.0, dot(normal, normalize(diff)));
         ao += incidence * fadeout;
-
-        rotation += goldenAngle;
     }
 
 	frag_color = vec4(1.0 - ao / samples * intensity);
