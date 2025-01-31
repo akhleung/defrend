@@ -135,13 +135,12 @@ function update(self)
     if settings.ssao.enabled then
         render.enable_material("ssao_material")
         render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-        render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-        render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+        render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         ssao_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
         ssao_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
         render.draw(predicates.screen, ssao_options)
         render.disable_texture("depth_buffer")
-        render.disable_texture("position_sampler")
+        render.disable_texture("depth_buffer")
         render.disable_texture("normal_sampler")
         render.disable_material()
         if settings.ssao.blur then
@@ -166,8 +165,8 @@ function update(self)
     render.set_cull_face(graphics.FACE_TYPE_FRONT)
     render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
     render.enable_material("point_light_material")
-    render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+    render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.set_view(camera.view)
     render.set_projection(camera.proj)
     render.draw(predicates.point_light, lighting_options)
@@ -186,7 +185,7 @@ function update(self)
     render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
     render.disable_texture("diffuse_sampler")
-    render.disable_texture("position_sampler")
+    render.disable_texture("depth_buffer")
     render.disable_texture("normal_sampler")
     render.disable_texture("ssao_sampler")
     render.disable_texture("shadow_sampler")
@@ -324,4 +323,6 @@ update_lighting_constants = function(self)
     resolution.x = settings.resolution_x
     resolution.y = settings.resolution_y
     constants.resolution = resolution
+    constants.frustum_corner = frustum_corner
+    constants.frustum_terms = frustum_terms
 end

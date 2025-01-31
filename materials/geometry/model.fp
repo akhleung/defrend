@@ -9,8 +9,7 @@ uniform sampler2D normal_map;
 uniform sampler2D specular_map;
 
 layout(location = 0) out vec4 diffuse_out;
-layout(location = 1) out vec4 position_out;
-layout(location = 2) out vec4 normal_out;
+layout(location = 1) out vec4 normal_out;
 
 mat3 get_tbn_mtx() {
     vec3 d_vd_x = dFdx(var_frag_pos);
@@ -49,6 +48,5 @@ void main() {
     vec3 normal = get_perturb_normal(var_texcoord0, tbn) * 0.5 + 0.5;
 
     diffuse_out = mat_diff;
-    position_out = vec4(var_frag_pos, mat_spec.w);
     normal_out = vec4(normal, mat_spec.r);
 }

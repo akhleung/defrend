@@ -64,11 +64,6 @@ function M.setup_render_targets(self)
         width  = render.get_window_width(),
         height = render.get_window_height(),
     }
-    local position_params = {
-        format = graphics.TEXTURE_FORMAT_RGBA32F,
-        width  = render.get_window_width(),
-        height = render.get_window_height(),
-    }
     local depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = render.get_window_width(),
@@ -92,8 +87,7 @@ function M.setup_render_targets(self)
         "g_buffer",
         {
             [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- diffuse color
-            [graphics.BUFFER_TYPE_COLOR1_BIT] = position_params, -- positions
-            [graphics.BUFFER_TYPE_COLOR2_BIT] = color_params, -- normals
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = color_params, -- normals
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )

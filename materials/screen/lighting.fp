@@ -5,7 +5,7 @@
 in vec2 var_texcoord0;
 
 uniform sampler2D diffuse_sampler;
-uniform sampler2D position_sampler;
+uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
@@ -14,7 +14,9 @@ uniform sampler2D spec_light_sampler;
 
 uniform lighting_fp {
     mat4 mtx_view;
-    
+    vec4 frustum_corner;
+    vec4 frustum_terms;
+
     vec4 fog_params;
     vec4 fog_color;
     vec4 ambient_color;
@@ -28,6 +30,18 @@ uniform lighting_fp {
 };
 
 out vec4 frag_color;
+
+float linearizeDepth(float d) {
+    float zNdc  = 2.0 * d - 1.0;
+    return 2.0 * frustum_terms.x / (frustum_terms.y - zNdc * (frustum_terms.z));
+}
+
+vec3 viewPosFromLinearDepth(float z, vec2 uv) {
+    vec2  uvNdc = 2.0 * uv - 1.0;
+    vec2  xyFar = frustum_corner.xy * uvNdc;
+    float zNorm = z / frustum_corner.z;
+    return vec3(xyFar * zNorm, z);
+}
 
 float FOG_NEAR = fog_params.x;
 float FOG_FAR = fog_params.y;
@@ -91,12 +105,13 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 
 void main() {
 
-    vec4 position_sample = texture(position_sampler, var_texcoord0);
     vec4 normal_sample = texture(normal_sampler, var_texcoord0);
     vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
     vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
-    vec3 var_frag_pos = position_sample.xyz;
+    float depth    = texture(depth_buffer, var_texcoord0).r;
+    float z        = linearizeDepth(depth);
+    vec3 var_frag_pos = viewPosFromLinearDepth(z, var_texcoord0);
     vec3 view_dir = normalize(-var_frag_pos);
     vec3 normal = normal_sample.xyz * 2.0 - 1.0; // rescale/bias [0, 1] -> [-1, 1]
 
@@ -120,7 +135,7 @@ void main() {
     }
 
     float ao = texture(ssao_sampler, var_texcoord0).a;
-    float shininess = position_sample.w;
+    float shininess = 0; // TODO: find someplace else to put the specular power
     vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
