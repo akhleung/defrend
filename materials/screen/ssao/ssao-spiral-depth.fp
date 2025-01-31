@@ -14,11 +14,11 @@ uniform ssao_fp {
 
 int samples = int(params1.x);
 float intensity = params1.y;
-float bias = params1.z;
-float radius = params1.w;
+float bias_angle = params1.z;
 float min_distance = params2.x * 0.5;
 float max_distance = params2.x * 2.0;
 float attenuation = params2.y;
+float radius = params2.w;
 
 out vec4 frag_color;
 
@@ -77,7 +77,7 @@ void main() {
         // float fadeout = 1.0 - smoothstep(min_distance, max_distance, l * attenuation);
         float l2 = dot(diff, diff);
         float fadeout = 1.0 - smoothstep(min_distance * min_distance, max_distance * max_distance, l2 * attenuation);
-        float incidence = smoothstep(bias, 1.0, dot(normal, normalize(diff)));
+        float incidence = smoothstep(bias_angle, 1.0, dot(normal, normalize(diff)));
         ao += incidence * fadeout;
 
         rotatePhase += goldenAngle;

@@ -20,6 +20,10 @@ local lighting_options = {}
 local kuwahara_blur_options = {}
 local gamma_options = {}
 local fxaa_options = {}
+
+local frustum_corner_ndc = vmath.vector4(1.0)
+local frustum_corner
+local frustum_terms = vmath.vector4()
 function init(self)
 
     settings.resolution_x = render.get_window_width()
@@ -130,9 +134,13 @@ function update(self)
 
     if settings.ssao.enabled then
         render.enable_material("ssao_material")
+        render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
         render.enable_texture("position_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
         render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+        ssao_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
+        ssao_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
         render.draw(predicates.screen, ssao_options)
+        render.disable_texture("depth_buffer")
         render.disable_texture("position_sampler")
         render.disable_texture("normal_sampler")
         render.disable_material()
@@ -237,7 +245,13 @@ function on_message(self, message_id, message)
         camera.view = message.view
         camera.view_inv = vmath.inv(message.view)
         camera.proj = message.projection or identity
-        -- camera.proj_inv = vmath.inv(camera.proj)
+        camera.proj_inv = vmath.inv(camera.proj)
+        frustum_corner = camera.proj_inv * frustum_corner_ndc
+        frustum_corner = frustum_corner / frustum_corner.w
+        frustum_corner.w = -self.camera.near
+        frustum_terms.x = frustum_corner.z * frustum_corner.w
+        frustum_terms.y = frustum_corner.z + frustum_corner.w
+        frustum_terms.z = frustum_corner.z - frustum_corner.w
         camera.viewproj = camera.proj * camera.view
     elseif message_id == MSG_WINDOW_RESIZED then
         settings.resolution_x = render.get_window_width()

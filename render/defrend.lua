@@ -69,11 +69,6 @@ function M.setup_render_targets(self)
         width  = render.get_window_width(),
         height = render.get_window_height(),
     }
-    local light_params = {
-        format = graphics.TEXTURE_FORMAT_RG16F,
-        width = render.get_window_width(),
-        height = render.get_window_height(),
-    }
     local depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = render.get_window_width(),

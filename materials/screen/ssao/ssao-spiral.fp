@@ -3,37 +3,35 @@
 in vec2 var_texcoord0;
 
 uniform sampler2D depth_buffer;
-uniform sampler2D position_sampler;
 uniform sampler2D normal_sampler;
 
 uniform ssao_fp {
-    mat4 mtx_proj_inv;
     vec4 params1;
     vec4 params2;
     vec4 frustum_corner;
+    vec4 frustum_terms;
 };
 
 int   samples      = int(params1.x);
 float intensity    = params1.y;
-float bias         = params1.z;
-float radius       = params1.w;
-float min_distance = params2.x * 0.5;
-float max_distance = params2.x * 2.0;
-float attenuation  = params2.y;
+float bias_angle   = params1.z;
+float bias_dist    = params1.w;
+float min_distance = params2.x;
+float max_distance = params2.y;
+float attenuation  = params2.z;
+float radius       = params2.w;
 
 const float goldenAngle = 2.4;
 
 out vec4 frag_color;
 
 float linearizeDepth(float d) {
-    float zNear = frustum_corner.w;
-    float zFar  = frustum_corner.z;
     float zNdc  = 2.0 * d - 1.0;
-    return 2.0 * zNear * zFar / (zFar + zNear - zNdc * (zFar - zNear));
+    return 2.0 * frustum_terms.x / (frustum_terms.y - zNdc * (frustum_terms.z));
 }
 
 vec3 viewPosFromLinearDepth(float z, vec2 uv) {
-    vec2  uvNdc = 2 * uv - 1;
+    vec2  uvNdc = 2.0 * uv - 1.0;
     vec2  xyFar = frustum_corner.xy * uvNdc;
     float zNorm = z / frustum_corner.z;
     return vec3(xyFar * zNorm, z);
@@ -56,7 +54,7 @@ void main() {
   	vec3  normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
     float rotation = hash(var_texcoord0) * 6.28;
     float r        = radius / abs(origin.z);
-    float rStart   = r * z_norm;
+    float rStart   = r * z_norm * bias_dist;
     float rStep    = (r - rStart) / samples;
     float ao       = 0.0;
 
@@ -68,7 +66,7 @@ void main() {
 
         vec3  diff      = offset - origin;
         float fadeout   = 1.0 - smoothstep(min_distance, max_distance, length(diff) * attenuation);
-        float incidence = smoothstep(bias, 1.0, dot(normal, normalize(diff)));
+        float incidence = smoothstep(bias_angle, 1.0, dot(normal, normalize(diff)));
         ao += incidence * fadeout;
     }
 

@@ -5,9 +5,9 @@ local M = {
         fog_near = 800,
         fog_far = 1060,
         fog_color = vmath.vector4(0),
-        ambient_color = vmath.vector4(0.1, 0.1, 0.2, 1.0),
-        -- directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
-        directional_color = vmath.vector4(0.23, 0.24, 0.25, 1.0),
+        ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
+        directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
+        -- directional_color = vmath.vector4(0.23, 0.24, 0.25, 1.0),
         directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
     },
     shadow = {
@@ -29,13 +29,15 @@ local M = {
     },
     ssao = {
         enabled = true,
-        blur = false,
+        blur = true,
         samples = 16,
         intensity = 1.5,
-        bias = 0.1,
-        radius = 2.0,
-        max_distance = 2.0,
+        bias_angle = 0.1,
+        bias_dist = 0.5,
+        min_distance = 1.0,
+        max_distance = 4.0,
         attenuation = 1.0,
+        radius = 2.0,
 
         kernel = {},
         noise = {},
@@ -123,7 +125,7 @@ local function ssao_init()
 				math.random() * 2 - 1,
 				math.random() * 2 - 1,
 				math.random() * 2 - 1,
-				0
+				1
 			)
 		)
 		table.insert(M.ssao.noise, noise)
@@ -137,10 +139,12 @@ ssao_init()
 function M.ssao.set_uniforms(uniforms)
     ssao_params1.x = ssao.samples
     ssao_params1.y = ssao.intensity
-    ssao_params1.z = ssao.bias
-    ssao_params1.w = ssao.radius
-    ssao_params2.x = ssao.max_distance
-    ssao_params2.y = ssao.attenuation
+    ssao_params1.z = ssao.bias_angle
+    ssao_params1.w = ssao.bias_dist
+    ssao_params2.x = ssao.min_distance
+    ssao_params2.y = ssao.max_distance
+    ssao_params2.z = ssao.attenuation
+    ssao_params2.w = ssao.radius
     uniforms.params1 = ssao_params1
     uniforms.params2 = ssao_params2
 end
