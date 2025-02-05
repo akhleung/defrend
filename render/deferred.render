@@ -35,3 +35,11 @@ render_resources {
   name: "point_light_material"
   path: "/materials/geometry/point-light.material"
 }
+render_resources {
+  name: "decal_material"
+  path: "/materials/geometry/decal.material"
+}
+render_resources {
+  name: "decal_resolve_material"
+  path: "/materials/screen/decal_resolve.material"
+}

@@ -62,6 +62,7 @@ function init(self)
     render_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     shadow_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     render_options.constants = render.constant_buffer()
+    render_options.constants.resolution = resolution; ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
     box_blur_options.constants = self.box_blur_constants
     lighting_options.constants = self.lighting_constants
@@ -97,13 +98,50 @@ function update(self)
     -- set states used for all the world predicates
     render.enable_state(graphics.STATE_DEPTH_TEST)
 
-    -- render `model` predicate for default 3D material
+    -- render models into g-buffer
     render_options.frustum = camera.viewproj
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_BACK)
     render.enable_material("model_material")
     render.draw(predicates.model, render_options)
     render.disable_material()
+
+    -- render decals into extra buffer
+    render.enable_material("decal_material")
+    render.set_render_target(self.x_buffer)
+    render.clear(self.clear_color_buffers)
+    render.set_cull_face(graphics.FACE_TYPE_FRONT)
+    render_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
+    render_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
+    render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.set_view(camera.view)
+    render.set_projection(camera.proj)
+    render.draw(predicates.decal, render_options)
+    render.disable_texture("depth_buffer")
+    render.disable_texture("normal_sampler")
+    render.set_cull_face(graphics.FACE_TYPE_BACK)
+    render.disable_material()
+
+    -- draw rendered decals back into g-buffer
+    render.enable_material("decal_resolve_material")
+    render_options.frustum = nil
+    render.disable_state(graphics.STATE_DEPTH_TEST)
+    render.set_depth_mask(false)
+    render.disable_state(graphics.STATE_CULL_FACE)
+    render.set_render_target(self.g_buffer)
+    render.enable_state(graphics.STATE_BLEND)
+    render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+    render.enable_texture("decal_diff_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("decal_norm_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.set_view(self.camera_screen.view)
+    render.set_projection(self.camera_screen.proj)
+    render.draw(predicates.screen, render_options)
+    render.disable_texture("decal_diff_sampler")
+    render.disable_texture("decal_norm_sampler")
+    render.disable_state(graphics.STATE_BLEND)
+    render.disable_material()
+    render.enable_state(graphics.STATE_DEPTH_TEST)
 
     -- render.set_render_target(self.g_buffer)
     -- render.disable_state(graphics.STATE_CULL_FACE)
@@ -140,7 +178,6 @@ function update(self)
         ssao_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
         render.draw(predicates.screen, ssao_options)
         render.disable_texture("depth_buffer")
-        render.disable_texture("depth_buffer")
         render.disable_texture("normal_sampler")
         render.disable_material()
         if settings.ssao.blur then
@@ -155,15 +192,13 @@ function update(self)
     end
 
     swap_post_rt(self)
-    render.set_render_target(self.light_target)
+    render.set_render_target(self.x_buffer)
     render.clear(self.clear_color_buffers)
 
     update_lighting_constants(self)
 
-    render.enable_state(graphics.STATE_BLEND)
     render.enable_state(graphics.STATE_CULL_FACE)
     render.set_cull_face(graphics.FACE_TYPE_FRONT)
-    render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
     render.enable_material("point_light_material")
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
@@ -171,7 +206,7 @@ function update(self)
     render.set_projection(camera.proj)
     render.draw(predicates.point_light, lighting_options)
     render.disable_state(graphics.STATE_CULL_FACE)
-    render.disable_state(graphics.STATE_BLEND)
+    render.disable_material()
 
     render.set_render_target(self.post_target)
     render.disable_state(graphics.STATE_DEPTH_TEST)
@@ -179,8 +214,8 @@ function update(self)
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
-    render.enable_texture("diff_light_sampler", self.light_target, graphics.BUFFER_TYPE_COLOR0_BIT)
-    render.enable_texture("spec_light_sampler", self.light_target, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.enable_texture("diff_light_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("spec_light_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.set_view(self.camera_screen.view)
     render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
@@ -248,7 +283,7 @@ function on_message(self, message_id, message)
         frustum_corner = camera.proj_inv * frustum_corner_ndc
         frustum_corner = frustum_corner / frustum_corner.w
         frustum_corner.w = -self.camera.near
-        frustum_terms.x = frustum_corner.z * frustum_corner.w
+        frustum_terms.x = frustum_corner.z * frustum_corner.w -- TODO: * 2
         frustum_terms.y = frustum_corner.z + frustum_corner.w
         frustum_terms.z = frustum_corner.z - frustum_corner.w
         camera.viewproj = camera.proj * camera.view

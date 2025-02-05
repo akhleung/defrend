@@ -88,7 +88,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
         shadow_texcoord0.y < offset.y || shadow_texcoord0.y > SHADOW_BOUNDARY + offset.y) {
         return 1.0;
     } 
-    // rescale occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
+    // rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
     int samples = 0;
@@ -143,7 +143,7 @@ void main() {
     float sun_diff = diffuse(directional_from, normal);
     vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
     vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) * ao; // consider 0.5 * ao + 0.5
-    color += mat_diff * light_diff + mat_spec * light_spec;
+    color += mat_diff * light_diff /*+ mat_spec * light_spec*/; // TODO: find a place to put the specular bits
 
     color.a = mat_diff.a;
     // color = vec4(ao, ao, ao, 1.0);

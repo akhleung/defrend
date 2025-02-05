@@ -59,7 +59,7 @@ function M.setup_clear_buffers(self)
 end
 
 function M.setup_render_targets(self)
-    local color_params = {
+    local rgba_params = {
         format = graphics.TEXTURE_FORMAT_RGBA,
         width  = render.get_window_width(),
         height = render.get_window_height(),
@@ -86,36 +86,37 @@ function M.setup_render_targets(self)
     self.g_buffer = render.render_target(
         "g_buffer",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- diffuse color
-            [graphics.BUFFER_TYPE_COLOR1_BIT] = color_params, -- normals
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse color
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normals
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
-    self.light_target = render.render_target(
+    self.x_buffer = render.render_target(
         "light_target",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- diffuse contribution
-            [graphics.BUFFER_TYPE_COLOR1_BIT] = color_params, -- specular contribution
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse contribution
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- specular contribution
         }
     )
     self.post_source = render.render_target(
         "post_left",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- color
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
         }
     )
     self.post_target = render.render_target(
         "post_right",
         {
-            [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, -- color
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
         }
     )
 end
 
 function M.setup_predicates(self)
     local arg = {
-        "tile", "gui", "text", "particle", "model", "decal",
-        "sprite", "transparent", "debug_text", "screen", "point_light"
+        "model", "decal", "point_light", "screen",
+        "sprite", "transparent", "tile", "particle",
+        "gui", "text", "debug_text"
     }
     local predicates = {}
     for _, predicate_name in pairs(arg) do

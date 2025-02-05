@@ -2190,6 +2190,44 @@ instances {
     z: 8.0
   }
 }
+instances {
+  id: "decal"
+  prototype: "/assets/models/decal.go"
+  position {
+    x: -24.0
+    y: 3.0
+    z: -14.0
+  }
+  rotation {
+    x: 0.3251623
+    y: -0.08419837
+    z: -0.2361113
+    w: 0.9118287
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
+instances {
+  id: "decal1"
+  prototype: "/assets/models/decal.go"
+  position {
+    x: -39.0
+    y: 3.0
+    z: -14.0
+  }
+  rotation {
+    x: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "block1"
@@ -2201,6 +2239,8 @@ embedded_instances {
   children: "building_e4"
   children: "building_e5"
   children: "building_g2"
+  children: "decal"
+  children: "decal1"
   data: ""
   position {
     x: -86.0
