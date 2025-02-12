@@ -43,3 +43,7 @@ render_resources {
   name: "decal_resolve_material"
   path: "/materials/screen/decal_resolve.material"
 }
+render_resources {
+  name: "dof_material"
+  path: "/materials/screen/dof/dof.material"
+}

@@ -8,7 +8,7 @@ shared_state = 1
 [display]
 width = 1600
 height = 900
-vsync = 0
+vsync = 1
 display_device_info = 0
 
 [android]
@@ -17,6 +17,7 @@ package = com.defold.example.basic3d
 
 [project]
 title = Deferred Rendering Pipeline
+developer = Aaron Leung
 dependencies#0 = https://github.com/subsoap/defos/archive/refs/tags/v2.8.0.zip
 
 [physics]

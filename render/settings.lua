@@ -50,7 +50,13 @@ local M = {
         enabled = false,
         samples = 1,
     },
-    dof = {},
+    dof = {
+        enabled = true,
+        focal_depth = 0,
+        blur_start = 100,
+        blur_full = 150,
+        radius = 1,
+    },
     bloom = {},
     gamma = {
         enabled = false,
@@ -157,6 +163,20 @@ function M.box_blur.set_uniforms(uniforms)
     box_blur_params.z = box_blur.samples
     box_blur_params.w = box_blur.radius
     uniforms.params = box_blur_params
+end
+
+local dof = M.dof
+local dof_params1 = vmath.vector4()
+local dof_params2 = vmath.vector4()
+function M.dof.set_uniforms(uniforms)
+    dof_params1.x = M.resolution_x
+    dof_params1.y = M.resolution_y
+    dof_params2.x = dof.focal_depth
+    dof_params2.y = dof.blur_start
+    dof_params2.z = dof.blur_full
+    dof_params2.w = dof.radius
+    uniforms.params1 = dof_params1
+    uniforms.params2 = dof_params2
 end
 
 local gamma = M.gamma
