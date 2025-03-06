@@ -15,17 +15,9 @@ samplers {
   max_anisotropy: 0.0
 }
 samplers {
-  name: "color_sampler1"
+  name: "color_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
   wrap_v: WRAP_MODE_CLAMP_TO_EDGE
-  filter_min: FILTER_MODE_MIN_NEAREST
-  filter_mag: FILTER_MODE_MAG_NEAREST
-  max_anisotropy: 0.0
-}
-samplers {
-  name: "color_sampler2"
-  wrap_u: WRAP_MODE_REPEAT
-  wrap_v: WRAP_MODE_REPEAT
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0

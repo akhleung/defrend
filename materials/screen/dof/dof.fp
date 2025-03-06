@@ -1,5 +1,7 @@
 #version 420
 
+in vec2 var_texcoord0;
+
 uniform sampler2D depth_buffer;
 uniform sampler2D color_sampler;
 
@@ -22,22 +24,17 @@ float linearizeDepth(float d) {
     return 2.0 * frustum_terms.x / (frustum_terms.y - zNdc * (frustum_terms.z));
 }
 
+// TODO: consider doing this in two passes (i.e., create a fully blurred render and mix it with an in-focus render)
 void main() {
-	vec2 texcoord = gl_FragCoord.xy / resolution;
-	// write out depth buffer for testing / debugging for now
-	vec4 color = texture(color_sampler, texcoord);
-	float d = texture(depth_buffer, texcoord).r;
-	fragColor = vec4(d, d, d, clamp(color.a * 100, 1, 1));
-	return;
-	// float z = linearizeDepth(texture(depth_buffer, texcoord).r);
-	// float blur = abs(focal_depth - z);
-	// float r = smoothstep(blur, blur_start, blur_full) * radius;
-	// int samples = int(clamp(ceil(r), 0, 1));
-	// float count = pow(2 * samples + 1, 2);
-	// for (int i = -samples; i <= 1; ++samples) {
-	// 	for (int j = -samples; j <= 1; ++samples) {
-	// 		fragColor += texture(color_sampler, (gl_FragCoord.xy + (vec2(i, j) * r)) / resolution);
-	// 	}
-	// }
-	// fragColor = count <= 1 ? texture(color_sampler1, texcoord) : fragColor / count;
+	float z = linearizeDepth(texture(depth_buffer, var_texcoord0).r);
+	float r = smoothstep(blur_start, blur_full, abs(focal_depth + z)) * radius;
+	int samples = r == 0 ? 0 : 1;
+	float count = pow(2 * samples + 1, 2);
+	fragColor = vec4(0, 0, 0, 1);
+	for (int i = -samples; i <= samples; ++i) {
+		for (int j = -samples; j <= samples; ++j) {
+			fragColor += texture(color_sampler, (gl_FragCoord.xy + (vec2(i, j) * r)) / resolution);
+		}
+	}
+	fragColor /= count;
 }

@@ -13,8 +13,8 @@ function M.setup_cameras(self)
         viewproj = identity,
         moved = true,
 
-        near = 60,
-        far = 1060,
+        near = 1,
+        far = 1001,
         aspect = render.get_window_width() / render.get_window_height(),
         fov = 0.3927,
     }
@@ -32,6 +32,7 @@ function M.setup_cameras(self)
         proj = screen_proj,
         viewproj = screen_proj * identity,
     }
+    M.camera = camera
 end
 
 function M.setup_clear_buffers(self)

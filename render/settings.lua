@@ -3,7 +3,7 @@ local M = {
     resolution_y = 0,
     light = {
         fog_near = 800,
-        fog_far = 1060,
+        fog_far = 1001,
         fog_color = vmath.vector4(0),
         ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
         directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
@@ -52,9 +52,9 @@ local M = {
     },
     dof = {
         enabled = true,
-        focal_depth = 0,
-        blur_start = 100,
-        blur_full = 150,
+        focal_depth = 200,
+        blur_start = 30,
+        blur_full = 40,
         radius = 1,
     },
     bloom = {},
