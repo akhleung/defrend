@@ -7,6 +7,7 @@ local UP = vmath.vector3(0, 1, 0)
 local MAX_NUM = 2000000000
 local MIN_NUM = -2000000000
 local identity = vmath.matrix4()
+local frustums = {}
 function M.setup_lights(self)
     -- for directional lighting and shadow mapping
     self.light = {
@@ -20,6 +21,13 @@ function M.setup_lights(self)
 
         moved = false,
     }
+    for i = 1, #settings.shadow.cascade do
+        frustums[i] = {
+            min_x = 0, max_x = 0,
+            min_y = 0, max_y = 0,
+            min_z = 0, max_z = 0,
+        }
+    end
 end
 
 local world_center = vmath.vector3()
@@ -64,6 +72,46 @@ function M.refresh_shadows_stable(self, cam_proj)
         light_center.y - width, light_center.y + width,
         light_center.z - depth, light_center.z + depth
     )
+    local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
+    return mtx_light_view, mtx_trans * mtx_light_proj
+end
+
+function M.refresh_shadows_stable2(self, cam_proj, i)
+    local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(self, cam_proj)
+    -- calculate a precise bounding box around the camera frustum in the light's view space
+    local min_x, max_x = MAX_NUM, MIN_NUM
+    local min_y, max_y = MAX_NUM, MIN_NUM
+    local min_z, max_z = MAX_NUM, MIN_NUM
+    for i = 1, 8 do
+        local light_corner = mtx_light_view * world_corners[i]
+        min_x, max_x = math.min(min_x, light_corner.x), math.max(max_x, light_corner.x)
+        min_y, max_y = math.min(min_y, light_corner.y), math.max(max_y, light_corner.y)
+        min_z, max_z = math.min(min_z, light_corner.z), math.max(max_z, light_corner.z)
+    end
+    -- keep track of the largest frustum dimensions and use them to create a stable projection matrix
+    local frustum = frustums[i]
+    if min_x < frustum.min_x then
+        frustum.min_x = min_x
+    end
+    if max_x > frustum.max_x then
+        frustum.max_x = max_x
+    end
+    if min_y < frustum.min_y then
+        frustum.min_y = min_y
+    end
+    if max_y > frustum.max_y then
+        frustum.max_y = max_y
+    end
+    if min_z < frustum.min_z then
+        frustum.min_z = min_z
+    end
+    if max_z > frustum.max_z then
+        frustum.max_z = max_z
+    end
+    -- extend the near/far planes of the light frustum to prevent premature clipping of shadows
+    min_z, max_z = pad(frustum.min_z, frustum.max_z, 2)
+    -- use the aforementioned bounding box to create the light projection matrix
+    local mtx_light_proj = vmath.matrix4_orthographic(frustum.min_x, frustum.max_x, frustum.min_y, frustum.max_y, min_z, max_z)
     local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
     return mtx_light_view, mtx_trans * mtx_light_proj
 end
