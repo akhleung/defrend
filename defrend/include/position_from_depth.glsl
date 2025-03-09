@@ -13,4 +13,22 @@ vec3 viewPosFromLinearDepth(float z, vec2 uv, vec3 frustum_corner) {
     return vec3(xyFar * zNorm, z);
 }
 
+float hash12(vec2 v) {
+    return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+vec2 hash22(vec2 co) {
+    return vec2(
+        fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
+        fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
+    );
+}
+
+// vec2 rand(vec2 co) {
+//     return vec2(
+//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
+//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
+//     ) * 0.00047;
+// }
+
 #endif

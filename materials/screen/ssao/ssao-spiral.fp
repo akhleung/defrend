@@ -28,10 +28,6 @@ const float goldenAngle = 2.4;
 
 out vec4 frag_color;
 
-float hash(vec2 v) {
-    return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
 void main() {
 
     float depth    = texture(depth_buffer, var_texcoord0).r;
@@ -43,7 +39,7 @@ void main() {
     vec3  origin   = viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
     float z_norm   = (origin.z - frustum_corner.w) / (frustum_corner.z - frustum_corner.w);
   	vec3  normal   = texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
-    float rotation = hash(var_texcoord0) * 6.28;
+    float rotation = hash12(var_texcoord0) * 6.28;
     float r        = radius / abs(origin.z);
     float rStart   = r * z_norm * bias_dist;
     float rStep    = (r - rStart) / samples;

@@ -44,6 +44,8 @@ int SHADOW_SOFTNESS = int(shadow_params.z);
 int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
+float softener = 0.00031 * SHADOW_SOFTNESS;
+
 vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
     return normalize(light_pos - frag_pos);
 }
@@ -55,13 +57,6 @@ float diffuse(vec3 to_light, vec3 normal_sample) {
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
     vec3 R = reflect(-lightdir, norm);
     return pow(max(dot(R, viewdir), 0.0), shiny);
-}
-
-vec2 rand(vec2 co) {
-    return vec2(
-        fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-        fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-    ) * 0.00047;
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
@@ -86,7 +81,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
         for (int y = -SHADOW_SOFTNESS; y <= SHADOW_SOFTNESS; ++y) {
             vec2 uv = shadow_texcoord0 + vec2(x,y) / SHADOW_MAP_SIZE;
-            float occluder_z = texture(shadow_sampler, uv /* + rand(uv) * SHADOW_SOFTNESS */).r;
+            float occluder_z = texture(shadow_sampler, uv + hash22(uv) * softener).r;
             shadow += occluder_z < occludee_z ? 0.0 : 1.0;
             ++samples;
         }
