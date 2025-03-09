@@ -1,4 +1,7 @@
 #version 420 core
+#extension GL_ARB_shading_language_include : require
+
+#include "/defrend/include/position_from_depth.glsl"
 
 in mat4 mtx_worldview_inv;
 in vec3 var_frag_pos;
@@ -20,18 +23,6 @@ uniform decal_fp {
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 normal_out;
-
-float linearizeDepth(float d) {
-    float zNdc  = 2.0 * d - 1.0;
-    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
-}
-
-vec3 viewPosFromLinearDepth(float z, vec2 uv) {
-    vec2  uvNdc = 2.0 * uv - 1.0;
-    vec2  xyFar = frustum_corner.xy * uvNdc;
-    float zNorm = z / frustum_corner.z;
-    return vec3(xyFar * zNorm, z);
-}
 
 mat3 get_tbn_mtx(vec3 view_pos, vec2 texcoord) {
     vec3 d_vd_x = dFdx(view_pos);
@@ -61,8 +52,8 @@ void main() {
     // reconstruct the position of the scene fragment that's overlapped by this decal projector fragment
 	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
 	float depth = texture(depth_buffer, texcoord).r;
-    float z = linearizeDepth(depth);
-    vec4 g_position = vec4(viewPosFromLinearDepth(z, texcoord), 1.0);
+    float z = linearizeDepth(depth, frustum_terms.xyz);
+    vec4 g_position = vec4(viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz), 1.0);
 
     // put the scene fragment into model space (i.e., relative to the decal projector box)
     vec4 d_position = mtx_worldview_inv * g_position;

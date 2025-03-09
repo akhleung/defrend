@@ -1,4 +1,7 @@
 #version 420 core
+#extension GL_ARB_shading_language_include : require
+
+#include "/defrend/include/position_from_depth.glsl"
 
 #define MAX_PARTITIONS 9
 
@@ -30,18 +33,6 @@ uniform lighting_fp {
 };
 
 out vec4 frag_color;
-
-float linearizeDepth(float d) {
-    float zNdc  = 2.0 * d - 1.0;
-    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
-}
-
-vec3 viewPosFromLinearDepth(float z, vec2 uv) {
-    vec2  uvNdc = 2.0 * uv - 1.0;
-    vec2  xyFar = frustum_corner.xy * uvNdc;
-    float zNorm = z / frustum_corner.z;
-    return vec3(xyFar * zNorm, z);
-}
 
 float FOG_NEAR = fog_params.x;
 float FOG_FAR = fog_params.y;
@@ -110,8 +101,8 @@ void main() {
     vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
     float depth    = texture(depth_buffer, var_texcoord0).r;
-    float z        = linearizeDepth(depth);
-    vec3 var_frag_pos = viewPosFromLinearDepth(z, var_texcoord0);
+    float z        = linearizeDepth(depth, frustum_terms.xyz);
+    vec3 var_frag_pos = viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
     vec3 view_dir = normalize(-var_frag_pos);
     vec3 normal = normal_sample.xyz * 2.0 - 1.0; // rescale/bias [0, 1] -> [-1, 1]
 

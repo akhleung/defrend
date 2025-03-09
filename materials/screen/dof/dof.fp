@@ -1,4 +1,7 @@
 #version 420
+#extension GL_ARB_shading_language_include : require
+
+#include "/defrend/include/position_from_depth.glsl"
 
 in vec2 var_texcoord0;
 
@@ -19,14 +22,9 @@ float radius = params2.w;
 
 out vec4 fragColor;
 
-float linearizeDepth(float d) {
-    float zNdc  = 2.0 * d - 1.0;
-    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
-}
-
 // TODO: consider doing this in two passes (i.e., create a fully blurred render and mix it with an in-focus render)
 void main() {
-	float z = linearizeDepth(texture(depth_buffer, var_texcoord0).r);
+	float z = linearizeDepth(texture(depth_buffer, var_texcoord0).r, frustum_terms.xyz);
 	float r = smoothstep(blur_start, blur_full, abs(focal_depth + z)) * radius;
 	int samples = r == 0 ? 0 : 1;
 	float count = pow(2 * samples + 1, 2);

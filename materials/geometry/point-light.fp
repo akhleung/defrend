@@ -1,4 +1,7 @@
 #version 420
+#extension GL_ARB_shading_language_include : require
+
+#include "/defrend/include/position_from_depth.glsl"
 
 in vec3 var_center;
 in vec4 var_color;
@@ -16,18 +19,6 @@ uniform point_light_fp {
 out vec4 diff_out;
 out vec4 spec_out;
 
-float linearizeDepth(float d) {
-    float zNdc  = 2.0 * d - 1.0;
-    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
-}
-
-vec3 viewPosFromLinearDepth(float z, vec2 uv) {
-    vec2  uvNdc = 2.0 * uv - 1.0;
-    vec2  xyFar = frustum_corner.xy * uvNdc;
-    float zNorm = z / frustum_corner.z;
-    return vec3(xyFar * zNorm, z);
-}
-
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
     vec3 R = reflect(-lightdir, norm);
     return pow(max(dot(R, viewdir), 0.0), shiny);
@@ -41,8 +32,8 @@ float attenuation(float d, float r_inner, float r_outer) {
 void main() {
 	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
     float depth = texture(depth_buffer, texcoord).r;
-	float z = linearizeDepth(depth);
-	vec3 geom_pos = viewPosFromLinearDepth(z, texcoord);
+	float z = linearizeDepth(depth, frustum_terms.xyz);
+	vec3 geom_pos = viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz);
 	vec4 normal_sample = texture(normal_sampler, texcoord);
 	vec3 to_light = var_center - geom_pos;
 	float d = length(to_light);
