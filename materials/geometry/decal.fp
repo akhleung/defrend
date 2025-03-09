@@ -23,7 +23,7 @@ layout(location = 1) out vec4 normal_out;
 
 float linearizeDepth(float d) {
     float zNdc  = 2.0 * d - 1.0;
-    return 2.0 * frustum_terms.x / (frustum_terms.y - zNdc * (frustum_terms.z));
+    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
 }
 
 vec3 viewPosFromLinearDepth(float z, vec2 uv) {

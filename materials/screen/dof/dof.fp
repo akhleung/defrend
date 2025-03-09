@@ -21,7 +21,7 @@ out vec4 fragColor;
 
 float linearizeDepth(float d) {
     float zNdc  = 2.0 * d - 1.0;
-    return 2.0 * frustum_terms.x / (frustum_terms.y - zNdc * (frustum_terms.z));
+    return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
 }
 
 // TODO: consider doing this in two passes (i.e., create a fully blurred render and mix it with an in-focus render)

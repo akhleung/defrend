@@ -320,7 +320,7 @@ function on_message(self, message_id, message)
         frustum_corner = camera.proj_inv * frustum_corner_ndc
         frustum_corner = frustum_corner / frustum_corner.w
         frustum_corner.w = -self.camera.near
-        frustum_terms.x = frustum_corner.z * frustum_corner.w -- TODO: * 2
+        frustum_terms.x = frustum_corner.z * frustum_corner.w * 2
         frustum_terms.y = frustum_corner.z + frustum_corner.w
         frustum_terms.z = frustum_corner.z - frustum_corner.w
         camera.viewproj = camera.proj * camera.view
