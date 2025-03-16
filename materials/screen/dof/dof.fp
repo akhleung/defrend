@@ -6,33 +6,24 @@
 in vec2 var_texcoord0;
 
 uniform sampler2D depth_buffer;
-uniform sampler2D color_sampler;
+uniform sampler2D focused_sampler;
+uniform sampler2D blurred_sampler;
 
 uniform dof_fp {
-	vec4 params1;
-	vec4 params2;
+	vec4 params;
 	vec4 frustum_terms;
 };
 
-vec2 resolution = vec2(params1.x, params1.y);
-float focal_depth = params2.x;
-float blur_start = params2.y;
-float blur_full = params2.z;
-float radius = params2.w;
+float focal_depth = params.x;
+float blur_start = params.y;
+float blur_full = params.z;
 
 out vec4 fragColor;
 
-// TODO: consider doing this in two passes (i.e., create a fully blurred render and mix it with an in-focus render)
 void main() {
 	float z = linearizeDepth(texture(depth_buffer, var_texcoord0).r, frustum_terms.xyz);
-	float r = smoothstep(blur_start, blur_full, abs(focal_depth + z)) * radius;
-	int samples = r == 0 ? 0 : 1;
-	float count = pow(2 * samples + 1, 2);
-	fragColor = vec4(0, 0, 0, 1);
-	for (int i = -samples; i <= samples; ++i) {
-		for (int j = -samples; j <= samples; ++j) {
-			fragColor += texture(color_sampler, (gl_FragCoord.xy + (vec2(i, j) * r)) / resolution);
-		}
-	}
-	fragColor /= count;
+	float blurriness = smoothstep(blur_start, blur_full, abs(focal_depth + z));
+	vec4 focused_frag = texture(focused_sampler, var_texcoord0);
+	vec4 blurred_frag = texture(blurred_sampler, var_texcoord0);
+	fragColor = mix(focused_frag, blurred_frag, blurriness);
 }

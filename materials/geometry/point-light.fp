@@ -16,8 +16,8 @@ uniform point_light_fp {
     vec4 frustum_terms;
 };
 
-out vec4 diff_out;
-out vec4 spec_out;
+layout(location = 0) out vec4 diff_out;
+layout(location = 1) out vec4 spec_out;
 
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
     vec3 R = reflect(-lightdir, norm);

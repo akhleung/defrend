@@ -16,6 +16,7 @@ local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
 local box_blur_options = {}
+local dilate_options = {}
 local lighting_options = {}
 local kuwahara_blur_options = {}
 local gamma_options = {}
@@ -57,6 +58,9 @@ function init(self)
     self.box_blur_constants = render.constant_buffer()
     settings.box_blur.set_uniforms(self.box_blur_constants)
 
+    self.dilate_constants = render.constant_buffer()
+    settings.dilate.set_uniforms(self.dilate_constants)
+
     self.lighting_constants = render.constant_buffer()
     settings.shadow.set_uniforms(self.lighting_constants)
     settings.light.set_uniforms(self.lighting_constants)
@@ -81,6 +85,7 @@ function init(self)
     render_options.constants.resolution = resolution; ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
     box_blur_options.constants = self.box_blur_constants
+    dilate_options.constants = self.dilate_constants
     lighting_options.constants = self.lighting_constants
     kuwahara_blur_options.constants = self.kuwahara_blur_constants
     gamma_options.constants = self.gamma_constants
@@ -231,8 +236,8 @@ function update(self)
     render.disable_state(graphics.STATE_DEPTH_TEST)
     render.enable_material("lighting_material")
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("diff_light_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
@@ -240,8 +245,8 @@ function update(self)
     render.set_view(self.camera_screen.view)
     render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
-    render.disable_texture("diffuse_sampler")
     render.disable_texture("depth_buffer")
+    render.disable_texture("diffuse_sampler")
     render.disable_texture("normal_sampler")
     render.disable_texture("ssao_sampler")
     render.disable_texture("shadow_sampler")
@@ -270,18 +275,37 @@ function update(self)
     end
 
     if settings.dof.enabled then
+        -- create a blurred render to blend with the focused render
         swap_post_rt(self)
         render.set_render_target(self.post_target)
+        render.enable_material("box_blur_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.draw(predicates.screen, box_blur_options)
+        render.disable_texture("color_sampler")
+        render.disable_material()
+        -- dilate the blurred render too
+        swap_post_rt(self)
+        render.set_render_target(self.x_buffer) -- need to preserve post_target, which now has the focused render
+        render.enable_material("dilate_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.draw(predicates.screen, dilate_options)
+        render.disable_texture("color_sampler")
+        render.disable_material()
+        -- mix the blurred, dilated render with the focused render
+        swap_post_rt(self)
+        render.set_render_target(self.post_target) -- post_target now has the first blur, which can be overwritten
         render.enable_material("dof_material")
         render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("focused_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("blurred_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
         dof_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
-        local params2 = dof_options.constants.params2
-        params2.x = settings.dof.focal_depth
-        dof_options.constants.params2 = params2 ---@diagnostic disable-line: inject-field
+        local params = dof_options.constants.params
+        params.x = settings.dof.focal_depth
+        dof_options.constants.params = params ---@diagnostic disable-line: inject-field
         render.draw(predicates.screen, dof_options)
         render.disable_texture("depth_buffer")
-        render.disable_texture("color_sampler")
+        render.disable_texture("focused_sampler")
+        render.disable_texture("blurred_sampler")
         render.disable_material()
     end
 

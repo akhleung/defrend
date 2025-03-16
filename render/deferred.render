@@ -47,3 +47,7 @@ render_resources {
   name: "dof_material"
   path: "/materials/screen/dof/dof.material"
 }
+render_resources {
+  name: "dilate_material"
+  path: "/materials/screen/blur/dilate.material"
+}

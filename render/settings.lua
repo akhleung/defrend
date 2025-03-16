@@ -50,12 +50,18 @@ local M = {
         enabled = false,
         samples = 1,
     },
+    dilate = {
+        enabled = false,
+        min_threshold = 0.1,
+        max_threshold = 0.3,
+        radius = 1,
+        separation = 1,
+    },
     dof = {
         enabled = true,
         focal_depth = 200,
         blur_start = 30,
         blur_full = 40,
-        radius = 1,
     },
     bloom = {},
     gamma = {
@@ -165,18 +171,27 @@ function M.box_blur.set_uniforms(uniforms)
     uniforms.params = box_blur_params
 end
 
+local dilate = M.dilate
+local dilate_params1 = vmath.vector4()
+local dilate_params2 = vmath.vector4()
+function M.dilate.set_uniforms(uniforms)
+    dilate_params1.x = M.resolution_x
+    dilate_params1.y = M.resolution_y
+    dilate_params2.x = dilate.min_threshold
+    dilate_params2.y = dilate.max_threshold
+    dilate_params2.z = dilate.radius
+    dilate_params2.w = dilate.separation
+    uniforms.params1 = dilate_params1
+    uniforms.params2 = dilate_params2
+end
+
 local dof = M.dof
-local dof_params1 = vmath.vector4()
-local dof_params2 = vmath.vector4()
+local dof_params = vmath.vector4()
 function M.dof.set_uniforms(uniforms)
-    dof_params1.x = M.resolution_x
-    dof_params1.y = M.resolution_y
-    dof_params2.x = dof.focal_depth
-    dof_params2.y = dof.blur_start
-    dof_params2.z = dof.blur_full
-    dof_params2.w = dof.radius
-    uniforms.params1 = dof_params1
-    uniforms.params2 = dof_params2
+    dof_params.x = dof.focal_depth
+    dof_params.y = dof.blur_start
+    dof_params.z = dof.blur_full
+    uniforms.params = dof_params
 end
 
 local gamma = M.gamma
