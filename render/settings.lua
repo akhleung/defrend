@@ -69,6 +69,10 @@ local M = {
         radius = 1,
         separation = 1.0,
     },
+    gaussian_blur = {
+        enabled = false,
+        horizontal = true,
+    },
     kuwahara_blur = {
         enabled = false,
         samples = 1,
@@ -229,6 +233,21 @@ function M.box_blur.set_uniforms(uniforms)
     box_blur_params.z = box_blur.radius
     box_blur_params.w = box_blur.separation
     uniforms.params = box_blur_params
+end
+
+local gaussian_blur = M.gaussian_blur
+local gaussian_blur_params = vmath.vector4()
+function M.gaussian_blur.set_uniforms(uniforms)
+    gaussian_blur_params.x = M.resolution_x
+    gaussian_blur_params.y = M.resolution_y
+    if gaussian_blur.horizontal then
+        gaussian_blur_params.z = 1
+        gaussian_blur_params.w = 0
+    else
+        gaussian_blur_params.z = 0
+        gaussian_blur_params.w = 1
+    end
+    uniforms.params = gaussian_blur_params
 end
 
 local dilate = M.dilate

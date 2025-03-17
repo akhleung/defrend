@@ -18,6 +18,7 @@ local ssao_options = {}
 local outline_options = {}
 local bloom_options = {}
 local box_blur_options = {}
+local gaussian_blur_options = {}
 local dilate_options = {}
 local lighting_options = {}
 local kuwahara_blur_options = {}
@@ -66,6 +67,9 @@ function init(self)
     self.box_blur_constants = render.constant_buffer()
     settings.box_blur.set_uniforms(self.box_blur_constants)
 
+    self.gaussian_blur_constants = render.constant_buffer()
+    settings.gaussian_blur.set_uniforms(self.gaussian_blur_constants)
+
     self.dilate_constants = render.constant_buffer()
     settings.dilate.set_uniforms(self.dilate_constants)
 
@@ -97,6 +101,7 @@ function init(self)
     outline_options.constants = self.outline_constants
     bloom_options.constants = self.bloom_constants
     box_blur_options.constants = self.box_blur_constants
+    gaussian_blur_options.constants = self.gaussian_blur_constants
     dilate_options.constants = self.dilate_constants
     lighting_options.constants = self.lighting_constants
     kuwahara_blur_options.constants = self.kuwahara_blur_constants
@@ -332,14 +337,51 @@ function update(self)
         render.disable_material()
     end
 
+    if settings.gaussian_blur.enabled then
+        -- blur vertically
+        swap_post_rt(self)
+        render.set_render_target(self.post_target)
+        render.enable_material("gaussian_blur_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        local params = gaussian_blur_options.constants.params
+        params.z = 0
+        params.w = 1
+        gaussian_blur_options.constants.params = params
+        render.draw(predicates.screen, gaussian_blur_options)
+        render.disable_texture("color_sampler")
+        render.disable_material()
+        -- blur horizontally
+        swap_post_rt(self)
+        render.set_render_target(self.post_target)
+        render.enable_material("gaussian_blur_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        local params = gaussian_blur_options.constants.params
+        params.z = 1
+        params.w = 0
+        gaussian_blur_options.constants.params = params
+        render.draw(predicates.screen, gaussian_blur_options)
+        render.disable_texture("color_sampler")
+        render.disable_material()
+    end
+
     if settings.dof.enabled then
         -- create a blurred render to blend with the focused render
         swap_post_rt(self)
         render.set_render_target(self.post_target)
+        if settings.dof.double_blur then
+            render.set_render_target(self.x_buffer)
+        end
         render.enable_material("box_blur_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, box_blur_options)
         render.disable_texture("color_sampler")
+        if settings.dof.double_blur then
+            render.set_render_target(self.post_target)
+            render.enable_material("box_blur_material")
+            render.enable_texture("color_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+            render.draw(predicates.screen, box_blur_options)
+            render.disable_texture("color_sampler")
+        end
         render.disable_material()
         -- dilate the blurred render too
         swap_post_rt(self)
