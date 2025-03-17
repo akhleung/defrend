@@ -51,3 +51,7 @@ render_resources {
   name: "dilate_material"
   path: "/materials/screen/blur/dilate.material"
 }
+render_resources {
+  name: "bloom_material"
+  path: "/materials/screen/blur/bloom.material"
+}

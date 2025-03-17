@@ -15,6 +15,7 @@ local resolution = vmath.vector4()
 local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
+local bloom_options = {}
 local box_blur_options = {}
 local dilate_options = {}
 local lighting_options = {}
@@ -55,6 +56,9 @@ function init(self)
     self.ssao_constants = render.constant_buffer()
     settings.ssao.set_uniforms(self.ssao_constants)
 
+    self.bloom_constants = render.constant_buffer()
+    settings.bloom.set_uniforms(self.bloom_constants)
+
     self.box_blur_constants = render.constant_buffer()
     settings.box_blur.set_uniforms(self.box_blur_constants)
 
@@ -84,6 +88,7 @@ function init(self)
     render_options.constants = render.constant_buffer()
     render_options.constants.resolution = resolution; ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
+    bloom_options.constants = self.bloom_constants
     box_blur_options.constants = self.box_blur_constants
     dilate_options.constants = self.dilate_constants
     lighting_options.constants = self.lighting_constants
@@ -260,6 +265,16 @@ function update(self)
         render.enable_material("gamma_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, gamma_options)
+        render.disable_texture("color_sampler")
+        render.disable_material()
+    end
+
+    if settings.bloom.enabled then
+        swap_post_rt(self)
+        render.set_render_target(self.post_target)
+        render.enable_material("bloom_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.draw(predicates.screen, bloom_options)
         render.disable_texture("color_sampler")
         render.disable_material()
     end

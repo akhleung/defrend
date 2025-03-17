@@ -42,6 +42,13 @@ local M = {
         kernel = {},
         noise = {},
     },
+    bloom = {
+        enabled = false,
+        threshold = 0.9,
+        radius = 1,
+        separation = 2,
+        strength = 0.5,
+    },
     box_blur = {
         samples = 1,
         radius = 1.0,
@@ -63,7 +70,6 @@ local M = {
         blur_start = 30,
         blur_full = 40,
     },
-    bloom = {},
     gamma = {
         enabled = false,
         gamma = 2.2,
@@ -159,6 +165,20 @@ function M.ssao.set_uniforms(uniforms)
     ssao_params2.w = ssao.radius
     uniforms.params1 = ssao_params1
     uniforms.params2 = ssao_params2
+end
+
+local bloom = M.bloom
+local bloom_params1 = vmath.vector4()
+local bloom_params2 = vmath.vector4()
+function M.bloom.set_uniforms(uniforms)
+    bloom_params1.x = M.resolution_x
+    bloom_params1.y = M.resolution_y
+    bloom_params2.x = bloom.threshold
+    bloom_params2.y = bloom.radius
+    bloom_params2.z = bloom.separation
+    bloom_params2.w = bloom.strength
+    uniforms.params1 = bloom_params1
+    uniforms.params2 = bloom_params2
 end
 
 local box_blur = M.box_blur
