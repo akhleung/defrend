@@ -5,10 +5,10 @@ materials {
   material: "/materials/geometry/decal.material"
   textures {
     sampler: "diffuse_map"
-    texture: "/assets/images/grey-brick.png"
+    texture: "/assets/images/broken-ice-base.png"
   }
   textures {
     sampler: "normal_map"
-    texture: "/assets/images/grey-brick-normal.png"
+    texture: "/assets/images/broken-ice-normal.png"
   }
 }

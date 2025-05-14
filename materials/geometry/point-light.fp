@@ -1,4 +1,4 @@
-#version 420
+#version 420 core
 #extension GL_ARB_shading_language_include : require
 
 #include "/defrend/include/position_from_depth.glsl"

@@ -55,3 +55,7 @@ render_resources {
   name: "bloom_material"
   path: "/materials/screen/blur/bloom.material"
 }
+render_resources {
+  name: "outline_material"
+  path: "/materials/screen/outline/outline.material"
+}

@@ -4,7 +4,7 @@ in vec2 var_texcoord0;
 
 uniform sampler2D color_sampler;
 
-uniform box_blur_fp {
+uniform bloom_fp {
 	vec4 params1;
 	vec4 params2;
 };

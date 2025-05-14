@@ -15,6 +15,7 @@ local resolution = vmath.vector4()
 local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
+local outline_options = {}
 local bloom_options = {}
 local box_blur_options = {}
 local dilate_options = {}
@@ -56,6 +57,9 @@ function init(self)
     self.ssao_constants = render.constant_buffer()
     settings.ssao.set_uniforms(self.ssao_constants)
 
+    self.outline_constants = render.constant_buffer()
+    settings.outline.set_uniforms(self.outline_constants)
+
     self.bloom_constants = render.constant_buffer()
     settings.bloom.set_uniforms(self.bloom_constants)
 
@@ -88,6 +92,7 @@ function init(self)
     render_options.constants = render.constant_buffer()
     render_options.constants.resolution = resolution; ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
+    outline_options.constants = self.outline_constants
     bloom_options.constants = self.bloom_constants
     box_blur_options.constants = self.box_blur_constants
     dilate_options.constants = self.dilate_constants
@@ -258,6 +263,22 @@ function update(self)
     render.disable_texture("diff_light_sampler")
     render.disable_texture("spec_light_sampler")
     render.disable_material()
+
+    if settings.outline.enabled then
+        swap_post_rt(self)
+        render.set_render_target(self.post_target)
+        render.enable_material("outline_material")
+        render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+        outline_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
+        outline_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
+        render.draw(predicates.screen, outline_options)
+        render.disable_texture("depth_buffer")
+        render.disable_texture("color_sampler")
+        render.disable_texture("normal_sampler")
+        render.disable_material()
+    end
 
     if settings.gamma.enabled then
         swap_post_rt(self)

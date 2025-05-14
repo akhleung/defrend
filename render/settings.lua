@@ -42,6 +42,14 @@ local M = {
         kernel = {},
         noise = {},
     },
+    outline = {
+        enabled = true,
+        min_separation = 1,
+        max_separation = 1,
+        min_threshold = 0.01,
+        max_threshold = 0.1,
+        radius = 1,
+    },
     bloom = {
         enabled = false,
         threshold = 0.9,
@@ -50,8 +58,8 @@ local M = {
         strength = 0.5,
     },
     box_blur = {
-        samples = 1,
-        radius = 1.0,
+        radius = 1,
+        separation = 1.0,
     },
     kuwahara_blur = {
         enabled = false,
@@ -65,7 +73,7 @@ local M = {
         separation = 1,
     },
     dof = {
-        enabled = true,
+        enabled = false,
         focal_depth = 200,
         blur_start = 30,
         blur_full = 40,
@@ -167,6 +175,21 @@ function M.ssao.set_uniforms(uniforms)
     uniforms.params2 = ssao_params2
 end
 
+local outline = M.outline
+local outline_params1 = vmath.vector4()
+local outline_params2 = vmath.vector4()
+function M.outline.set_uniforms(uniforms)
+    outline_params1.x = M.resolution_x
+    outline_params1.y = M.resolution_y
+    outline_params1.z = outline.min_separation
+    outline_params1.w = outline.max_separation
+    outline_params2.x = outline.min_threshold
+    outline_params2.y = outline.max_threshold
+    outline_params2.z = outline.radius
+    uniforms.params1 = outline_params1
+    uniforms.params2 = outline_params2
+end
+
 local bloom = M.bloom
 local bloom_params1 = vmath.vector4()
 local bloom_params2 = vmath.vector4()
@@ -186,8 +209,8 @@ local box_blur_params = vmath.vector4()
 function M.box_blur.set_uniforms(uniforms)
     box_blur_params.x = M.resolution_x
     box_blur_params.y = M.resolution_y
-    box_blur_params.z = box_blur.samples
-    box_blur_params.w = box_blur.radius
+    box_blur_params.z = box_blur.radius
+    box_blur_params.w = box_blur.separation
     uniforms.params = box_blur_params
 end
 

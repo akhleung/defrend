@@ -44,7 +44,7 @@ int SHADOW_SOFTNESS = int(shadow_params.z);
 int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
-float softener = 0.00031 * SHADOW_SOFTNESS;
+float softener = 0.00047 * SHADOW_SOFTNESS;
 
 vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
     return normalize(light_pos - frag_pos);
