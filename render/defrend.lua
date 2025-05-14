@@ -69,13 +69,13 @@ function M.setup_render_targets(self)
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = render.get_window_width(),
         height = render.get_window_height(),
-        flags = graphics.TEXTURE_TYPE_IMAGE_2D,
+        flags = graphics.TEXTURE_USAGE_FLAG_SAMPLE, -- was render.TEXTURE_BIT
     }
     local shadow_depth_params = {
         format = graphics.TEXTURE_FORMAT_DEPTH,
         width  = settings.shadow.atlas_resolution,
         height = settings.shadow.atlas_resolution,
-        flags  = graphics.TEXTURE_TYPE_IMAGE_2D,
+        flags  = graphics.TEXTURE_USAGE_FLAG_SAMPLE, -- was render.TEXTURE_BIT
     }
 
     self.shadow_map = render.render_target(
@@ -89,6 +89,7 @@ function M.setup_render_targets(self)
         {
             [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse color
             [graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normals
+            [graphics.BUFFER_TYPE_COLOR2_BIT] = rgba_params, -- specular, glow, etc
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
