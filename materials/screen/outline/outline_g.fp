@@ -18,7 +18,6 @@ uniform outline_g_fp {
 
 vec2	resolution		= vec2(params1.x, params1.y);
 
-vec4 outlineColor = vec4(0.0, 0.0, 0.0, 0.78);
 float depth_threshold = 0.025;
 float normal_threshold = 0.5;
 float normal_smoothing = 0.25;
@@ -160,8 +159,9 @@ void main() {
 	
 	float normEdges = min(detectEdgesNormal(n, normal_sampler), 1.0);
 	
-	vec4 outline = outlineColor;
+	vec4 color = texture(color_sampler, var_texcoord0);
+	vec4 outlineColor = color * 0.25;
 	outlineColor.a = max(depthEdges, normEdges) * outlineColor.a * fade_a;
-	fragColor.rgb = mix(texture(color_sampler, var_texcoord0).xyz, outlineColor.xyz, outlineColor.a);
+	fragColor.rgb = mix(color.rgb, outlineColor.xyz, outlineColor.a);
 	fragColor.a = 1;
 }
