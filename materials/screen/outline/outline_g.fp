@@ -12,25 +12,28 @@ uniform sampler2D color_sampler;
 uniform outline_g_fp {
     vec4 params1;
     vec4 params2;
+	vec4 params3;
     vec4 frustum_corner;
     vec4 frustum_terms;
 };
 
-vec2	resolution		= vec2(params1.x, params1.y);
+vec2	resolution = vec2(params1.x, params1.y);
 
-float depth_threshold = 0.025;
-float normal_threshold = 0.5;
-float normal_smoothing = 0.25;
+// outline
+float	depth_threshold		= params1.z;
+float	normal_threshold	= params1.w;
+float	normal_smoothing	= params2.x;
 
-// float max_thickness = 1.3;
-float max_thickness = 0.6;
-float min_thickness = 0.5;
-float max_distance = 75.0;
-float min_distance = 2.0;
+// thickness
+float	max_thickness	= params2.y;
+float	min_thickness	= params2.z;
+float	max_distance	= params2.w;
+float	min_distance	= params3.x;
 
-float grazing_fresnel_power = 5.0;
-float grazing_angle_mask_power = 1.0;
-float grazing_angle_modulation_factor = 50.0;
+// grazing prevention
+float	grazing_fresnel_power			= params3.y;
+float	grazing_angle_mask_power		= params3.z;
+float	grazing_angle_modulation_factor	= params3.w;
 
 struct UVNeighbors {
 	vec2 center; 

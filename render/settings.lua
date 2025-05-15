@@ -44,11 +44,19 @@ local M = {
     },
     outline = {
         enabled = true,
-        min_separation = 1,
-        max_separation = 1,
-        min_threshold = 0.01,
-        max_threshold = 0.1,
-        radius = 1,
+        -- outline
+        depth_threshold		= 0.025,
+        normal_threshold	= 0.5,
+        normal_smoothing	= 0.25,
+        -- thickness
+        max_thickness	= 1.3,
+        min_thickness	= 0.5,
+        max_distance	= 75.0,
+        min_distance	= 2.0,
+        -- grazing prevention
+        grazing_fresnel_power			= 5.0,
+        grazing_angle_mask_power		= 1.0,
+        grazing_angle_modulation_factor	= 50.0,
     },
     bloom = {
         enabled = false,
@@ -178,14 +186,23 @@ end
 local outline = M.outline
 local outline_params1 = vmath.vector4()
 local outline_params2 = vmath.vector4()
+local outline_params3 = vmath.vector4()
 function M.outline.set_uniforms(uniforms)
     outline_params1.x = M.resolution_x
     outline_params1.y = M.resolution_y
-    outline_params1.z = outline.min_separation
-    outline_params1.w = outline.max_separation
-    outline_params2.x = outline.min_threshold
-    outline_params2.y = outline.max_threshold
-    outline_params2.z = outline.radius
+    outline_params1.z = outline.depth_threshold
+    outline_params1.w = outline.normal_threshold
+
+    outline_params2.x = outline.normal_smoothing
+    outline_params2.y = outline.max_thickness
+    outline_params2.z = outline.min_thickness
+    outline_params2.w = outline.max_distance
+
+    outline_params3.x = outline.min_distance
+    outline_params3.y = outline.grazing_fresnel_power
+    outline_params3.z = outline.grazing_angle_mask_power
+    outline_params3.w = outline.grazing_angle_modulation_factor
+
     uniforms.params1 = outline_params1
     uniforms.params2 = outline_params2
 end
