@@ -12,7 +12,7 @@ materials {
     texture: "/assets/images/textures-normal.png"
   }
   textures {
-    sampler: "specular_map"
+    sampler: "spec_glow_map"
     texture: "/assets/images/textures-specular.png"
   }
 }

@@ -43,7 +43,7 @@ local M = {
         noise = {},
     },
     outline = {
-        enabled = true,
+        enabled = false,
         -- outline
         depth_threshold		= 0.025,
         normal_threshold	= 0.5,

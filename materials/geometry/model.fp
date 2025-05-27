@@ -6,10 +6,11 @@ in vec2 var_texcoord0;
 
 uniform sampler2D diffuse_map;
 uniform sampler2D normal_map;
-uniform sampler2D specular_map;
+uniform sampler2D spec_glow_map;
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 normal_out;
+layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx() {
     vec3 d_vd_x = dFdx(var_frag_pos);
@@ -41,12 +42,13 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 }
 
 void main() {
-    vec4 mat_diff = texture(diffuse_map, var_texcoord0);
-    vec4 mat_spec = texture(specular_map, var_texcoord0);
+    vec4 mat_diff		= texture(diffuse_map, var_texcoord0); // TODO: switch to RGB?
+    vec4 mat_spec_glow	= texture(spec_glow_map, var_texcoord0);
 
-    mat3 tbn = get_tbn_mtx();
-    vec3 normal = get_perturb_normal(var_texcoord0, tbn) * 0.5 + 0.5;
+    mat3 tbn			= get_tbn_mtx();
+    vec3 normal			= get_perturb_normal(var_texcoord0, tbn) * 0.5 + 0.5;
 
-    diffuse_out = mat_diff;
-    normal_out = vec4(normal, mat_spec.r);
+    diffuse_out		= mat_diff;
+    normal_out		= vec4(normal, 0); // TODO: switch to RGB?
+    spec_glow_out	= mat_spec_glow;
 }

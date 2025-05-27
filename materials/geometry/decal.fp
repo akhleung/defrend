@@ -10,7 +10,7 @@ in vec2 var_texcoord0;
 // samplers from the decal
 uniform sampler2D diffuse_map;
 uniform sampler2D normal_map;
-// uniform sampler2D specular_map;
+uniform sampler2D spec_glow_map;
 
 // sampler from the g-buffer
 uniform sampler2D depth_buffer;
@@ -23,6 +23,7 @@ uniform decal_fp {
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 normal_out;
+layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx(vec3 view_pos, vec2 texcoord) {
     vec3 d_vd_x = dFdx(view_pos);
@@ -72,4 +73,8 @@ void main() {
     mat3 tbn = get_tbn_mtx(g_position.xyz, d_position.xy);
     vec3 decal_normal = get_perturb_normal(d_position.xy, tbn) * 0.5 + 0.5;
     normal_out = vec4(decal_normal, 1);
+
+    // output the specular and glow map values of the decal too
+    vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
+    spec_glow_out = decal_spec_glow;
 }

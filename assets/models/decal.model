@@ -11,4 +11,8 @@ materials {
     sampler: "normal_map"
     texture: "/assets/images/broken-ice-normal.png"
   }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/assets/images/white.png"
+  }
 }

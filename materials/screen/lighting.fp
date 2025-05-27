@@ -10,6 +10,7 @@ in vec2 var_texcoord0;
 uniform sampler2D diffuse_sampler;
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
+uniform sampler2D spec_glow_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
 uniform sampler2D diff_light_sampler;
@@ -55,8 +56,8 @@ float diffuse(vec3 to_light, vec3 normal_sample) {
 }
 
 float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
-    vec3 R = reflect(-lightdir, norm);
-    return pow(max(dot(R, viewdir), 0.0), shiny);
+    vec3 H = normalize(viewdir + lightdir);
+    return shiny == 0 ? 0 : pow(max(dot(norm, H), 0.0), shiny);
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
@@ -99,7 +100,7 @@ void main() {
     float z        = linearizeDepth(depth, frustum_terms.xyz);
     vec3 var_frag_pos = viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
     vec3 view_dir = normalize(-var_frag_pos);
-    vec3 normal = normal_sample.xyz * 2.0 - 1.0; // rescale/bias [0, 1] -> [-1, 1]
+    vec3 normal = normalize(normal_sample.xyz * 2.0 - 1.0); // rescale/bias [0, 1] -> [-1, 1]
 
     float shadow = 1;
     float this_cutoff = 0;
@@ -121,15 +122,14 @@ void main() {
     }
 
     float ao = texture(ssao_sampler, var_texcoord0).a;
-    float shininess = 0; // TODO: find someplace else to put the specular power
-    vec4 mat_spec = vec4(normal_sample.w, normal_sample.w, normal_sample.w, 1.0);
+    float shininess = texture(spec_glow_sampler, var_texcoord0).r * 255; // TODO: find someplace else to put the specular power
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
     float sun_spec = specular(view_dir, directional_from, normal, shininess);
     float sun_diff = diffuse(directional_from, normal);
     vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
     vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) * ao; // consider 0.5 * ao + 0.5
-    color += mat_diff * light_diff /*+ mat_spec * light_spec*/; // TODO: find a place to put the specular bits
+    color += mat_diff * light_diff + light_spec; // specular highlights are white, so omit mat_spec
 
     color.a = mat_diff.a;
     // color = vec4(ao, ao, ao, 1.0);
@@ -139,4 +139,5 @@ void main() {
     float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
     color = mix(color, fog_color, fog_intensity);
     frag_color = clamp(color, 0.0, 1.0);
+    // frag_color = texture(spec_light_sampler, var_texcoord0);
 }
