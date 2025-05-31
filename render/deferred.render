@@ -59,3 +59,7 @@ render_resources {
   name: "outline_material"
   path: "/materials/screen/outline/outline.material"
 }
+render_resources {
+  name: "sprite_material"
+  path: "/materials/geometry/sprite-batched.material"
+}

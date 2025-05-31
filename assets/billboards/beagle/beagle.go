@@ -1,12 +1,8 @@
-components {
-  id: "beagle"
-  component: "/environment/billboards/beagle/beagle.script"
-}
 embedded_components {
   id: "sprite"
   type: "sprite"
   data: "default_animation: \"idle_toward\"\n"
-  "material: \"/materials/geometry/sprite-instanced.material\"\n"
+  "material: \"/materials/geometry/sprite-batched.material\"\n"
   "size {\n"
   "  x: 23.5\n"
   "  y: 15.75\n"

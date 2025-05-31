@@ -8,7 +8,7 @@ in vec3 world_position;
 in mat4 mtx_world;
 in mat4 mtx_normal;
 
-uniform model_vp {
+uniform sprite_vp {
     mat4 mtx_view;
     mat4 mtx_proj;
 };
