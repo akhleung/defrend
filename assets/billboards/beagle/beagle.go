@@ -18,7 +18,7 @@ embedded_components {
   "}\n"
   "textures {\n"
   "  sampler: \"spec_glow_map\"\n"
-  "  texture: \"/assets/billboards/flat.tilesource\"\n"
+  "  texture: \"/assets/billboards/matte.tilesource\"\n"
   "}\n"
   ""
   position {

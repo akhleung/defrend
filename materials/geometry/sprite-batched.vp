@@ -11,6 +11,7 @@ uniform sprite_vp {
     mat4 mtx_viewproj;
     mat4 mtx_proj;
 	mat4 mtx_normal;
+	mat4 mtx_view;
 };
 
 out vec3 var_frag_pos;
@@ -20,9 +21,9 @@ out vec2 var_texcoord0;
 void main() {
 	
 	var_frag_pos	= (mtx_worldview * position).xyz;
-	var_normal		= normalize((mtx_normal * vec4(normal, 0.0)).xyz);
+	var_normal		= normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
 	var_texcoord0	= texcoord0;
 
-    highp vec4 center = vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);
-	gl_Position = mtx_viewproj * center + mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
+    vec4 center		= vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);
+	gl_Position		= mtx_viewproj * center + mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
 }
