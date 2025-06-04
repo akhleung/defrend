@@ -2,10 +2,8 @@
 
 in vec4 position;
 in vec2 texcoord0;
-in vec3 normal;
 
 in mat4 mtx_world;
-in mat4 mtx_normal;
 
 uniform billboard_vp {
 	mat4 mtx_view;

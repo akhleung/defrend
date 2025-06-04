@@ -3083,26 +3083,3 @@ embedded_instances {
     z: 30.0
   }
 }
-embedded_instances {
-  id: "summer_house"
-  data: "components {\n"
-  "  id: \"summer_house\"\n"
-  "  component: \"/assets/models/summer_house/summer_house.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -20.0
-    y: 10.0
-  }
-  rotation {
-    x: 4.3297803E-17
-    y: 0.70710677
-    z: -0.70710677
-    w: 4.3297803E-17
-  }
-  scale3 {
-    x: 50.0
-    y: 50.0
-    z: 50.0
-  }
-}

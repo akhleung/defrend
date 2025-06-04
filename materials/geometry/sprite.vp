@@ -2,16 +2,13 @@
 
 in vec4 position;
 in vec2 texcoord0;
-in vec3 normal;
 
 in vec3 local_position;
 
 uniform sprite_vp {
-	mat4 mtx_view;
     mat4 mtx_proj;
 	mat4 mtx_worldview;
     mat4 mtx_viewproj;
-	mat4 mtx_normal;
 };
 
 out vec3 var_frag_pos;
@@ -25,5 +22,5 @@ void main() {
 	var_texcoord0	= texcoord0;
 
     vec4 center		= vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);
-	gl_Position		= mtx_viewproj * center + mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
+	gl_Position		= mtx_viewproj * center - mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
 }
