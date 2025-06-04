@@ -10,6 +10,7 @@ function init(self)
 	-- go.animate("/logo", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
 	-- go.animate("/logo1", "euler.y", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
 	-- go.animate("/logo1", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
+	math.randomseed(os.time())
 end
 
 local profiling = false

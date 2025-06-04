@@ -1,0 +1,150 @@
+name: "flowerbed"
+instances {
+  id: "ground"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+}
+instances {
+  id: "flower"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower1"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower2"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower3"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower4"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower5"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower6"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower7"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower8"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower9"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower10"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower11"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower12"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower13"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower14"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower15"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -1.5
+  }
+}
+scale_along_z: 0

@@ -61,6 +61,14 @@ instances {
     z: 5.0
   }
 }
+instances {
+  id: "beagle"
+  prototype: "/assets/billboards/beagle/beagle.go"
+  position {
+    x: 45.0
+    y: 15.0
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/main/neighborhood.collection"
@@ -68,6 +76,210 @@ collection_instances {
     x: 4.0
     y: -2.0
     z: -291.0
+  }
+}
+collection_instances {
+  id: "flowerbed"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 90.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed1"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 122.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed2"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 90.0
+    z: -32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed3"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 122.0
+    z: -32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed4"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 90.0
+    z: 64.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed5"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 122.0
+    z: 64.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed6"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 90.0
+    z: 32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed7"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 122.0
+    z: 32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed8"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 154.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed9"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 186.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed10"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 154.0
+    z: -32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed11"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 186.0
+    z: -32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed12"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 154.0
+    z: 64.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed13"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 186.0
+    z: 64.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed14"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 154.0
+    z: 32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+collection_instances {
+  id: "flowerbed15"
+  collection: "/assets/billboards/flowerbed/flowerbed.collection"
+  position {
+    x: 186.0
+    z: 32.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }
 scale_along_z: 1
@@ -361,7 +573,7 @@ embedded_instances {
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/assets/images/black.png\\\"\\n"
+  "    texture: \\\"/assets/images/white.png\\\"\\n"
   "  }\\n"
   "}\\n"
   "materials {\\n"
@@ -2869,5 +3081,28 @@ embedded_instances {
     x: 30.0
     y: 30.0
     z: 30.0
+  }
+}
+embedded_instances {
+  id: "summer_house"
+  data: "components {\n"
+  "  id: \"summer_house\"\n"
+  "  component: \"/assets/models/summer_house/summer_house.model\"\n"
+  "}\n"
+  ""
+  position {
+    x: -20.0
+    y: 10.0
+  }
+  rotation {
+    x: 4.3297803E-17
+    y: 0.70710677
+    z: -0.70710677
+    w: 4.3297803E-17
+  }
+  scale3 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
   }
 }
