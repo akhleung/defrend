@@ -34,7 +34,7 @@ bundle_identifier = com.defold.example.basic3d
 game_binding = /input/all.input_bindingc
 
 [model]
-max_count = 512
+max_count = 1024
 
 [sprite]
 subpixels = 0

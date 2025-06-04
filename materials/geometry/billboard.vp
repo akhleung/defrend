@@ -1,0 +1,38 @@
+#version 420 core
+
+in vec4 position;
+in vec2 texcoord0;
+in vec3 normal;
+
+in mat4 mtx_world;
+in mat4 mtx_normal;
+
+uniform billboard_vp {
+	mat4 mtx_view;
+	mat4 mtx_proj;
+};
+
+out vec3 var_frag_pos;
+out vec3 var_normal;
+out vec2 var_texcoord0;
+
+void main() {
+
+	mat4 mtx_worldview = mtx_view * mtx_world;
+	float x_scale = length(mtx_worldview[0]);
+	float y_scale = length(mtx_worldview[1]);
+	float z_scale = length(mtx_worldview[2]);
+	mtx_worldview[0][0] = x_scale;
+	mtx_worldview[0][1] = 0;
+	mtx_worldview[0][2] = 0;
+	mtx_worldview[1][1] = y_scale;
+	mtx_worldview[2][0] = 0;
+	mtx_worldview[2][1] = 0;
+	mtx_worldview[2][2] = z_scale;
+	
+	var_frag_pos	= (mtx_worldview * position).xyz;
+	var_normal		= normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
+	var_texcoord0	= texcoord0;
+
+	gl_Position		= mtx_proj * mtx_worldview * position;
+}

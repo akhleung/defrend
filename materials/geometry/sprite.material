@@ -1,15 +1,26 @@
-name: "sprite-instanced"
+name: "sprite"
 tags: "sprite"
-vertex_program: "/materials/geometry/sprite-instanced.vp"
+vertex_program: "/materials/geometry/sprite.vp"
 fragment_program: "/materials/geometry/sprite.fp"
-vertex_space: VERTEX_SPACE_LOCAL
+vertex_constants {
+  name: "mtx_proj"
+  type: CONSTANT_TYPE_PROJECTION
+}
+vertex_constants {
+  name: "mtx_normal"
+  type: CONSTANT_TYPE_NORMAL
+}
 vertex_constants {
   name: "mtx_view"
   type: CONSTANT_TYPE_VIEW
 }
 vertex_constants {
-  name: "mtx_proj"
-  type: CONSTANT_TYPE_PROJECTION
+  name: "mtx_worldview"
+  type: CONSTANT_TYPE_WORLDVIEW
+}
+vertex_constants {
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
 }
 samplers {
   name: "diffuse_map"
@@ -36,20 +47,7 @@ samplers {
   max_anisotropy: 0.0
 }
 attributes {
-  name: "world_position"
+  name: "local_position"
   semantic_type: SEMANTIC_TYPE_POSITION
-  coordinate_space: COORDINATE_SPACE_WORLD
   vector_type: VECTOR_TYPE_VEC3
-}
-attributes {
-  name: "world_matrix"
-  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
-  step_function: VERTEX_STEP_FUNCTION_INSTANCE
-  vector_type: VECTOR_TYPE_MAT4
-}
-attributes {
-  name: "normal_matrix"
-  semantic_type: SEMANTIC_TYPE_NORMAL_MATRIX
-  step_function: VERTEX_STEP_FUNCTION_INSTANCE
-  vector_type: VECTOR_TYPE_MAT4
 }

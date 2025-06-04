@@ -139,11 +139,14 @@ function update(self)
     render.disable_material()
 
     -- render sprites and billboards into g-buffer
-    render.enable_material("sprite_material")
     render.disable_state(graphics.STATE_CULL_FACE)
+    render.enable_material("sprite_material")
     render.draw(predicates.sprite, render_options)
-    render.enable_state(graphics.STATE_CULL_FACE)
     render.disable_material()
+    render.enable_material("billboard_material")
+    render.draw(predicates.billboard, render_options)
+    render.disable_material()
+    render.enable_state(graphics.STATE_CULL_FACE)
 
     -- render decals into extra buffer
     render.enable_material("decal_material")

@@ -1,22 +1,11 @@
-name: "sprite-batched"
-tags: "sprite"
-vertex_program: "/materials/geometry/sprite-batched.vp"
+name: "billboard"
+tags: "billboard"
+vertex_program: "/materials/geometry/billboard.vp"
 fragment_program: "/materials/geometry/sprite.fp"
-vertex_constants {
-  name: "mtx_viewproj"
-  type: CONSTANT_TYPE_VIEWPROJ
-}
+vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
-}
-vertex_constants {
-  name: "mtx_normal"
-  type: CONSTANT_TYPE_NORMAL
-}
-vertex_constants {
-  name: "mtx_worldview"
-  type: CONSTANT_TYPE_WORLDVIEW
 }
 vertex_constants {
   name: "mtx_view"
@@ -47,7 +36,14 @@ samplers {
   max_anisotropy: 0.0
 }
 attributes {
-  name: "local_position"
-  semantic_type: SEMANTIC_TYPE_POSITION
-  vector_type: VECTOR_TYPE_VEC3
+  name: "mtx_world"
+  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
+}
+attributes {
+  name: "mtx_normal"
+  semantic_type: SEMANTIC_TYPE_NORMAL_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
 }

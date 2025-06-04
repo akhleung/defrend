@@ -7,11 +7,11 @@ in vec3 normal;
 in vec3 local_position;
 
 uniform sprite_vp {
+	mat4 mtx_view;
+    mat4 mtx_proj;
 	mat4 mtx_worldview;
     mat4 mtx_viewproj;
-    mat4 mtx_proj;
 	mat4 mtx_normal;
-	mat4 mtx_view;
 };
 
 out vec3 var_frag_pos;
@@ -19,7 +19,7 @@ out vec3 var_normal;
 out vec2 var_texcoord0;
 
 void main() {
-	
+
 	var_frag_pos	= (mtx_worldview * position).xyz;
 	var_normal		= normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
 	var_texcoord0	= texcoord0;

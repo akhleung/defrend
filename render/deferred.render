@@ -61,5 +61,9 @@ render_resources {
 }
 render_resources {
   name: "sprite_material"
-  path: "/materials/geometry/sprite-batched.material"
+  path: "/materials/geometry/sprite.material"
+}
+render_resources {
+  name: "billboard_material"
+  path: "/materials/geometry/billboard.material"
 }
