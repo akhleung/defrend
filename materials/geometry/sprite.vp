@@ -21,7 +21,7 @@ out vec2 var_texcoord0;
 void main() {
 
 	var_frag_pos	= (mtx_worldview * position).xyz;
-	var_normal		= normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
+	var_normal		= normalize(-var_frag_pos);
 	var_texcoord0	= texcoord0;
 
     vec4 center		= vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);

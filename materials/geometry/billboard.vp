@@ -31,7 +31,7 @@ void main() {
 	mtx_worldview[2][2] = z_scale;
 	
 	var_frag_pos	= (mtx_worldview * position).xyz;
-	var_normal		= normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
+	var_normal		= normalize(-var_frag_pos);
 	var_texcoord0	= texcoord0;
 
 	gl_Position		= mtx_proj * mtx_worldview * position;
