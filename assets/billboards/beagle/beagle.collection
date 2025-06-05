@@ -1,0 +1,23 @@
+name: "beagle"
+instances {
+  id: "beagle"
+  prototype: "/assets/billboards/beagle/beagle.go"
+  children: "shadow"
+}
+scale_along_z: 0
+embedded_instances {
+  id: "shadow"
+  data: "components {\n"
+  "  id: \"shadow\"\n"
+  "  component: \"/assets/billboards/shadow.model\"\n"
+  "}\n"
+  ""
+  position {
+    y: 1.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}

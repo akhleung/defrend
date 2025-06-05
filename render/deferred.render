@@ -1,11 +1,11 @@
 script: "/render/deferred.render_script"
 render_resources {
   name: "model_material"
-  path: "/materials/geometry/model-instanced.material"
+  path: "/materials/geometry/model/model-instanced.material"
 }
 render_resources {
   name: "shadow_material"
-  path: "/materials/geometry/shadow-instanced.material"
+  path: "/materials/geometry/model/shadow-instanced.material"
 }
 render_resources {
   name: "lighting_material"
@@ -33,11 +33,11 @@ render_resources {
 }
 render_resources {
   name: "point_light_material"
-  path: "/materials/geometry/point-light.material"
+  path: "/materials/geometry/light/point-light.material"
 }
 render_resources {
   name: "decal_material"
-  path: "/materials/geometry/decal.material"
+  path: "/materials/geometry/decal/decal.material"
 }
 render_resources {
   name: "decal_resolve_material"
@@ -61,9 +61,9 @@ render_resources {
 }
 render_resources {
   name: "sprite_material"
-  path: "/materials/geometry/sprite.material"
+  path: "/materials/geometry/billboard-sprite/sprite.material"
 }
 render_resources {
   name: "billboard_material"
-  path: "/materials/geometry/billboard.material"
+  path: "/materials/geometry/billboard-sprite/billboard.material"
 }

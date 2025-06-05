@@ -1,6 +1,6 @@
 function init(self)
 	local p = go.get_position()
-	p.x = p.x + math.random(-4, 4)
-	p.z = p.z + math.random(-4, 4)
+	p.x = p.x + math.random(-2, 2)
+	p.z = p.z + math.random(-2, 2)
 	go.set_position(p)
 end

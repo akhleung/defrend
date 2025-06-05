@@ -2,7 +2,7 @@ mesh: "/assets/citybuilder/gltf/road_straight_crossing.gltf"
 name: "road_straight_crossing"
 materials {
   name: "citybits_texture"
-  material: "/materials/geometry/model-instanced.material"
+  material: "/materials/geometry/model/model-instanced.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/citybuilder/gltf/citybits_texture.png"

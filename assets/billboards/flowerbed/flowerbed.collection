@@ -2,99 +2,345 @@ name: "flowerbed"
 instances {
   id: "ground"
   prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 6.0
+    z: -6.0
+  }
 }
 instances {
   id: "flower"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 1.5
+    x: -0.5
     y: 0.5
-    z: 1.5
+    z: -4.5
   }
 }
 instances {
   id: "flower1"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 1.5
+    x: -0.5
     y: 0.5
-    z: 0.5
+    z: -5.5
   }
 }
 instances {
   id: "flower2"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 1.5
+    x: -0.5
     y: 0.5
-    z: -0.5
+    z: -6.5
   }
 }
 instances {
   id: "flower3"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 1.5
+    x: -0.5
     y: 0.5
-    z: -1.5
+    z: -7.5
   }
 }
 instances {
   id: "flower4"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 0.5
+    x: -1.5
     y: 0.5
-    z: 1.5
+    z: -4.5
   }
 }
 instances {
   id: "flower5"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 0.5
+    x: -1.5
     y: 0.5
-    z: 0.5
+    z: -5.5
   }
 }
 instances {
   id: "flower6"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 0.5
+    x: -1.5
     y: 0.5
-    z: -0.5
+    z: -6.5
   }
 }
 instances {
   id: "flower7"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: 0.5
+    x: -1.5
     y: 0.5
-    z: -1.5
+    z: -7.5
   }
 }
 instances {
   id: "flower8"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: -0.5
+    x: -2.5
     y: 0.5
-    z: 1.5
+    z: -4.5
   }
 }
 instances {
   id: "flower9"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: -0.5
+    x: -2.5
     y: 0.5
-    z: 0.5
+    z: -5.5
   }
 }
 instances {
   id: "flower10"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower11"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower12"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower13"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower14"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower15"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower16"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower17"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower18"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower19"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower20"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower21"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower22"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower23"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower24"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower25"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower26"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "ground1"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 2.0
+    z: -6.0
+  }
+}
+instances {
+  id: "flower27"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower28"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower29"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower30"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower31"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower32"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower33"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower34"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower35"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower36"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
     x: -0.5
@@ -103,7 +349,177 @@ instances {
   }
 }
 instances {
-  id: "flower11"
+  id: "flower37"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower38"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower39"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower40"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower41"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower42"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower43"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower44"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower45"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower46"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower47"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower48"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower49"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower50"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower51"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower52"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "ground2"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 2.0
+    z: -2.0
+  }
+}
+instances {
+  id: "flower53"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower54"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower55"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
     x: -0.5
@@ -112,7 +528,597 @@ instances {
   }
 }
 instances {
-  id: "flower12"
+  id: "ground3"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 6.0
+    z: -2.0
+  }
+}
+instances {
+  id: "flower56"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower57"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower58"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower59"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower60"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower61"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower62"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower63"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower64"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower65"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower66"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower67"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower68"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower69"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "ground4"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 6.0
+    z: 6.0
+  }
+}
+instances {
+  id: "flower70"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower71"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower72"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower73"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower74"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower75"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower76"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower77"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower78"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower79"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower80"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower81"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower82"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower83"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower84"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower85"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower86"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower87"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower88"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower89"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower90"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower91"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower92"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower93"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower94"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower95"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower96"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower97"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower98"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower99"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower100"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower101"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower102"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower103"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower104"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower105"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower106"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower107"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "ground5"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "flower108"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower109"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower110"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower111"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -6.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower112"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower113"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "ground6"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 6.0
+    z: 2.0
+  }
+}
+instances {
+  id: "flower114"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower115"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower116"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower117"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower118"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
     x: -1.5
@@ -121,30 +1127,1308 @@ instances {
   }
 }
 instances {
-  id: "flower13"
+  id: "flower119"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower120"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower121"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "ground7"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: 2.0
+    z: 6.0
+  }
+}
+instances {
+  id: "flower122"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
     x: -1.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower123"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -7.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower124"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower125"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower126"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -0.5
     y: 0.5
     z: 0.5
   }
 }
 instances {
-  id: "flower14"
+  id: "flower127"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
     x: -1.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower128"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower129"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower130"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower131"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower132"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower133"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower134"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower135"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower136"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower137"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower138"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
     y: 0.5
     z: -0.5
   }
 }
 instances {
-  id: "flower15"
+  id: "flower139"
   prototype: "/assets/billboards/flowerbed/flower.go"
   position {
-    x: -1.5
+    x: 1.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower140"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "ground8"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -6.0
+    z: 6.0
+  }
+}
+instances {
+  id: "flower141"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "ground9"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -2.0
+    z: -2.0
+  }
+}
+instances {
+  id: "flower142"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower143"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower144"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower145"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower146"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower147"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower148"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower149"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower150"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower151"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower152"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower153"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower154"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower155"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower156"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower157"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower158"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower159"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower160"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower161"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower162"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower163"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower164"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower165"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower166"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "ground10"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "flower167"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower168"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower169"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
     y: 0.5
     z: -1.5
+  }
+}
+instances {
+  id: "flower170"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower171"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower172"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower173"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower174"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower175"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower176"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower177"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower178"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower179"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower180"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower181"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower182"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower183"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower184"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower185"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower186"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower187"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower188"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower189"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower190"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower191"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower192"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower193"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower194"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower195"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower196"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower197"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower198"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower199"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower200"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower201"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower202"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower203"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower204"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower205"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower206"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower207"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower208"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower209"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower210"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower211"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 5.5
+  }
+}
+instances {
+  id: "flower212"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower213"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "ground11"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -2.0
+    z: 6.0
+  }
+}
+instances {
+  id: "flower214"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower215"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower216"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower217"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "ground12"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -6.0
+    z: -6.0
+  }
+}
+instances {
+  id: "flower218"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower219"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower220"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower221"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower222"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "ground13"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -6.0
+    z: 2.0
+  }
+}
+instances {
+  id: "flower223"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower224"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -5.5
+  }
+}
+instances {
+  id: "flower225"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -2.5
+  }
+}
+instances {
+  id: "flower226"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "ground14"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -2.0
+    z: -6.0
+  }
+}
+instances {
+  id: "flower227"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower228"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower229"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -4.5
+  }
+}
+instances {
+  id: "flower230"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower231"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower232"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: 1.5
+  }
+}
+instances {
+  id: "flower233"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower234"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower235"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower236"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 6.5
+  }
+}
+instances {
+  id: "flower237"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower238"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 4.5
+  }
+}
+instances {
+  id: "flower239"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower240"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower241"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower242"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower243"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "flower244"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -6.5
+  }
+}
+instances {
+  id: "flower245"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "flower246"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower247"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: 3.5
+  }
+}
+instances {
+  id: "ground15"
+  prototype: "/assets/billboards/flowerbed/ground.go"
+  position {
+    x: -6.0
+    z: -2.0
+  }
+}
+instances {
+  id: "flower248"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: 7.5
+  }
+}
+instances {
+  id: "flower249"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -1.5
+  }
+}
+instances {
+  id: "flower250"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 0.5
+    y: 0.5
+    z: -0.5
+  }
+}
+instances {
+  id: "flower251"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.5
+    y: 0.5
+    z: 2.5
+  }
+}
+instances {
+  id: "flower252"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower253"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.5
+    y: 0.5
+    z: -3.5
+  }
+}
+instances {
+  id: "flower254"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 7.5
+    y: 0.5
+    z: -7.5
+  }
+}
+instances {
+  id: "flower255"
+  prototype: "/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 6.5
+    y: 0.5
+    z: -3.5
   }
 }
 scale_along_z: 0

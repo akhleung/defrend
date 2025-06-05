@@ -1,0 +1,8 @@
+name: "shadow"
+tags: "model"
+vertex_program: "/materials/geometry/model/shadow-instanced.vp"
+fragment_program: "/materials/geometry/model/shadow.fp"
+vertex_constants {
+  name: "mtx_worldviewproj"
+  type: CONSTANT_TYPE_WORLDVIEWPROJ
+}

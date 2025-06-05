@@ -2,10 +2,10 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "default_animation: \"idle_toward\"\n"
-  "material: \"/materials/geometry/sprite.material\"\n"
+  "material: \"/materials/geometry/billboard-sprite/sprite.material\"\n"
   "size {\n"
-  "  x: 36.0\n"
-  "  y: 24.0\n"
+  "  x: 12.0\n"
+  "  y: 8.0\n"
   "}\n"
   "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
@@ -22,6 +22,6 @@ embedded_components {
   "}\n"
   ""
   position {
-    y: 3.0
+    y: 4.0
   }
 }

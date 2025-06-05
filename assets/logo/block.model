@@ -2,7 +2,7 @@ mesh: "/assets/logo/block-brick.dae"
 name: "block"
 materials {
   name: "default"
-  material: "/materials/geometry/model-instanced.material"
+  material: "/materials/geometry/model/model-instanced.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/images/textures-diffuse.png"

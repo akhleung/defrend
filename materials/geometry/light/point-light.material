@@ -1,7 +1,7 @@
 name: "point-light"
 tags: "point_light"
-vertex_program: "/materials/geometry/point-light.vp"
-fragment_program: "/materials/geometry/point-light.fp"
+vertex_program: "/materials/geometry/light/point-light.vp"
+fragment_program: "/materials/geometry/light/point-light.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_view"
