@@ -1,12 +1,6 @@
 function init(self)
 	local p = go.get_position()
-	local sign = math.random(-2, 1)
-	if sign < 0 then
-		sign = -1
-	else
-		sign = 1
-	end
-	p.x = p.x + sign * math.random(3)
-	p.z = p.z + sign * math.random(3)
+	p.x = p.x + math.random(-4, 4)
+	p.z = p.z + math.random(-4, 4)
 	go.set_position(p)
 end
