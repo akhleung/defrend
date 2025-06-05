@@ -20,10 +20,16 @@ void main() {
 	float x_scale = length(mtx_worldview[0]);
 	float y_scale = length(mtx_worldview[1]);
 	float z_scale = length(mtx_worldview[2]);
+
 	mtx_worldview[0][0] = x_scale;
 	mtx_worldview[0][1] = 0;
 	mtx_worldview[0][2] = 0;
-	mtx_worldview[1][1] = y_scale;
+
+	// uncomment to billboard against changes in elevation too
+	// mtx_worldview[1][0] = 0;
+	// mtx_worldview[1][1] = y_scale;
+	// mtx_worldview[1][2] = 0;
+
 	mtx_worldview[2][0] = 0;
 	mtx_worldview[2][1] = 0;
 	mtx_worldview[2][2] = z_scale;
