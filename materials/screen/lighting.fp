@@ -1,7 +1,7 @@
 #version 420 core
 #extension GL_ARB_shading_language_include : require
 
-#include "/defrend/include/position_from_depth.glsl"
+#include "/defrend/include/lighting_functions.glsl"
 
 #define MAX_PARTITIONS 9
 
@@ -46,19 +46,6 @@ int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
 float softener = 0.00047 * SHADOW_SOFTNESS;
-
-vec3 light_direction(vec3 frag_pos, vec3 light_pos) {
-    return normalize(light_pos - frag_pos);
-}
-
-float diffuse(vec3 to_light, vec3 normal_sample) {
-    return max(dot(normal_sample, to_light), 0.0);
-}
-
-float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
-    vec3 H = normalize(viewdir + lightdir);
-    return shiny == 0 ? 0 : pow(max(dot(norm, H), 0.0), shiny);
-}
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
     // offset the fragment's view-space position by the surface normal to reduce shadow acne

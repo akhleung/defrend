@@ -1,7 +1,7 @@
 #version 420 core
 #extension GL_ARB_shading_language_include : require
 
-#include "/defrend/include/position_from_depth.glsl"
+#include "/defrend/include/lighting_functions.glsl"
 
 in vec3 var_center;
 in vec4 var_color;
@@ -19,16 +19,6 @@ uniform point_light_fp {
 
 layout(location = 0) out vec4 diff_out;
 layout(location = 1) out vec4 spec_out;
-
-float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
-    vec3 H = normalize(viewdir + lightdir);
-    return shiny == 0 ? 0 : pow(max(dot(norm, H), 0.0), shiny);
-}
-
-float attenuation(float d, float r_inner, float r_outer) {
-    float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
-    return falloff * falloff;
-}
 
 void main() {
 	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
