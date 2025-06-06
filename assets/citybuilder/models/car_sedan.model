@@ -2,7 +2,7 @@ mesh: "/assets/citybuilder/gltf/car_sedan.gltf"
 name: "sedan"
 materials {
   name: "citybits_texture"
-  material: "/materials/geometry/model/model-instanced.material"
+  material: "/materials/geometry/model/model.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/citybuilder/texture/citybits_texture.png"

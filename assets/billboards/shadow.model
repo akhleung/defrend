@@ -1,2 +1,6 @@
 mesh: "/builtins/assets/meshes/sphere.dae"
 name: "shadow"
+materials {
+  name: "default"
+  material: "/materials/geometry/billboard-sprite/shadow.material"
+}

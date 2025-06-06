@@ -1,6 +1,6 @@
 name: "shadow"
 tags: "model"
-vertex_program: "/materials/geometry/model/shadow-instanced.vp"
+vertex_program: "/materials/geometry/model/shadow.vp"
 fragment_program: "/materials/geometry/model/shadow.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {

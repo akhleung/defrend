@@ -1,4 +1,14 @@
 name: "billboard-shadow"
 tags: "billboard_shadow"
-vertex_program: ""
-fragment_program: ""
+vertex_program: "/materials/geometry/billboard-sprite/shadow.vp"
+fragment_program: "/materials/geometry/billboard-sprite/shadow.fp"
+vertex_constants {
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
+}
+attributes {
+  name: "mtx_world"
+  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
+}

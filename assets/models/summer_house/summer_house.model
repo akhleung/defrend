@@ -2,7 +2,7 @@ mesh: "/assets/models/summer_house/scene.gltf"
 name: "summer_house"
 materials {
   name: "Material.001"
-  material: "/materials/geometry/model/model-instanced.material"
+  material: "/materials/geometry/model/model.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/models/summer_house/textures/Material.001_diffuse.png"

@@ -1,6 +1,6 @@
 name: "model"
 tags: "model"
-vertex_program: "/materials/geometry/model/model-instanced.vp"
+vertex_program: "/materials/geometry/model/model.vp"
 fragment_program: "/materials/geometry/model/model.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
