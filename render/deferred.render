@@ -8,8 +8,8 @@ render_resources {
   path: "/materials/geometry/model/shadow.material"
 }
 render_resources {
-  name: "lighting_material"
-  path: "/materials/screen/lighting.material"
+  name: "resolve_lighting_material"
+  path: "/materials/screen/resolve_lighting/resolve_lighting.material"
 }
 render_resources {
   name: "ssao_material"
@@ -40,8 +40,8 @@ render_resources {
   path: "/materials/geometry/decal/decal.material"
 }
 render_resources {
-  name: "decal_resolve_material"
-  path: "/materials/screen/decal_resolve.material"
+  name: "resolve_decals_material"
+  path: "/materials/screen/resolve_decals/resolve_decals.material"
 }
 render_resources {
   name: "dof_material"

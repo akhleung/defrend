@@ -159,7 +159,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/materials/screen/lighting.material\\\"\\n"
+  "  material: \\\"/materials/screen/resolve_lighting/resolve_lighting.material\\\"\\n"
   "}\\n"
   "\"\n"
   "}\n"

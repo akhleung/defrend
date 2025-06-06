@@ -1,7 +1,7 @@
 name: "decal_resolve"
 tags: "screen"
 vertex_program: "/materials/screen/screen.vp"
-fragment_program: "/materials/screen/decal_resolve.fp"
+fragment_program: "/materials/screen/resolve_decals/resolve_decals.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ

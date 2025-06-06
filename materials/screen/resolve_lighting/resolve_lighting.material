@@ -1,7 +1,7 @@
 name: "screen"
 tags: "screen"
 vertex_program: "/materials/screen/screen.vp"
-fragment_program: "/materials/screen/lighting.fp"
+fragment_program: "/materials/screen/resolve_lighting/resolve_lighting.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ

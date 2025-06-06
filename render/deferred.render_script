@@ -167,7 +167,7 @@ function update(self)
     render.disable_material()
 
     -- draw rendered decals back into g-buffer
-    render.enable_material("decal_resolve_material")
+    render.enable_material("resolve_decals_material")
     render_options.frustum = nil
     render.disable_state(graphics.STATE_DEPTH_TEST)
     render.set_depth_mask(false)
@@ -262,7 +262,7 @@ function update(self)
 
     render.set_render_target(self.post_target)
     render.disable_state(graphics.STATE_DEPTH_TEST)
-    render.enable_material("lighting_material")
+    render.enable_material("resolve_lighting_material")
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
