@@ -4,8 +4,32 @@ render_resources {
   path: "/materials/geometry/model/model.material"
 }
 render_resources {
+  name: "sprite_material"
+  path: "/materials/geometry/billboard-sprite/sprite.material"
+}
+render_resources {
+  name: "billboard_material"
+  path: "/materials/geometry/billboard-sprite/billboard.material"
+}
+render_resources {
+  name: "decal_material"
+  path: "/materials/geometry/decal/decal.material"
+}
+render_resources {
   name: "shadow_material"
   path: "/materials/geometry/model/shadow.material"
+}
+render_resources {
+  name: "blob_shadow_material"
+  path: "/materials/geometry/billboard-sprite/shadow.material"
+}
+render_resources {
+  name: "point_light_material"
+  path: "/materials/geometry/light/point-light.material"
+}
+render_resources {
+  name: "resolve_decals_material"
+  path: "/materials/screen/resolve_decals/resolve_decals.material"
 }
 render_resources {
   name: "resolve_lighting_material"
@@ -32,18 +56,6 @@ render_resources {
   path: "/materials/screen/blur/box.material"
 }
 render_resources {
-  name: "point_light_material"
-  path: "/materials/geometry/light/point-light.material"
-}
-render_resources {
-  name: "decal_material"
-  path: "/materials/geometry/decal/decal.material"
-}
-render_resources {
-  name: "resolve_decals_material"
-  path: "/materials/screen/resolve_decals/resolve_decals.material"
-}
-render_resources {
   name: "dof_material"
   path: "/materials/screen/dof/dof.material"
 }
@@ -58,12 +70,4 @@ render_resources {
 render_resources {
   name: "outline_material"
   path: "/materials/screen/outline/outline.material"
-}
-render_resources {
-  name: "sprite_material"
-  path: "/materials/geometry/billboard-sprite/sprite.material"
-}
-render_resources {
-  name: "billboard_material"
-  path: "/materials/geometry/billboard-sprite/billboard.material"
 }

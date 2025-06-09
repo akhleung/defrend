@@ -89,8 +89,10 @@ function init(self)
 
     render_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     shadow_options.frustum_planes = render.FRUSTUM_PLANES_ALL
+    shadow_options.constants = render.constant_buffer()
+    shadow_options.constants.bias = vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
     render_options.constants = render.constant_buffer()
-    render_options.constants.resolution = resolution; ---@diagnostic disable-line: inject-field
+    render_options.constants.resolution = resolution ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
     outline_options.constants = self.outline_constants
     bloom_options.constants = self.bloom_constants
@@ -435,9 +437,7 @@ render_shadows = function(self)
     render.enable_state(graphics.STATE_DEPTH_TEST)
     render.disable_state(graphics.STATE_BLEND)
     render.enable_state(graphics.STATE_CULL_FACE)
-    render.set_cull_face(graphics.FACE_TYPE_BACK)
     render.clear(self.clear_shadow_buffers)
-    render.enable_material("shadow_material")
     for i = 1, #partitions do
         local mtx_view, mtx_proj = refresh_shadows(self, projections[i], i) ---@diagnostic disable-line: redundant-parameter
         mtx_light_views[i] = mtx_view
@@ -450,7 +450,14 @@ render_shadows = function(self)
         local y_offset = partition.y * atlas_resolution
         render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
         shadow_options.frustum = mtx_light
+        render.enable_material("shadow_material")
+        render.set_cull_face(graphics.FACE_TYPE_BACK)
         render.draw(self.predicates.model, shadow_options)
+        render.disable_material()
+        render.enable_material("blob_shadow_material")
+        render.set_cull_face(graphics.FACE_TYPE_FRONT)
+        render.draw(self.predicates.blob_shadow, shadow_options)
+        render.disable_material()
         self.lighting_constants.mtx_lights[i] = mtx_light * self.camera.view_inv
     end
     render.disable_material()

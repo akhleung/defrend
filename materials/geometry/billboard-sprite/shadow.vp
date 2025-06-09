@@ -6,19 +6,14 @@ in mat4 mtx_world;
 in mat4 mtx_normal;
 
 uniform shadow_vp {
-	mat4 mtx_viewproj;
 	mat4 mtx_view;
 	mat4 mtx_proj;
+    vec4 bias;
 };
 
-float bias = 0.5;
-
 void main() {
-	vec3 ls = normalize((mtx_normal * vec4(-mtx_view[2][0], 0.0, mtx_view[2][2], 0.0)).xyz);
 	vec3 vn = normalize((mtx_normal * vec4(normal, 0.0)).xyz);
-	float o = 1.0 - abs(dot(ls, vn));
 	vec4 vp = mtx_view * mtx_world * position;
-	vp = vec4(vp.xyz + bias * vn, 1.0);
-	// vp.z = vp.z - bias;
+	vp.xyz -= bias.x * vn;
 	gl_Position = mtx_proj * vp;
 }
