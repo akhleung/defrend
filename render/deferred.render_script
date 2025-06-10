@@ -341,24 +341,16 @@ function update(self)
         -- blur vertically
         swap_post_rt(self)
         render.set_render_target(self.post_target)
-        render.enable_material("gaussian_blur_material")
+        render.enable_material("gaussian_blur_horizontal_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-        local params = gaussian_blur_options.constants.params
-        params.z = 0
-        params.w = 1
-        gaussian_blur_options.constants.params = params
         render.draw(predicates.screen, gaussian_blur_options)
         render.disable_texture("color_sampler")
         render.disable_material()
         -- blur horizontally
         swap_post_rt(self)
         render.set_render_target(self.post_target)
-        render.enable_material("gaussian_blur_material")
+        render.enable_material("gaussian_blur_vertical_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-        local params = gaussian_blur_options.constants.params
-        params.z = 1
-        params.w = 0
-        gaussian_blur_options.constants.params = params
         render.draw(predicates.screen, gaussian_blur_options)
         render.disable_texture("color_sampler")
         render.disable_material()
