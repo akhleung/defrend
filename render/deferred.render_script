@@ -328,20 +328,10 @@ function update(self)
         -- create a blurred render to blend with the focused render
         swap_post_rt(self)
         render.set_render_target(self.post_target)
-        if settings.dof.double_blur then
-            render.set_render_target(self.x_buffer)
-        end
         render.enable_material("box_blur_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, box_blur_options)
         render.disable_texture("color_sampler")
-        if settings.dof.double_blur then
-            render.set_render_target(self.post_target)
-            render.enable_material("box_blur_material")
-            render.enable_texture("color_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-            render.draw(predicates.screen, box_blur_options)
-            render.disable_texture("color_sampler")
-        end
         render.disable_material()
         -- dilate the blurred render too
         swap_post_rt(self)
