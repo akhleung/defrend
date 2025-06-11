@@ -109,7 +109,7 @@ void main() {
     }
 
     float ao = texture(ssao_sampler, var_texcoord0).a;
-    float shininess = texture(spec_glow_sampler, var_texcoord0).r * 255; // TODO: find someplace else to put the specular power
+    float shininess = normal_sample.w * 255;
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
     vec4 color = ambient_color * mat_diff * ao;
     float sun_spec = specular(view_dir, directional_from, normal, shininess);
