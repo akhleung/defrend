@@ -70,8 +70,7 @@ local M = {
         separation = 1.0,
     },
     gaussian_blur = {
-        enabled = true,
-        horizontal = true,
+        enabled = false,
     },
     kuwahara_blur = {
         enabled = false,
