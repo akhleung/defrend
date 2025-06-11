@@ -103,7 +103,6 @@ function M.setup_render_targets(self)
         {
             [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse contribution
             [graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- specular contribution
-            [graphics.BUFFER_TYPE_COLOR2_BIT] = rgba_params, -- specular, glow, etc
         }
     )
     self.post_source = render.render_target(
@@ -122,8 +121,8 @@ end
 
 function M.setup_predicates(self)
     local arg = {
-        "model", "decal", "point_light", "screen",
-        "sprite", "billboard", "blob_shadow", "transparent", "tile", "particle",
+        "model", "sprite", "billboard", "blob_shadow", "decal", "point_light",
+        "transparent", "tile", "particle", "screen",
         "gui", "text", "debug_text"
     }
     local predicates = {}
