@@ -39,7 +39,7 @@ void main() {
 	vec3  origin	= viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
 	float z_norm	= (origin.z - frustum_corner.w) / (frustum_corner.z - frustum_corner.w);
   	vec3  normal	= texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
-	float rotation	= hash12(var_texcoord0) * 6.28;
+	float rotation	= hash12(var_texcoord0 * 100) * 6.28;
 	float r			= radius / abs(origin.z);
 	float rStart	= r * z_norm * bias_dist;
 	float rStep		= (r - rStart) / samples;

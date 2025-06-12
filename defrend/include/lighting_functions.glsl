@@ -13,15 +13,29 @@ vec3 viewPosFromLinearDepth(float z, vec2 uv, vec3 frustum_corner) {
     return vec3(xyFar * zNorm, z);
 }
 
-float hash12(vec2 v) {
-    return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
+#define MOD3 vec3(.1031,.11369,.13787)
+
+// float hash12(vec2 v) {
+//     return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
+// }
+
+// vec2 hash22(vec2 co) {
+//     return vec2(
+//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
+//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
+//     );
+// }
+
+float hash12(vec2 p) {
+	vec3 p3  = fract(vec3(p.xyx) * MOD3);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
 }
 
-vec2 hash22(vec2 co) {
-    return vec2(
-        fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-        fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-    );
+vec2 hash22(vec2 p) {
+	vec3 p3 = fract(vec3(p.xyx) * MOD3);
+    p3 += dot(p3, p3.yzx+19.19);
+    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
 }
 
 float diffuse(vec3 to_light, vec3 normal_sample) {
