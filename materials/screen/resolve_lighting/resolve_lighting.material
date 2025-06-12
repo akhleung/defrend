@@ -43,14 +43,6 @@ samplers {
   max_anisotropy: 0.0
 }
 samplers {
-  name: "shadow_sampler"
-  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
-  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
-  filter_min: FILTER_MODE_MIN_NEAREST
-  filter_mag: FILTER_MODE_MAG_NEAREST
-  max_anisotropy: 0.0
-}
-samplers {
   name: "diff_light_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
   wrap_v: WRAP_MODE_CLAMP_TO_EDGE
@@ -68,6 +60,14 @@ samplers {
 }
 samplers {
   name: "resolved_shadows"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
+samplers {
+  name: "shadow_depth"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
   wrap_v: WRAP_MODE_CLAMP_TO_EDGE
   filter_min: FILTER_MODE_MIN_NEAREST

@@ -3,8 +3,6 @@
 
 #include "/defrend/include/lighting_functions.glsl"
 
-#define MAX_PARTITIONS 4
-
 in vec2 var_texcoord0;
 
 uniform sampler2D diffuse_sampler;
@@ -25,11 +23,6 @@ uniform resolve_lighting_fp {
     vec4 ambient_color;
     vec4 directional_color;
     vec4 directional_to;
-    
-    vec4 camera_partitions[MAX_PARTITIONS];
-    mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
-    vec4 shadow_params;
-    vec4 shadow_colors[MAX_PARTITIONS];
 };
 
 out vec4 frag_color;
@@ -37,10 +30,6 @@ out vec4 frag_color;
 float FOG_NEAR = fog_params.x;
 float FOG_FAR = fog_params.y;
 
-float SHADOW_MAP_SIZE = shadow_params.x;
-float SHADOW_MAP_DIM = shadow_params.y;
-float SHADOW_BOUNDARY = 1/SHADOW_MAP_DIM;
-int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
 void main() {
@@ -55,10 +44,8 @@ void main() {
     vec3 view_dir = normalize(-var_frag_pos);
     vec3 normal = normalize(normal_sample.xyz * 2.0 - 1.0); // rescale/bias [0, 1] -> [-1, 1]
 
-    float shadow = 1;
-    float this_cutoff = 0;
-    float prev_cutoff = 0;
-    int i = 0;
+    float shadow_d = texture(shadow_depth, var_texcoord0).r;
+    float shadow = depth == shadow_d ? texture(resolved_shadows, var_texcoord0).r : 1;
 
     float shininess = normal_sample.w * 255;
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
@@ -73,7 +60,7 @@ void main() {
     // color = vec4(ao, ao, ao, 1.0);
     vec4 shadow_sample = texture(resolved_shadows, var_texcoord0);
     // shadow_sample = vec4(shadow * ao);
-    color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
+    // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     // float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
     float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
     color = mix(color, fog_color, fog_intensity);
