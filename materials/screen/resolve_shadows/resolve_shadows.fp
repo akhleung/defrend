@@ -60,7 +60,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
         for (int y = -SHADOW_SOFTNESS; y <= SHADOW_SOFTNESS; ++y) {
             vec2 uv = shadow_texcoord0 + vec2(x,y) / SHADOW_MAP_SIZE;
-            float occluder_z = texture(shadow_sampler, uv + hash22(uv) * softener).r;
+            float occluder_z = texture(shadow_sampler, uv + hash22(uv * 100000) * softener).r;
             shadow += occluder_z < occludee_z ? 0.0 : 1.0;
             ++samples;
         }
