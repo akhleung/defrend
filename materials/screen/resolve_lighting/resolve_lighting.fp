@@ -10,13 +10,12 @@ in vec2 var_texcoord0;
 uniform sampler2D diffuse_sampler;
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
-uniform sampler2D spec_glow_sampler;
-uniform sampler2D ssao_sampler;
-uniform sampler2D shadow_sampler;
 uniform sampler2D diff_light_sampler;
 uniform sampler2D spec_light_sampler;
+uniform sampler2D resolved_shadows;
+uniform sampler2D shadow_depth;
 
-uniform lighting_fp {
+uniform resolve_lighting_fp {
     mat4 mtx_view;
     vec4 frustum_corner;
     vec4 frustum_terms;
@@ -44,52 +43,6 @@ float SHADOW_BOUNDARY = 1/SHADOW_MAP_DIM;
 int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
-vec2 poissonDisk[8] = vec2[](
-	vec2(-0.94201624,	-0.39906216),
-	vec2(0.94558609,	-0.76890725),
-	vec2(-0.094184101,	-0.92938870),
-	vec2(0.34495938,	0.29387760),
-	vec2(-0.94558609,	0.76890725),
-	vec2(-0.34495938,	-0.29387760),
-	vec2(0.094184101,	0.92938870),
-	vec2(0.94201624,	0.39906216)
-);
-
-float test_shadow_texel(vec2 uv, float occludee_z) {
-	float light = 1;
-    vec2 fuzz = hash22(uv * 100000) * .00031;
-    light -= texture(shadow_sampler, uv + poissonDisk[0] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
-    light -= texture(shadow_sampler, uv + poissonDisk[1] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
-    light -= texture(shadow_sampler, uv + poissonDisk[2] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
-    light -= texture(shadow_sampler, uv + poissonDisk[3] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
-    return light;
-}
-
-float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
-    // offset the fragment's view-space position by the surface normal to reduce shadow acne
-    view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
-    // transform the fragment from the camera's view space into the light's clip/screen space
-    vec4 proj_pos_re_light = mtx_light * view_pos_re_cam;
-    proj_pos_re_light /= proj_pos_re_light.w;
-    vec2 shadow_uv = proj_pos_re_light.xy * 0.5 + 0.5; // rescale/bias [-1, 1] -> [0, 1]
-    // adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
-    shadow_uv /= SHADOW_MAP_DIM;
-    shadow_uv += offset;
-    // short circuit with no shadow if the rendering exceeds the shadow map boundaries
-    if (shadow_uv.x < offset.x || shadow_uv.x > SHADOW_BOUNDARY + offset.x || 
-        shadow_uv.y < offset.y || shadow_uv.y > SHADOW_BOUNDARY + offset.y) {
-        return 1.0;
-    } 
-    // rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
-    float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
-    float shadow = test_shadow_texel(shadow_uv, occludee_z);
-	shadow += test_shadow_texel(shadow_uv + vec2(1, 0) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_shadow_texel(shadow_uv + vec2(0, 1) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_shadow_texel(shadow_uv + vec2(-1, 0) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_shadow_texel(shadow_uv + vec2(0, -1) / SHADOW_MAP_SIZE, occludee_z);
-    return shadow / 5;
-}
-
 void main() {
 
     vec4 normal_sample = texture(normal_sampler, var_texcoord0);
@@ -106,35 +59,21 @@ void main() {
     float this_cutoff = 0;
     float prev_cutoff = 0;
     int i = 0;
-    while (i < NUM_PARTITIONS) {
-        vec4 part = camera_partitions[i];
-        this_cutoff = part.z;
-        if (var_frag_pos.z > -this_cutoff) { // cast a shadow using the nearest applicable partition
-            shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], part.xy, part.w);
-            break;
-        }
-        prev_cutoff = this_cutoff;
-        ++i;
-    }
-    if (i == NUM_PARTITIONS - 1 && shadow < 1) { // fade the shadow out as it reaches the end of the last partition
-        float fade = smoothstep(mix(prev_cutoff, this_cutoff, 0.75), this_cutoff, -var_frag_pos.z);
-        shadow += (1.0 - shadow) * fade;
-    }
 
-    float ao = texture(ssao_sampler, var_texcoord0).a;
     float shininess = normal_sample.w * 255;
     vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
-    vec4 color = ambient_color * mat_diff * ao;
+    vec4 color = ambient_color * mat_diff /* * ao */;
     float sun_spec = specular(view_dir, directional_from, normal, shininess);
     float sun_diff = diffuse(directional_from, normal);
     vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
-    vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) * ao; // consider 0.5 * ao + 0.5
+    vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) /* * ao */; // consider 0.5 * ao + 0.5
     color += mat_diff * light_diff + light_spec; // specular highlights are white, so omit mat_spec
 
     color.a = mat_diff.a;
     // color = vec4(ao, ao, ao, 1.0);
-    // vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
-    // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
+    vec4 shadow_sample = texture(resolved_shadows, var_texcoord0);
+    // shadow_sample = vec4(shadow * ao);
+    color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     // float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
     float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
     color = mix(color, fog_color, fog_intensity);

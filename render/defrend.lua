@@ -65,8 +65,8 @@ function M.setup_render_targets(self)
         width	= render.get_window_width(),
         height	= render.get_window_height(),
     }
-    local rgb_params = {
-        format	= graphics.TEXTURE_FORMAT_RGB,
+    local float_params = {
+        format	= graphics.TEXTURE_FORMAT_R32F,
         width	= render.get_window_width(),
         height	= render.get_window_height(),
     }
@@ -95,6 +95,13 @@ function M.setup_render_targets(self)
             [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse color & glow
             [graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normals & specular
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
+        }
+    )
+    self.shadow_target = render.render_target(
+        "shadow_target",
+        {
+            [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params,
+            [graphics.BUFFER_TYPE_COLOR1_BIT] = float_params,
         }
     )
     self.x_buffer = render.render_target(
