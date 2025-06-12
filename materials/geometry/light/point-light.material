@@ -1,4 +1,4 @@
-name: "point-light"
+name: "point_light"
 tags: "point_light"
 vertex_program: "/materials/geometry/light/point-light.vp"
 fragment_program: "/materials/geometry/light/point-light.fp"
