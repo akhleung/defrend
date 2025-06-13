@@ -60,7 +60,7 @@ void main() {
     // color = vec4(ao, ao, ao, 1.0);
     vec4 shadow_sample = texture(resolved_shadows, var_texcoord0);
     // shadow_sample = vec4(shadow * ao);
-    // color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
+    color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
     // float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
     float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
     color = mix(color, fog_color, fog_intensity);
