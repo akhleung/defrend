@@ -38,6 +38,13 @@ vec2 hash22(vec2 p) {
     return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
 }
 
+vec2 hash23(vec3 p3) {
+	p3 = fract(p3 * MOD3);
+    p3 += dot(p3, p3.yzx + 19.19);
+    // return fract((p3.xx + p3.yz) * p3.zy);
+    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
+}
+
 float diffuse(vec3 to_light, vec3 normal_sample) {
     return max(dot(normal_sample, to_light), 0.0);
 }

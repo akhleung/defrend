@@ -3,7 +3,7 @@
 
 #include "/defrend/include/lighting_functions.glsl"
 
-#define MAX_PARTITIONS 9
+#define MAX_PARTITIONS 4
 
 in vec2 var_texcoord0;
 
@@ -41,11 +41,31 @@ float FOG_FAR = fog_params.y;
 float SHADOW_MAP_SIZE = shadow_params.x;
 float SHADOW_MAP_DIM = shadow_params.y;
 float SHADOW_BOUNDARY = 1/SHADOW_MAP_DIM;
-int SHADOW_SOFTNESS = int(shadow_params.z);
 int NUM_PARTITIONS = int(shadow_params.w);
 vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
-float softener = 0.00047 * SHADOW_SOFTNESS;
+vec2 poissonDisk[8] = vec2[](
+	vec2(-0.94201624,	-0.39906216),
+	vec2(0.94558609,	-0.76890725),
+	vec2(-0.094184101,	-0.92938870),
+	vec2(0.34495938,	0.29387760),
+	vec2(-0.94558609,	0.76890725),
+	vec2(-0.34495938,	-0.29387760),
+	vec2(0.094184101,	0.92938870),
+	vec2(0.94201624,	0.39906216)
+);
+
+float test_shadow_texel(vec2 uv, float occludee_z) {
+	float light = 0;
+    float poisson_samples = var_texcoord0.x < 0.5 ? 4 : 8;
+    poisson_samples = 4;
+    for (int i = 0; i < poisson_samples; ++i) {
+        uv = uv + poissonDisk[i] / 3000 + hash22(uv * 100000) * .00031;
+        light += texture(shadow_sampler, uv).r < occludee_z ? 0 : 1;
+    }
+    return light / poisson_samples;
+	// return texture(shadow_sampler, uv + hash22(uv * 100000) * .00031).r < occludee_z ? 0.0 : 1.0;
+}
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
     // offset the fragment's view-space position by the surface normal to reduce shadow acne
@@ -53,28 +73,23 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     // transform the fragment from the camera's view space into the light's clip/screen space
     vec4 proj_pos_re_light = mtx_light * view_pos_re_cam;
     proj_pos_re_light /= proj_pos_re_light.w;
-    vec2 shadow_texcoord0 = proj_pos_re_light.xy * 0.5 + 0.5; // rescale/bias [-1, 1] -> [0, 1]
+    vec2 shadow_uv = proj_pos_re_light.xy * 0.5 + 0.5; // rescale/bias [-1, 1] -> [0, 1]
     // adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
-    shadow_texcoord0 /= SHADOW_MAP_DIM;
-    shadow_texcoord0 += offset;
+    shadow_uv /= SHADOW_MAP_DIM;
+    shadow_uv += offset;
     // short circuit with no shadow if the rendering exceeds the shadow map boundaries
-    if (shadow_texcoord0.x < offset.x || shadow_texcoord0.x > SHADOW_BOUNDARY + offset.x || 
-        shadow_texcoord0.y < offset.y || shadow_texcoord0.y > SHADOW_BOUNDARY + offset.y) {
+    if (shadow_uv.x < offset.x || shadow_uv.x > SHADOW_BOUNDARY + offset.x || 
+        shadow_uv.y < offset.y || shadow_uv.y > SHADOW_BOUNDARY + offset.y) {
         return 1.0;
     } 
     // rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
-    float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
-    int samples = 0;
-    for (int x = -SHADOW_SOFTNESS; x <= SHADOW_SOFTNESS; ++x) {
-        for (int y = -SHADOW_SOFTNESS; y <= SHADOW_SOFTNESS; ++y) {
-            vec2 uv = shadow_texcoord0 + vec2(x,y) / SHADOW_MAP_SIZE;
-            float occluder_z = texture(shadow_sampler, uv + hash22(uv * 100) * softener).r;
-            shadow += occluder_z < occludee_z ? 0.0 : 1.0;
-            ++samples;
-        }
-    }
-    return shadow / samples;
+    float shadow = test_shadow_texel(shadow_uv, occludee_z);
+	shadow += test_shadow_texel(shadow_uv + vec2(1, 0) / SHADOW_MAP_SIZE, occludee_z);
+	shadow += test_shadow_texel(shadow_uv + vec2(0, 1) / SHADOW_MAP_SIZE, occludee_z);
+	shadow += test_shadow_texel(shadow_uv + vec2(-1, 0) / SHADOW_MAP_SIZE, occludee_z);
+	shadow += test_shadow_texel(shadow_uv + vec2(0, -1) / SHADOW_MAP_SIZE, occludee_z);
+    return shadow / 5;
 }
 
 void main() {
