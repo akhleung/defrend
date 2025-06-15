@@ -38,9 +38,9 @@ vec3 directional_from = normalize(mat3(mtx_view) * -directional_to.xyz);
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
 	float light_orientation = dot(normal, directional_from);
-	float b = light_orientation > 0 ? bias : 0;
+    bias *= float(light_orientation > 0);
     // offset the fragment's view-space position by the surface normal to reduce shadow acne
-    view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * b, 1);
+    view_pos_re_cam = vec4(view_pos_re_cam.xyz + normal * bias, 1);
     // transform the fragment from the camera's view space into the light's clip/screen space
     vec4 proj_pos_re_light = mtx_light * view_pos_re_cam;
     proj_pos_re_light /= proj_pos_re_light.w;
@@ -49,10 +49,10 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
     shadow_texcoord0 /= SHADOW_MAP_DIM;
     shadow_texcoord0 += offset;
     // short circuit with no shadow if the rendering exceeds the shadow map boundaries
-    if (shadow_texcoord0.x < offset.x || shadow_texcoord0.x > SHADOW_BOUNDARY + offset.x || 
-        shadow_texcoord0.y < offset.y || shadow_texcoord0.y > SHADOW_BOUNDARY + offset.y) {
-        return 1.0;
-    } 
+    // if (shadow_texcoord0.x < offset.x || shadow_texcoord0.x > SHADOW_BOUNDARY + offset.x || 
+    //     shadow_texcoord0.y < offset.y || shadow_texcoord0.y > SHADOW_BOUNDARY + offset.y) {
+    //     return 1.0;
+    // } 
     // rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
     float shadow = 0.0;
     float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
@@ -61,7 +61,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
         for (int y = -SHADOW_SOFTNESS; y <= SHADOW_SOFTNESS; ++y) {
             vec2 uv = shadow_texcoord0 + vec2(x,y) / SHADOW_MAP_SIZE;
             float occluder_z = texture(shadow_sampler, uv /* + hash22(uv * 100000) * softener */).r;
-            shadow += occluder_z < occludee_z ? 0.0 : 1.0;
+            shadow += float(occluder_z >= occludee_z);
             ++samples;
         }
     }
