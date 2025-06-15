@@ -56,15 +56,13 @@ vec2 poissonDisk[8] = vec2[](
 );
 
 float test_shadow_texel(vec2 uv, float occludee_z) {
-	float light = 0;
-    float poisson_samples = var_texcoord0.x < 0.5 ? 4 : 8;
-    poisson_samples = 4;
-    for (int i = 0; i < poisson_samples; ++i) {
-        uv = uv + poissonDisk[i] / 3000 + hash22(uv * 100000) * .00031;
-        light += texture(shadow_sampler, uv).r < occludee_z ? 0 : 1;
-    }
-    return light / poisson_samples;
-	// return texture(shadow_sampler, uv + hash22(uv * 100000) * .00031).r < occludee_z ? 0.0 : 1.0;
+	float light = 1;
+    vec2 fuzz = hash22(uv * 100000) * .00031;
+    light -= texture(shadow_sampler, uv + poissonDisk[0] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
+    light -= texture(shadow_sampler, uv + poissonDisk[1] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
+    light -= texture(shadow_sampler, uv + poissonDisk[2] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
+    light -= texture(shadow_sampler, uv + poissonDisk[3] / 3000 + fuzz).r < occludee_z ? 0.25 : 0;
+    return light;
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
