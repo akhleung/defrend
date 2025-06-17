@@ -212,7 +212,7 @@ function update(self)
     end
 
     swap_post_rt(self)
-    render.set_render_target(self.x_buffer)
+    render.set_render_target(self.l_buffer)
     render.clear(self.clear_color_buffers)
 
     update_lighting_constants(self)
@@ -241,8 +241,8 @@ function update(self)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
-    render.enable_texture("diff_light_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-    render.enable_texture("spec_light_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.enable_texture("diff_light_sampler", self.l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("spec_light_sampler", self.l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
     render.set_view(self.camera_screen.view)
     render.set_projection(self.camera_screen.proj)
     render.draw(predicates.screen, lighting_options)
@@ -323,7 +323,7 @@ function update(self)
     if settings.dof.enabled then
         -- create a blurred render to blend with the focused render
         swap_post_rt(self)
-        render.set_render_target(self.x_buffer)
+        render.set_render_target(self.l_buffer)
         render.enable_material("gaussian_blur_horizontal_material")
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, gaussian_blur_options) 
@@ -331,12 +331,12 @@ function update(self)
         render.disable_material() -- post_source: focused, x_buffer: half-blurred
         render.set_render_target(self.post_target)
         render.enable_material("gaussian_blur_vertical_material")
-        render.enable_texture("color_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("color_sampler", self.l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, gaussian_blur_options)
         render.disable_texture("color_sampler")
         render.disable_material() -- post_source: focused, x_buffer: half-blurred, post_target: fully-blurred
         -- dilate the blurred render too
-        render.set_render_target(self.x_buffer)
+        render.set_render_target(self.l_buffer)
         render.enable_material("dilate_material")
         render.enable_texture("color_sampler", self.post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, dilate_options)
@@ -347,7 +347,7 @@ function update(self)
         render.enable_material("dof_material")
         render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
         render.enable_texture("focused_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-        render.enable_texture("blurred_sampler", self.x_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("blurred_sampler", self.l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
         dof_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
         local params = dof_options.constants.params
         params.x = settings.dof.focal_depth

@@ -65,11 +65,6 @@ function M.setup_render_targets(self)
         width	= render.get_window_width(),
         height	= render.get_window_height(),
     }
-    local rgb_params = {
-        format	= graphics.TEXTURE_FORMAT_RGB,
-        width	= render.get_window_width(),
-        height	= render.get_window_height(),
-    }
     local depth_params = {
         format	= graphics.TEXTURE_FORMAT_DEPTH,
         width	= render.get_window_width(),
@@ -97,7 +92,7 @@ function M.setup_render_targets(self)
             [graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
         }
     )
-    self.x_buffer = render.render_target(
+    self.l_buffer = render.render_target(
         "light_target",
         {
             [graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse contribution
