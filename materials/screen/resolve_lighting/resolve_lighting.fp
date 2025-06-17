@@ -57,11 +57,11 @@ bool is_shaded(vec2 uv, float occludee_z) {
 
 float test_poisson_disc(vec2 uv, float occludee_z) {
 	float light = 4;
-	vec2 fuzz = hash22(uv * 100000) * .00031; fuzz = vec2(0);
-	light -= float(is_shaded(uv + poisson0 + fuzz, occludee_z));
-	light -= float(is_shaded(uv + poisson1 + fuzz, occludee_z));
-	light -= float(is_shaded(uv + poisson2 + fuzz, occludee_z));
-	light -= float(is_shaded(uv + poisson3 + fuzz, occludee_z));
+	// vec2 fuzz = hash22(uv * 100000) * .00031; // add this to the UV to noisify the penumbra
+	light -= float(is_shaded(uv + poisson0, occludee_z));
+	light -= float(is_shaded(uv + poisson1, occludee_z));
+	light -= float(is_shaded(uv + poisson2, occludee_z));
+	light -= float(is_shaded(uv + poisson3, occludee_z));
 	return light / 4;
 }
 
@@ -75,6 +75,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 	// adjust the shadow uv so that we sample from the correct partition of the cascaded shadow map
 	shadow_uv /= SHADOW_MAP_DIM;
 	shadow_uv += offset;
+	shadow_uv = clamp(shadow_uv, offset, offset + SHADOW_BOUNDARY);
 	// rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
 	float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
 	float shadow = test_poisson_disc(shadow_uv, occludee_z);
