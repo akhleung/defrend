@@ -3,10 +3,16 @@
 in vec4 position;
 in vec2 texcoord0;
 in vec3 normal;
+#ifndef EDITOR
 in mat4 mtx_world;
 in mat4 mtx_normal;
+#endif
 
 uniform model_vp {
+    #ifdef EDITOR
+    mat4 mtx_world;
+    mat4 mtx_normal;
+    #endif
     mat4 mtx_view;
     mat4 mtx_proj;
 };

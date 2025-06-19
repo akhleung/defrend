@@ -1,9 +1,14 @@
 #version 420 core
 
 in vec4 position;// positions are in world space
+#ifndef EDITOR
 in mat4 mtx_world;
+#endif
 
 uniform shadow_vp {
+	#ifdef EDITOR
+	mat4 mtx_world;
+	#endif
 	mat4 mtx_viewproj;
 };
 

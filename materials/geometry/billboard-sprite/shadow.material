@@ -11,6 +11,14 @@ vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
 }
+vertex_constants {
+  name: "mtx_world"
+  type: CONSTANT_TYPE_WORLD
+}
+vertex_constants {
+  name: "mtx_normal"
+  type: CONSTANT_TYPE_NORMAL
+}
 attributes {
   name: "mtx_world"
   semantic_type: SEMANTIC_TYPE_WORLD_MATRIX

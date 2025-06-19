@@ -1,11 +1,16 @@
 #version 420 core
 
 in vec4 position;
+#ifndef EDITOR
 in mat4 mtx_world;
+#endif
 in vec4 color;
 in vec4 radii;
 
 uniform model_vp {
+    #ifdef EDITOR
+    mat4 mtx_world;
+    #endif
     mat4 mtx_view;
     mat4 mtx_proj;
 };
