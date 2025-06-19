@@ -7,6 +7,10 @@ vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
 }
+vertex_constants {
+  name: "mtx_world"
+  type: CONSTANT_TYPE_WORLD
+}
 attributes {
   name: "mtx_world"
   semantic_type: SEMANTIC_TYPE_WORLD_MATRIX

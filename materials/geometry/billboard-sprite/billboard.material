@@ -11,6 +11,10 @@ vertex_constants {
   name: "mtx_view"
   type: CONSTANT_TYPE_VIEW
 }
+vertex_constants {
+  name: "mtx_world"
+  type: CONSTANT_TYPE_WORLD
+}
 samplers {
   name: "diffuse_map"
   wrap_u: WRAP_MODE_REPEAT

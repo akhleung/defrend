@@ -3,9 +3,14 @@
 in vec4 position;
 in vec2 texcoord0;
 
+#ifndef EDITOR
 in mat4 mtx_world;
+#endif
 
 uniform billboard_vp {
+	#ifdef EDITOR
+	mat4 mtx_world;
+	#endif
 	mat4 mtx_view;
 	mat4 mtx_proj;
 };

@@ -11,6 +11,14 @@ vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
 }
+vertex_constants {
+  name: "mtx_world"
+  type: CONSTANT_TYPE_WORLD
+}
+vertex_constants {
+  name: "mtx_normal"
+  type: CONSTANT_TYPE_NORMAL
+}
 samplers {
   name: "diffuse_map"
   wrap_u: WRAP_MODE_REPEAT
