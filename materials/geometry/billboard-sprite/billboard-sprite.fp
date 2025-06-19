@@ -10,6 +10,7 @@ uniform sampler2D spec_glow_map;
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 normal_out;
+layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx() {
 	vec3 d_vd_x = dFdx(var_frag_pos);
@@ -41,10 +42,8 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 }
 
 void main() {
-	vec4 diffuse	= texture(diffuse_map, var_texcoord0); if (diffuse.a == 0) discard; // TODO: alpha blend
-	vec4 spec_glow	= texture(spec_glow_map, var_texcoord0);
-	vec3 normal		= get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5;
-
-	diffuse_out		= vec4(diffuse.rgb, spec_glow.g);
-	normal_out		= vec4(normal, spec_glow.r);
+	vec4 diffuse	= texture(diffuse_map, var_texcoord0); if (diffuse.a == 0) discard; // TODO: alpha blend the draw call
+	diffuse_out		= diffuse;
+	normal_out		= vec4(get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5, 1);
+	spec_glow_out	= texture(spec_glow_map, var_texcoord0);
 }

@@ -89,6 +89,7 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 void main() {
 
 	vec4 normal_sample = texture(normal_sampler, var_texcoord0);
+	vec4 spec_glow_sample = texture(spec_glow_sampler, var_texcoord0);
 	vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
 	vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
@@ -124,13 +125,13 @@ void main() {
 	}
 
 	float ao = texture(ssao_sampler, var_texcoord0).a;
-	float shininess = normal_sample.w * 255;
+	float shininess = spec_glow_sample.r * 255;
 	vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 	vec4 color = ambient_color * mat_diff * ao;
 	float sun_spec = specular(view_dir, directional_from, normal, shininess);
 	float sun_diff = diffuse(directional_from, normal);
 	vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
-	vec4 light_diff = clamp(sun_diff * directional_color * shadow + point_diff, 0, 1) * ao; // consider 0.5 * ao + 0.5
+	vec4 light_diff = clamp((sun_diff * directional_color * shadow + point_diff) * ao + spec_glow_sample.g, 0, 1); // consider (ao + 1) / 2
 	color += mat_diff * light_diff + light_spec; // specular highlights are white, so omit mat_spec
 
 	// color = vec4(ao, ao, ao, 1.0);
@@ -139,7 +140,7 @@ void main() {
 	// float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
 	color = mix(color, fog_color, fog_intensity);
-	color.a = mat_diff.a; // emissive is stored in diffuse.a, so preserve it for the glow processor later
+	color.a = mat_diff.a;
 	frag_color = clamp(color, 0.0, 1.0);
 	// frag_color = texture(spec_light_sampler, var_texcoord0);
 }

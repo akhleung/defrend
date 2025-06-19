@@ -58,6 +58,11 @@ local M = {
 		grazing_angle_mask_power		= 1.0,
 		grazing_angle_modulation_factor	= 50.0,
 	},
+	glow = {
+		enabled = true,
+		radius = 3,
+		separation = 2,
+	},
 	bloom = {
 		enabled = false,
 		threshold = 0.9,
@@ -175,6 +180,16 @@ function M.outline.set_uniforms(uniforms)
 
 	uniforms.params1 = outline_params1
 	uniforms.params2 = outline_params2
+end
+
+local glow = M.glow
+local glow_params = vmath.vector4()
+function M.glow.set_uniforms(uniforms)
+	glow_params.x = M.resolution_x
+	glow_params.y = M.resolution_y
+	glow_params.z = glow.radius
+	glow_params.w = glow.separation
+	uniforms.params = glow_params
 end
 
 local bloom = M.bloom

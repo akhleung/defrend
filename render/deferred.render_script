@@ -16,6 +16,7 @@ local shadow_options = {}
 local render_options = {}
 local ssao_options = {}
 local outline_options = {}
+local glow_options = {}
 local bloom_options = {}
 local box_blur_options = {}
 local gaussian_blur_options = {}
@@ -61,6 +62,9 @@ function init(self)
     self.outline_constants = render.constant_buffer()
     settings.outline.set_uniforms(self.outline_constants)
 
+    self.glow_constants = render.constant_buffer()
+    settings.glow.set_uniforms(self.glow_constants)
+
     self.bloom_constants = render.constant_buffer()
     settings.bloom.set_uniforms(self.bloom_constants)
 
@@ -99,6 +103,7 @@ function init(self)
     render_options.constants.resolution = resolution ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
     outline_options.constants = self.outline_constants
+    glow_options.constants = self.glow_constants
     bloom_options.constants = self.bloom_constants
     box_blur_options.constants = self.box_blur_constants
     gaussian_blur_options.constants = self.gaussian_blur_constants
@@ -157,15 +162,15 @@ function update(self)
     render.set_cull_face(graphics.FACE_TYPE_FRONT)
     render.disable_state(graphics.STATE_DEPTH_TEST)
     render.set_depth_mask(false)
-    render.enable_state(graphics.STATE_BLEND)
-    render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+    -- render.enable_state(graphics.STATE_BLEND)
+    -- render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
     render_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
     render_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.draw(predicates.decal, render_options)
     render.disable_texture("depth_buffer")
     render.disable_material()
-    render.disable_state(graphics.STATE_BLEND)
+    -- render.disable_state(graphics.STATE_BLEND)
 
     render.draw_debug3d()
 
@@ -224,11 +229,13 @@ function update(self)
     render.enable_material("point_light_material")
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.enable_texture("spec_glow_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.set_view(camera.view)
     render.set_projection(camera.proj)
     render.draw(predicates.point_light, lighting_options)
     render.disable_texture("depth_buffer")
     render.disable_texture("normal_sampler")
+    render.disable_texture("spec_glow_sampler")
     render.disable_state(graphics.STATE_CULL_FACE)
     render.disable_state(graphics.STATE_BLEND)
     render.disable_material()
@@ -239,6 +246,7 @@ function update(self)
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.enable_texture("spec_glow_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
     render.enable_texture("ssao_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
     render.enable_texture("shadow_sampler", self.shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("diff_light_sampler", self.l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
@@ -249,6 +257,7 @@ function update(self)
     render.disable_texture("depth_buffer")
     render.disable_texture("diffuse_sampler")
     render.disable_texture("normal_sampler")
+    render.disable_texture("spec_glow_sampler")
     render.disable_texture("ssao_sampler")
     render.disable_texture("shadow_sampler")
     render.disable_texture("diff_light_sampler")
@@ -278,6 +287,18 @@ function update(self)
         render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
         render.draw(predicates.screen, gamma_options)
         render.disable_texture("color_sampler")
+        render.disable_material()
+    end
+
+    if settings.glow.enabled then
+        swap_post_rt(self)
+        render.set_render_target(self.post_target)
+        render.enable_material("glow_material")
+        render.enable_texture("color_sampler", self.post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+        render.enable_texture("spec_glow_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+        render.draw(predicates.screen, glow_options)
+        render.disable_texture("color_sampler")
+        render.disable_texture("spec_glow_sampler")
         render.disable_material()
     end
 

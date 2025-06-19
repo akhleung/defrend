@@ -13,6 +13,6 @@ materials {
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/assets/images/white.png"
+    texture: "/assets/images/broken-ice-spec-glow.png"
   }
 }

@@ -45,6 +45,15 @@ vec2 hash23(vec3 p3) {
     return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
 }
 
+vec3 normal_from_rg(vec2 rg) {
+    rg = 2 * rg - 1;
+    return normalize(vec3(rg.x, rg.y, sqrt(1 - rg.x * rg.x - rg.y * rg.y)));
+}
+
+vec2 normal_to_rg(vec3 normal) {
+    return (0.5 * normalize(normal) + 0.5).rg;
+}
+
 float diffuse(vec3 to_light, vec3 normal_sample) {
     return max(dot(normal_sample, to_light), 0.0);
 }

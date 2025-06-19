@@ -23,6 +23,7 @@ uniform decal_fp {
 
 layout(location = 0) out vec4 diffuse_out;
 layout(location = 1) out vec4 normal_out;
+layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx(vec3 view_pos, vec2 texcoord) {
     vec3 d_vd_x = dFdx(view_pos);
@@ -65,11 +66,13 @@ void main() {
     d_position += 0.5; // bias [-0.5, 0.5] -> [0, 1]
     vec4 decal_color = texture(diffuse_map, d_position.xy);
     vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
-    if (decal_color.a == 0) discard; // TODO: alpha blend
-    diffuse_out = vec4(decal_color.rgb, decal_spec_glow.g);
+    if (decal_color.a == 0) discard; // TODO: alpha blend the draw call
+    diffuse_out = decal_color;
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
     mat3 tbn = get_tbn_mtx(g_position.xyz, d_position.xy);
     vec3 decal_normal = get_perturb_normal(d_position.xy, tbn) * 0.5 + 0.5;
-    normal_out = vec4(decal_normal, decal_spec_glow.r);
+    normal_out = vec4(decal_normal, 1);
+
+    spec_glow_out = decal_spec_glow;
 }

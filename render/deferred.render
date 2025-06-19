@@ -79,3 +79,19 @@ render_resources {
   name: "gaussian_blur_vertical_material"
   path: "/materials/screen/blur/gaussian_vertical.material"
 }
+render_resources {
+  name: "glow_material"
+  path: "/materials/screen/glow/glow.material"
+}
+render_resources {
+  name: "glow_horizontal_material"
+  path: "/materials/screen/glow/glow_horizontal.material"
+}
+render_resources {
+  name: "glow_vertical_material"
+  path: "/materials/screen/glow/glow_vertical.material"
+}
+render_resources {
+  name: "copy_material"
+  path: "/materials/screen/copy/copy.material"
+}

@@ -13,6 +13,6 @@ materials {
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/assets/images/textures-specular.png"
+    texture: "/assets/images/textures-spec-glow.png"
   }
 }
