@@ -34,5 +34,7 @@ function on_input(self, action_id, action)
 	elseif action_id == hash("key_t") and pressed then
 		render_settings.shadow.stable = not render_settings.shadow.stable
 		msg.post("@render:", hash("toggle_stable_shadows"))
+	elseif action_id == hash("key_b") and pressed then
+		render_settings.glow.single_pass = not render_settings.glow.single_pass
 	end
 end

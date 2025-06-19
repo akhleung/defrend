@@ -60,7 +60,8 @@ local M = {
 	},
 	glow = {
 		enabled = true,
-		radius = 3,
+		single_pass = false,
+		radius = 4,
 		separation = 2,
 	},
 	bloom = {
