@@ -28,10 +28,6 @@ render_resources {
   path: "/materials/geometry/light/point-light.material"
 }
 render_resources {
-  name: "resolve_decals_material"
-  path: "/materials/screen/resolve_decals/resolve_decals.material"
-}
-render_resources {
   name: "resolve_lighting_material"
   path: "/materials/screen/resolve_lighting/resolve_lighting.material"
 }
@@ -90,8 +86,4 @@ render_resources {
 render_resources {
   name: "glow_vertical_material"
   path: "/materials/screen/glow/glow_vertical.material"
-}
-render_resources {
-  name: "copy_material"
-  path: "/materials/screen/copy/copy.material"
 }
