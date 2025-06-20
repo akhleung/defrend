@@ -87,3 +87,7 @@ render_resources {
   name: "glow_vertical_material"
   path: "/materials/screen/glow/glow_vertical.material"
 }
+render_resources {
+  name: "skybox_material"
+  path: "/materials/screen/skybox/skybox.material"
+}

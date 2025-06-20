@@ -89,6 +89,12 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 void main() {
 
 	vec4 normal_sample = texture(normal_sampler, var_texcoord0);
+
+	if (normal_sample.a == 0) {
+		frag_color = texture(diffuse_sampler, var_texcoord0); // consider putting this at the bottom instead of branching
+		return;
+	}
+
 	vec4 spec_glow_sample = texture(spec_glow_sampler, var_texcoord0);
 	vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
 	vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);

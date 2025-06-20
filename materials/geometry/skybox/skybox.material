@@ -1,0 +1,17 @@
+name: "skybox"
+tags: "skybox"
+vertex_program: "/materials/screen/skybox/skybox.vp"
+fragment_program: "/materials/screen/skybox/skybox.fp"
+vertex_space: VERTEX_SPACE_LOCAL
+vertex_constants {
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
+}
+samplers {
+  name: "cubemap"
+  wrap_u: WRAP_MODE_REPEAT
+  wrap_v: WRAP_MODE_REPEAT
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
