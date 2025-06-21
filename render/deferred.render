@@ -89,5 +89,5 @@ render_resources {
 }
 render_resources {
   name: "skybox_material"
-  path: "/materials/screen/skybox/skybox.material"
+  path: "/materials/geometry/skybox/skybox.material"
 }
