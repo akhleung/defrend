@@ -117,7 +117,7 @@ end
 function M.setup_predicates(self)
     local arg = {
         "model", "sprite", "billboard", "blob_shadow", "decal", "point_light",
-        "transparent", "tile", "particle", "screen",
+        "transparent", "tile", "particle", "screen", "skybox",
         "gui", "text", "debug_text"
     }
     local predicates = {}

@@ -1,0 +1,6 @@
+right: "/assets/skybox/px.png"
+left: "/assets/skybox/nx.png"
+top: "/assets/skybox/py.png"
+bottom: "/assets/skybox/ny.png"
+front: "/assets/skybox/pz.png"
+back: "/assets/skybox/nz.png"
