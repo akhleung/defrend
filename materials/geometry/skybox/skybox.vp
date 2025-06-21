@@ -11,5 +11,9 @@ out vec3 var_texcoord0;
 
 void main() {
 	var_texcoord0 = position.xyz;
-    gl_Position = (mtx_proj * mat4(mat3(mtx_view)) * position).xyww;
+    #ifndef EDITOR
+    gl_Position = (mtx_proj * mat4(mat3(mtx_view)) * position).xyww; // rotate only, and clamp to the far plane
+    #else
+    gl_Position = mtx_proj * mtx_view * position;
+    #endif
 }
