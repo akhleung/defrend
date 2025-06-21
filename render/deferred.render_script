@@ -13,7 +13,6 @@ local MSG_TOGGLE_STABLE_SHADOWS = hash("toggle_stable_shadows")
 local identity = vmath.matrix4()
 local resolution = vmath.vector4()
 local shadow_options = {}
-local skybox_options = {}
 local render_options = {}
 local ssao_options = {}
 local outline_options = {}
@@ -102,7 +101,6 @@ function init(self)
     shadow_options.frustum_planes = render.FRUSTUM_PLANES_ALL
     shadow_options.constants = render.constant_buffer()
     shadow_options.constants.bias = vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
-    skybox_options.constants = render.constant_buffer()
     render_options.constants = render.constant_buffer()
     render_options.constants.resolution = resolution ---@diagnostic disable-line: inject-field
     ssao_options.constants = self.ssao_constants
@@ -451,8 +449,6 @@ function on_message(self, message_id, message)
         frustum_terms.y = frustum_corner.z + frustum_corner.w
         frustum_terms.z = frustum_corner.z - frustum_corner.w
         camera.viewproj = camera.proj * camera.view
-        local r2 = camera.view.r2
-        view_dir.x, view_dir.y, view_dir.z = r2.x, r2.y, -r2.z -- cam is right-handed; view space is left-handed
     elseif message_id == MSG_WINDOW_RESIZED then
         settings.resolution_x = render.get_window_width()
         settings.resolution_y = render.get_window_height()
