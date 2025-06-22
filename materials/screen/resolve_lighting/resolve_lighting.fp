@@ -7,6 +7,7 @@
 #define TRANSITION_RANGE 10
 
 in vec2 var_texcoord0;
+in vec3 directional_from;
 
 uniform sampler2D diffuse_sampler;
 uniform sampler2D depth_buffer;
@@ -18,7 +19,6 @@ uniform sampler2D diff_light_sampler;
 uniform sampler2D spec_light_sampler;
 
 uniform lighting_fp {
-	mat4 mtx_view;
 	vec4 frustum_corner;
 	vec4 frustum_terms;
 
@@ -26,7 +26,6 @@ uniform lighting_fp {
 	vec4 fog_color;
 	vec4 ambient_color;
 	vec4 directional_color;
-	vec4 directional_to;
 	
 	vec4 camera_partitions[MAX_PARTITIONS];
 	mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
@@ -44,7 +43,6 @@ float   SHADOW_MAP_DIM      = shadow_params.y;
 float   SHADOW_BOUNDARY     = 1/SHADOW_MAP_DIM;
 float   POISSON_SCALE       = shadow_params.z;
 int     NUM_PARTITIONS      = int(shadow_params.w);
-vec3    directional_from    = normalize(mat3(mtx_view) * -directional_to.xyz);
 
 vec2 poisson0 = vec2(-0.94201624,	-0.39906216) / POISSON_SCALE;
 vec2 poisson1 = vec2(0.94558609,	-0.76890725) / POISSON_SCALE;

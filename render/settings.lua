@@ -8,7 +8,8 @@ local M = {
 		ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
 		directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
 		-- directional_color = vmath.vector4(0.23, 0.24, 0.25, 1.0),
-		directional_to = vmath.normalize(vmath.vector4(0.5, -1.5, 1, 1)),
+		directional_to = vmath.vector4(0.5, -1.5, 1, 1),
+		-- directional_to = vmath.vector4(0.0, -1, 1, 1),
 	},
 	shadow = {
 		stable = true,
