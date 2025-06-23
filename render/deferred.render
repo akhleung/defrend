@@ -1,93 +1,93 @@
 script: "/render/deferred.render_script"
 render_resources {
   name: "model_material"
-  path: "/materials/geometry/model/model.material"
+  path: "/defrend/materials/geometry/model/model.material"
 }
 render_resources {
   name: "sprite_material"
-  path: "/materials/geometry/billboard-sprite/sprite.material"
+  path: "/defrend/materials/geometry/billboard_sprite/sprite.material"
 }
 render_resources {
   name: "billboard_material"
-  path: "/materials/geometry/billboard-sprite/billboard.material"
+  path: "/defrend/materials/geometry/billboard_sprite/billboard.material"
 }
 render_resources {
   name: "decal_material"
-  path: "/materials/geometry/decal/decal.material"
+  path: "/defrend/materials/geometry/decal/decal.material"
 }
 render_resources {
   name: "shadow_material"
-  path: "/materials/geometry/model/shadow.material"
+  path: "/defrend/materials/geometry/model/shadow.material"
 }
 render_resources {
   name: "blob_shadow_material"
-  path: "/materials/geometry/billboard-sprite/shadow.material"
+  path: "/defrend/materials/geometry/billboard_sprite/shadow.material"
 }
 render_resources {
   name: "point_light_material"
-  path: "/materials/geometry/light/point-light.material"
+  path: "/defrend/materials/geometry/light_volume/point_light.material"
 }
 render_resources {
   name: "resolve_lighting_material"
-  path: "/materials/screen/resolve_lighting/resolve_lighting.material"
+  path: "/defrend/materials/screen/resolve_lighting/resolve_lighting.material"
 }
 render_resources {
   name: "ssao_material"
-  path: "/materials/screen/ssao/ssao.material"
+  path: "/defrend/materials/screen/ssao/ssao.material"
 }
 render_resources {
   name: "kuwahara_blur_material"
-  path: "/materials/screen/blur/kuwahara.material"
+  path: "/defrend/materials/screen/blur/kuwahara.material"
 }
 render_resources {
   name: "fxaa_material"
-  path: "/materials/screen/fxaa/fxaa.material"
+  path: "/defrend/materials/screen/fxaa/fxaa.material"
 }
 render_resources {
   name: "gamma_material"
-  path: "/materials/screen/gamma/gamma.material"
+  path: "/defrend/materials/screen/gamma/gamma.material"
 }
 render_resources {
   name: "box_blur_material"
-  path: "/materials/screen/blur/box.material"
+  path: "/defrend/materials/screen/blur/box.material"
 }
 render_resources {
   name: "dof_material"
-  path: "/materials/screen/dof/dof.material"
+  path: "/defrend/materials/screen/dof/dof.material"
 }
 render_resources {
   name: "dilate_material"
-  path: "/materials/screen/blur/dilate.material"
+  path: "/defrend/materials/screen/blur/dilate.material"
 }
 render_resources {
   name: "bloom_material"
-  path: "/materials/screen/blur/bloom.material"
+  path: "/defrend/materials/screen/blur/bloom.material"
 }
 render_resources {
   name: "outline_material"
-  path: "/materials/screen/outline/outline.material"
+  path: "/defrend/materials/screen/outline/outline.material"
 }
 render_resources {
   name: "gaussian_blur_horizontal_material"
-  path: "/materials/screen/blur/gaussian_horizontal.material"
+  path: "/defrend/materials/screen/blur/gaussian_horizontal.material"
 }
 render_resources {
   name: "gaussian_blur_vertical_material"
-  path: "/materials/screen/blur/gaussian_vertical.material"
+  path: "/defrend/materials/screen/blur/gaussian_vertical.material"
 }
 render_resources {
   name: "glow_material"
-  path: "/materials/screen/glow/glow.material"
+  path: "/defrend/materials/screen/glow/glow.material"
 }
 render_resources {
   name: "glow_horizontal_material"
-  path: "/materials/screen/glow/glow_horizontal.material"
+  path: "/defrend/materials/screen/glow/glow_horizontal.material"
 }
 render_resources {
   name: "glow_vertical_material"
-  path: "/materials/screen/glow/glow_vertical.material"
+  path: "/defrend/materials/screen/glow/glow_vertical.material"
 }
 render_resources {
   name: "skybox_material"
-  path: "/materials/geometry/skybox/skybox.material"
+  path: "/defrend/materials/geometry/skybox/skybox.material"
 }

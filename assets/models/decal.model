@@ -2,7 +2,7 @@ mesh: "/builtins/assets/meshes/cube.dae"
 name: "decal"
 materials {
   name: "default"
-  material: "/materials/geometry/decal/decal.material"
+  material: "/defrend/materials/geometry/decal/decal.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/images/broken-ice-base.png"

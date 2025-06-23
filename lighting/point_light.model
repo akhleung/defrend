@@ -2,7 +2,7 @@ mesh: "/builtins/assets/meshes/sphere.dae"
 name: "point_light"
 materials {
   name: "default"
-  material: "/materials/geometry/light/point-light.material"
+  material: "/defrend/materials/geometry/light_volume/point_light.material"
   attributes {
     name: "color"
     double_values {
