@@ -37,8 +37,6 @@ local shadow_colors = {
     vmath.vector4(0, 0, 1, 1),
 }
 
-local view_dir = vmath.vector4(1)
-
 local frustum_corner_ndc = vmath.vector4(1.0)
 local frustum_corner
 local frustum_terms = vmath.vector4()
@@ -129,21 +127,16 @@ function update(self)
     render_shadows(self)
 
     render.set_render_target(self.g_buffer)
-
     -- turn on depth_mask before `render.clear()` to clear it as well
     render.set_depth_mask(true)
+    render.enable_state(graphics.STATE_DEPTH_TEST)
     render.set_stencil_mask(0xff)
     render.clear(self.clear_color_buffers)
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
-
     -- setup camera view and projection
     local camera = self.camera
     render.set_view(camera.view)
     render.set_projection(camera.proj)
-
-    -- set states used for all the world predicates
-    render.enable_state(graphics.STATE_DEPTH_TEST)
-    render.set_depth_mask(true)
 
     -- render models into g-buffer
     render_options.frustum = camera.viewproj
@@ -154,6 +147,8 @@ function update(self)
     render.disable_material()
 
     -- render sprites and billboards into g-buffer
+    render.enable_state(graphics.STATE_BLEND)
+    render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
     render.enable_material("sprite_material")
     render.draw(predicates.sprite, render_options)
     render.disable_material()
@@ -161,42 +156,49 @@ function update(self)
     render.draw(predicates.billboard, render_options)
     render.disable_material()
 
-    -- render the skybox
-    render.set_cull_face(graphics.FACE_TYPE_FRONT)
-    render.enable_material("skybox_material")
-    render.draw(predicates.skybox)
-    render.disable_material()
-
     -- render decals into g-buffer
-    render.disable_state(graphics.STATE_DEPTH_TEST)
+    -- The combination of back-face culling and depth testing will prevent decals from rendering when the camera is
+    -- inside a projector box. Front-face culling requires depth testing to be disabled, since the back faces of the
+    -- projector box will be occluded by the receiving surface.
     render.set_depth_mask(false)
-    -- render.enable_state(graphics.STATE_BLEND)
-    -- render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
     render_options.constants.frustum_corner = frustum_corner ---@diagnostic disable-line: inject-field
     render_options.constants.frustum_terms = frustum_terms ---@diagnostic disable-line: inject-field
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.draw(predicates.decal, render_options)
     render.disable_texture("depth_buffer")
     render.disable_material()
-    -- render.disable_state(graphics.STATE_BLEND)
+
+    -- render the skybox
+    render.set_cull_face(graphics.FACE_TYPE_FRONT)
+    render.disable_state(graphics.STATE_BLEND)
+    render.enable_material("skybox_material")
+    render.draw(predicates.skybox)
+    render.disable_material()
 
     render.draw_debug3d()
 
-    -- disable the depth mask and face culling for things with transparency
-    render.set_depth_mask(false)
-    -- render.disable_state(render.STATE_CULL_FACE)
-    -- render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
-    -- render.enable_state(graphics.STATE_BLEND)
-    -- render.draw(predicates.transparent, render_options)
+    -- render light volumes into the light reflectance buffer
+    -- For some reason, culling front faces and enabling depth testing doesn't prevent lights from being rendered properly.
+    -- Not sure why, because one would think that the back faces would be occluded by the receiving surfaces.
+    render.set_render_target(self.l_buffer)
+    render.clear(self.clear_color_buffers)
+    update_lighting_constants(self)
+    render.set_cull_face(graphics.FACE_TYPE_FRONT)
+    render.enable_state(graphics.STATE_BLEND)
+    render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
+    render.enable_material("point_light_material")
+    render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+    render.enable_texture("spec_glow_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+    render.draw(predicates.point_light, lighting_options)
+    render.disable_texture("depth_buffer")
+    render.disable_texture("normal_sampler")
+    render.disable_texture("spec_glow_sampler")
+    render.disable_material()
 
-    -- render the other components: sprites, tilemaps, particles etc
-    -- render.draw(predicates.tile, render_options)
-    -- render.draw(predicates.particle, render_options)
-    -- render.disable_state(graphics.STATE_DEPTH_TEST)
+    render.disable_state(graphics.STATE_DEPTH_TEST)
     render.disable_state(graphics.STATE_CULL_FACE) -- need to disable this to get the debug_text and profiler to show
-
-    -- render.disable_state(graphics.STATE_STENCIL_TEST)
-    -- render.disable_state(graphics.STATE_BLEND)
+    render.disable_state(graphics.STATE_BLEND)
 
     render.set_render_target(self.post_target)
     render.clear(self.clear_ssao_buffer)
@@ -225,31 +227,7 @@ function update(self)
     end
 
     swap_post_rt(self)
-    render.set_render_target(self.l_buffer)
-    render.clear(self.clear_color_buffers)
-
-    update_lighting_constants(self)
-
-    render.enable_state(graphics.STATE_CULL_FACE)
-    render.set_cull_face(graphics.FACE_TYPE_FRONT)
-    render.enable_state(graphics.STATE_BLEND)
-    render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
-    render.enable_material("point_light_material")
-    render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-    render.enable_texture("normal_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-    render.enable_texture("spec_glow_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-    render.set_view(camera.view)
-    render.set_projection(camera.proj)
-    render.draw(predicates.point_light, lighting_options)
-    render.disable_texture("depth_buffer")
-    render.disable_texture("normal_sampler")
-    render.disable_texture("spec_glow_sampler")
-    render.disable_state(graphics.STATE_CULL_FACE)
-    render.disable_state(graphics.STATE_BLEND)
-    render.disable_material()
-
     render.set_render_target(self.post_target)
-    render.disable_state(graphics.STATE_DEPTH_TEST)
     render.enable_material("resolve_lighting_material")
     render.enable_texture("depth_buffer", self.g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
     render.enable_texture("diffuse_sampler", self.g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
