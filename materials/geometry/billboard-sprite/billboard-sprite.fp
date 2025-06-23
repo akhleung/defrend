@@ -42,7 +42,8 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 }
 
 void main() {
-	vec4 diffuse	= texture(diffuse_map, var_texcoord0); if (diffuse.a == 0) discard; // TODO: alpha blend the draw call
+	vec4 diffuse	= texture(diffuse_map, var_texcoord0);
+	if (diffuse.a == 0) discard; // avoid writing to the depth buffer, normals, etc
 	diffuse_out		= diffuse;
 	normal_out		= vec4(get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5, 1);
 	spec_glow_out	= texture(spec_glow_map, var_texcoord0);

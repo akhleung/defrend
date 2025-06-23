@@ -66,7 +66,7 @@ void main() {
     d_position += 0.5; // bias [-0.5, 0.5] -> [0, 1]
     vec4 decal_color = texture(diffuse_map, d_position.xy);
     vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
-    if (decal_color.a == 0) discard; // TODO: alpha blend the draw call
+    if (decal_color.a == 0) discard; // avoid writing normals, etc
     diffuse_out = decal_color;
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
