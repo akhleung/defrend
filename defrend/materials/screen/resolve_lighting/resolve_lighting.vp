@@ -1,4 +1,4 @@
-#version 420 core
+#version 320 es
 
 uniform lighting_vp {
 	mat4 mtx_viewproj;

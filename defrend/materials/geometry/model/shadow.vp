@@ -1,4 +1,4 @@
-#version 420 core
+#version 320 es
 
 in vec4 position;// positions are in world space
 #ifndef EDITOR

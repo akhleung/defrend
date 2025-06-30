@@ -1,4 +1,4 @@
-#version 420 core
+#version 320 es
 
 uniform screen_vp {
 	mat4 mtx_viewproj;

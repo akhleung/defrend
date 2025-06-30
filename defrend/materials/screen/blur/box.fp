@@ -1,23 +1,23 @@
-#version 420
+#version 320 es
 
-in vec2 var_texcoord0;
+in mediump vec2 var_texcoord0;
 
 uniform sampler2D color_sampler;
 
 uniform box_blur_fp {
-	vec4 params;
+	mediump vec4 params;
 };
 
-vec2 resolution = vec2(params.x, params.y);
-int radius = int(params.z);
-float separation = params.w;
-
-out vec4 fragColor;
+out mediump vec4 fragColor;
 
 void main() {
+	mediump vec2 resolution = vec2(params.x, params.y);
+	int radius = int(params.z);
+	mediump float separation = params.w;
+
 	fragColor = texture(color_sampler, var_texcoord0);
 	if (radius <= 0) return;
-	separation = max(separation, 1);
+	separation = max(separation, 1.0);
 	fragColor = vec4(0);
 	int count = 0;
 	for (int i = -radius; i <= radius; ++i) {
@@ -26,5 +26,5 @@ void main() {
 			++count;
 		}
 	}
-	fragColor /= count;
+	fragColor /= float(count);
 }

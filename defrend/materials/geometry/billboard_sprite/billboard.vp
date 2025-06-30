@@ -1,4 +1,4 @@
-#version 420 core
+#version 320 es
 
 in vec4 position;
 in vec2 texcoord0;
@@ -27,16 +27,16 @@ void main() {
 	float z_scale = length(mtx_worldview[2]);
 
 	mtx_worldview[0][0] = x_scale;
-	mtx_worldview[0][1] = 0;
-	mtx_worldview[0][2] = 0;
+	mtx_worldview[0][1] = 0.0;
+	mtx_worldview[0][2] = 0.0;
 
 	// uncomment to billboard against changes in elevation too
-	// mtx_worldview[1][0] = 0;
+	// mtx_worldview[1][0] = 0.0;
 	// mtx_worldview[1][1] = y_scale;
-	// mtx_worldview[1][2] = 0;
+	// mtx_worldview[1][2] = 0.0;
 
-	mtx_worldview[2][0] = 0;
-	mtx_worldview[2][1] = 0;
+	mtx_worldview[2][0] = 0.0;
+	mtx_worldview[2][1] = 0.0;
 	mtx_worldview[2][2] = z_scale;
 	
 	var_frag_pos	= (mtx_worldview * position).xyz;

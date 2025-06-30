@@ -1,47 +1,48 @@
-#version 420
+#version 320 es
 
-in vec2 var_texcoord0;
+in mediump vec2 var_texcoord0;
 
 uniform sampler2D color_sampler;
 uniform sampler2D spec_glow_sampler;
 
 uniform bloom_fp {
-	vec4 params;
+	mediump vec4 params;
 };
 
-vec2	resolution	= vec2(params.x, params.y);
-int		radius		= int(params.z);
-float	separation	= params.w;
-float	dx			= separation / resolution.x;
-float	dy			= separation / resolution.y;
-
-vec2 dirs[8] = vec2[](
-	vec2(dx, 0),
-	vec2(dx, dy),
-	vec2(0, dy),
-	vec2(-dx, dy),
-	vec2(-dx, 0),
-	vec2(-dx, -dy),
-	vec2(0, -dy),
-	vec2(dx, -dy)
-);
-
-out vec4 fragColor;
+out mediump vec4 fragColor;
 
 void main() {
+
+	mediump vec2	resolution	= vec2(params.x, params.y);
+			int		radius		= int(params.z);
+	mediump float	separation	= params.w;
+	mediump float	dx			= separation / resolution.x;
+	mediump float	dy			= separation / resolution.y;
+
+	mediump vec2 dirs[8] = vec2[](
+		vec2(dx, 0),
+		vec2(dx, dy),
+		vec2(0, dy),
+		vec2(-dx, dy),
+		vec2(-dx, 0),
+		vec2(-dx, -dy),
+		vec2(0, -dy),
+		vec2(dx, -dy)
+	);
+
 	fragColor = texture(color_sampler, var_texcoord0);
-	float emissive = texture(spec_glow_sampler, var_texcoord0).g;
-	vec3 glow = fragColor.rgb * emissive;
+	mediump float emissive = texture(spec_glow_sampler, var_texcoord0).g;
+	mediump vec3 glow = fragColor.rgb * emissive;
 	int count = 1;
 	for (int i = 0; i < 8; ++i) {
 		for (int j = 1; j <= radius; ++j) {
-			vec2 uv = var_texcoord0 + dirs[i] * j;
-			vec3 color = texture(color_sampler, uv).rgb;
-			float emissive = texture(spec_glow_sampler, uv).g;
+			mediump vec2 uv = var_texcoord0 + dirs[i] * float(j);
+			mediump vec3 color = texture(color_sampler, uv).rgb;
+			mediump float emissive = texture(spec_glow_sampler, uv).g;
 			glow += color * emissive;
 			++count;
 		}
 	}
-	glow /= count;
-	fragColor.rgb += glow * (1 - emissive / 2);
+	glow /= float(count);
+	fragColor.rgb += glow * (1.0 - emissive / 2.0);
 }
