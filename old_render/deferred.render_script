@@ -197,7 +197,7 @@ function update(self)
     render.disable_material()
 
     render.disable_state(graphics.STATE_DEPTH_TEST)
-    render.disable_state(graphics.STATE_CULL_FACE) -- need to disable this to get the debug_text and profiler to show
+    render.disable_state(graphics.STATE_CULL_FACE)
     render.disable_state(graphics.STATE_BLEND)
 
     render.set_render_target(self.post_target)

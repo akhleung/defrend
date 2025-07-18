@@ -63,7 +63,7 @@ local M = {
 		enabled = true,
 		single_pass = false,
 		radius = 4,
-		separation = 2,
+		separation = 1,
 	},
 	bloom = {
 		enabled = false,

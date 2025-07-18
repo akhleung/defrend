@@ -154,6 +154,54 @@ collection_instances {
     x: 102.0
   }
 }
+collection_instances {
+  id: "defrend"
+  collection: "/defrend/defrend.collection"
+  instance_properties {
+    id: "lighting"
+    properties {
+      id: "light_and_shadow"
+      properties {
+        id: "scene_camera_url"
+        value: "/camera#camera"
+        type: PROPERTY_TYPE_URL
+      }
+      properties {
+        id: "sun_url"
+        value: "/sun"
+        type: PROPERTY_TYPE_URL
+      }
+      properties {
+        id: "sun_color"
+        value: "1.0, 1.0, 0.92, 1.0"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+      properties {
+        id: "ambient_color"
+        value: "0.7, 0.7, 0.7, 1.0"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+    }
+    properties {
+      id: "ssao"
+      properties {
+        id: "intensity"
+        value: "1.75"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "max_distance"
+        value: "2.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "radius"
+        value: "1.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+  }
+}
 scale_along_z: 1
 embedded_instances {
   id: "main"
@@ -205,25 +253,6 @@ embedded_instances {
     z: -0.5
     w: 0.5
   }
-}
-embedded_instances {
-  id: "screen"
-  data: "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/builtins/assets/meshes/quad.dae\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/screen/resolve_lighting/resolve_lighting.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_sampler\\\"\\n"
-  "    texture: \\\"/assets/skybox.cubemap\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
-  ""
 }
 embedded_instances {
   id: "forward"
@@ -2913,7 +2942,7 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -61.0
+    x: -45.277344
     y: 5.0
     z: -204.0
   }
@@ -2966,4 +2995,17 @@ embedded_instances {
   "  component: \"/assets/models/skybox.model\"\n"
   "}\n"
   ""
+}
+embedded_instances {
+  id: "sun"
+  data: ""
+  position {
+    y: 150.0
+  }
+  rotation {
+    x: -0.14644662
+    y: -0.8535534
+    z: -0.35355338
+    w: 0.35355338
+  }
 }

@@ -1,7 +1,8 @@
 local TRIGGER = require "input.triggers"
 local actions = require "input.actions"
-local defrend = require "render.defrend"
-local settings = require "render.settings"
+local defrend = require "defrend.render.defrend"
+local settings = require "defrend.render.settings"
+local cameras = require "defrend.render.resources.cameras"
 
 local ZERO = vmath.vector3()
 local UP = vmath.vector3(0, 1, 0)
@@ -12,7 +13,6 @@ local euler_x = hash("euler.x")
 local euler_y = hash("euler.y")
 local euler_z = hash("euler.z")
 local mouse_locked = true
-local camera_url
 function init(self)
 	self.direction = ZERO
 	go.set(".", euler_x, 0)
@@ -20,7 +20,6 @@ function init(self)
 	go.set(".", euler_z, 0)
 	msg.post(".", "acquire_input_focus")
 	window.set_mouse_lock(true)
-	camera_url = msg.url("/camera#camera")
 end
 
 local pickables = { hash("buildings") }
@@ -107,7 +106,7 @@ function update(self, dt)
 	if picks then
 		local picked = picks[1].position
 		focal_point.x, focal_point.y, focal_point.z, focal_point.w = picked.x, picked.y, picked.z, 1
-		focal_point = defrend.camera.view * focal_point
+		focal_point = cameras.scene_camera.view * focal_point
 		settings.dof.focal_depth = -focal_point.z
 	end
 end

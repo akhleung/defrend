@@ -1,15 +1,15 @@
 #ifndef DEFREND_LIGHTING_FUNCTIONS
 #define DEFREND_LIGHTING_FUNCTIONS
 
-float linearizeDepth(float d, vec3 frustum_terms) {
-    float zNdc  = 2.0 * d - 1.0;
+mediump float linearizeDepth(mediump float d, mediump vec3 frustum_terms) {
+    mediump float zNdc  = 2.0 * d - 1.0;
     return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
 }
 
-vec3 viewPosFromLinearDepth(float z, vec2 uv, vec3 frustum_corner) {
-    vec2  uvNdc = 2.0 * uv - 1.0;
-    vec2  xyFar = frustum_corner.xy * uvNdc;
-    float zNorm = z / frustum_corner.z;
+mediump vec3 viewPosFromLinearDepth(mediump float z, mediump vec2 uv, mediump vec3 frustum_corner) {
+    mediump vec2  uvNdc = 2.0 * uv - 1.0;
+    mediump vec2  xyFar = frustum_corner.xy * uvNdc;
+    mediump float zNorm = z / frustum_corner.z;
     return vec3(xyFar * zNorm, z);
 }
 
@@ -26,45 +26,45 @@ vec3 viewPosFromLinearDepth(float z, vec2 uv, vec3 frustum_corner) {
 //     );
 // }
 
-float hash12(vec2 p) {
-	vec3 p3  = fract(vec3(p.xyx) * MOD3);
+mediump float hash12(mediump vec2 p) {
+	mediump vec3 p3  = fract(vec3(p.xyx) * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }
 
-vec2 hash22(vec2 p) {
-	vec3 p3 = fract(vec3(p.xyx) * MOD3);
+mediump vec2 hash22(mediump vec2 p) {
+	mediump vec3 p3 = fract(vec3(p.xyx) * MOD3);
     p3 += dot(p3, p3.yzx+19.19);
     return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
 }
 
-vec2 hash23(vec3 p3) {
+mediump vec2 hash23(mediump vec3 p3) {
 	p3 = fract(p3 * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
     // return fract((p3.xx + p3.yz) * p3.zy);
     return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
 }
 
-vec3 normal_from_rg(vec2 rg) {
-    rg = 2 * rg - 1;
-    return normalize(vec3(rg.x, rg.y, sqrt(1 - rg.x * rg.x - rg.y * rg.y)));
+mediump vec3 normal_from_rg(mediump vec2 rg) {
+    rg = 2.0 * rg - 1.0;
+    return normalize(vec3(rg.x, rg.y, sqrt(1.0 - rg.x * rg.x - rg.y * rg.y)));
 }
 
-vec2 normal_to_rg(vec3 normal) {
+mediump vec2 normal_to_rg(mediump vec3 normal) {
     return (0.5 * normalize(normal) + 0.5).rg;
 }
 
-float diffuse(vec3 to_light, vec3 normal_sample) {
+mediump float diffuse(mediump vec3 to_light, mediump vec3 normal_sample) {
     return max(dot(normal_sample, to_light), 0.0);
 }
 
-float specular(vec3 viewdir, vec3 lightdir, vec3 norm, float shiny) {
-    vec3 H = normalize(viewdir + lightdir);
-    return shiny == 0 ? 0 : pow(max(dot(norm, H), 0.0), shiny);
+mediump float specular(mediump vec3 viewdir, mediump vec3 lightdir, mediump vec3 norm, mediump float shiny) {
+    mediump vec3 H = normalize(viewdir + lightdir);
+    return shiny == 0.0 ? 0.0 : pow(max(dot(norm, H), 0.0), shiny);
 }
 
-float attenuation(float d, float r_inner, float r_outer) {
-    float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
+mediump float attenuation(mediump float d, mediump float r_inner, mediump float r_outer) {
+    mediump float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
     return falloff * falloff;
 }
 

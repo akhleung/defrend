@@ -1,0 +1,72 @@
+local settings = require "defrend.render.settings"
+local uniforms = require "defrend.render.uniforms"
+
+go.property("enabled", true)
+go.property("blur", true)
+go.property("samples", 16)
+go.property("intensity", 1.5)
+go.property("bias_angle", 0.1)
+go.property("bias_dist", 0.5)
+go.property("min_distance", 1.0)
+go.property("max_distance", 4.0)
+go.property("attenuation", 1.0)
+go.property("radius", 2.0)
+
+function init(self)
+	settings.ssao.enabled		= self.enabled
+	settings.ssao.blur			= self.blur
+	settings.ssao.samples		= self.samples
+	settings.ssao.intensity		= self.intensity
+	settings.ssao.bias_angle	= self.bias_angle
+	settings.ssao.bias_dist		= self.bias_dist
+	settings.ssao.min_distance	= self.min_distance
+	settings.ssao.max_distance	= self.max_distance
+	settings.ssao.attenuation	= self.attenuation
+	settings.ssao.radius		= self.radius
+	uniforms.ssao.init()
+end
+
+-- function final(self)
+-- 	-- Add finalization code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function update(self, dt)
+-- 	-- Add update code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function fixed_update(self, dt)
+-- 	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+-- 	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+-- 	-- Physics section of game.project
+-- 	-- Add update code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_message(self, message_id, message, sender)
+-- 	-- Add message-handling code here
+-- 	-- Learn more: https://defold.com/manuals/message-passing/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_input(self, action_id, action)
+-- 	-- Add input-handling code here. The game object this script is attached to
+-- 	-- must have acquired input focus:
+-- 	--
+-- 	--    msg.post(".", "acquire_input_focus")
+-- 	--
+-- 	-- All mapped input bindings will be received. Mouse and touch input will
+-- 	-- be received regardless of where on the screen it happened.
+-- 	-- Learn more: https://defold.com/manuals/input/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_reload(self)
+-- 	-- Add reload-handling code here
+-- 	-- Learn more: https://defold.com/manuals/hot-reload/
+-- 	-- Remove this function if not needed
+-- end

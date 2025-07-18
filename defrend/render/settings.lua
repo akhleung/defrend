@@ -1,0 +1,107 @@
+local M = {
+	resolution_x = 0,
+	resolution_y = 0,
+	light = {
+		fog_near = 800,
+		fog_far = 1001,
+		fog_color = vmath.vector4(0),
+		ambient_color = vmath.vector4(0.7, 0.7, 0.7, 1.0),
+		directional_color = vmath.vector4(1.0, 1.0, 0.92, 1.0),
+		-- directional_color = vmath.vector4(0.23, 0.24, 0.25, 1.0),
+		directional_to = vmath.vector4(0.5, -1.5, 1, 1),
+		-- directional_to = vmath.vector4(0.0, -1, 1, 1),
+	},
+	shadow = {
+		stable = true,
+		poisson_scale = 3000,
+		-- cascade = { 0.05, 0.05, 0.10, 0.20 },
+		-- cascade = { 0.40, 0.20, 0.20, 0.20 },
+		cascade = { 0.20, 0.10, 0.10, 0.20 },
+		-- cascade = { 0.10, 0.20, 0.30, 0.40 },
+		-- cascade = { 0.25, 0.25, 0.25, 0.25 },
+		-- cascade = { 0.75 },
+		biases = { 0.5, 0.75, 0.75, 1.2 },
+		atlas_resolution = 4096,
+		-- the rest will be calculated from camera settings combined with the preceding
+		map_resolution = 1,
+		map_dimension = 1,
+		texel_size = 1,
+		partitions = {},
+		projections = {},
+	},
+	ssao = {
+		enabled = true,
+		blur = true,
+		samples = 16,
+		intensity = 1.5,
+		bias_angle = 0.1,
+		bias_dist = 0.5,
+		min_distance = 1.0,
+		max_distance = 4.0,
+		attenuation = 1.0,
+		radius = 2.0,
+	},
+	outline = {
+		enabled = false,
+		-- outline
+		depth_threshold		= 0.025,
+		normal_threshold	= 0.5,
+		normal_smoothing	= 0.25,
+		-- thickness
+		max_thickness	= 1.3,
+		min_thickness	= 0.5,
+		max_distance	= 75.0,
+		min_distance	= 2.0,
+		-- grazing prevention
+		grazing_fresnel_power			= 5.0,
+		grazing_angle_mask_power		= 1.0,
+		grazing_angle_modulation_factor	= 50.0,
+	},
+	glow = {
+		enabled = false,
+		single_pass = false,
+		radius = 4,
+		separation = 1,
+	},
+	bloom = {
+		enabled = false,
+		threshold = 0.9,
+		radius = 1,
+		separation = 2,
+		strength = 0.5,
+	},
+	box_blur = {
+		radius = 1,
+		separation = 1.0,
+	},
+	gaussian_blur = {
+		enabled = false,
+	},
+	kuwahara_blur = {
+		enabled = false,
+		samples = 1,
+	},
+	dilate = {
+		enabled = false,
+		min_threshold = 0.1,
+		max_threshold = 0.3,
+		radius = 1,
+		separation = 1,
+	},
+	dof = {
+		enabled = false,
+		focal_depth = 200,
+		blur_start = 30,
+		blur_full = 40,
+	},
+	gamma = {
+		enabled = false,
+		gamma = 2.2,
+	},
+	fxaa = {
+		enabled = true,
+		strength = 0,
+	},
+}
+
+return M
