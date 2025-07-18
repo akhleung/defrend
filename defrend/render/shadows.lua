@@ -7,7 +7,6 @@ local M = {}
 local UP = vmath.vector3(0, 1, 0)
 local MAX_NUM = 2000000000
 local MIN_NUM = -2000000000
-local identity = vmath.matrix4()
 local frustums = {}
 
 function M.init()
@@ -28,8 +27,8 @@ local get_light_view_mtx_and_camera_frustum
 local get_texel_snapping_mtx
 local pad, set_vec3
 
-function M.refresh_shadows_half_stable(self, cam_proj)
-    local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(self, cam_proj)
+function M.refresh_shadows_half_stable(cam_proj)
+    local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(cam_proj)
     -- calculate a precise bounding box around the camera frustum in the light's view space
     local min_x, max_x = MAX_NUM, MIN_NUM
     local min_y, max_y = MAX_NUM, MIN_NUM
@@ -48,8 +47,8 @@ function M.refresh_shadows_half_stable(self, cam_proj)
     return mtx_light_view, mtx_trans * mtx_light_proj
 end
 
-function M.refresh_shadows_stable(self, cam_proj)
-    local mtx_light_view, world_corners, world_center = get_light_view_mtx_and_camera_frustum(self, cam_proj)
+function M.refresh_shadows_stable(cam_proj)
+    local mtx_light_view, world_corners, world_center = get_light_view_mtx_and_camera_frustum(cam_proj)
     -- get the max diameter and radius of the camera frustum
     local diameter = vmath.length(world_corners[1] - world_corners[8])
     local radius = diameter / 2
@@ -66,8 +65,8 @@ function M.refresh_shadows_stable(self, cam_proj)
     return mtx_light_view, mtx_trans * mtx_light_proj
 end
 
-function M.refresh_shadows_stable2(self, cam_proj, i)
-    local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(self, cam_proj)
+function M.refresh_shadows_stable2(cam_proj, i)
+    local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(cam_proj)
     -- calculate a precise bounding box around the camera frustum in the light's view space
     local min_x, max_x = MAX_NUM, MIN_NUM
     local min_y, max_y = MAX_NUM, MIN_NUM
@@ -129,7 +128,7 @@ local world_corners = {
     vmath.vector4(),
 }
 
-get_light_view_mtx_and_camera_frustum = function(self, cam_proj)
+get_light_view_mtx_and_camera_frustum = function(cam_proj)
     -- get the camera frustum in world space
     local mtx_inv = vmath.inv(cam_proj * cameras.scene_camera.view)
     for i = 1, 8 do

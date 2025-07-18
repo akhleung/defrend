@@ -1,4 +1,4 @@
-script: "/render/deferred.render_script"
+script: "/old_render/deferred.render_script"
 render_resources {
   name: "model_material"
   path: "/defrend/materials/geometry/model/model.material"

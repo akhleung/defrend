@@ -1,4 +1,4 @@
-local render_settings = require("render.settings")
+local render_settings = require "defrend.render.settings"
 local draw_frame
 
 local frames = 0

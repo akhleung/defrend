@@ -1,4 +1,4 @@
-local render_settings = require("defrend.render.settings")
+local render_settings = require "defrend.render.settings"
 
 function init(self)
 	-- defos.toggle_fullscreen()
