@@ -9,6 +9,8 @@ go.property("blur_start", 30)
 go.property("blur_full", 40)
 go.property("focus_follows_view", true)
 go.property("focus_follows_mouse", false)
+go.property("focal_shift_duration", 0.1)
+go.property("focal_shift_threshold", 5)
 go.property("collision_group_1", hash(""))
 go.property("collision_group_2", hash(""))
 go.property("collision_group_3", hash(""))
@@ -37,6 +39,7 @@ local empty_hash = hash("")
 local pickables = {}
 local focus_follows_view
 local focus_follows_mouse
+local this_url
 function init(self)
 	settings.dof.enabled		= self.enabled
 	settings.dof.focal_depth	= self.focal_depth
@@ -59,27 +62,50 @@ function init(self)
 	if focus_follows_mouse then
 		msg.post(".", "acquire_input_focus")
 	end
+	this_url = msg.url()
 end
 
 local raycast_options = { all = false }
-local function pick_and_focus(x, y)
+local animating = false
+local function pick_and_focus(self, x, y)
 	local near,	far	= defrend.screen_to_world(x, y)
 	local picks		= physics.raycast(near, far, pickables, raycast_options)
 	if picks then
 		local picked = picks[1].position
-		focal_point = cameras.scene_camera.view * vmath.vector4(picked.x, picked.y, picked.z, 1)
-		settings.dof.focal_depth = -focal_point.z
+		local focal_point = cameras.scene_camera.view * vmath.vector4(picked.x, picked.y, picked.z, 1)
+		local focal_depth = -focal_point.z
+		if focal_depth ~= self.focal_depth and not animating then
+			local focal_delta = math.abs(focal_depth - self.focal_depth)
+			-- TODO: improve this
+			if self.focal_shift_duration > 0 and focal_delta > self.focal_shift_threshold then
+				animating = true
+				go.animate(
+					this_url,
+					"focal_depth",
+					go.PLAYBACK_ONCE_FORWARD,
+					focal_depth,
+					go.EASING_INOUTCUBIC,
+					self.focal_shift_duration,
+					0,
+					function() animating = false end
+				)
+			else
+				self.focal_depth = focal_depth
+			end
+		end
 	end
 end
 
 function update(self, dt)
-	if not focus_follows_view then return end
-	-- set the focal depth to whatever's in the center of the screen
-	pick_and_focus(settings.resolution_x / 2, settings.resolution_y / 2)
+	if focus_follows_view then
+		-- set the focal depth to whatever's in the center of the screen
+		pick_and_focus(self, settings.resolution_x / 2, settings.resolution_y / 2)
+	end
+	settings.dof.focal_depth = self.focal_depth
 end
 
 function on_input(self, action_id, action)
 	if not focus_follows_mouse or action_id or window.get_mouse_lock() then return end
 	-- set the focal depth to whatever the mouse is hovering over
-	pick_and_focus(action.screen_x, action.screen_y)
+	pick_and_focus(self, action.screen_x, action.screen_y)
 end
