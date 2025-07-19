@@ -1,0 +1,18 @@
+mesh: "/example/assets/citybuilder/gltf/building_E.gltf"
+name: "building_e"
+materials {
+  name: "citybits_texture"
+  material: "/defrend/materials/geometry/model/model.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/example/assets/citybuilder/gltf/citybits_texture.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/example/assets/images/flat.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/example/assets/images/black.png"
+  }
+}

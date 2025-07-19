@@ -1,5 +1,5 @@
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /example/main/main.collectionc
 render = /defrend/render/defrend.renderc
 
 [script]
@@ -31,7 +31,7 @@ bundle_identifier = com.defold.example.basic3d
 bundle_identifier = com.defold.example.basic3d
 
 [input]
-game_binding = /input/all.input_bindingc
+game_binding = /example/input/all.input_bindingc
 
 [model]
 max_count = 1024

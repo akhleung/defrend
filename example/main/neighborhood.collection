@@ -1,0 +1,2368 @@
+name: "neighborhood"
+instances {
+  id: "building_b"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: -14.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 18.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -30.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 18.0
+    z: 16.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight1"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 2.0
+    z: 16.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight2"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -14.0
+    z: 16.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight3"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -30.0
+    z: 16.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c1"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: -14.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a1"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: 2.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b1"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 18.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e1"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -30.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_junction"
+  prototype: "/example/assets/citybuilder/road_junction.go"
+  position {
+    x: 34.0
+    z: 16.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight4"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight5"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight6"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 18.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight7"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 2.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight8"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -14.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight9"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -30.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight10"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+    z: 32.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_corner_curved"
+  prototype: "/example/assets/citybuilder/road_corner_curved.go"
+  position {
+    x: 34.0
+    z: -32.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight11"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+    z: 48.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight12"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+    z: 64.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight13"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 34.0
+    z: 80.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_corner_curved1"
+  prototype: "/example/assets/citybuilder/road_corner_curved.go"
+  position {
+    x: 34.0
+    z: 96.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight14"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 18.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight15"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: 2.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight16"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -14.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight17"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -30.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight18"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -62.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight19"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -78.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight20"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -94.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight21"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -110.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -46.0
+    z: 96.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight22"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight23"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight24"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+    z: 32.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight25"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+    z: 16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight26"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+    z: 64.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight27"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -46.0
+    z: 80.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit1"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -46.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a3"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: 8.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b3"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b4"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 24.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c2"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: -8.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d2"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: -8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e4"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 24.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e5"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -24.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g2"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -24.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit2"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -46.0
+    z: 48.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base2"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a2"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: 8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush4"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base1"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e2"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 24.0
+    z: -8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g1"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush2"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h1"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: 24.0
+    z: 8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush1"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -4.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: 24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: -8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e3"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush3"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: 2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -6.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b2"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: -24.0
+    z: -8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f1"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d1"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: 24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base3"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base4"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base5"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base6"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base7"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a4"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a5"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: 8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b5"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: -24.0
+    z: -8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c3"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: 24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d3"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: 24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e6"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 24.0
+    z: -8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e7"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f2"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f3"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g3"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h2"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: -8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h3"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: 24.0
+    z: 8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush5"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -6.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush6"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -4.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush7"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush8"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: 2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush9"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight28"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -62.0
+    z: 48.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight29"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -78.0
+    z: 48.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight30"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -94.0
+    z: 48.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight31"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -110.0
+    z: 48.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight32"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -62.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight33"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -78.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight34"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -94.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight35"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -110.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight36"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight37"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+    z: -16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight38"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+    z: 32.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight39"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+    z: 16.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit3"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -126.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight40"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+    z: 64.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight41"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -126.0
+    z: 80.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit4"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -126.0
+    z: 96.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_tsplit5"
+  prototype: "/example/assets/citybuilder/road_tsplit.go"
+  position {
+    x: -126.0
+    z: 48.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a6"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: 8.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b6"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b7"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: 24.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c4"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: -8.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d4"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: -8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e8"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 24.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e9"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -24.0
+    z: -8.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g4"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -24.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight42"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -94.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight43"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -110.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base8"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base9"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: -8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base10"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: 8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "base11"
+  prototype: "/example/assets/citybuilder/base.go"
+  position {
+    x: 8.0
+    z: -8.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a7"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_a8"
+  prototype: "/example/assets/citybuilder/building_a.go"
+  position {
+    x: -24.0
+    z: 8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_b8"
+  prototype: "/example/assets/citybuilder/building_b.go"
+  position {
+    x: -24.0
+    z: -8.0
+  }
+  rotation {
+    y: -0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_c5"
+  prototype: "/example/assets/citybuilder/building_c.go"
+  position {
+    x: 24.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_d5"
+  prototype: "/example/assets/citybuilder/building_d.go"
+  position {
+    x: 24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e10"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: 24.0
+    z: -8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_e11"
+  prototype: "/example/assets/citybuilder/building_e.go"
+  position {
+    x: -8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f4"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_f5"
+  prototype: "/example/assets/citybuilder/building_f.go"
+  position {
+    x: 8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_g5"
+  prototype: "/example/assets/citybuilder/building_g.go"
+  position {
+    x: -24.0
+    z: 24.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h4"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: -8.0
+    z: -24.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "building_h5"
+  prototype: "/example/assets/citybuilder/building_h.go"
+  position {
+    x: 24.0
+    z: 8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush10"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -6.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush11"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -4.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush12"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -11.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush13"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: 2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "bush14"
+  prototype: "/example/assets/citybuilder/bush.go"
+  position {
+    x: -2.0
+    z: -2.0
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight44"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -142.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "road_straight45"
+  prototype: "/example/assets/citybuilder/road_straight.go"
+  position {
+    x: -158.0
+    z: -32.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+  }
+}
+instances {
+  id: "decal"
+  prototype: "/example/assets/models/decal.go"
+  position {
+    x: -24.0
+    y: 3.0
+    z: -14.0
+  }
+  rotation {
+    x: 0.3251623
+    y: -0.08419837
+    z: -0.2361113
+    w: 0.9118287
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
+instances {
+  id: "decal1"
+  prototype: "/example/assets/models/decal.go"
+  position {
+    x: -39.0
+    y: 3.0
+    z: -14.0
+  }
+  rotation {
+    x: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
+scale_along_z: 0
+embedded_instances {
+  id: "block1"
+  children: "building_a3"
+  children: "building_b3"
+  children: "building_b4"
+  children: "building_c2"
+  children: "building_d2"
+  children: "building_e4"
+  children: "building_e5"
+  children: "building_g2"
+  children: "decal"
+  children: "decal1"
+  data: ""
+  position {
+    x: -86.0
+    z: 72.0
+  }
+  rotation {
+    y: 1.0
+    w: 6.123234E-17
+  }
+}
+embedded_instances {
+  id: "block2"
+  children: "base"
+  children: "base1"
+  children: "base2"
+  children: "base3"
+  children: "building_a"
+  children: "building_a2"
+  children: "building_b2"
+  children: "building_c"
+  children: "building_d1"
+  children: "building_e2"
+  children: "building_e3"
+  children: "building_f"
+  children: "building_f1"
+  children: "building_g1"
+  children: "building_h"
+  children: "building_h1"
+  children: "bush"
+  children: "bush1"
+  children: "bush2"
+  children: "bush3"
+  children: "bush4"
+  data: ""
+  position {
+    x: -6.0
+    z: 56.0
+  }
+}
+embedded_instances {
+  id: "block"
+  children: "base4"
+  children: "base5"
+  children: "base6"
+  children: "base7"
+  children: "building_a4"
+  children: "building_a5"
+  children: "building_b5"
+  children: "building_c3"
+  children: "building_d3"
+  children: "building_e6"
+  children: "building_e7"
+  children: "building_f2"
+  children: "building_f3"
+  children: "building_g3"
+  children: "building_h2"
+  children: "building_h3"
+  children: "bush5"
+  children: "bush6"
+  children: "bush7"
+  children: "bush8"
+  children: "bush9"
+  data: ""
+  position {
+    x: -86.0
+    z: 8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+}
+embedded_instances {
+  id: "block3"
+  children: "building_a6"
+  children: "building_b6"
+  children: "building_b7"
+  children: "building_c4"
+  children: "building_d4"
+  children: "building_e8"
+  children: "building_e9"
+  children: "building_g4"
+  data: ""
+  position {
+    x: -150.0
+    z: 8.0
+  }
+  rotation {
+    y: 0.70710677
+    w: 0.70710677
+  }
+}
+embedded_instances {
+  id: "block4"
+  children: "base10"
+  children: "base11"
+  children: "base8"
+  children: "base9"
+  children: "building_a7"
+  children: "building_a8"
+  children: "building_b8"
+  children: "building_c5"
+  children: "building_d5"
+  children: "building_e10"
+  children: "building_e11"
+  children: "building_f4"
+  children: "building_f5"
+  children: "building_g5"
+  children: "building_h4"
+  children: "building_h5"
+  children: "bush10"
+  children: "bush11"
+  children: "bush12"
+  children: "bush13"
+  children: "bush14"
+  data: ""
+  position {
+    x: -166.0
+    z: 72.0
+  }
+  rotation {
+    y: 0.70710677
+    w: -0.70710677
+  }
+}

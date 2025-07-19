@@ -1,0 +1,14 @@
+mesh: "/builtins/assets/meshes/quad.dae"
+name: "unnamed"
+materials {
+  name: "default"
+  material: "/defrend/materials/geometry/model/model.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/example/assets/images/grey-brick.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/example/assets/images/grey-brick-normal.png"
+  }
+}

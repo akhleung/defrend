@@ -1,0 +1,34 @@
+mesh: "/example/assets/models/character_duck.glb"
+name: "monkey"
+materials {
+  name: "default"
+  material: "/builtins/materials/model.material"
+  textures {
+    sampler: "tex0"
+    texture: "/example/assets/images/white.png"
+  }
+}
+materials {
+  name: "Black.002"
+  material: "/builtins/materials/model.material"
+  textures {
+    sampler: "tex0"
+    texture: "/example/assets/images/black.png"
+  }
+}
+materials {
+  name: "White.004"
+  material: "/builtins/materials/model.material"
+  textures {
+    sampler: "tex0"
+    texture: "/example/assets/images/white.png"
+  }
+}
+materials {
+  name: "Yellow"
+  material: "/builtins/materials/model.material"
+  textures {
+    sampler: "tex0"
+    texture: "/example/assets/images/brown.png"
+  }
+}
