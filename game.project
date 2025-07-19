@@ -1,6 +1,6 @@
 [bootstrap]
-main_collection = /main/main.collectionc
-render = /defrend/render/deferred.renderc
+main_collection = /example/main/main.collectionc
+render = /defrend/render/defrend.renderc
 
 [script]
 shared_state = 1
@@ -31,7 +31,7 @@ bundle_identifier = com.defold.example.basic3d
 bundle_identifier = com.defold.example.basic3d
 
 [input]
-game_binding = /input/all.input_bindingc
+game_binding = /example/input/all.input_bindingc
 
 [model]
 max_count = 1024
@@ -51,4 +51,7 @@ opengl_version_hint = 42
 
 [html5]
 transparent_graphics_context = 0
+
+[library]
+include_dirs = defrend
 

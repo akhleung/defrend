@@ -1,0 +1,18 @@
+mesh: "/builtins/assets/meshes/cube.dae"
+name: "decal"
+materials {
+  name: "default"
+  material: "/defrend/materials/geometry/decal/decal.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/example/assets/images/broken-ice-base.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/example/assets/images/broken-ice-normal.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/example/assets/images/broken-ice-spec-glow.png"
+  }
+}

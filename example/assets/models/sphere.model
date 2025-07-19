@@ -1,0 +1,10 @@
+mesh: "/builtins/assets/meshes/sphere.dae"
+name: "unnamed"
+materials {
+  name: "default"
+  material: "/defrend/materials/geometry/model/model.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/example/assets/images/brown.png"
+  }
+}

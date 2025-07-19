@@ -1,0 +1,18 @@
+mesh: "/builtins/assets/meshes/quad.dae"
+name: "grass"
+materials {
+  name: "default"
+  material: "/defrend/materials/geometry/billboard_sprite/billboard.material"
+  textures {
+    sampler: "diffuse_map"
+    texture: "/example/assets/billboards/flowerbed/flower.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/example/assets/flat.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/example/assets/images/black.png"
+  }
+}
