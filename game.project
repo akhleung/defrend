@@ -1,6 +1,6 @@
 [bootstrap]
 main_collection = /main/main.collectionc
-render = /defrend/render/deferred.renderc
+render = /defrend/render/defrend.renderc
 
 [script]
 shared_state = 1
@@ -51,4 +51,7 @@ opengl_version_hint = 42
 
 [html5]
 transparent_graphics_context = 0
+
+[library]
+include_dirs = defrend
 

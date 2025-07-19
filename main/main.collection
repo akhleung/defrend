@@ -206,11 +206,6 @@ collection_instances {
     properties {
       id: "depth_of_field"
       properties {
-        id: "enabled"
-        value: "true"
-        type: PROPERTY_TYPE_BOOLEAN
-      }
-      properties {
         id: "focus_follows_view"
         value: "false"
         type: PROPERTY_TYPE_BOOLEAN
@@ -219,6 +214,16 @@ collection_instances {
         id: "focus_follows_mouse"
         value: "true"
         type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "focal_shift_duration"
+        value: "0.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "focal_shift_threshold"
+        value: "10.0"
+        type: PROPERTY_TYPE_NUMBER
       }
       properties {
         id: "collision_group_1"
