@@ -201,6 +201,32 @@ collection_instances {
       }
     }
   }
+  instance_properties {
+    id: "post_processing"
+    properties {
+      id: "depth_of_field"
+      properties {
+        id: "enabled"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "focus_follows_view"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "focus_follows_mouse"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "collision_group_1"
+        value: "buildings"
+        type: PROPERTY_TYPE_HASH
+      }
+    }
+  }
 }
 scale_along_z: 1
 embedded_instances {

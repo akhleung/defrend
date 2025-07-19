@@ -8,7 +8,6 @@ function M.init()
 		view_inv = identity,
 		proj = identity,
 		viewproj = identity,
-		moved = true,
 		-- these will be set by the set_scene_camera function below
 		near = 0,
 		far = 1,
