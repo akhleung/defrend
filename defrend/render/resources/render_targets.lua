@@ -2,7 +2,7 @@ local settings = require "defrend.render.settings"
 
 local M = {}
 
-local render_target_list
+local canvases
 
 function M.init()
 	local rgba_params = {
@@ -64,11 +64,11 @@ function M.init()
 	M.post_source	= post_source
 	M.post_target	= post_target
 
-	render_target_list = { shadow_map, g_buffer, l_buffer, post_source, post_target }
+	canvases = { g_buffer, l_buffer, post_source, post_target }
 end
 
 function M.set_resolution(w, h)
-	for _, rt in ipairs(render_target_list) do
+	for _, rt in ipairs(canvases) do
 		render.set_render_target_size(rt, w, h)
 	end
 end

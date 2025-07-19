@@ -1,61 +1,85 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings	= require "defrend.render.settings"
+local uniforms	= require "defrend.render.uniforms"
+local cameras	= require "defrend.render.resources.cameras"
+local defrend	= require "defrend.render.defrend"
 
 go.property("enabled", false)
 go.property("focal_depth", 100)
 go.property("blur_start", 30)
 go.property("blur_full", 40)
+go.property("focus_follows_view", true)
+go.property("focus_follows_mouse", false)
+go.property("collision_group_1", hash(""))
+go.property("collision_group_2", hash(""))
+go.property("collision_group_3", hash(""))
+go.property("collision_group_4", hash(""))
+go.property("collision_group_5", hash(""))
+go.property("collision_group_6", hash(""))
+go.property("collision_group_7", hash(""))
+go.property("collision_group_8", hash(""))
+go.property("collision_group_9", hash(""))
+go.property("collision_group_10", hash(""))
+go.property("collision_group_11", hash(""))
+go.property("collision_group_12", hash(""))
+go.property("collision_group_13", hash(""))
+go.property("collision_group_14", hash(""))
+go.property("collision_group_15", hash(""))
+go.property("collision_group_16", hash(""))
 
+local collision_property_names = {
+	"collision_group_1", "collision_group_2", "collision_group_3", "collision_group_4",
+	"collision_group_5", "collision_group_6", "collision_group_7", "collision_group_8",
+	"collision_group_9", "collision_group_10", "collision_group_11", "collision_group_12",
+	"collision_group_13", "collision_group_14", "collision_group_15", "collision_group_16",
+}
+
+local empty_hash = hash("")
+local pickables = {}
+local focus_follows_view
+local focus_follows_mouse
 function init(self)
 	settings.dof.enabled		= self.enabled
 	settings.dof.focal_depth	= self.focal_depth
 	settings.dof.blur_start		= self.blur_start
 	settings.dof.blur_full		= self.blur_full
 	uniforms.dof.init()
+
+	for _, property_name in ipairs(collision_property_names) do
+		local group = self[property_name]
+		if group ~= empty_hash then
+			table.insert(pickables, self[property_name])
+		end
+	end
+
+	focus_follows_view = self.focus_follows_view
+	focus_follows_mouse = self.focus_follows_mouse
+	if focus_follows_view and focus_follows_mouse then
+		focus_follows_view = false
+	end
+	if focus_follows_mouse then
+		msg.post(".", "acquire_input_focus")
+	end
 end
 
--- function final(self)
--- 	-- Add finalization code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
+local raycast_options = { all = false }
+local function pick_and_focus(x, y)
+	local near,	far	= defrend.screen_to_world(x, y)
+	local picks		= physics.raycast(near, far, pickables, raycast_options)
+	if picks then
+		local picked = picks[1].position
+		focal_point = cameras.scene_camera.view * vmath.vector4(picked.x, picked.y, picked.z, 1)
+		settings.dof.focal_depth = -focal_point.z
+	end
+end
 
--- -- TODO: raycast and update the focal depth each frame
--- function update(self, dt)
--- 	-- Add update code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
+function update(self, dt)
+	if not focus_follows_view then return end
+	-- set the focal depth to whatever's in the center of the screen
+	pick_and_focus(settings.resolution_x / 2, settings.resolution_y / 2)
+end
 
--- function fixed_update(self, dt)
--- 	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
--- 	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
--- 	-- Physics section of game.project
--- 	-- Add update code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
-
--- function on_message(self, message_id, message, sender)
--- 	-- Add message-handling code here
--- 	-- Learn more: https://defold.com/manuals/message-passing/
--- 	-- Remove this function if not needed
--- end
-
--- function on_input(self, action_id, action)
--- 	-- Add input-handling code here. The game object this script is attached to
--- 	-- must have acquired input focus:
--- 	--
--- 	--    msg.post(".", "acquire_input_focus")
--- 	--
--- 	-- All mapped input bindings will be received. Mouse and touch input will
--- 	-- be received regardless of where on the screen it happened.
--- 	-- Learn more: https://defold.com/manuals/input/
--- 	-- Remove this function if not needed
--- end
-
--- function on_reload(self)
--- 	-- Add reload-handling code here
--- 	-- Learn more: https://defold.com/manuals/hot-reload/
--- 	-- Remove this function if not needed
--- end
+function on_input(self, action_id, action)
+	if not focus_follows_mouse or action_id or window.get_mouse_lock() then return end
+	-- set the focal depth to whatever the mouse is hovering over
+	pick_and_focus(action.screen_x, action.screen_y)
+end
