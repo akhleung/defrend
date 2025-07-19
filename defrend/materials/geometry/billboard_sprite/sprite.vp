@@ -1,0 +1,30 @@
+#version 420 core
+
+in vec4 position;
+in vec2 texcoord0;
+
+in vec3 local_position;
+
+uniform sprite_vp {
+	mat4 mtx_proj;
+	mat4 mtx_worldview;
+	mat4 mtx_viewproj;
+};
+
+out vec3 var_frag_pos;
+out vec3 var_normal;
+out vec2 var_texcoord0;
+
+void main() {
+
+	var_frag_pos	= (mtx_worldview * position).xyz;
+	var_normal		= normalize(-var_frag_pos);
+	var_texcoord0	= texcoord0;
+
+	// *** billboarding around the y axis
+	vec4 center		= vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);
+	gl_Position		= mtx_viewproj * center - mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
+
+	// *** billboarding around the x and y axes -- disable face culling
+	// gl_Position = mtx_viewproj * vec4(position.xyz - local_position, 1.0) + mtx_proj * vec4(local_position.xy, 0.0, 0.0);
+}

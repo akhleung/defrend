@@ -2,7 +2,7 @@ mesh: "/builtins/assets/meshes/cube.dae"
 name: "skybox"
 materials {
   name: "default"
-  material: "/materials/geometry/skybox/skybox.material"
+  material: "/defrend/materials/geometry/skybox/skybox.material"
   textures {
     sampler: "cubemap"
     texture: "/assets/skybox.cubemap"

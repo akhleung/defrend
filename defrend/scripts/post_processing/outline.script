@@ -1,0 +1,77 @@
+local settings = require "defrend.render.settings"
+local uniforms = require "defrend.render.uniforms"
+
+go.property("enabled", false)
+-- outline detection
+go.property("depth_threshold", 0.025)
+go.property("normal_threshold", 0.5)
+go.property("normal_smoothing", 0.25)
+-- thickness
+go.property("max_thickness", 1.3)
+go.property("min_thickness", 0.5)
+go.property("max_distance", 75.0)
+go.property("min_distance", 2.0)
+-- grazing prevention
+go.property("grazing_fresnel_power", 5.0)
+go.property("grazing_angle_mask_power", 1.0)
+go.property("grazing_angle_modulation_factor", 50.0)
+
+function init(self)
+	settings.outline.enabled							= self.enabled
+	settings.outline.depth_threshold					= self.depth_threshold
+	settings.outline.normal_threshold					= self.normal_threshold
+	settings.outline.normal_smoothing					= self.normal_smoothing
+	settings.outline.max_thickness						= self.max_thickness
+	settings.outline.min_thickness						= self.min_thickness
+	settings.outline.max_distance						= self.max_distance
+	settings.outline.min_distance						= self.min_distance
+	settings.outline.grazing_fresnel_power				= self.grazing_fresnel_power
+	settings.outline.grazing_angle_mask_power			= self.grazing_angle_mask_power
+	settings.outline.grazing_angle_modulation_factor	= self.grazing_angle_modulation_factor
+	uniforms.outline.init()
+end
+
+-- function final(self)
+-- 	-- Add finalization code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function update(self, dt)
+-- 	-- Add update code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function fixed_update(self, dt)
+-- 	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+-- 	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+-- 	-- Physics section of game.project
+-- 	-- Add update code here
+-- 	-- Learn more: https://defold.com/manuals/script/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_message(self, message_id, message, sender)
+-- 	-- Add message-handling code here
+-- 	-- Learn more: https://defold.com/manuals/message-passing/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_input(self, action_id, action)
+-- 	-- Add input-handling code here. The game object this script is attached to
+-- 	-- must have acquired input focus:
+-- 	--
+-- 	--    msg.post(".", "acquire_input_focus")
+-- 	--
+-- 	-- All mapped input bindings will be received. Mouse and touch input will
+-- 	-- be received regardless of where on the screen it happened.
+-- 	-- Learn more: https://defold.com/manuals/input/
+-- 	-- Remove this function if not needed
+-- end
+
+-- function on_reload(self)
+-- 	-- Add reload-handling code here
+-- 	-- Learn more: https://defold.com/manuals/hot-reload/
+-- 	-- Remove this function if not needed
+-- end

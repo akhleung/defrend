@@ -1,6 +1,6 @@
 [bootstrap]
 main_collection = /main/main.collectionc
-render = /render/deferred.renderc
+render = /defrend/render/deferred.renderc
 
 [script]
 shared_state = 1
@@ -48,4 +48,7 @@ clear_color_alpha = 0.0
 [graphics]
 verify_graphics_calls = 0
 opengl_version_hint = 42
+
+[html5]
+transparent_graphics_context = 0
 

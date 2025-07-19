@@ -1,0 +1,481 @@
+local settings			= require "defrend.render.settings"
+local uniforms			= require "defrend.render.uniforms"
+local shadows			= require "defrend.render.shadows"
+local render_targets	= require "defrend.render.resources.render_targets"
+local clear_options		= require "defrend.render.resources.clear_options"
+local cameras			= require "defrend.render.resources.cameras"
+local render_shadows
+
+local shadow_options		= {}
+local geometry_options		= {}
+local lighting_options		= {}
+local ssao_options			= {}
+local outline_options		= {}
+local glow_options			= {}
+local bloom_options			= {}
+local gaussian_blur_options	= {}
+local dilate_options		= {}
+local kuwahara_blur_options	= {}
+local gamma_options			= {}
+local dof_options			= {}
+local fxaa_options			= {}
+
+local resolution
+local predicates
+local shadow_map
+local g_buffer
+local l_buffer
+local post_source
+local post_target
+function init(self)
+	settings.resolution_x = render.get_window_width()
+	settings.resolution_y = render.get_window_height()
+	resolution = vmath.vector4(settings.resolution_x, settings.resolution_y, 0, 0)
+
+	render_targets.init()
+	clear_options.init()
+	cameras.init()
+
+	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
+
+	geometry_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
+	geometry_options.constants				= render.constant_buffer()
+	geometry_options.constants.resolution	= resolution ---@diagnostic disable-line: inject-field
+
+	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
+	shadow_options.constants		= render.constant_buffer()
+	shadow_options.constants.bias	= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
+
+	lighting_options.constants		= uniforms.light_and_shadow.uniforms
+	ssao_options.constants          = uniforms.ssao.uniforms
+	outline_options.constants       = uniforms.outline.uniforms
+	glow_options.constants          = uniforms.glow.uniforms
+	bloom_options.constants         = uniforms.bloom.uniforms
+	gaussian_blur_options.constants = uniforms.gaussian_blur.uniforms
+	dilate_options.constants        = uniforms.dilate.uniforms
+	kuwahara_blur_options.constants = uniforms.kuwahara_blur.uniforms
+	gamma_options.constants         = uniforms.gamma.uniforms
+	dof_options.constants           = uniforms.dof.uniforms
+	fxaa_options.constants          = uniforms.fxaa.uniforms
+
+	predicates = {
+		model		= render.predicate({"model"}),
+		sprite		= render.predicate({"sprite"}),
+		billboard	= render.predicate({"billboard"}),
+		decal		= render.predicate({"decal"}),
+		skybox		= render.predicate({"skybox"}),
+		blob_shadow	= render.predicate({"blob_shadow"}),
+		point_light	= render.predicate({"point_light"}),
+		screen		= render.predicate({"screen"}),
+		text		= render.predicate({"text"}),
+		gui			= render.predicate({"gui"}),
+		debug_text	= render.predicate({"debug_text"}),
+	}
+	shadow_map	= render_targets.shadow_map
+	g_buffer	= render_targets.g_buffer
+	l_buffer	= render_targets.l_buffer
+	post_source	= render_targets.post_source
+	post_target	= render_targets.post_target
+end
+
+function update(self)
+
+	if not self.valid then return end
+
+	render_shadows()
+
+	render.set_render_target(g_buffer)
+	-- turn on depth_mask before `render.clear()` to clear it as well
+	render.set_depth_mask(true)
+	render.enable_state(graphics.STATE_DEPTH_TEST)
+	render.set_stencil_mask(0xff)
+	render.clear(clear_options.clear_color_options)
+	render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+	-- setup camera view and projection
+	render.set_view(cameras.scene_camera.view)
+	render.set_projection(cameras.scene_camera.proj)
+
+	-- render models into g-buffer
+	render.enable_state(graphics.STATE_CULL_FACE)
+	render.set_cull_face(graphics.FACE_TYPE_BACK)
+	render.enable_material("model_material")
+	render.draw(predicates.model, geometry_options)
+	render.disable_material()
+
+	-- render sprites and billboards into g-buffer
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+	render.enable_material("sprite_material")
+	render.draw(predicates.sprite, geometry_options)
+	render.disable_material()
+	render.enable_material("billboard_material")
+	render.draw(predicates.billboard, geometry_options)
+	render.disable_material()
+
+	-- render decals into g-buffer
+	-- The combination of back-face culling and depth testing will prevent decals from rendering when the camera is
+	-- inside a projector box. Front-face culling requires depth testing to be disabled, since the back faces of the
+	-- projector box will be occluded by the receiving surface.
+	render.set_depth_mask(false)
+	render.enable_material("decal_material")
+	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.draw(predicates.decal, geometry_options)
+	render.disable_texture("depth_buffer")
+	render.disable_material()
+
+	-- render the skybox
+	render.set_cull_face(graphics.FACE_TYPE_FRONT)
+	render.disable_state(graphics.STATE_BLEND)
+	render.enable_material("skybox_material")
+	render.draw(predicates.skybox)
+	render.disable_material()
+
+	render.draw_debug3d()
+
+	-- render light volumes into the light reflectance buffer
+	-- For some reason, culling front faces and enabling depth testing doesn't prevent lights from being rendered properly.
+	-- Not sure why, because one would think that the back faces would be occluded by the receiving surfaces.
+	render.set_render_target(l_buffer)
+	render.clear(clear_options.clear_color_options)
+	render.set_cull_face(graphics.FACE_TYPE_FRONT)
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
+	render.enable_material("point_light_material")
+	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+	render.draw(predicates.point_light, geometry_options)
+	render.disable_texture("depth_buffer")
+	render.disable_texture("normal_sampler")
+	render.disable_texture("spec_glow_sampler")
+	render.disable_material()
+
+	render.disable_state(graphics.STATE_DEPTH_TEST)
+	render.disable_state(graphics.STATE_CULL_FACE)
+	render.disable_state(graphics.STATE_BLEND)
+
+	render.set_render_target(post_target)
+	render.clear(clear_options.clear_ssao_options)
+	render.set_view(cameras.screen_camera.view)
+	render.set_projection(cameras.screen_camera.proj)
+
+	if settings.ssao.enabled then
+		render.enable_material("ssao_material")
+		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		render.draw(predicates.screen, ssao_options)
+		render.disable_texture("depth_buffer")
+		render.disable_texture("normal_sampler")
+		render.disable_material()
+		if settings.ssao.blur then
+			post_source, post_target = post_target, post_source
+			render.set_render_target(post_target)
+			render.enable_material("gaussian_blur_horizontal_material")
+			render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.draw(predicates.screen, gaussian_blur_options)
+			render.disable_texture("color_sampler")
+			render.disable_material()
+			post_source, post_target = post_target, post_source
+			render.set_render_target(post_target)
+			render.enable_material("gaussian_blur_vertical_material")
+			render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.draw(predicates.screen, gaussian_blur_options)
+			render.disable_texture("color_sampler")
+			render.disable_material()
+		end
+	end
+
+	post_source, post_target = post_target, post_source
+	render.set_render_target(post_target)
+	render.enable_material("resolve_lighting_material")
+	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.enable_texture("diffuse_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+	render.enable_texture("ssao_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("shadow_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.enable_texture("diff_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("spec_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+	render.draw(predicates.screen, lighting_options)
+	render.disable_texture("depth_buffer")
+	render.disable_texture("diffuse_sampler")
+	render.disable_texture("normal_sampler")
+	render.disable_texture("spec_glow_sampler")
+	render.disable_texture("ssao_sampler")
+	render.disable_texture("shadow_sampler")
+	render.disable_texture("diff_light_sampler")
+	render.disable_texture("spec_light_sampler")
+	render.disable_material()
+
+	if settings.outline.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("outline_material")
+		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		render.draw(predicates.screen, outline_options)
+		render.disable_texture("depth_buffer")
+		render.disable_texture("color_sampler")
+		render.disable_texture("normal_sampler")
+		render.disable_material()
+	end
+
+	if settings.gamma.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("gamma_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, gamma_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+	end
+
+	if settings.glow.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(l_buffer)
+		render.enable_material("glow_horizontal_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+		render.draw(predicates.screen, glow_options)
+		render.disable_texture("color_sampler")
+		render.disable_texture("spec_glow_sampler")
+		render.disable_material()
+		render.set_render_target(post_target)
+		render.enable_material("glow_vertical_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("glow_color_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("orig_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+		render.draw(predicates.screen, glow_options)
+		render.disable_texture("color_sampler")
+		render.disable_texture("glow_color_sampler")
+		render.disable_texture("spec_glow_sampler")
+		render.disable_texture("orig_glow_sampler")
+		render.disable_material()
+	end
+
+	if settings.bloom.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("bloom_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, bloom_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+	end
+
+	if settings.kuwahara_blur.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("kuwahara_blur_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, kuwahara_blur_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+	end
+
+	if settings.gaussian_blur.enabled then
+		-- blur horizontally
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("gaussian_blur_horizontal_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, gaussian_blur_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+		-- blur vertically
+		post_source, post_target = post_target, post_source
+		render.set_render_target(post_target)
+		render.enable_material("gaussian_blur_vertical_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, gaussian_blur_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+	end
+
+	if settings.dof.enabled then
+		-- create a blurred render to blend with the focused render
+		post_source, post_target = post_target, post_source
+		render.set_render_target(l_buffer)
+		render.enable_material("gaussian_blur_horizontal_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, gaussian_blur_options) 
+		render.disable_texture("color_sampler")
+		render.disable_material() -- post_source: focused, l_buffer: half-blurred
+		render.set_render_target(post_target)
+		render.enable_material("gaussian_blur_vertical_material")
+		render.enable_texture("color_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, gaussian_blur_options)
+		render.disable_texture("color_sampler")
+		render.disable_material() -- post_source: focused, l_buffer: half-blurred, post_target: fully-blurred
+		-- dilate the blurred render too
+		render.set_render_target(l_buffer)
+		render.enable_material("dilate_material")
+		render.enable_texture("color_sampler", post_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, dilate_options)
+		render.disable_texture("color_sampler")
+		render.disable_material() -- post_source: focused, l_buffer: blurred & dilated, post_target: fully-blurred
+		-- mix the blurred & dilated render with the focused render
+		render.set_render_target(post_target)
+		render.enable_material("dof_material")
+		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+		render.enable_texture("focused_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("blurred_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		local params = dof_options.constants.params
+		params.x = settings.dof.focal_depth
+		dof_options.constants.params = params ---@diagnostic disable-line: inject-field
+		render.draw(predicates.screen, dof_options)
+		render.disable_texture("depth_buffer")
+		render.disable_texture("focused_sampler")
+		render.disable_texture("blurred_sampler")
+		render.disable_material()
+	end
+
+	if settings.fxaa.enabled then
+		post_source, post_target = post_target, post_source
+		render.set_render_target(render.RENDER_TARGET_DEFAULT)
+		render.enable_material("fxaa_material")
+		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, fxaa_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+	end
+
+	-- render GUI
+	--
+	local camera_gui = cameras.gui_camera
+	geometry_options.frustum = camera_gui.viewproj
+	render.set_view(camera_gui.view)
+	render.set_projection(camera_gui.proj)
+	render.enable_state(graphics.STATE_STENCIL_TEST)
+	render.draw(predicates.debug_text, geometry_options)
+	render.draw(predicates.gui, geometry_options)
+	render.draw(predicates.text, geometry_options)
+	render.disable_state(graphics.STATE_STENCIL_TEST)
+end
+
+local frustum_corner_ndc	= vmath.vector4(1.0)
+local frustum_corner
+local frustum_terms			= vmath.vector4()
+local function update_camera_uniforms()
+	local camera = cameras.scene_camera
+
+	frustum_corner		= camera.proj_inv * frustum_corner_ndc
+	frustum_corner		= frustum_corner / frustum_corner.w
+	frustum_corner.w	= -camera.near
+	frustum_terms.x		= frustum_corner.z * frustum_corner.w * 2
+	frustum_terms.y		= frustum_corner.z + frustum_corner.w
+	frustum_terms.z		= frustum_corner.z - frustum_corner.w
+
+	geometry_options.frustum					= camera.viewproj
+	geometry_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
+	lighting_options.constants.mtx_view			= camera.view ---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_corner		= frustum_corner ---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
+	dof_options.constants.frustum_terms			= frustum_terms ---@diagnostic disable-line: inject-field
+end
+
+local function update_resolution_uniforms()
+	local rx, ry = settings.resolution_x, settings.resolution_y
+	resolution.x, resolution.y = rx, ry
+	geometry_options.constants.resolution = resolution ---@diagnostic disable-line: inject-field
+
+	local outline_params1 = outline_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	outline_params1.x, outline_params1.y = rx, ry
+	outline_options.constants.params1 = outline_params1 ---@diagnostic disable-line: inject-field
+
+	local glow_params = glow_options.constants.params ---@diagnostic disable-line: undefined-field
+	glow_params.x, glow_params.y = rx, ry
+	glow_options.constants.params = glow_params ---@diagnostic disable-line: inject-field
+
+	local bloom_params1 = bloom_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	bloom_params1.x, bloom_params1.y = rx, ry
+	bloom_options.constants.params1 = bloom_params1 ---@diagnostic disable-line: inject-field
+
+	local gaussian_blur_params = gaussian_blur_options.constants.params ---@diagnostic disable-line: undefined-field
+	gaussian_blur_params.x, gaussian_blur_params.y = rx, ry
+	gaussian_blur_options.constants.params = gaussian_blur_params ---@diagnostic disable-line: inject-field
+
+	local dilate_params1 = dilate_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	dilate_params1.x, dilate_params1.y = rx, ry
+	dilate_options.constants.params1 = dilate_params1 ---@diagnostic disable-line: inject-field
+
+	local kuwahara_blur_params = kuwahara_blur_options.constants.params ---@diagnostic disable-line: undefined-field
+	kuwahara_blur_params.x, kuwahara_blur_params.y = rx, ry
+	kuwahara_blur_options.constants.params = kuwahara_blur_params ---@diagnostic disable-line: inject-field
+
+	local fxaa_params = fxaa_options.constants.params ---@diagnostic disable-line: undefined-field
+	fxaa_params.x, fxaa_params.y = rx, ry
+	fxaa_options.constants.params = fxaa_params ---@diagnostic disable-line: inject-field
+end
+
+local MSG_WINDOW_RESIZED			= hash("window_resized")
+local MSG_SET_VIEW_PROJ				= hash("set_view_projection")
+local MSG_TOGGLE_STABLE_SHADOWS		= hash("toggle_stable_shadows")
+local refresh_shadows				= shadows.refresh_shadows_stable2
+function on_message(self, message_id, message)
+	local scene_camera = cameras.scene_camera
+	local gui_camera = cameras.gui_camera
+	if message_id == MSG_SET_VIEW_PROJ then
+		scene_camera.view		= message.view
+		scene_camera.proj		= message.projection
+		scene_camera.viewproj	= scene_camera.proj * scene_camera.view
+		scene_camera.view_inv	= vmath.inv(scene_camera.view)
+		scene_camera.proj_inv	= vmath.inv(scene_camera.proj)
+		update_camera_uniforms()
+	elseif message_id == MSG_WINDOW_RESIZED then
+		settings.resolution_x = render.get_window_width()
+		settings.resolution_y = render.get_window_height()
+		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
+		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
+		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
+		update_resolution_uniforms()
+	elseif message_id == MSG_TOGGLE_STABLE_SHADOWS then
+		if settings.shadow.stable then
+			refresh_shadows = shadows.refresh_shadows_stable2
+		else
+			refresh_shadows = shadows.refresh_shadows_half_stable
+		end
+	end
+end
+
+render_shadows = function()
+	local shadow_settings = settings.shadow
+	local projections = shadow_settings.projections
+	local partitions = shadow_settings.partitions
+	local atlas_resolution = shadow_settings.atlas_resolution
+	local map_resolution = shadow_settings.map_resolution
+	render.set_render_target(shadow_map)
+	render.set_depth_mask(true)
+	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
+	render.enable_state(graphics.STATE_DEPTH_TEST)
+	render.disable_state(graphics.STATE_BLEND)
+	render.enable_state(graphics.STATE_CULL_FACE)
+	render.clear(clear_options.clear_shadow_options)
+	for i = 1, #partitions do
+		local mtx_view, mtx_proj = refresh_shadows(projections[i], i) ---@diagnostic disable-line: redundant-parameter
+		local mtx_light = mtx_proj * mtx_view
+		render.set_view(mtx_view)
+		render.set_projection(mtx_proj)
+		local partition = partitions[i]
+		local x_offset = partition.x * atlas_resolution
+		local y_offset = partition.y * atlas_resolution
+		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
+		shadow_options.frustum = mtx_light
+		render.enable_material("shadow_material")
+		render.set_cull_face(graphics.FACE_TYPE_BACK)
+		render.draw(predicates.model, shadow_options)
+		render.disable_material()
+		render.enable_material("blob_shadow_material")
+		render.set_cull_face(graphics.FACE_TYPE_FRONT)
+		render.draw(predicates.blob_shadow, shadow_options)
+		render.disable_material()
+		lighting_options.constants.mtx_lights[i] = mtx_light * cameras.scene_camera.view_inv ---@diagnostic disable-line: undefined-field
+	end
+	render.disable_material()
+end

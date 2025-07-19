@@ -61,6 +61,62 @@ instances {
     z: 5.0
   }
 }
+instances {
+  id: "point_light_red_"
+  prototype: "/main/point_light_red_12.go"
+  position {
+    x: 27.101664
+    z: -201.79492
+  }
+  scale3 {
+    x: 12.0
+    y: 12.0
+    z: 12.0
+  }
+}
+instances {
+  id: "point_light_green_16"
+  prototype: "/main/point_light_green_16.go"
+  position {
+    x: 20.87855
+    z: -207.92834
+  }
+  scale3 {
+    x: 16.0
+    y: 16.0
+    z: 16.0
+  }
+}
+instances {
+  id: "point_light_blue_20"
+  prototype: "/main/point_light_blue_20.go"
+  position {
+    x: 10.421827
+    z: -204.8682
+  }
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "ice_decal"
+  prototype: "/main/ice_decal.go"
+  position {
+    x: -10.431182
+    z: -197.37703
+  }
+  rotation {
+    x: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/main/neighborhood.collection"
@@ -96,6 +152,80 @@ collection_instances {
   collection: "/assets/billboards/beagle/beagle.collection"
   position {
     x: 102.0
+  }
+}
+collection_instances {
+  id: "defrend"
+  collection: "/defrend/defrend.collection"
+  instance_properties {
+    id: "lighting"
+    properties {
+      id: "light_and_shadow"
+      properties {
+        id: "scene_camera_url"
+        value: "/camera#camera"
+        type: PROPERTY_TYPE_URL
+      }
+      properties {
+        id: "sun_url"
+        value: "/sun"
+        type: PROPERTY_TYPE_URL
+      }
+      properties {
+        id: "sun_color"
+        value: "1.0, 1.0, 0.92, 1.0"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+      properties {
+        id: "ambient_color"
+        value: "0.7, 0.7, 0.7, 1.0"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+    }
+    properties {
+      id: "ssao"
+      properties {
+        id: "intensity"
+        value: "1.75"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "max_distance"
+        value: "2.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "radius"
+        value: "1.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+  }
+  instance_properties {
+    id: "post_processing"
+    properties {
+      id: "depth_of_field"
+      properties {
+        id: "enabled"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "focus_follows_view"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "focus_follows_mouse"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "collision_group_1"
+        value: "buildings"
+        type: PROPERTY_TYPE_HASH
+      }
+    }
   }
 }
 scale_along_z: 1
@@ -149,25 +279,6 @@ embedded_instances {
     z: -0.5
     w: 0.5
   }
-}
-embedded_instances {
-  id: "screen"
-  data: "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/builtins/assets/meshes/quad.dae\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"default\\\"\\n"
-  "  material: \\\"/materials/screen/resolve_lighting/resolve_lighting.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"diffuse_sampler\\\"\\n"
-  "    texture: \\\"/assets/skybox.cubemap\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
-  ""
 }
 embedded_instances {
   id: "forward"
@@ -227,7 +338,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"Blue\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -243,7 +354,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Red.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -259,7 +370,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"White.005\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -275,7 +386,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Yellow.001\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/broken-ice-base.png\\\"\\n"
@@ -382,7 +493,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"Black.002\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/black.png\\\"\\n"
@@ -398,7 +509,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"White.004\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/white.png\\\"\\n"
@@ -414,7 +525,7 @@ embedded_instances {
   "}\\n"
   "materials {\\n"
   "  name: \\\"Yellow\\\"\\n"
-  "  material: \\\"/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"diffuse_map\\\"\\n"
   "    texture: \\\"/assets/images/brown.png\\\"\\n"
@@ -2619,7 +2730,7 @@ embedded_instances {
   id: "point_light"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2637,7 +2748,7 @@ embedded_instances {
   id: "point_light1"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2655,7 +2766,7 @@ embedded_instances {
   id: "point_light2"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2673,7 +2784,7 @@ embedded_instances {
   id: "point_light3"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2691,7 +2802,7 @@ embedded_instances {
   id: "point_light4"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2709,7 +2820,7 @@ embedded_instances {
   id: "point_light5"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2727,7 +2838,7 @@ embedded_instances {
   id: "point_light6"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2745,7 +2856,7 @@ embedded_instances {
   id: "point_light7"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2763,7 +2874,7 @@ embedded_instances {
   id: "point_light8"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2781,7 +2892,7 @@ embedded_instances {
   id: "point_light9"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2799,7 +2910,7 @@ embedded_instances {
   id: "point_light10"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2817,7 +2928,7 @@ embedded_instances {
   id: "point_light11"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2835,7 +2946,7 @@ embedded_instances {
   id: "point_light12"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2853,11 +2964,11 @@ embedded_instances {
   id: "point_light13"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
-    x: -61.0
+    x: -45.277344
     y: 5.0
     z: -204.0
   }
@@ -2871,7 +2982,7 @@ embedded_instances {
   id: "point_light14"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2889,7 +3000,7 @@ embedded_instances {
   id: "point_light15"
   data: "components {\n"
   "  id: \"point_light\"\n"
-  "  component: \"/lighting/point_light.model\"\n"
+  "  component: \"/main/point_light.model\"\n"
   "}\n"
   ""
   position {
@@ -2910,4 +3021,17 @@ embedded_instances {
   "  component: \"/assets/models/skybox.model\"\n"
   "}\n"
   ""
+}
+embedded_instances {
+  id: "sun"
+  data: ""
+  position {
+    y: 150.0
+  }
+  rotation {
+    x: -0.08282785
+    y: -0.9019799
+    z: -0.3736123
+    w: 0.19996414
+  }
 }

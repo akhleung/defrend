@@ -2,7 +2,7 @@ mesh: "/builtins/assets/meshes/quad.dae"
 name: "unnamed"
 materials {
   name: "default"
-  material: "/materials/geometry/model/model.material"
+  material: "/defrend/materials/geometry/model/model.material"
   textures {
     sampler: "diffuse_map"
     texture: "/assets/images/grey-brick.png"

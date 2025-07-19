@@ -1,7 +1,8 @@
 local TRIGGER = require "input.triggers"
 local actions = require "input.actions"
-local defrend = require "render.defrend"
-local settings = require "render.settings"
+local defrend = require "defrend.render.defrend"
+local settings = require "defrend.render.settings"
+local cameras = require "defrend.render.resources.cameras"
 
 local ZERO = vmath.vector3()
 local UP = vmath.vector3(0, 1, 0)
@@ -12,7 +13,6 @@ local euler_x = hash("euler.x")
 local euler_y = hash("euler.y")
 local euler_z = hash("euler.z")
 local mouse_locked = true
-local camera_url
 function init(self)
 	self.direction = ZERO
 	go.set(".", euler_x, 0)
@@ -20,7 +20,6 @@ function init(self)
 	go.set(".", euler_z, 0)
 	msg.post(".", "acquire_input_focus")
 	window.set_mouse_lock(true)
-	camera_url = msg.url("/camera#camera")
 end
 
 local pickables = { hash("buildings") }
@@ -83,8 +82,8 @@ function on_input(self, action_id, action)
 		end
 	else
 		if command == actions.LEFT_CLICK then
-			print("CLICKED")
-			local near, far = defrend.screen_to_world(action.x, action.y)
+			pprint("CLICKED", action)
+			local near, far = defrend.screen_to_world(action.screen_x, action.screen_y)
 			local picks = physics.raycast(near, far, pickables, raycast_options)
 			if picks then
 				print("PICKED", picks[1].id, "AT", picks[1].position)
@@ -93,21 +92,8 @@ function on_input(self, action_id, action)
 	end
 end
 
-local focal_point = vmath.vector4(1)
 function update(self, dt)
 	local position = go.get_position()
 	local displacement = self.direction * dt * 20
 	go.set_position(position + displacement)
-
-	-- set the focal depth to whatever's in the center of the screen
-	local w, h = window.get_size()
-	local cx, cy = w / 2, h / 2
-	local near, far = defrend.screen_to_world(cx, cy)
-	local picks = physics.raycast(near, far, pickables, raycast_options)
-	if picks then
-		local picked = picks[1].position
-		focal_point.x, focal_point.y, focal_point.z, focal_point.w = picked.x, picked.y, picked.z, 1
-		focal_point = defrend.camera.view * focal_point
-		settings.dof.focal_depth = -focal_point.z
-	end
 end
