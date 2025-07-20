@@ -4,7 +4,6 @@
 #include "/defrend/include/lighting_functions.glsl"
 
 #define MAX_PARTITIONS 4
-#define TRANSITION_RANGE 10.0
 
 in mediump vec2 var_texcoord0;
 in mediump vec3 directional_from;
@@ -29,8 +28,10 @@ uniform lighting_fp {
 	
 	mediump vec4 camera_partitions[MAX_PARTITIONS];
 	mediump mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
-	mediump vec4 shadow_params;
+	mediump vec4 shadow_params1;
+	mediump vec4 shadow_params2;
 	mediump vec4 shadow_colors[MAX_PARTITIONS];
+	mediump vec4 params;
 };
 
 out mediump vec4 frag_color;
@@ -40,9 +41,9 @@ mediump vec2 poisson1 = vec2(0.94558609,	-0.76890725);
 mediump vec2 poisson2 = vec2(-0.094184101,	-0.92938870);
 mediump vec2 poisson3 = vec2(0.34495938,	0.29387760);
 
-mediump float SHADOW_MAP_DIM;
-mediump float SHADOW_MAP_SIZE;
-mediump float SHADOW_BOUNDARY;
+mediump float   SHADOW_MAP_SIZE;
+mediump float   SHADOW_MAP_DIM;
+mediump float   SHADOW_BOUNDARY;
 
 bool is_shaded(mediump vec2 uv, mediump float occludee_z) {
 	return texture(shadow_sampler, uv).r < occludee_z;
@@ -84,11 +85,13 @@ void main() {
 	mediump float FOG_NEAR = fog_params.x;
 	mediump float FOG_FAR = fog_params.y;
 
-	SHADOW_MAP_SIZE     = shadow_params.x;
-	SHADOW_MAP_DIM      = shadow_params.y;
+	SHADOW_MAP_SIZE     = shadow_params1.x;
+	SHADOW_MAP_DIM      = shadow_params1.y;
 	SHADOW_BOUNDARY     = 1.0/SHADOW_MAP_DIM;
-	mediump float   POISSON_SCALE       = shadow_params.z;
-	int     NUM_PARTITIONS      = int(shadow_params.w);
+	mediump float   POISSON_SCALE       = shadow_params1.z;
+	int				NUM_PARTITIONS      = int(shadow_params1.w);
+	mediump float	TRANSITION_RANGE	= shadow_params2.x;
+	mediump float	ssao_scale			= shadow_params2.y;
 
 	poisson0 /= POISSON_SCALE;
 	poisson1 /= POISSON_SCALE;
@@ -137,7 +140,7 @@ void main() {
 		shadow += (1.0 - shadow) * fade;
 	}
 
-	mediump float ao = texture(ssao_sampler, var_texcoord0).r;
+	mediump float ao = texture(ssao_sampler, var_texcoord0 * ssao_scale).r;
 	mediump float shininess = spec_glow_sample.r * 255.0;
 	mediump vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 	mediump vec4 color = ambient_color * mat_diff * ao;

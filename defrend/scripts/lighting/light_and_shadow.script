@@ -12,6 +12,7 @@ go.property("fog_near", 800)
 go.property("fog_far", 1001)
 go.property("shadow_cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("shadow_biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
+go.property("shadow_cascade_transition_range", 10)
 go.property("shadow_atlas_resolution", 4096)
 go.property("shadow_poisson_scale", 3000)
 
@@ -30,6 +31,7 @@ function init(self)
 	local biases	= self.shadow_biases
 	settings.shadow.cascade				= { cascade.x, cascade.y, cascade.z, cascade.w }
 	settings.shadow.biases				= { biases.x, biases.y, biases.z, biases.w }
+	settings.shadow.transition_range	= self.shadow_cascade_transition_range
 	settings.shadow.atlas_resolution	= self.shadow_atlas_resolution
 	settings.shadow.poisson_scale		= self.shadow_poisson_scale
 
@@ -42,48 +44,3 @@ function init(self)
     uniforms.light_and_shadow.init(fov, aspect, near, far)
 	shadows.init()
 end
-
--- function final(self)
--- 	-- Add finalization code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
-
--- function update(self, dt)
--- 	-- Add update code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
-
--- function fixed_update(self, dt)
--- 	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
--- 	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
--- 	-- Physics section of game.project
--- 	-- Add update code here
--- 	-- Learn more: https://defold.com/manuals/script/
--- 	-- Remove this function if not needed
--- end
-
--- function on_message(self, message_id, message, sender)
--- 	-- Add message-handling code here
--- 	-- Learn more: https://defold.com/manuals/message-passing/
--- 	-- Remove this function if not needed
--- end
-
--- function on_input(self, action_id, action)
--- 	-- Add input-handling code here. The game object this script is attached to
--- 	-- must have acquired input focus:
--- 	--
--- 	--    msg.post(".", "acquire_input_focus")
--- 	--
--- 	-- All mapped input bindings will be received. Mouse and touch input will
--- 	-- be received regardless of where on the screen it happened.
--- 	-- Learn more: https://defold.com/manuals/input/
--- 	-- Remove this function if not needed
--- end
-
--- function on_reload(self)
--- 	-- Add reload-handling code here
--- 	-- Learn more: https://defold.com/manuals/hot-reload/
--- 	-- Remove this function if not needed
--- end

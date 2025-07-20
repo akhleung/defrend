@@ -1,8 +1,6 @@
 local TRIGGER = require "example.input.triggers"
 local actions = require "example.input.actions"
 local defrend = require "defrend.render.defrend"
-local settings = require "defrend.render.settings"
-local cameras = require "defrend.render.resources.cameras"
 
 local ZERO = vmath.vector3()
 local UP = vmath.vector3(0, 1, 0)
@@ -86,7 +84,7 @@ function on_input(self, action_id, action)
 			local near, far = defrend.screen_to_world(action.screen_x, action.screen_y)
 			local picks = physics.raycast(near, far, pickables, raycast_options)
 			if picks then
-				print("PICKED", picks[1].id, "AT", picks[1].position)
+				pprint("PICKED", picks[1])
 			end
 		end
 	end
