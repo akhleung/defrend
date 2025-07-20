@@ -1,8 +1,6 @@
 local TRIGGER = require "example.input.triggers"
 local actions = require "example.input.actions"
 local defrend = require "defrend.render.defrend"
-local settings = require "defrend.render.settings"
-local cameras = require "defrend.render.resources.cameras"
 
 local ZERO = vmath.vector3()
 local UP = vmath.vector3(0, 1, 0)
