@@ -20,7 +20,6 @@ local gamma_options			= {}
 local dof_options			= {}
 local fxaa_options			= {}
 
-local resolution
 local predicates
 local shadow_map
 local g_buffer
@@ -30,7 +29,6 @@ local post_target
 function init(self)
 	settings.resolution_x = render.get_window_width()
 	settings.resolution_y = render.get_window_height()
-	resolution = vmath.vector4(settings.resolution_x, settings.resolution_y, 0, 0)
 
 	render_targets.init()
 	clear_options.init()
@@ -40,7 +38,7 @@ function init(self)
 
 	geometry_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
 	geometry_options.constants				= render.constant_buffer()
-	geometry_options.constants.resolution	= resolution ---@diagnostic disable-line: inject-field
+	geometry_options.constants.resolution	= vmath.vector4(settings.resolution_x, settings.resolution_y, 0, 0) ---@diagnostic disable-line: inject-field
 
 	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	shadow_options.constants		= render.constant_buffer()
@@ -90,7 +88,7 @@ function update(self)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.set_stencil_mask(0xff)
 	render.clear(clear_options.clear_color_options)
-	render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+	render.set_viewport(0, 0, settings.resolution_x, settings.resolution_y)
 	-- setup camera view and projection
 	render.set_view(cameras.scene_camera.view)
 	render.set_projection(cameras.scene_camera.proj)
@@ -382,34 +380,36 @@ end
 
 local function update_resolution_uniforms()
 	local rx, ry = settings.resolution_x, settings.resolution_y
-	resolution.x, resolution.y = rx, ry
-	geometry_options.constants.resolution = resolution ---@diagnostic disable-line: inject-field
 
-	local outline_params1 = outline_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	local geometry_resolution = geometry_options.constants.resolution
+	geometry_resolution.x, geometry_resolution.y = rx, ry
+	geometry_options.constants.resolution = geometry_resolution ---@diagnostic disable-line: inject-field
+
+	local outline_params1 = outline_options.constants.params1
 	outline_params1.x, outline_params1.y = rx, ry
 	outline_options.constants.params1 = outline_params1 ---@diagnostic disable-line: inject-field
 
-	local glow_params = glow_options.constants.params ---@diagnostic disable-line: undefined-field
+	local glow_params = glow_options.constants.params
 	glow_params.x, glow_params.y = rx, ry
 	glow_options.constants.params = glow_params ---@diagnostic disable-line: inject-field
 
-	local bloom_params1 = bloom_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	local bloom_params1 = bloom_options.constants.params1
 	bloom_params1.x, bloom_params1.y = rx, ry
 	bloom_options.constants.params1 = bloom_params1 ---@diagnostic disable-line: inject-field
 
-	local gaussian_blur_params = gaussian_blur_options.constants.params ---@diagnostic disable-line: undefined-field
+	local gaussian_blur_params = gaussian_blur_options.constants.params
 	gaussian_blur_params.x, gaussian_blur_params.y = rx, ry
 	gaussian_blur_options.constants.params = gaussian_blur_params ---@diagnostic disable-line: inject-field
 
-	local dilate_params1 = dilate_options.constants.params1 ---@diagnostic disable-line: undefined-field
+	local dilate_params1 = dilate_options.constants.params1
 	dilate_params1.x, dilate_params1.y = rx, ry
 	dilate_options.constants.params1 = dilate_params1 ---@diagnostic disable-line: inject-field
 
-	local kuwahara_blur_params = kuwahara_blur_options.constants.params ---@diagnostic disable-line: undefined-field
+	local kuwahara_blur_params = kuwahara_blur_options.constants.params
 	kuwahara_blur_params.x, kuwahara_blur_params.y = rx, ry
 	kuwahara_blur_options.constants.params = kuwahara_blur_params ---@diagnostic disable-line: inject-field
 
-	local fxaa_params = fxaa_options.constants.params ---@diagnostic disable-line: undefined-field
+	local fxaa_params = fxaa_options.constants.params
 	fxaa_params.x, fxaa_params.y = rx, ry
 	fxaa_options.constants.params = fxaa_params ---@diagnostic disable-line: inject-field
 end
