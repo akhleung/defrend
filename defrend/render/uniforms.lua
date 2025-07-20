@@ -29,7 +29,8 @@ local function init_light()
 end
 
 local shadow = settings.shadow
-local shadow_params = vmath.vector4()
+local shadow_params1 = vmath.vector4()
+local shadow_params2 = vmath.vector4()
 local function init_shadow(fov, aspect, near, far)
 	shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
 	shadow.map_resolution = shadow.atlas_resolution / shadow.map_dimension
@@ -43,11 +44,13 @@ local function init_shadow(fov, aspect, near, far)
 		shadow.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
 		near = far
 	end
-	shadow_params.x = shadow.map_resolution
-	shadow_params.y = shadow.map_dimension
-	shadow_params.z = shadow.poisson_scale
-	shadow_params.w = #shadow.cascade
-	M.light_and_shadow.uniforms.shadow_params		= shadow_params
+	shadow_params1.x = shadow.map_resolution
+	shadow_params1.y = shadow.map_dimension
+	shadow_params1.z = shadow.poisson_scale
+	shadow_params1.w = #shadow.cascade
+	shadow_params2.x = shadow.transition_range
+	M.light_and_shadow.uniforms.shadow_params1		= shadow_params1
+	M.light_and_shadow.uniforms.shadow_params2		= shadow_params2
 	M.light_and_shadow.uniforms.camera_partitions	= shadow.partitions
 	M.light_and_shadow.uniforms.mtx_lights			= {}
 	M.light_and_shadow.uniforms.shadow_colors		= {
@@ -77,6 +80,11 @@ function M.ssao.init()
 	ssao_params2.w = ssao.radius
 	M.ssao.uniforms.params1 = ssao_params1
 	M.ssao.uniforms.params2 = ssao_params2
+
+	-- the lighting phase needs to know the ssao viewport scale
+	local shadow_params2 = M.light_and_shadow.uniforms.shadow_params2
+	shadow_params2.y = settings.ssao.scale
+	M.light_and_shadow.uniforms.shadow_params2 = shadow_params2
 end
 
 local outline = settings.outline

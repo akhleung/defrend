@@ -21,6 +21,7 @@ local M = {
 		-- cascade = { 0.25, 0.25, 0.25, 0.25 },
 		-- cascade = { 0.75 },
 		biases = { 0.5, 0.75, 0.75, 1.2 },
+		transition_range = 10,
 		atlas_resolution = 4096,
 		-- the rest will be calculated from camera settings combined with the preceding
 		map_resolution = 1,
@@ -32,6 +33,7 @@ local M = {
 	ssao = {
 		enabled = true,
 		blur = true,
+		scale = 1.0,
 		samples = 16,
 		intensity = 1.5,
 		bias_angle = 0.1,
