@@ -54,6 +54,17 @@ mediump vec2 normal_to_rg(mediump vec3 normal) {
     return (0.5 * normalize(normal) + 0.5).rg;
 }
 
+float rgba_to_float(vec4 rgba) {
+    return dot(rgba, vec4(1.0, 1.0/255.0, 1.0/65025.0, 1.0/16581375.0));
+}
+
+vec4 float_to_rgba(float v) {
+    vec4 enc = vec4(1.0, 255.0, 65025.0, 16581375.0) * v;
+    enc = fract(enc);
+    enc -= enc.yzww * vec4(1.0/255.0, 1.0/255.0, 1.0/255.0, 0.0);
+    return enc;
+}
+
 mediump float diffuse(mediump vec3 to_light, mediump vec3 normal_sample) {
     return max(dot(normal_sample, to_light), 0.0);
 }

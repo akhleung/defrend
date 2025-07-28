@@ -9,6 +9,7 @@ local render_shadows
 local shadow_options		= {}
 local geometry_options		= {}
 local lighting_options		= {}
+local copy_options			= {}
 local ssao_options			= {}
 local outline_options		= {}
 local glow_options			= {}
@@ -45,6 +46,7 @@ function init(self)
 	shadow_options.constants.bias	= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
 
 	lighting_options.constants		= uniforms.light_and_shadow.uniforms
+	copy_options.constants			= render.constant_buffer()
 	ssao_options.constants          = uniforms.ssao.uniforms
 	outline_options.constants       = uniforms.outline.uniforms
 	glow_options.constants          = uniforms.glow.uniforms
@@ -112,13 +114,32 @@ function update(self)
 	render.draw(predicates.billboard, geometry_options)
 	render.disable_material()
 
+	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer
+	render.set_render_target(post_target)
+	render.set_depth_mask(false)
+	render.disable_state(graphics.STATE_DEPTH_TEST)
+	render.disable_state(graphics.STATE_CULL_FACE)
+	render.disable_state(graphics.STATE_BLEND)
+	render.set_view(cameras.screen_camera.view)
+	render.set_projection(cameras.screen_camera.proj)
+	render.enable_material("depth_buffer_copy_material")
+	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.draw(predicates.screen)
+	render.disable_texture("depth_buffer")
+	render.disable_material()
 	-- render decals into g-buffer
 	-- The combination of back-face culling and depth testing will prevent decals from rendering when the camera is
 	-- inside a projector box. Front-face culling requires depth testing to be disabled, since the back faces of the
 	-- projector box will be occluded by the receiving surface.
-	render.set_depth_mask(false)
+	post_source, post_target = post_target, post_source
+	render.set_render_target(g_buffer)
+	render.enable_state(graphics.STATE_DEPTH_TEST)
+	render.enable_state(graphics.STATE_CULL_FACE)
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_view(cameras.scene_camera.view)
+	render.set_projection(cameras.scene_camera.proj)
 	render.enable_material("decal_material")
-	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.enable_texture("depth_buffer", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.draw(predicates.decal, geometry_options)
 	render.disable_texture("depth_buffer")
 	render.disable_material()

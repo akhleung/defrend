@@ -12,7 +12,7 @@ vec2 resolution = vec2(params.x, params.y);
 int radius = int(params.z);
 float separation = params.w;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
 	fragColor = texture(color_sampler, var_texcoord0);

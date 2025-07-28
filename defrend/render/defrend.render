@@ -91,3 +91,7 @@ render_resources {
   name: "skybox_material"
   path: "/defrend/materials/geometry/skybox/skybox.material"
 }
+render_resources {
+  name: "depth_buffer_copy_material"
+  path: "/defrend/materials/screen/depth_buffer_copy/depth_buffer_copy.material"
+}

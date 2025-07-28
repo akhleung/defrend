@@ -12,7 +12,7 @@ vec2	resolution	= vec2(params.x, params.y);
 vec2	delta		= vec2(0, 1) / resolution;
 float	weight[5]	= float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
 	vec3 result = texture(color_sampler, var_texcoord0).rgb * weight[0];

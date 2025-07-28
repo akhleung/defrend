@@ -52,7 +52,7 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 void main() {
     // reconstruct the position of the scene fragment that's overlapped by this decal projector fragment
 	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
-	float depth = texture(depth_buffer, texcoord).r;
+	float depth = rgba_to_float(texture(depth_buffer, texcoord));
     float z = linearizeDepth(depth, frustum_terms.xyz);
     vec4 g_position = vec4(viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz), 1.0);
 

@@ -15,7 +15,7 @@ int		radius		= int(params2.y);
 float	separation	= params2.z;
 float	strength	= params2.w;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
 	vec4 result = vec4(0);

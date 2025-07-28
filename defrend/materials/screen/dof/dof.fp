@@ -18,7 +18,7 @@ float focal_depth = params.x;
 float blur_start = params.y;
 float blur_full = params.z;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
 	float z = linearizeDepth(texture(depth_buffer, var_texcoord0).r, frustum_terms.xyz);

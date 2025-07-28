@@ -8,7 +8,7 @@ uniform fxaa_fp {
 
 uniform sampler2D color_sampler;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 // Settings for FXAA.
 #define EDGE_THRESHOLD_MIN 0.0312

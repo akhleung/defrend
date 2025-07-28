@@ -138,7 +138,7 @@ float detectEdgesNormal(UVNeighbors uvs, sampler2D normTex){
 	return smoothstep(normal_threshold - normal_smoothing, normal_threshold + normal_smoothing, edgeNormal);
 }
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
 

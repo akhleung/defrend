@@ -8,7 +8,7 @@ uniform blur_fp {
     vec4 params;
 };
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 int samples = int(params.z);
 vec2 texSize  = params.xy;

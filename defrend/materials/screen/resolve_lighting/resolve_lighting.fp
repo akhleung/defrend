@@ -34,7 +34,7 @@ uniform lighting_fp {
 	vec4 params;
 };
 
-out vec4 frag_color;
+layout(location = 0) out vec4 frag_color;
 
 float FOG_NEAR = fog_params.x;
 float FOG_FAR = fog_params.y;
@@ -90,12 +90,6 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 void main() {
 
 	vec4 normal_sample = texture(normal_sampler, var_texcoord0);
-
-	if (normal_sample.a == 0) {
-		frag_color = texture(diffuse_sampler, var_texcoord0); // consider putting this at the bottom instead of branching
-		return;
-	}
-
 	vec4 spec_glow_sample = texture(spec_glow_sampler, var_texcoord0);
 	vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
 	vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
@@ -148,6 +142,6 @@ void main() {
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
 	color = mix(color, fog_color, fog_intensity);
 	color.a = mat_diff.a;
-	frag_color = clamp(color, 0.0, 1.0);
+	frag_color = normal_sample.a == 0 ? texture(diffuse_sampler, var_texcoord0) : clamp(color, 0.0, 1.0);
 	// frag_color = texture(spec_light_sampler, var_texcoord0);
 }

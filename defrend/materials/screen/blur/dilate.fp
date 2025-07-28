@@ -16,7 +16,8 @@ int radius = int(params2.z);
 float separation = params2.w;
 vec3 values = vec3(0.21, 0.72, 0.07);
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
+layout(location = 1) out vec4 whatever;
 
 void main() {
 	fragColor = texture(color_sampler, var_texcoord0);
@@ -33,4 +34,5 @@ void main() {
 		}
 	}
 	fragColor.rgb = mix(fragColor.rgb, max_color.rgb, smoothstep(min_threshold, max_threshold, max_value));
+	whatever = vec4(0);
 }

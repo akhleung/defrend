@@ -8,7 +8,7 @@ uniform fxaa_fp {
 
 uniform sampler2D color_sampler;
 
-out vec4 frag_color;
+layout(location = 0) out vec4 frag_color;
 
 float reducemul = 0.125;
 float reducemin = 0.0078125;
