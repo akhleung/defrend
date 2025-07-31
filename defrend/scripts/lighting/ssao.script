@@ -16,7 +16,7 @@ go.property("radius", 2.0)
 function init(self)
 	settings.ssao.enabled		= self.enabled
 	settings.ssao.blur			= self.blur
-	settings.ssao.scale = self.viewport_scale
+	settings.ssao.scale			= self.viewport_scale
 	settings.ssao.samples		= self.samples
 	settings.ssao.intensity		= self.intensity
 	settings.ssao.bias_angle	= self.bias_angle
@@ -25,5 +25,39 @@ function init(self)
 	settings.ssao.max_distance	= self.max_distance
 	settings.ssao.attenuation	= self.attenuation
 	settings.ssao.radius		= self.radius
+
+	math.randomseed(os.time())
+	math.random()
+	math.random()
+	math.random()
+
+	for i = 1, settings.ssao.samples do
+		local sample = vmath.normalize(
+			vmath.vector4(
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				1
+			)
+		)
+		local scale = (i - 1) / settings.ssao.samples
+		-- scale = vmath.lerp(scale * scale, 0.1, 1.0)
+		scale = vmath.lerp(scale * scale, settings.ssao.bias_dist, 1.0)
+		sample = sample * scale
+		settings.ssao.kernel[i] = sample
+	end
+
+	for i = 1, settings.ssao.samples do
+		local noise = vmath.normalize(
+			vmath.vector4(
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				math.random() * 2 - 1,
+				0
+			)
+		)
+		settings.ssao.noise[i] = noise
+	end
+
 	uniforms.ssao.init()
 end

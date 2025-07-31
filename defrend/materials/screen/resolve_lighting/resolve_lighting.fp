@@ -135,13 +135,13 @@ void main() {
 	vec4 light_diff = clamp((sun_diff * directional_color * shadow + point_diff) * ao + spec_glow_sample.g, 0, 1); // consider (ao + 1) / 2
 	color += mat_diff * light_diff + light_spec; // specular highlights are white, so omit mat_spec
 
-	// color = vec4(ao, ao, ao, 1.0);
+	color = vec4(ao, ao, ao, 1.0);
 	// vec4 shadow_sample = texture(shadow_sampler, var_texcoord0);
 	// color = vec4(shadow_sample.r, shadow_sample.r, shadow_sample.r, 1.0);
 	// float fog_intensity = clamp((-var_frag_pos.z - FOG_NEAR) / (FOG_FAR - FOG_NEAR), 0, 1);
-	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
-	color = mix(color, fog_color, fog_intensity);
-	color.a = mat_diff.a;
+	// float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
+	// color = mix(color, fog_color, fog_intensity);
+	// color.a = mat_diff.a;
 	frag_color = normal_sample.a == 0 ? texture(diffuse_sampler, var_texcoord0) : clamp(color, 0.0, 1.0);
 	// frag_color = texture(spec_light_sampler, var_texcoord0);
 }

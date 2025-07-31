@@ -78,8 +78,10 @@ function M.ssao.init()
 	ssao_params2.y = ssao.max_distance
 	ssao_params2.z = ssao.attenuation
 	ssao_params2.w = ssao.radius
-	M.ssao.uniforms.params1 = ssao_params1
-	M.ssao.uniforms.params2 = ssao_params2
+	M.ssao.uniforms.params1	= ssao_params1
+	M.ssao.uniforms.params2	= ssao_params2
+	M.ssao.uniforms.kernel	= ssao.kernel
+	M.ssao.uniforms.noise	= ssao.noise
 
 	-- the lighting phase needs to know the ssao viewport scale
 	local shadow_params2 = M.light_and_shadow.uniforms.shadow_params2

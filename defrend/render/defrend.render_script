@@ -83,6 +83,7 @@ function update(self)
 	if not self.valid then return end
 
 	local rx, ry = settings.resolution_x, settings.resolution_y
+	local scene_camera = cameras.scene_camera
 
 	render_shadows()
 
@@ -323,7 +324,7 @@ function update(self)
 		render.set_render_target(l_buffer)
 		render.enable_material("gaussian_blur_horizontal_material")
 		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gaussian_blur_options) 
+		render.draw(predicates.screen, gaussian_blur_options)
 		render.disable_texture("color_sampler")
 		render.disable_material() -- post_source: focused, l_buffer: half-blurred
 		render.set_render_target(post_target)
@@ -392,16 +393,19 @@ local function update_camera_uniforms()
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
 	geometry_options.frustum					= camera.viewproj
-	geometry_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	geometry_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
-	lighting_options.constants.mtx_view			= camera.view ---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_corner		= frustum_corner ---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
-	dof_options.constants.frustum_terms			= frustum_terms ---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
+	lighting_options.constants.mtx_view			= camera.view		---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
+	ssao_options.constants.mtx_view				= camera.view		---@diagnostic disable-line: inject-field
+	ssao_options.constants.mtx_view_inv			= camera.view_inv	---@diagnostic disable-line: inject-field
+	ssao_options.constants.mtx_proj				= camera.proj		---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_corner		= frustum_corner	---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
+	dof_options.constants.frustum_terms			= frustum_terms		---@diagnostic disable-line: inject-field
 end
 
 local function update_resolution_uniforms()

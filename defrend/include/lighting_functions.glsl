@@ -15,17 +15,6 @@ mediump vec3 viewPosFromLinearDepth(mediump float z, mediump vec2 uv, mediump ve
 
 #define MOD3 vec3(.1031,.11369,.13787)
 
-// float hash12(vec2 v) {
-//     return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
-// }
-
-// vec2 hash22(vec2 co) {
-//     return vec2(
-//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-//     );
-// }
-
 mediump float hash12(mediump vec2 p) {
 	mediump vec3 p3  = fract(vec3(p.xyx) * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
@@ -34,15 +23,20 @@ mediump float hash12(mediump vec2 p) {
 
 mediump vec2 hash22(mediump vec2 p) {
 	mediump vec3 p3 = fract(vec3(p.xyx) * MOD3);
-    p3 += dot(p3, p3.yzx+19.19);
-    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract(vec2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
 mediump vec2 hash23(mediump vec3 p3) {
 	p3 = fract(p3 * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
-    // return fract((p3.xx + p3.yz) * p3.zy);
-    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
+    return fract(vec2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+}
+
+mediump vec3 hash33(mediump vec3 p3) {
+	p3 = fract(p3 * MOD3);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract(vec3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
 }
 
 mediump vec3 normal_from_rg(mediump vec2 rg) {
@@ -78,12 +72,5 @@ mediump float attenuation(mediump float d, mediump float r_inner, mediump float 
     mediump float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
     return falloff * falloff;
 }
-
-// vec2 rand(vec2 co) {
-//     return vec2(
-//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-//     ) * 0.00047;
-// }
 
 #endif

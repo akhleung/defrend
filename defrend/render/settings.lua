@@ -42,6 +42,8 @@ local M = {
 		max_distance = 4.0,
 		attenuation = 1.0,
 		radius = 2.0,
+		kernel = {},
+		noise = {},
 	},
 	outline = {
 		enabled = false,

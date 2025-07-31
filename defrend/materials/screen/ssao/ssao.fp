@@ -31,10 +31,6 @@ out vec4 frag_color;
 void main() {
 
 	float depth		= texture(depth_buffer, var_texcoord0).r;
-	if (depth == 1.0) {
-		frag_color = vec4(1);
-		return;
-	}
 	float z			= linearizeDepth(depth, frustum_terms.xyz);
 	vec3  origin	= viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
 	float z_norm	= (origin.z - frustum_corner.w) / (frustum_corner.z - frustum_corner.w);
@@ -57,5 +53,5 @@ void main() {
 		ao += incidence * fadeout;
 	}
 
-	frag_color = vec4(1.0 - ao / samples * intensity);
+	frag_color = depth == 1.0 ? vec4(1) : vec4(1.0 - ao / samples * intensity);
 }
