@@ -357,13 +357,21 @@ function update(self)
 
 	if settings.fxaa.enabled then
 		post_source, post_target = post_target, post_source
-		render.set_render_target(render.RENDER_TARGET_DEFAULT)
+		render.set_render_target(post_target)
 		render.enable_material("fxaa_material")
 		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.draw(predicates.screen, fxaa_options)
 		render.disable_texture("color_sampler")
 		render.disable_material()
 	end
+
+	post_source, post_target = post_target, post_source
+	render.set_render_target(render.RENDER_TARGET_DEFAULT)
+	render.enable_material("copy_material")
+	render.enable_texture("input_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.draw(predicates.screen)
+	render.disable_texture("input_sampler")
+	render.disable_material()
 
 	-- render GUI
 	--

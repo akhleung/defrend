@@ -95,3 +95,7 @@ render_resources {
   name: "depth_buffer_copy_material"
   path: "/defrend/materials/screen/depth_buffer_copy/depth_buffer_copy.material"
 }
+render_resources {
+  name: "copy_material"
+  path: "/defrend/materials/screen/copy/copy.material"
+}

@@ -10,38 +10,32 @@ uniform sampler2D color_sampler;
 
 layout(location = 0) out vec4 fragColor;
 
-// Settings for FXAA.
 #define EDGE_THRESHOLD_MIN 0.0312
 #define EDGE_THRESHOLD_MAX 0.125
 #define QUALITY(q) ((q) < 5 ? 1.0 : ((q) > 5 ? ((q) < 10 ? 2.0 : ((q) < 11 ? 4.0 : 8.0)) : 1.5))
-#define ITERATIONS 12
 #define SUBPIXEL_QUALITY 0.75
 
-/** Evalute the luma value in perceptual space for a given RGB color in linear space.
-\param rgb the input RGB color
-\return the perceptual luma
-*/
-float rgb2luma (vec3 rgb) {
+float rgb_to_luma (vec3 rgb) {
 	return sqrt(dot(rgb, vec3(0.299, 0.587, 0.114)));
 }
 
 vec2 texel = 1.0 / params.xy;
+int iterations = int(params.z);
 
-/** Performs FXAA post-process anti-aliasing as described in the Nvidia FXAA white paper and the associated shader code.
-*/
+// Performs FXAA post-process anti-aliasing as described in the Nvidia FXAA white paper and the associated shader code.
 void main() {
 
 	vec4 colorCenterFull = texture(color_sampler, var_texcoord0);
 	vec3 colorCenter = colorCenterFull.rgb;
 	
 	// Luma at the current fragment
-	float lumaCenter = rgb2luma(colorCenter);
+	float lumaCenter = rgb_to_luma(colorCenter);
 	
 	// Luma at the four direct neighbours of the current fragment.
-	float lumaDown 	= rgb2luma(texture(color_sampler, var_texcoord0 - vec2(0, texel.y)).rgb);
-	float lumaUp 	= rgb2luma(texture(color_sampler, var_texcoord0 + vec2(0, texel.y)).rgb);
-	float lumaLeft 	= rgb2luma(texture(color_sampler, var_texcoord0 - vec2(texel.x, 0)).rgb);
-	float lumaRight = rgb2luma(texture(color_sampler, var_texcoord0 + vec2(texel.x, 0)).rgb);
+	float lumaDown 	= rgb_to_luma(texture(color_sampler, var_texcoord0 - vec2(0, texel.y)).rgb);
+	float lumaUp 	= rgb_to_luma(texture(color_sampler, var_texcoord0 + vec2(0, texel.y)).rgb);
+	float lumaLeft 	= rgb_to_luma(texture(color_sampler, var_texcoord0 - vec2(texel.x, 0)).rgb);
+	float lumaRight = rgb_to_luma(texture(color_sampler, var_texcoord0 + vec2(texel.x, 0)).rgb);
 	
 	// Find the maximum and minimum luma around the current fragment.
 	float lumaMin = min(lumaCenter, min(min(lumaDown, lumaUp), min(lumaLeft, lumaRight)));
@@ -58,10 +52,10 @@ void main() {
 	}
 	
 	// Query the 4 remaining corners' lumas.
-	float lumaDownLeft 	= rgb2luma(texture(color_sampler, var_texcoord0 - texel).rgb);
-	float lumaUpRight 	= rgb2luma(texture(color_sampler, var_texcoord0 + texel).rgb);
-	float lumaUpLeft 	= rgb2luma(texture(color_sampler, var_texcoord0 + vec2(-texel.x, texel.y)).rgb);
-	float lumaDownRight = rgb2luma(texture(color_sampler, var_texcoord0 + vec2(texel.x, -texel.y)).rgb);
+	float lumaDownLeft 	= rgb_to_luma(texture(color_sampler, var_texcoord0 - texel).rgb);
+	float lumaUpRight 	= rgb_to_luma(texture(color_sampler, var_texcoord0 + texel).rgb);
+	float lumaUpLeft 	= rgb_to_luma(texture(color_sampler, var_texcoord0 + vec2(-texel.x, texel.y)).rgb);
+	float lumaDownRight = rgb_to_luma(texture(color_sampler, var_texcoord0 + vec2(texel.x, -texel.y)).rgb);
 	
 	// Combine the four edges' lumas (using intermediary variables for future computations with the same values).
 	float lumaDownUp = lumaDown + lumaUp;
@@ -121,8 +115,8 @@ void main() {
 	vec2 uv2 = currentUv + offset * QUALITY(0);
 	
 	// Read the lumas at both current extremities of the exploration segment, and compute the delta wrt to the local average luma.
-	float lumaEnd1 = rgb2luma(texture(color_sampler, uv1).rgb);
-	float lumaEnd2 = rgb2luma(texture(color_sampler, uv2).rgb);
+	float lumaEnd1 = rgb_to_luma(texture(color_sampler, uv1).rgb);
+	float lumaEnd2 = rgb_to_luma(texture(color_sampler, uv2).rgb);
 	lumaEnd1 -= lumaLocalAverage;
 	lumaEnd2 -= lumaLocalAverage;
 	
@@ -142,15 +136,15 @@ void main() {
 	// If both sides have not been reached, continue to explore.
 	if (!reachedBoth) {
 		
-		for (int i = 2; i < ITERATIONS; i++) {
+		for (int i = 2; i < iterations; i++) {
 			// If needed, read luma in 1st direction, compute delta.
 			if (!reached1) {
-				lumaEnd1 = rgb2luma(texture(color_sampler, uv1).rgb);
+				lumaEnd1 = rgb_to_luma(texture(color_sampler, uv1).rgb);
 				lumaEnd1 = lumaEnd1 - lumaLocalAverage;
 			}
 			// If needed, read luma in opposite direction, compute delta.
 			if (!reached2) {
-				lumaEnd2 = rgb2luma(texture(color_sampler, uv2).rgb);
+				lumaEnd2 = rgb_to_luma(texture(color_sampler, uv2).rgb);
 				lumaEnd2 = lumaEnd2 - lumaLocalAverage;
 			}
 			// If the luma deltas at the current extremities is larger than the local gradient, we have reached the side of the edge.

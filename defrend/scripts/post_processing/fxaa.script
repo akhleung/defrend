@@ -2,7 +2,7 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", true)
-go.property("strength", 0)
+go.property("strength", 12)
 
 function init(self)
 	settings.fxaa.enabled	= self.enabled
