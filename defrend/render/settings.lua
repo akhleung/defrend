@@ -121,6 +121,7 @@ local M = {
 		g_spec_glow = false,
 		l_diffuse = false,
 		l_specular = false,
+		shadow_map = false,
 		ssao = false,
 	},
 }

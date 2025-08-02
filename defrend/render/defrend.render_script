@@ -260,6 +260,8 @@ function update(self)
 			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
 		elseif settings.visualize.l_specular then
 			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		elseif settings.visualize.shadow_map then
+			render.enable_texture("input_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
 		elseif settings.visualize.ssao then
 			render.enable_texture("input_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		end
