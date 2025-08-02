@@ -247,20 +247,20 @@ function update(self)
 	render.disable_texture("spec_light_sampler")
 	render.disable_material()
 
-	if settings.debug_render_targets.enabled then
+	if settings.visualize.enabled then
 		render.set_render_target(render.RENDER_TARGET_DEFAULT)
 		render.enable_material("copy_material")
-		if settings.debug_render_targets.g_diffuse then
+		if settings.visualize.g_diffuse then
 			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-		elseif settings.debug_render_targets.g_normals then
+		elseif settings.visualize.g_normals then
 			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-		elseif settings.debug_render_targets.g_spec_glow then
+		elseif settings.visualize.g_spec_glow then
 			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-		elseif settings.debug_render_targets.l_diffuse then
+		elseif settings.visualize.l_diffuse then
 			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-		elseif settings.debug_render_targets.l_specular then
+		elseif settings.visualize.l_specular then
 			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-		elseif settings.debug_render_targets.ssao then
+		elseif settings.visualize.ssao then
 			render.enable_texture("input_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		end
 		render.draw(predicates.screen)

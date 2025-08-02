@@ -114,7 +114,7 @@ local M = {
 		enabled = true,
 		strength = 0,
 	},
-	debug_render_targets = {
+	visualize = {
 		enabled = false,
 		g_diffuse = false,
 		g_normals = false,
