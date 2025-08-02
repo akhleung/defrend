@@ -1,7 +1,16 @@
 local M = {
 	resolution_x = 0,
 	resolution_y = 0,
+	geometry = {
+		models_enabled = true,
+		sprites_enabled = true,
+		billboards_enabled = true,
+		decals_enabled = true,
+		skybox_enabled = true,
+	},
 	light = {
+		sunlight_enabled = true,
+		point_lights_enabled = true,
 		fog_near = 800,
 		fog_far = 1001,
 		fog_color = vmath.vector4(0),
@@ -12,6 +21,7 @@ local M = {
 		-- directional_to = vmath.vector4(0.0, -1, 1, 1),
 	},
 	shadow = {
+		enabled = true,
 		stable = true,
 		poisson_scale = 3000,
 		-- cascade = { 0.05, 0.05, 0.10, 0.20 },
@@ -103,6 +113,15 @@ local M = {
 	fxaa = {
 		enabled = true,
 		strength = 0,
+	},
+	debug_render_targets = {
+		enabled = false,
+		g_diffuse = false,
+		g_normals = false,
+		g_spec_glow = false,
+		l_diffuse = false,
+		l_specular = false,
+		ssao = false,
 	},
 }
 

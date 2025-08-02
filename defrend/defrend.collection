@@ -4,7 +4,15 @@ embedded_instances {
   id: "renderer"
   children: "lighting"
   children: "post_processing"
-  data: ""
+  data: "components {\n"
+  "  id: \"render_target_debugging\"\n"
+  "  component: \"/defrend/scripts/render_target_debugging.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"geometry\"\n"
+  "  component: \"/defrend/scripts/geometry.script\"\n"
+  "}\n"
+  ""
 }
 embedded_instances {
   id: "lighting"

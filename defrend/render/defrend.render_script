@@ -5,6 +5,7 @@ local render_targets	= require "defrend.render.resources.render_targets"
 local clear_options		= require "defrend.render.resources.clear_options"
 local cameras			= require "defrend.render.resources.cameras"
 local render_shadows
+local render_gui
 
 local shadow_options		= {}
 local geometry_options		= {}
@@ -84,35 +85,45 @@ function update(self)
 
 	local rx, ry = settings.resolution_x, settings.resolution_y
 
-	render_shadows()
-
-	render.set_render_target(g_buffer)
-	-- turn on depth_mask before `render.clear()` to clear it as well
+	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_depth_mask(true)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
+	render.enable_state(graphics.STATE_CULL_FACE)
+	render.disable_state(graphics.STATE_BLEND)
+
+	if settings.shadow.enabled then
+		render_shadows()
+	end
+
+	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
 	render.clear(clear_options.clear_color_options)
 	render.set_viewport(0, 0, rx, ry)
 	-- setup camera view and projection
 	render.set_view(cameras.scene_camera.view)
 	render.set_projection(cameras.scene_camera.proj)
+	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
 	-- render models into g-buffer
-	render.enable_state(graphics.STATE_CULL_FACE)
-	render.set_cull_face(graphics.FACE_TYPE_BACK)
-	render.enable_material("model_material")
-	render.draw(predicates.model, geometry_options)
-	render.disable_material()
+	if settings.geometry.models_enabled then
+		render.enable_material("model_material")
+		render.draw(predicates.model, geometry_options)
+		render.disable_material()
+	end
 
 	-- render sprites and billboards into g-buffer
 	render.enable_state(graphics.STATE_BLEND)
 	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
-	render.enable_material("sprite_material")
-	render.draw(predicates.sprite, geometry_options)
-	render.disable_material()
-	render.enable_material("billboard_material")
-	render.draw(predicates.billboard, geometry_options)
-	render.disable_material()
+	if settings.geometry.sprites_enabled then
+		render.enable_material("sprite_material")
+		render.draw(predicates.sprite, geometry_options)
+		render.disable_material()
+	end
+	if settings.geometry.billboards_enabled then
+		render.enable_material("billboard_material")
+		render.draw(predicates.billboard, geometry_options)
+		render.disable_material()
+	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer
 	render.set_render_target(post_target)
@@ -138,38 +149,43 @@ function update(self)
 	render.enable_state(graphics.STATE_BLEND)
 	render.set_view(cameras.scene_camera.view)
 	render.set_projection(cameras.scene_camera.proj)
-	render.enable_material("decal_material")
-	render.enable_texture("depth_buffer", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-	render.draw(predicates.decal, geometry_options)
-	render.disable_texture("depth_buffer")
-	render.disable_material()
+	if settings.geometry.decals_enabled then
+		render.enable_material("decal_material")
+		render.enable_texture("depth_buffer", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.decal, geometry_options)
+		render.disable_texture("depth_buffer")
+		render.disable_material()
+	end
 
 	-- render the skybox
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	render.disable_state(graphics.STATE_BLEND)
-	render.enable_material("skybox_material")
-	render.draw(predicates.skybox)
-	render.disable_material()
+	if settings.geometry.skybox_enabled then
+		render.enable_material("skybox_material")
+		render.draw(predicates.skybox)
+		render.disable_material()
+	end
 
 	render.draw_debug3d()
 
 	-- render light volumes into the light reflectance buffer
 	-- For some reason, culling front faces and enabling depth testing doesn't prevent lights from being rendered properly.
 	-- Not sure why, because one would think that the back faces would be occluded by the receiving surfaces.
-	render.set_render_target(l_buffer)
-	render.clear(clear_options.clear_color_options)
-	render.set_cull_face(graphics.FACE_TYPE_FRONT)
-	render.enable_state(graphics.STATE_BLEND)
-	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
-	render.enable_material("point_light_material")
-	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-	render.draw(predicates.point_light, geometry_options)
-	render.disable_texture("depth_buffer")
-	render.disable_texture("normal_sampler")
-	render.disable_texture("spec_glow_sampler")
-	render.disable_material()
+	if settings.light.point_lights_enabled then
+		render.set_render_target(l_buffer)
+		render.clear(clear_options.clear_color_options)
+		render.enable_state(graphics.STATE_BLEND)
+		render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
+		render.enable_material("point_light_material")
+		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+		render.draw(predicates.point_light, geometry_options)
+		render.disable_texture("depth_buffer")
+		render.disable_texture("normal_sampler")
+		render.disable_texture("spec_glow_sampler")
+		render.disable_material()
+	end
 
 	render.disable_state(graphics.STATE_DEPTH_TEST)
 	render.disable_state(graphics.STATE_CULL_FACE)
@@ -230,6 +246,29 @@ function update(self)
 	render.disable_texture("diff_light_sampler")
 	render.disable_texture("spec_light_sampler")
 	render.disable_material()
+
+	if settings.debug_render_targets.enabled then
+		render.set_render_target(render.RENDER_TARGET_DEFAULT)
+		render.enable_material("copy_material")
+		if settings.debug_render_targets.g_diffuse then
+			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		elseif settings.debug_render_targets.g_normals then
+			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		elseif settings.debug_render_targets.g_spec_glow then
+			render.enable_texture("input_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
+		elseif settings.debug_render_targets.l_diffuse then
+			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		elseif settings.debug_render_targets.l_specular then
+			render.enable_texture("input_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+		elseif settings.debug_render_targets.ssao then
+			render.enable_texture("input_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		end
+		render.draw(predicates.screen)
+		render.disable_texture("input_sampler")
+		render.disable_material()
+		render_gui()
+		return
+	end
 
 	if settings.outline.enabled then
 		post_source, post_target = post_target, post_source
@@ -373,17 +412,7 @@ function update(self)
 	render.disable_texture("input_sampler")
 	render.disable_material()
 
-	-- render GUI
-	--
-	local camera_gui = cameras.gui_camera
-	geometry_options.frustum = camera_gui.viewproj
-	render.set_view(camera_gui.view)
-	render.set_projection(camera_gui.proj)
-	render.enable_state(graphics.STATE_STENCIL_TEST)
-	render.draw(predicates.debug_text, geometry_options)
-	render.draw(predicates.gui, geometry_options)
-	render.draw(predicates.text, geometry_options)
-	render.disable_state(graphics.STATE_STENCIL_TEST)
+	render_gui()
 end
 
 local frustum_corner_ndc	= vmath.vector4(1.0)
@@ -485,11 +514,6 @@ render_shadows = function()
 	local atlas_resolution = shadow_settings.atlas_resolution
 	local map_resolution = shadow_settings.map_resolution
 	render.set_render_target(shadow_map)
-	render.set_depth_mask(true)
-	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
-	render.enable_state(graphics.STATE_DEPTH_TEST)
-	render.disable_state(graphics.STATE_BLEND)
-	render.enable_state(graphics.STATE_CULL_FACE)
 	render.clear(clear_options.clear_shadow_options)
 	for i = 1, #partitions do
 		local mtx_view, mtx_proj = refresh_shadows(projections[i], i) ---@diagnostic disable-line: redundant-parameter
@@ -512,4 +536,16 @@ render_shadows = function()
 		lighting_options.constants.mtx_lights[i] = mtx_light * cameras.scene_camera.view_inv ---@diagnostic disable-line: undefined-field
 	end
 	render.disable_material()
+end
+
+render_gui = function ()
+	local camera_gui = cameras.gui_camera
+	geometry_options.frustum = camera_gui.viewproj
+	render.set_view(camera_gui.view)
+	render.set_projection(camera_gui.proj)
+	render.enable_state(graphics.STATE_STENCIL_TEST)
+	render.draw(predicates.debug_text, geometry_options)
+	render.draw(predicates.gui, geometry_options)
+	render.draw(predicates.text, geometry_options)
+	render.disable_state(graphics.STATE_STENCIL_TEST)
 end

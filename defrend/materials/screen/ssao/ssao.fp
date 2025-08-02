@@ -53,5 +53,5 @@ void main() {
 		ao += incidence * fadeout;
 	}
 
-	frag_color = depth == 1.0 ? vec4(1.0) : vec4(1.0 - ao / samples * intensity);
+	frag_color = depth == 1.0 ? vec4(1.0) : vec4(vec3(1.0 - ao / samples * intensity), 1.0);
 }
