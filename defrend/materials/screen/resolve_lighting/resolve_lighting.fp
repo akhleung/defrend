@@ -35,34 +35,61 @@ uniform lighting_fp {
 
 layout(location = 0) out vec4 frag_color;
 
-float FOG_NEAR = fog_params.x;
-float FOG_FAR = fog_params.y;
+float FOG_NEAR		= fog_params.x;
+float FOG_FAR		= fog_params.y;
+float SSAO_SCALE	= fog_params.z;
 
 float   SHADOW_MAP_SIZE     = shadow_params1.x;
 float   SHADOW_MAP_DIM      = shadow_params1.y;
 float   SHADOW_BOUNDARY     = 1/SHADOW_MAP_DIM;
 float   POISSON_SCALE       = shadow_params1.z;
-int     NUM_PARTITIONS      = int(shadow_params1.w);
-float	TRANSITION_RANGE	= shadow_params2.x;
-float	ssao_scale			= shadow_params2.y;
+int		POISSON_SAMPLES		= int(shadow_params1.w);
+int		PCF_SAMPLES			= int(shadow_params2.x);
+bool	SOFT_PENUMBRAS		= bool(shadow_params2.y);
+int     NUM_PARTITIONS      = int(shadow_params2.z);
+float	TRANSITION_RANGE	= shadow_params2.w;
 
-vec2 poisson0 = vec2(-0.94201624,	-0.39906216) / POISSON_SCALE;
-vec2 poisson1 = vec2(0.94558609,	-0.76890725) / POISSON_SCALE;
-vec2 poisson2 = vec2(-0.094184101,	-0.92938870) / POISSON_SCALE;
-vec2 poisson3 = vec2(0.34495938,	0.29387760) / POISSON_SCALE;
+vec2 pcf_kernel[8] = vec2[](
+	vec2(-1, 0)		/ SHADOW_MAP_SIZE,
+	vec2(1,	0)		/ SHADOW_MAP_SIZE,
+	vec2(0, -1)		/ SHADOW_MAP_SIZE,
+	vec2(0, 1)		/ SHADOW_MAP_SIZE,
+	vec2(-1, -1)	/ SHADOW_MAP_SIZE,
+	vec2(1, 1)		/ SHADOW_MAP_SIZE,
+	vec2(1, -1)		/ SHADOW_MAP_SIZE,
+	vec2(-1, 1)		/ SHADOW_MAP_SIZE
+);
+
+vec2 poisson_disc[16] = vec2[]( 
+	vec2(-0.94201624,	-0.39906216)	/ POISSON_SCALE, 
+	vec2(0.94558609,	-0.76890725)	/ POISSON_SCALE, 
+	vec2(-0.094184101,	-0.92938870)	/ POISSON_SCALE, 
+	vec2(0.34495938,	0.29387760)		/ POISSON_SCALE, 
+	vec2(-0.91588581,	0.45771432)		/ POISSON_SCALE, 
+	vec2(-0.81544232,	-0.87912464)	/ POISSON_SCALE, 
+	vec2(-0.38277543,	0.27676845)		/ POISSON_SCALE, 
+	vec2(0.97484398,	0.75648379)		/ POISSON_SCALE, 
+	vec2(0.44323325,	-0.97511554)	/ POISSON_SCALE, 
+	vec2(0.53742981,	-0.47373420)	/ POISSON_SCALE, 
+	vec2(-0.26496911,	-0.41893023)	/ POISSON_SCALE, 
+	vec2(0.79197514,	0.19090188)		/ POISSON_SCALE, 
+	vec2(-0.24188840,	0.99706507)		/ POISSON_SCALE, 
+	vec2(-0.81409955,	0.91437590)		/ POISSON_SCALE, 
+	vec2(0.19984126,	0.78641367)		/ POISSON_SCALE, 
+	vec2(0.14383161,	-0.14100790) 	/ POISSON_SCALE
+);
 
 bool is_shaded(vec2 uv, float occludee_z) {
 	return texture(shadow_sampler, uv).r < occludee_z;
 }
 
 float test_poisson_disc(vec2 uv, float occludee_z) {
-	// uv += hash22(uv * 100000) * .00031; // uncomment this to noisify the penumbra
-	float light = 4;
-	light -= float(is_shaded(uv + poisson0, occludee_z));
-	light -= float(is_shaded(uv + poisson1, occludee_z));
-	light -= float(is_shaded(uv + poisson2, occludee_z));
-	light -= float(is_shaded(uv + poisson3, occludee_z));
-	return light / 4;
+	uv += SOFT_PENUMBRAS ? hash22(uv * 100000) * .00031 : vec2(0);
+	float light = POISSON_SAMPLES;
+	for (int i = 0; i < POISSON_SAMPLES; ++i) {
+		light -= float(is_shaded(uv + poisson_disc[i], occludee_z));
+	}
+	return light / POISSON_SAMPLES;
 }
 
 float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset, float bias) {
@@ -78,12 +105,11 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 	shadow_uv = clamp(shadow_uv, offset, offset + SHADOW_BOUNDARY);
 	// rescale/bias occludee depth and compare to multiple occluder samples from the shadow map (i.e., PCF)
 	float occludee_z = proj_pos_re_light.z * 0.5 + 0.5;
-	float shadow = test_poisson_disc(shadow_uv, occludee_z);
-	shadow += test_poisson_disc(shadow_uv + vec2(1, 0) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_poisson_disc(shadow_uv + vec2(0, 1) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_poisson_disc(shadow_uv + vec2(-1, 0) / SHADOW_MAP_SIZE, occludee_z);
-	shadow += test_poisson_disc(shadow_uv + vec2(0, -1) / SHADOW_MAP_SIZE, occludee_z);
-	return shadow / 5;
+	float light = test_poisson_disc(shadow_uv, occludee_z);
+	for (int i = 0; i < PCF_SAMPLES; ++i) {
+		light += test_poisson_disc(shadow_uv + pcf_kernel[i], occludee_z);
+	}
+	return light / (PCF_SAMPLES + 1);
 }
 
 void main() {
@@ -128,7 +154,7 @@ void main() {
 		shadow += (1.0 - shadow) * fade;
 	}
 
-	float ao = texture(ssao_sampler, var_texcoord0 * ssao_scale).r;
+	float ao = texture(ssao_sampler, var_texcoord0 * SSAO_SCALE).r;
 	float shininess = spec_glow_sample.r * 255;
 	vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 	vec4 color = ambient_color * mat_diff * ao;

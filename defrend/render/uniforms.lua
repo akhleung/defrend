@@ -47,8 +47,14 @@ local function init_shadow(fov, aspect, near, far)
 	shadow_params1.x = shadow.map_resolution
 	shadow_params1.y = shadow.map_dimension
 	shadow_params1.z = shadow.poisson_scale
-	shadow_params1.w = #shadow.cascade
-	shadow_params2.x = shadow.transition_range
+	shadow_params1.w = shadow.poisson_samples
+	shadow_params2.x = shadow.pcf_samples
+	shadow_params2.y = 0
+	if shadow.soft_penumbras then
+		shadow_params2.y = 1
+	end
+	shadow_params2.z = #shadow.cascade
+	shadow_params2.w = shadow.transition_range
 	M.light_and_shadow.uniforms.shadow_params1		= shadow_params1
 	M.light_and_shadow.uniforms.shadow_params2		= shadow_params2
 	M.light_and_shadow.uniforms.camera_partitions	= shadow.partitions
@@ -82,9 +88,9 @@ function M.ssao.init()
 	M.ssao.uniforms.params2 = ssao_params2
 
 	-- the lighting phase needs to know the ssao viewport scale
-	local shadow_params2 = M.light_and_shadow.uniforms.shadow_params2
-	shadow_params2.y = settings.ssao.scale
-	M.light_and_shadow.uniforms.shadow_params2 = shadow_params2
+	local fog_params = M.light_and_shadow.uniforms.fog_params
+	fog_params.z = settings.ssao.scale
+	M.light_and_shadow.uniforms.fog_params = fog_params
 end
 
 local outline = settings.outline

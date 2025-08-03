@@ -17,7 +17,10 @@ go.property("shadow_cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("shadow_biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
 go.property("shadow_cascade_transition_range", 10)
 go.property("shadow_atlas_resolution", 4096)
+go.property("shadow_pcf_samples", 8)
+go.property("shadow_poisson_disc_samples", 4)
 go.property("shadow_poisson_scale", 3000)
+go.property("soft_penumbras", true)
 
 function init(self)
 	settings.light.sunlight_enabled		= self.sunlight_enabled
@@ -38,18 +41,22 @@ function init(self)
 		settings.light.directional_color	= vmath.vector4()
 	end
 
-	if settings.shadow.enabled then
-		local cascade	= self.shadow_cascade
-		local biases	= self.shadow_biases
-		settings.shadow.cascade	= { cascade.x, cascade.y, cascade.z, cascade.w }
-		settings.shadow.biases	= { biases.x, biases.y, biases.z, biases.w }
-	else
+	local cascade	= self.shadow_cascade
+	local biases	= self.shadow_biases
+	settings.shadow.cascade	= { cascade.x, cascade.y, cascade.z, cascade.w }
+	settings.shadow.biases	= { biases.x, biases.y, biases.z, biases.w }
+
+	if not settings.shadow.enabled then
 		settings.shadow.cascade = {}
 		settings.shadow.cascade = {}
 	end
+
 	settings.shadow.transition_range	= self.shadow_cascade_transition_range
 	settings.shadow.atlas_resolution	= self.shadow_atlas_resolution
+	settings.shadow.pcf_samples			= self.shadow_pcf_samples
+	settings.shadow.poisson_samples		= self.shadow_poisson_disc_samples
 	settings.shadow.poisson_scale		= self.shadow_poisson_scale
+	settings.shadow.soft_penumbras		= self.soft_penumbras
 
 	local fov		= camera.get_fov(self.scene_camera_url)
 	local aspect	= camera.get_aspect_ratio(self.scene_camera_url)
