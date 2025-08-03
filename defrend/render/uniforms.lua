@@ -2,6 +2,8 @@
 local settings = require "defrend.render.settings"
 
 local M = {
+	light				= {},
+	shadow				= {},
 	light_and_shadow	= { uniforms = render.constant_buffer() },
 	ssao				= { uniforms = render.constant_buffer() },
 	outline				= { uniforms = render.constant_buffer() },
@@ -18,7 +20,7 @@ local M = {
 
 local light = settings.light
 local fog_params = vmath.vector4()
-local function init_light()
+function M.light.init()
 	fog_params.x = light.fog_near
 	fog_params.y = light.fog_far
 	M.light_and_shadow.uniforms.fog_params			= fog_params
@@ -31,7 +33,7 @@ end
 local shadow = settings.shadow
 local shadow_params1 = vmath.vector4()
 local shadow_params2 = vmath.vector4()
-local function init_shadow(fov, aspect, near, far)
+function M.shadow.init(fov, aspect, near, far)
 	shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
 	shadow.map_resolution = shadow.atlas_resolution / shadow.map_dimension
 	shadow.texel_size = 1 / shadow.map_resolution
@@ -67,14 +69,10 @@ local function init_shadow(fov, aspect, near, far)
 	}
 end
 
-function M.light_and_shadow.init(fov, aspect, near, far)
-	init_light()
-	init_shadow(fov, aspect, near, far)
-end
-
 local ssao = settings.ssao
-local ssao_params1 = vmath.vector4()
-local ssao_params2 = vmath.vector4()
+local ssao_params1	= vmath.vector4()
+local ssao_params2	= vmath.vector4()
+local ssao_params	= vmath.vector4() -- for sending the viewport scale to the lighting shader
 function M.ssao.init()
 	ssao_params1.x = ssao.samples
 	ssao_params1.y = ssao.intensity
@@ -88,9 +86,8 @@ function M.ssao.init()
 	M.ssao.uniforms.params2 = ssao_params2
 
 	-- the lighting phase needs to know the ssao viewport scale
-	local fog_params = M.light_and_shadow.uniforms.fog_params
-	fog_params.z = settings.ssao.scale
-	M.light_and_shadow.uniforms.fog_params = fog_params
+	ssao_params.x = settings.ssao.scale
+	M.light_and_shadow.uniforms.ssao_params = ssao_params
 end
 
 local outline = settings.outline

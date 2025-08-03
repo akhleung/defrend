@@ -17,12 +17,16 @@ embedded_instances {
 embedded_instances {
   id: "lighting"
   data: "components {\n"
-  "  id: \"light_and_shadow\"\n"
-  "  component: \"/defrend/scripts/lighting/light_and_shadow.script\"\n"
+  "  id: \"shadow\"\n"
+  "  component: \"/defrend/scripts/lighting/shadow.script\"\n"
   "}\n"
   "components {\n"
   "  id: \"ssao\"\n"
   "  component: \"/defrend/scripts/lighting/ssao.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"light\"\n"
+  "  component: \"/defrend/scripts/lighting/light.script\"\n"
   "}\n"
   ""
 }

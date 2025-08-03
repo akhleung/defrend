@@ -1,0 +1,51 @@
+local settings = require "defrend.render.settings"
+local uniforms = require "defrend.render.uniforms"
+local shadows = require "defrend.render.shadows"
+local cameras = require "defrend.render.resources.cameras"
+
+go.property("enabled", true)
+go.property("scene_camera_url", msg.url())
+go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
+go.property("biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
+go.property("cascade_transition_range", 10)
+go.property("atlas_resolution", 4096)
+go.property("pcf_samples", 8)
+go.property("poisson_disc_samples", 4)
+go.property("poisson_scale", 3000)
+go.property("soft_penumbras", true)
+
+function init(self)
+	settings.shadow.enabled = self.enabled
+
+	local cascade	= { self.cascade.x, self.cascade.y, self.cascade.z, self.cascade.w }
+	local biases	= { self.biases.x, self.biases.y, self.biases.z, self.biases.w }
+	settings.shadow.cascade	= {}
+	settings.shadow.biases	= {}
+	if settings.shadow.enabled then
+		for i = 1, #cascade do
+			-- stop adding partitions to the cascade when a size of 0 is encountered
+			if cascade[i] == 0 then break end
+			settings.shadow.cascade[i] = cascade[i]
+			settings.shadow.biases[i] = biases[i]
+		end
+		if #settings.shadow.cascade == 0 then
+			settings.shadow.enabled = false
+		end
+	end
+
+	settings.shadow.transition_range	= self.cascade_transition_range
+	settings.shadow.atlas_resolution	= self.atlas_resolution
+	settings.shadow.pcf_samples			= self.pcf_samples
+	settings.shadow.poisson_samples		= self.poisson_disc_samples
+	settings.shadow.poisson_scale		= self.poisson_scale
+	settings.shadow.soft_penumbras		= self.soft_penumbras
+
+	local fov		= camera.get_fov(self.scene_camera_url)
+	local aspect	= camera.get_aspect_ratio(self.scene_camera_url)
+	local near		= camera.get_near_z(self.scene_camera_url)
+	local far		= camera.get_far_z(self.scene_camera_url)
+
+	cameras.set_scene_camera_projection(fov, aspect, near, far)
+    uniforms.shadow.init(fov, aspect, near, far)
+	shadows.init()
+end
