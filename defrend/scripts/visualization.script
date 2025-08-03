@@ -5,7 +5,7 @@ go.property("g_buffer_normals", false)
 go.property("g_buffer_specular_and_glow", false)
 go.property("point_light_diffuse_reflectance", false)
 go.property("point_light_specular_reflectance", false)
-go.property("shadow_map", false)
+go.property("shadow_atlas", false)
 go.property("ssao", false)
 
 function init(self)
@@ -14,7 +14,7 @@ function init(self)
 	settings.visualize.g_spec_glow	= self.g_buffer_specular_and_glow
 	settings.visualize.l_diffuse	= self.point_light_diffuse_reflectance
 	settings.visualize.l_specular	= self.point_light_specular_reflectance
-	settings.visualize.shadow_map	= self.shadow_map
+	settings.visualize.shadow_atlas	= self.shadow_atlas
 	settings.visualize.ssao			= self.ssao
 
 	settings.visualize.enabled
@@ -23,6 +23,6 @@ function init(self)
 		or	settings.visualize.g_spec_glow
 		or	settings.visualize.l_diffuse
 		or	settings.visualize.l_specular
-		or	settings.visualize.shadow_map
+		or	settings.visualize.shadow_atlas
 		or	settings.visualize.ssao
 end

@@ -41,14 +41,20 @@ function init(self)
 		settings.light.directional_color	= vmath.vector4()
 	end
 
-	local cascade	= self.shadow_cascade
-	local biases	= self.shadow_biases
-	settings.shadow.cascade	= { cascade.x, cascade.y, cascade.z, cascade.w }
-	settings.shadow.biases	= { biases.x, biases.y, biases.z, biases.w }
-
-	if not settings.shadow.enabled then
-		settings.shadow.cascade = {}
-		settings.shadow.cascade = {}
+	local cascade	= { self.shadow_cascade.x, self.shadow_cascade.y, self.shadow_cascade.z, self.shadow_cascade.w }
+	local biases	= { self.shadow_biases.x, self.shadow_biases.y, self.shadow_biases.z, self.shadow_biases.w }
+	settings.shadow.cascade	= {}
+	settings.shadow.biases	= {}
+	if settings.shadow.enabled then
+		for i = 1, #cascade do
+			-- stop adding partitions to the cascade when a size of 0 is encountered
+			if cascade[i] == 0 then break end
+			settings.shadow.cascade[i] = cascade[i]
+			settings.shadow.biases[i] = biases[i]
+		end
+		if #settings.shadow.cascade == 0 then
+			settings.shadow.enabled = false
+		end
 	end
 
 	settings.shadow.transition_range	= self.shadow_cascade_transition_range
