@@ -31,7 +31,6 @@ uniform lighting_fp {
 	vec4 shadow_params1;
 	vec4 shadow_params2;
 	vec4 shadow_colors[MAX_PARTITIONS];
-	vec4 params;
 };
 
 layout(location = 0) out vec4 frag_color;
@@ -57,8 +56,8 @@ bool is_shaded(vec2 uv, float occludee_z) {
 }
 
 float test_poisson_disc(vec2 uv, float occludee_z) {
+	// uv += hash22(uv * 100000) * .00031; // uncomment this to noisify the penumbra
 	float light = 4;
-	// vec2 fuzz = hash22(uv * 100000) * .00031; // add this to the UV to noisify the penumbra
 	light -= float(is_shaded(uv + poisson0, occludee_z));
 	light -= float(is_shaded(uv + poisson1, occludee_z));
 	light -= float(is_shaded(uv + poisson2, occludee_z));
@@ -88,40 +87,44 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 }
 
 void main() {
+	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
+	vec4 spec_glow_sample	= texture(spec_glow_sampler, var_texcoord0);
+	vec4 point_diff			= clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
+	vec4 point_spec			= clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
-	vec4 normal_sample = texture(normal_sampler, var_texcoord0);
-	vec4 spec_glow_sample = texture(spec_glow_sampler, var_texcoord0);
-	vec4 point_diff = clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
-	vec4 point_spec = clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
-
-	float depth    = texture(depth_buffer, var_texcoord0).r;
-	float z        = linearizeDepth(depth, frustum_terms.xyz);
-	vec3 var_frag_pos = viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
-	vec3 view_dir = normalize(-var_frag_pos);
-	vec3 normal = normalize(normal_sample.xyz * 2.0 - 1.0); // rescale/bias [0, 1] -> [-1, 1]
+	float depth			= texture(depth_buffer, var_texcoord0).r;
+	float z				= linearizeDepth(depth, frustum_terms.xyz);
+	vec3 var_frag_pos	= viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
+	vec3 view_dir		= normalize(-var_frag_pos);
+	vec3 normal			= normalize(normal_sample.xyz * 2.0 - 1.0); // rescale/bias [0, 1] -> [-1, 1]
 
 	float shadow = 1;
-	float this_cutoff = 0;
-	float prev_cutoff = 0;
-	int i = 0;
-	while (i < NUM_PARTITIONS) {
+	float near_edge, far_edge;
+	int i;
+	for (i = 0, near_edge = 0, far_edge = 0; i < NUM_PARTITIONS; ++i, near_edge = far_edge) {
 		vec4 part = camera_partitions[i];
-		this_cutoff = part.z;
-		if (var_frag_pos.z > -this_cutoff) { // cast a shadow using the nearest applicable partition
-			shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], part.xy, part.w);
-			float dist = this_cutoff - -var_frag_pos.z;
-			if (dist < TRANSITION_RANGE && i < NUM_PARTITIONS - 1) { // blend with the next partition's shadow for smooth transitions
-				vec4 part = camera_partitions[i + 1];
-				float shadow2 = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i + 1], part.xy, part.w);
-				shadow = mix(shadow2, shadow, dist / TRANSITION_RANGE);
-			}
-			break;
-		}
-		prev_cutoff = this_cutoff;
-		++i;
+		vec2 offset = part.xy;
+		float bias = part.w;
+		far_edge = part.z;
+		// if this fragment is beyond the far edge of this partition, skip to the next
+		if (var_frag_pos.z < -far_edge) continue;
+		// otherwise try to cast a shadow using this partition
+		shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], offset, bias);
+		// if this fragment isn't near the far edge of this partition, or we're in the last partition, finish here
+		float dist = far_edge + var_frag_pos.z;
+		if (TRANSITION_RANGE == 0 || dist > TRANSITION_RANGE || i >= NUM_PARTITIONS - 1) break;
+		// otherwise, blend with the next partition's shadow for a smooth transition
+		vec4 next_part = camera_partitions[i + 1];
+		vec2 next_offset = next_part.xy;
+		float next_bias = next_part.w;
+		float next_shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i + 1], next_offset, next_bias);
+		shadow = mix(next_shadow, shadow, dist / TRANSITION_RANGE);
+		// at this point we've tried to cast a shadow using the appropriate partition, so finish here
+		break;
 	}
-	if (i == NUM_PARTITIONS - 1 && shadow < 1) { // fade the shadow out as it reaches the end of the last partition
-		float fade = smoothstep(mix(prev_cutoff, this_cutoff, 0.75), this_cutoff, -var_frag_pos.z);
+	// fade the shadow out towards the end of the last partition
+	if (i == NUM_PARTITIONS - 1 && shadow < 1) {
+		float fade = smoothstep(mix(near_edge, far_edge, 0.75), far_edge, -var_frag_pos.z);
 		shadow += (1.0 - shadow) * fade;
 	}
 
