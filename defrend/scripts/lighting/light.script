@@ -10,7 +10,7 @@ go.property("fog_color", vmath.vector4())
 go.property("fog_near", 800)
 go.property("fog_far", 1001)
 
-function init(self)
+local function do_init(self)
 	settings.light.sunlight_enabled		= self.sunlight_enabled
 	settings.light.point_lights_enabled	= self.point_lights_enabled
 
@@ -29,4 +29,15 @@ function init(self)
 	end
 
 	uniforms.light.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

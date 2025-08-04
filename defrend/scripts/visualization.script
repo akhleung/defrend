@@ -8,7 +8,7 @@ go.property("point_light_specular_reflectance", false)
 go.property("shadow_atlas", false)
 go.property("ssao", false)
 
-function init(self)
+local function do_init(self)
 	settings.visualize.g_diffuse	= self.g_buffer_diffuse_color
 	settings.visualize.g_normals	= self.g_buffer_normals
 	settings.visualize.g_spec_glow	= self.g_buffer_specular_and_glow
@@ -25,4 +25,15 @@ function init(self)
 		or	settings.visualize.l_specular
 		or	settings.visualize.shadow_atlas
 		or	settings.visualize.ssao
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

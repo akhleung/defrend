@@ -481,7 +481,6 @@ end
 
 local MSG_WINDOW_RESIZED		= hash("window_resized")
 local MSG_SET_VIEW_PROJ			= hash("set_view_projection")
-local MSG_TOGGLE_STABLE_SHADOWS	= hash("toggle_stable_shadows")
 function on_message(self, message_id, message)
 	local scene_camera = cameras.scene_camera
 	local gui_camera = cameras.gui_camera
@@ -499,13 +498,6 @@ function on_message(self, message_id, message)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
 		update_resolution_uniforms()
-	elseif message_id == MSG_TOGGLE_STABLE_SHADOWS then
-		settings.shadow.stable = not settings.shadow.stable
-		if settings.shadow.stable then
-			shadows.refresh_shadows = shadows.refresh_shadows_stable
-		else
-			shadows.refresh_shadows = shadows.refresh_shadows_half_stable
-		end
 	end
 end
 

@@ -4,8 +4,19 @@ local uniforms = require "defrend.render.uniforms"
 go.property("enabled", false)
 go.property("gamma", 2.2)
 
-function init(self)
+local function do_init(self)
 	settings.gamma.enabled	= self.enabled
 	settings.gamma.gamma	= self.gamma
 	uniforms.gamma.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

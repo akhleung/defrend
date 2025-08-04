@@ -16,7 +16,7 @@ go.property("grazing_fresnel_power", 5.0)
 go.property("grazing_angle_mask_power", 1.0)
 go.property("grazing_angle_modulation_factor", 50.0)
 
-function init(self)
+local function do_init(self)
 	settings.outline.enabled							= self.enabled
 	settings.outline.depth_threshold					= self.depth_threshold
 	settings.outline.normal_threshold					= self.normal_threshold
@@ -29,4 +29,15 @@ function init(self)
 	settings.outline.grazing_angle_mask_power			= self.grazing_angle_mask_power
 	settings.outline.grazing_angle_modulation_factor	= self.grazing_angle_modulation_factor
 	uniforms.outline.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

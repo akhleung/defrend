@@ -7,11 +7,22 @@ go.property("radius", 1)
 go.property("separation", 2)
 go.property("strength", 0.5)
 
-function init(self)
+local function do_init(self)
 	settings.bloom.enabled		= self.enabled
 	settings.bloom.threshold	= self.threshold
 	settings.bloom.radius		= self.radius
 	settings.bloom.separation	= self.separation
 	settings.bloom.strength		= self.strength
 	uniforms.bloom.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

@@ -16,7 +16,7 @@ go.property("poisson_disc_samples", 4)
 go.property("poisson_scale", 3000)
 go.property("soft_penumbras", true)
 
-function init(self)
+local function do_init(self)
 	settings.shadow.enabled = self.enabled
 	settings.shadow.stable = self.stable_shadows
 	if settings.shadow.stable then
@@ -57,4 +57,15 @@ function init(self)
 	cameras.set_scene_camera_projection(fov, aspect, near, far)
     uniforms.shadow.init(fov, aspect, near, far)
 	shadows.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

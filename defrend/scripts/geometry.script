@@ -6,10 +6,21 @@ go.property("billboards_enabled", true)
 go.property("decals_enabled", true)
 go.property("skybox_enabled", true)
 
-function init(self)
+local function do_init(self)
 	settings.geometry.models_enabled		= self.models_enabled
 	settings.geometry.sprites_enabled		= self.sprites_enabled
 	settings.geometry.billboards_enabled	= self.billboards_enabled
 	settings.geometry.decals_enabled		= self.decals_enabled
 	settings.geometry.skybox_enabled		= self.skybox_enabled
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

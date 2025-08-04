@@ -4,8 +4,19 @@ local uniforms = require "defrend.render.uniforms"
 go.property("enabled", false)
 go.property("samples", 1)
 
-function init(self)
+local function do_init(self)
 	settings.kuwahara_blur.enabled = self.enabled
 	settings.kuwahara_blur.samples = self.samples
 	uniforms.kuwahara_blur.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

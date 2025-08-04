@@ -13,7 +13,7 @@ go.property("max_distance", 4.0)
 go.property("attenuation", 1.0)
 go.property("radius", 2.0)
 
-function init(self)
+local function do_init(self)
 	settings.ssao.enabled		= self.enabled
 	settings.ssao.blur			= self.blur
 	settings.ssao.scale			= self.viewport_scale
@@ -26,4 +26,15 @@ function init(self)
 	settings.ssao.attenuation	= self.attenuation
 	settings.ssao.radius		= self.radius
 	uniforms.ssao.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

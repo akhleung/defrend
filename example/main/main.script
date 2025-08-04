@@ -30,6 +30,12 @@ function on_input(self, action_id, action)
 		profiling = not profiling
 		profiler.enable_ui(profiling)
 	elseif action_id == hash("key_t") and pressed then
-		msg.post("@render:", hash("toggle_stable_shadows"))
+		local stable = go.get("/defrend/lighting#shadow", "stable_shadows")
+		go.set("/defrend/lighting#shadow", "stable_shadows", not stable)
+		msg.post("/defrend/lighting#shadow", "refresh")
+	elseif action_id == hash("key_g") and pressed then
+		local enabled = go.get("/defrend/lighting#shadow", "enabled")
+		go.set("/defrend/lighting#shadow", "enabled", not enabled)
+		msg.post("/defrend/lighting#shadow", "refresh")
 	end
 end

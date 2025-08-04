@@ -5,9 +5,20 @@ go.property("enabled", true)
 go.property("radius", 4)
 go.property("separation", 1)
 
-function init(self)
+local function do_init(self)
 	settings.glow.enabled = self.enabled
 	settings.glow.radius = self.radius
 	settings.glow.separation = self.separation
 	uniforms.glow.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end

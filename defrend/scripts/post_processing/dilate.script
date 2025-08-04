@@ -7,11 +7,22 @@ go.property("max_threshold", 0.3)
 go.property("radius", 1)
 go.property("separation", 1)
 
-function init(self)
+local function do_init(self)
 	settings.dilate.enabled			= self.enabled
 	settings.dilate.min_threshold	= self.min_threshold
 	settings.dilate.max_threshold	= self.max_threshold
 	settings.dilate.radius			= self.radius
 	settings.dilate.separation		= self.separation
 	uniforms.dilate.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+local MSG_REFRESH = hash("refresh")
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
 end
