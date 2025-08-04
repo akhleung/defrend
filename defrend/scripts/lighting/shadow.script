@@ -4,11 +4,13 @@ local shadows = require "defrend.render.shadows"
 local cameras = require "defrend.render.resources.cameras"
 
 go.property("enabled", true)
+go.property("stable_shadows", true)
 go.property("scene_camera_url", msg.url())
 go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
 go.property("cascade_transition_range", 10)
 go.property("atlas_resolution", 4096)
+go.property("light_frustum_z_padding", 0.5)
 go.property("pcf_samples", 8)
 go.property("poisson_disc_samples", 4)
 go.property("poisson_scale", 3000)
@@ -16,6 +18,12 @@ go.property("soft_penumbras", true)
 
 function init(self)
 	settings.shadow.enabled = self.enabled
+	settings.shadow.stable = self.stable_shadows
+	if settings.shadow.stable then
+		shadows.refresh_shadows = shadows.refresh_shadows_stable
+	else
+		shadows.refresh_shadows = shadows.refresh_shadows_half_stable
+	end
 
 	local cascade	= { self.cascade.x, self.cascade.y, self.cascade.z, self.cascade.w }
 	local biases	= { self.biases.x, self.biases.y, self.biases.z, self.biases.w }
@@ -35,6 +43,7 @@ function init(self)
 
 	settings.shadow.transition_range	= self.cascade_transition_range
 	settings.shadow.atlas_resolution	= self.atlas_resolution
+	settings.shadow.z_padding_factor	= self.light_frustum_z_padding
 	settings.shadow.pcf_samples			= self.pcf_samples
 	settings.shadow.poisson_samples		= self.poisson_disc_samples
 	settings.shadow.poisson_scale		= self.poisson_scale

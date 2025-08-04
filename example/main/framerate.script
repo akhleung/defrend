@@ -23,10 +23,9 @@ function update(self, dt)
 	-- local cam_target = render_state.CAM_TARGET
 
 	payload.text = string.format(
-		"AVG FPS: %d\tSTABLE SHADOWS: %s\tSINGLE-PASS GLOW: %s",
+		"AVG FPS: %d; STABLE SHADOWS: %s",
 		avg_fps,
-		tostring(render_settings.shadow.stable),
-		tostring(render_settings.glow.single_pass)
+		tostring(render_settings.shadow.stable)
 	)
 	payload.position = text_pos
 	payload.color = text_col

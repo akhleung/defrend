@@ -7,7 +7,6 @@ go.property("separation", 1)
 
 function init(self)
 	settings.glow.enabled = self.enabled
-	settings.glow.single_pass = false
 	settings.glow.radius = self.radius
 	settings.glow.separation = self.separation
 	uniforms.glow.init()

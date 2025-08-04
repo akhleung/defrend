@@ -479,10 +479,9 @@ local function update_resolution_uniforms()
 	fxaa_options.constants.params = fxaa_params ---@diagnostic disable-line: inject-field
 end
 
-local MSG_WINDOW_RESIZED			= hash("window_resized")
-local MSG_SET_VIEW_PROJ				= hash("set_view_projection")
-local MSG_TOGGLE_STABLE_SHADOWS		= hash("toggle_stable_shadows")
-local refresh_shadows				= shadows.refresh_shadows_stable2
+local MSG_WINDOW_RESIZED		= hash("window_resized")
+local MSG_SET_VIEW_PROJ			= hash("set_view_projection")
+local MSG_TOGGLE_STABLE_SHADOWS	= hash("toggle_stable_shadows")
 function on_message(self, message_id, message)
 	local scene_camera = cameras.scene_camera
 	local gui_camera = cameras.gui_camera
@@ -501,15 +500,17 @@ function on_message(self, message_id, message)
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
 		update_resolution_uniforms()
 	elseif message_id == MSG_TOGGLE_STABLE_SHADOWS then
+		settings.shadow.stable = not settings.shadow.stable
 		if settings.shadow.stable then
-			refresh_shadows = shadows.refresh_shadows_stable2
+			shadows.refresh_shadows = shadows.refresh_shadows_stable
 		else
-			refresh_shadows = shadows.refresh_shadows_half_stable
+			shadows.refresh_shadows = shadows.refresh_shadows_half_stable
 		end
 	end
 end
 
 render_shadows = function()
+	local refresh_shadows = shadows.refresh_shadows
 	local shadow_settings = settings.shadow
 	local projections = shadow_settings.projections
 	local partitions = shadow_settings.partitions
@@ -518,7 +519,7 @@ render_shadows = function()
 	render.set_render_target(shadow_map)
 	render.clear(clear_options.clear_shadow_options)
 	for i = 1, #partitions do
-		local mtx_view, mtx_proj = refresh_shadows(projections[i], i) ---@diagnostic disable-line: redundant-parameter
+		local mtx_view, mtx_proj = refresh_shadows(projections[i], i)
 		local mtx_light = mtx_proj * mtx_view
 		render.set_view(mtx_view)
 		render.set_projection(mtx_proj)
