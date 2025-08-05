@@ -1,7 +1,5 @@
 local settings	= require "defrend.render.settings"
 local uniforms	= require "defrend.render.uniforms"
-local cameras	= require "defrend.render.resources.cameras"
-local defrend	= require "defrend.render.defrend"
 
 go.property("enabled", false)
 go.property("focal_depth", 100)
