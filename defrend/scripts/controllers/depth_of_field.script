@@ -2,6 +2,7 @@ local settings	= require "defrend.render.settings"
 local cameras	= require "defrend.render.resources.cameras"
 local defrend	= require "defrend.render.defrend"
 
+go.property("enabled", false)
 go.property("focus_follows_view", true)
 go.property("focus_follows_mouse", false)
 go.property("collision_group_1", hash(""))
@@ -78,14 +79,14 @@ local function pick_and_focus(self, x, y)
 end
 
 function update(self, dt)
-	if focus_follows_view then
+	if self.enabled and focus_follows_view then
 		-- set the focal depth to whatever's in the center of the screen
 		pick_and_focus(self, settings.resolution_x / 2, settings.resolution_y / 2)
 	end
 end
 
 function on_input(self, action_id, action)
-	if focus_follows_mouse and not action_id and not window.get_mouse_lock() then
+	if self.enabled and focus_follows_mouse and not action_id and not window.get_mouse_lock() then
 		-- set the focal depth to whatever the mouse is hovering over
 		pick_and_focus(self, action.screen_x, action.screen_y)
 	end
