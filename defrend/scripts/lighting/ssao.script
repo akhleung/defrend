@@ -38,3 +38,7 @@ function on_message(self, message_id, message, sender)
 		do_init(self)
 	end
 end
+
+function on_reload(self)
+	do_init(self)
+end
