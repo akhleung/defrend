@@ -81,15 +81,15 @@ void main() {
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
     vec3 v = abs(var_vertex);
-    float threshold = 0.4825;
+    float edge = 0.4825;
     vec3 v100 = floor(v * 100);
     vec3 vf = fract(v100 / 5);
-    float dot_size = 0.21;
+    float line_thickness = 0.21;
     if (var_vertex.z == -0.5) {
         diffuse_out = texture(diffuse_map, var_texcoord0);
-    } else if (v.x > threshold && v.y > threshold || v.y > threshold && v.z > threshold || v.x > threshold && v.z > threshold) {
-		diffuse_out = decal_color + (vec4(1) - decal_color) / 2;
-	} else if (vf.x < dot_size && vf.y < dot_size) {
+    } else if (v.x > edge && v.y > edge || v.y > edge && v.z > edge || v.x > edge && v.z > edge) {
+		diffuse_out = vec4(1);
+	} else if (vf.x < line_thickness && vf.y < line_thickness) {
         diffuse_out = vec4(1);
     } else {
 		discard;
