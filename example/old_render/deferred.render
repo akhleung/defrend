@@ -25,7 +25,7 @@ render_resources {
 }
 render_resources {
   name: "point_light_material"
-  path: "/defrend/materials/geometry/light_volume/point_light.material"
+  path: "/defrend/materials/geometry/light_volume/point_light_fixed.material"
 }
 render_resources {
   name: "resolve_lighting_material"

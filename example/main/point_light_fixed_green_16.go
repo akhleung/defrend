@@ -5,7 +5,7 @@ embedded_components {
   "name: \"{{NAME}}\"\n"
   "materials {\n"
   "  name: \"default\"\n"
-  "  material: \"/defrend/materials/geometry/light_volume/point_light.material\"\n"
+  "  material: \"/defrend/materials/geometry/light_volume/point_light_fixed.material\"\n"
   "  attributes {\n"
   "    name: \"color\"\n"
   "    double_values {\n"

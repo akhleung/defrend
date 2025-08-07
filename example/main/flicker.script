@@ -1,0 +1,33 @@
+local function flick(self)
+	local j = self.i + 1 -- don't forget, Lua arrays start at 1
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, self.scales[j], go.EASING_LINEAR, self.durations[j], 0, function ()
+		flick(self)
+	end)
+	self.i = (self.i + 1) % 8
+end
+
+function init(self)
+	self.orig_scale = go.get_world_scale_uniform(".")
+	self.scales = {
+		math.random(101, 105) / 100 * self.orig_scale,
+		math.random(95, 99) / 100 * self.orig_scale,
+		math.random(101, 105) / 100 * self.orig_scale,
+		math.random(95, 99) / 100 * self.orig_scale,
+		math.random(101, 105) / 100 * self.orig_scale,
+		math.random(95, 99) / 100 * self.orig_scale,
+		math.random(101, 105) / 100 * self.orig_scale,
+		math.random(95, 99) / 100 * self.orig_scale,
+	}
+	self.durations = {
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+		math.random(10, 15) / 100,
+	}
+	self.i = 0
+	flick(self)
+end

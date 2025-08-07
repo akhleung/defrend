@@ -1,3 +1,7 @@
+components {
+  id: "flicker"
+  component: "/example/main/flicker.script"
+}
 embedded_components {
   id: "model"
   type: "model"
@@ -10,20 +14,12 @@ embedded_components {
   "    name: \"color\"\n"
   "    double_values {\n"
   "      v: 1.0\n"
-  "      v: 0.0\n"
-  "      v: 0.0\n"
+  "      v: 0.98\n"
+  "      v: 0.902\n"
   "      v: 1.0\n"
   "    }\n"
   "  }\n"
-  "  attributes {\n"
-  "    name: \"radii\"\n"
-  "    double_values {\n"
-  "      v: 5.0\n"
-  "      v: 6.0\n"
-  "      v: 0.0\n"
-  "      v: 0.0\n"
-  "    }\n"
-  "  }\n"
   "}\n"
+  "create_go_bones: false\n"
   ""
 }
