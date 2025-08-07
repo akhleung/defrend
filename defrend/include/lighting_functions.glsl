@@ -1,6 +1,9 @@
 #ifndef DEFREND_LIGHTING_FUNCTIONS
 #define DEFREND_LIGHTING_FUNCTIONS
 
+#define HALF_PI 1.570796327
+#define MOD3 vec3(0.1031, 0.11369, 0.13787)
+
 mediump float linearizeDepth(mediump float d, mediump vec3 frustum_terms) {
     mediump float zNdc  = 2.0 * d - 1.0;
     return frustum_terms.x / (frustum_terms.y - zNdc * frustum_terms.z);
@@ -13,36 +16,22 @@ mediump vec3 viewPosFromLinearDepth(mediump float z, mediump vec2 uv, mediump ve
     return vec3(xyFar * zNorm, z);
 }
 
-#define MOD3 vec3(.1031,.11369,.13787)
-
-// float hash12(vec2 v) {
-//     return fract(sin(dot(v, vec2(12.9898, 78.233))) * 43758.5453);
-// }
-
-// vec2 hash22(vec2 co) {
-//     return vec2(
-//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-//     );
-// }
-
 mediump float hash12(mediump vec2 p) {
-	mediump vec3 p3  = fract(vec3(p.xyx) * MOD3);
+	mediump vec3 p3 = fract(vec3(p.xyx) * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }
 
 mediump vec2 hash22(mediump vec2 p) {
 	mediump vec3 p3 = fract(vec3(p.xyx) * MOD3);
-    p3 += dot(p3, p3.yzx+19.19);
-    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract(vec2((p3.x + p3.y) * p3.z, (p3.x+p3.z)*p3.y));
 }
 
 mediump vec2 hash23(mediump vec3 p3) {
 	p3 = fract(p3 * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);
-    // return fract((p3.xx + p3.yz) * p3.zy);
-    return fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
+    return fract(vec2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
 mediump vec3 normal_from_rg(mediump vec2 rg) {
@@ -74,16 +63,18 @@ mediump float specular(mediump vec3 viewdir, mediump vec3 lightdir, mediump vec3
     return shiny == 0.0 ? 0.0 : pow(max(dot(norm, H), 0.0), shiny);
 }
 
-mediump float attenuation(mediump float d, mediump float r_inner, mediump float r_outer) {
-    mediump float falloff = 1.0 - smoothstep(r_inner, r_outer, d);
-    return falloff * falloff;
+mediump float attn_circ(mediump float d, mediump float r) {
+    return cos((d / r) * HALF_PI);
 }
 
-// vec2 rand(vec2 co) {
-//     return vec2(
-//         fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453),
-//         fract(sin(dot(co.yx ,vec2(12.9898,78.233))) * 43758.5453)
-//     ) * 0.00047;
-// }
+mediump float attn_inv_sq(mediump float d, mediump float r) {
+    mediump float strength = 1.0 - clamp(d / r, 0.0, 1.0);
+    return strength * strength;
+}
+
+mediump float attn_inv_sq_smooth(mediump float d, mediump float r) {
+    mediump float strength = 1.0 - smoothstep(0.0, r, d);
+    return strength * strength;
+}
 
 #endif

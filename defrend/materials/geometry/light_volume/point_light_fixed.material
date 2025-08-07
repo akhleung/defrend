@@ -1,7 +1,7 @@
 name: "point-light"
 tags: "point_light"
-vertex_program: "/defrend/materials/geometry/light_volume/point_light.vp"
-fragment_program: "/defrend/materials/geometry/light_volume/point_light.fp"
+vertex_program: "/defrend/materials/geometry/light_volume/point_light_fixed.vp"
+fragment_program: "/defrend/materials/geometry/light_volume/point_light_fixed.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_view"
@@ -48,6 +48,16 @@ attributes {
 attributes {
   name: "color"
   semantic_type: SEMANTIC_TYPE_COLOR
+  double_values {
+    v: 0.0
+    v: 0.0
+    v: 0.0
+    v: 0.0
+  }
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+}
+attributes {
+  name: "radii"
   double_values {
     v: 0.0
     v: 0.0

@@ -3,17 +3,15 @@
 
 #include "/defrend/include/lighting_functions.glsl"
 
-#define HALF_PI 1.570796327
-
 in vec3 var_center;
 in vec4 var_color;
-in float var_radius;
+in vec4 var_radii;
 
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
 uniform sampler2D spec_glow_sampler;
 
-uniform point_light_fp {
+uniform point_light_fixed_fp {
 	vec4 resolution;
     vec4 frustum_corner;
     vec4 frustum_terms;
@@ -32,13 +30,13 @@ void main() {
 	float shininess = spec_sample.r * 255;
 	vec3 to_light = var_center - geom_pos;
 	float d = length(to_light);
-	if (d > var_radius) discard;
+	if (d > var_radii.y) discard;
 	vec3 to_view = -geom_pos;
 	vec3 normal = normalize(normal_sample.xyz * 2.0 - 1.0);
 	vec3 to_light_normalized = normalize(to_light);
-	float diff = diffuse(to_light_normalized, normal);
+	float diff = max(dot(normal, to_light_normalized), 0.0);
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
-	float attn = attn_circ(d, var_radius);
+	float attn = attn_inv_sq(d - var_radii.x, var_radii.y - var_radii.x);
 	diff_out = var_color * diff * attn;
 	spec_out = var_color * spec * attn;
 }

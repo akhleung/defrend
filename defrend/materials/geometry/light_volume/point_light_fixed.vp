@@ -5,8 +5,9 @@ in vec4 position;
 in mat4 mtx_world;
 #endif
 in vec4 color;
+in vec4 radii;
 
-uniform point_light_vp {
+uniform point_light_fixed_vp {
     #ifdef EDITOR
     mat4 mtx_world;
     #endif
@@ -16,13 +17,12 @@ uniform point_light_vp {
 
 out vec3 var_center;
 out vec4 var_color;
-out float var_radius;
+out vec4 var_radii;
 
 void main() {
     mat4 mtx_worldview = mtx_view * mtx_world;
 	var_center = (mtx_worldview * vec4(0, 0, 0, 1)).xyz;
-	vec4 vertex = (mtx_worldview * position);
-	var_radius = distance(var_center, vertex.xyz);
 	var_color = color;
-    gl_Position = mtx_proj * vertex;
+	var_radii = radii;
+    gl_Position = mtx_proj * mtx_worldview * position;
 }
