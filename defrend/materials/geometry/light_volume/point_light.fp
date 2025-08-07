@@ -3,11 +3,16 @@
 
 #include "/defrend/include/lighting_functions.glsl"
 
+#define PI 3.141592654
 #define HALF_PI 1.570796327
 
 in vec3 var_center;
 in vec4 var_color;
 in float var_radius;
+#ifdef EDITOR
+in vec3 var_normal;
+in vec3 var_vertex;
+#endif
 
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
@@ -41,4 +46,15 @@ void main() {
 	float attn = attn_circ(d, var_radius);
 	diff_out = var_color * diff * attn;
 	spec_out = var_color * spec * attn;
+
+	#ifdef EDITOR // visualization for viewing point light volumes in the editor
+	float dp = abs(dot(var_normal, vec3(0, 1, 0)));
+	float rad = acos(dp);
+	float deg = floor(rad * 180 / PI);
+	if (fract(deg / 4) == 0) {
+		diff_out = var_color;
+	} else {
+		discard;
+	}
+	#endif
 }

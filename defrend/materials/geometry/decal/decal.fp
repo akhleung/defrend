@@ -6,6 +6,9 @@
 in mat4 mtx_worldview_inv;
 in vec3 var_frag_pos;
 in vec2 var_texcoord0;
+#ifdef EDITOR
+in vec3 var_vertex;
+#endif
 
 // samplers from the decal
 uniform sampler2D diffuse_map;
@@ -75,4 +78,19 @@ void main() {
     normal_out = vec4(decal_normal, 1);
 
     spec_glow_out = decal_spec_glow;
+
+	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
+    vec3 v = abs(var_vertex);
+    float threshold = 0.4825;
+    vec3 v100 = floor(v * 100);
+    vec3 vf = fract(v100 / 5);
+    float dot_size = 0.225;
+    if (v.x > threshold && v.y > threshold || v.y > threshold && v.z > threshold || v.x > threshold && v.z > threshold) {
+		diffuse_out = decal_color + (vec4(1) - decal_color) / 2;
+	} else if (vf.x < dot_size && vf.y < dot_size && vf.z < dot_size) {
+        diffuse_out = vec4(1);
+    } else {
+		discard;
+	}
+	#endif
 }
