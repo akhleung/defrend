@@ -37,5 +37,11 @@ function on_input(self, action_id, action)
 		local enabled = go.get("/defrend/lighting#shadow", "enabled")
 		go.set("/defrend/lighting#shadow", "enabled", not enabled)
 		msg.post("/defrend/lighting#shadow", "refresh")
+	elseif action_id == hash("key_f") and pressed then
+		local dof = go.get("/defrend/post_processing#depth_of_field", "enabled")
+		local dof_ctl = go.get("/camera#depth_of_field_controller", "enabled")
+		go.set("/defrend/post_processing#depth_of_field", "enabled", not dof)
+		msg.post("/defrend/post_processing#depth_of_field", "refresh")
+		go.set("/camera#depth_of_field_controller", "enabled", not dof_ctl)
 	end
 end

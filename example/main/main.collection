@@ -62,45 +62,6 @@ instances {
   }
 }
 instances {
-  id: "point_light_red_"
-  prototype: "/example/main/point_light_red_12.go"
-  position {
-    x: 27.101664
-    z: -201.79492
-  }
-  scale3 {
-    x: 12.0
-    y: 12.0
-    z: 12.0
-  }
-}
-instances {
-  id: "point_light_green_16"
-  prototype: "/example/main/point_light_green_16.go"
-  position {
-    x: 20.87855
-    z: -207.92834
-  }
-  scale3 {
-    x: 16.0
-    y: 16.0
-    z: 16.0
-  }
-}
-instances {
-  id: "point_light_blue_20"
-  prototype: "/example/main/point_light_blue_20.go"
-  position {
-    x: 10.421827
-    z: -204.8682
-  }
-  scale3 {
-    x: 20.0
-    y: 20.0
-    z: 20.0
-  }
-}
-instances {
   id: "ice_decal"
   prototype: "/example/main/ice_decal.go"
   position {
@@ -115,6 +76,216 @@ instances {
     x: 10.0
     y: 10.0
     z: 10.0
+  }
+}
+instances {
+  id: "point_light_soft_white"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 10.0
+    y: 1.0
+    z: -203.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white1"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -25.0
+    y: 1.0
+    z: -206.0
+  }
+  scale3 {
+    x: 15.6
+    y: 15.6
+    z: 15.6
+  }
+}
+instances {
+  id: "point_light_soft_white2"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -20.0
+    y: 1.0
+    z: -250.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white3"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -73.0
+    y: 1.0
+    z: -251.0
+  }
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_soft_white4"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -179.0
+    y: 1.0
+    z: -234.0
+  }
+  scale3 {
+    x: 23.6
+    y: 23.6
+    z: 23.6
+  }
+}
+instances {
+  id: "point_light_soft_white5"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -99.0
+    y: 1.0
+    z: -298.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white6"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -46.0
+    y: 1.0
+    z: -206.0
+  }
+  scale3 {
+    x: 17.6
+    y: 17.6
+    z: 17.6
+  }
+}
+instances {
+  id: "point_light_soft_white7"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -112.0
+    y: 1.0
+    z: -281.0
+  }
+  scale3 {
+    x: 21.2
+    y: 21.2
+    z: 21.2
+  }
+}
+instances {
+  id: "point_light_soft_white8"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 5.0
+    y: 1.0
+    z: -286.0
+  }
+  scale3 {
+    x: 25.2
+    y: 25.2
+    z: 25.2
+  }
+}
+instances {
+  id: "point_light_soft_white9"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -64.0
+    y: 1.0
+    z: -316.0
+  }
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_soft_white10"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -304.0
+  }
+  scale3 {
+    x: 18.8
+    y: 18.8
+    z: 18.8
+  }
+}
+instances {
+  id: "point_light_soft_white11"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -147.0
+    y: 1.0
+    z: -203.0
+  }
+  scale3 {
+    x: 28.4
+    y: 28.4
+    z: 28.4
+  }
+}
+instances {
+  id: "point_light_soft_white12"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -112.0
+    y: 1.0
+    z: -219.0
+  }
+  scale3 {
+    x: 28.408
+    y: 28.408
+    z: 28.408
+  }
+}
+instances {
+  id: "point_light_soft_white13"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -20.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 30.744
+    y: 30.744
+    z: 30.744
+  }
+}
+instances {
+  id: "point_light_soft_white14"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -311.0
+  }
+  scale3 {
+    x: 32.256
+    y: 32.256
+    z: 32.256
   }
 }
 collection_instances {
@@ -160,12 +331,48 @@ collection_instances {
   instance_properties {
     id: "lighting"
     properties {
-      id: "light_and_shadow"
+      id: "shadow"
+      properties {
+        id: "enabled"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
       properties {
         id: "scene_camera_url"
         value: "/camera#camera"
         type: PROPERTY_TYPE_URL
       }
+    }
+    properties {
+      id: "ssao"
+      properties {
+        id: "blur"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "bias_dist"
+        value: "0.75"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "min_distance"
+        value: "0.25"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "max_distance"
+        value: "1.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "radius"
+        value: "1.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+    properties {
+      id: "light"
       properties {
         id: "sun_url"
         value: "/sun"
@@ -182,53 +389,28 @@ collection_instances {
         type: PROPERTY_TYPE_VECTOR4
       }
     }
-    properties {
-      id: "ssao"
-      properties {
-        id: "intensity"
-        value: "1.75"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "max_distance"
-        value: "2.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "radius"
-        value: "1.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-    }
   }
   instance_properties {
     id: "post_processing"
     properties {
       id: "depth_of_field"
       properties {
-        id: "focus_follows_view"
+        id: "enabled"
         value: "false"
         type: PROPERTY_TYPE_BOOLEAN
       }
+    }
+    properties {
+      id: "glow"
       properties {
-        id: "focus_follows_mouse"
-        value: "true"
-        type: PROPERTY_TYPE_BOOLEAN
-      }
-      properties {
-        id: "focal_shift_duration"
-        value: "0.0"
+        id: "radius"
+        value: "5.0"
         type: PROPERTY_TYPE_NUMBER
       }
       properties {
-        id: "focal_shift_threshold"
-        value: "10.0"
+        id: "separation"
+        value: "2.0"
         type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "collision_group_1"
-        value: "buildings"
-        type: PROPERTY_TYPE_HASH
       }
     }
   }
@@ -261,6 +443,20 @@ embedded_instances {
   "components {\n"
   "  id: \"freelook\"\n"
   "  component: \"/example/main/freelook.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"depth_of_field_controller\"\n"
+  "  component: \"/defrend/scripts/controllers/depth_of_field.script\"\n"
+  "  properties {\n"
+  "    id: \"enabled\"\n"
+  "    value: \"false\"\n"
+  "    type: PROPERTY_TYPE_BOOLEAN\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"collision_group_1\"\n"
+  "    value: \"buildings\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
   "}\n"
   "embedded_components {\n"
   "  id: \"camera\"\n"
@@ -2729,294 +2925,6 @@ embedded_instances {
     x: 8.0
     y: 8.0
     z: 8.0
-  }
-}
-embedded_instances {
-  id: "point_light"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -82.0
-    y: 5.0
-    z: -251.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light1"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -36.0
-    y: 5.0
-    z: -251.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light2"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: 11.0
-    y: 5.0
-    z: -224.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light3"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: 10.0
-    y: 5.0
-    z: -269.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light4"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -19.0
-    y: 5.0
-    z: -286.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light5"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -129.0
-    y: 5.0
-    z: -207.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light6"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -130.0
-    y: 5.0
-    z: -239.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light7"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -116.0
-    y: 5.0
-    z: -270.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light8"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -146.0
-    y: 5.0
-    z: -303.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light9"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -179.0
-    y: 5.0
-    z: -205.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light10"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -164.0
-    y: 5.0
-    z: -238.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light11"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -65.0
-    y: 5.0
-    z: -301.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light12"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -72.0
-    y: 5.0
-    z: -205.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light13"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: -45.277344
-    y: 5.0
-    z: -204.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light14"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: 33.0
-    y: 5.0
-    z: -247.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-embedded_instances {
-  id: "point_light15"
-  data: "components {\n"
-  "  id: \"point_light\"\n"
-  "  component: \"/example/main/point_light.model\"\n"
-  "}\n"
-  ""
-  position {
-    x: 33.0
-    y: 5.0
-    z: -315.0
-  }
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
   }
 }
 embedded_instances {
