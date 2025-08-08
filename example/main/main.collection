@@ -345,6 +345,160 @@ instances {
     z: 18.74928
   }
 }
+instances {
+  id: "point_light_soft_white19"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -227.0
+  }
+  scale3 {
+    x: 21.328
+    y: 21.328
+    z: 21.328
+  }
+}
+instances {
+  id: "point_light_soft_white20"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -252.0
+  }
+  scale3 {
+    x: 22.32
+    y: 22.32
+    z: 22.32
+  }
+}
+instances {
+  id: "point_light_soft_white21"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 16.0
+    y: 1.0
+    z: -226.0
+  }
+  scale3 {
+    x: 32.736
+    y: 32.736
+    z: 32.736
+  }
+}
+instances {
+  id: "point_light_soft_white22"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -148.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white23"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -147.0
+    y: 1.0
+    z: -234.0
+  }
+  scale3 {
+    x: 24.304
+    y: 24.304
+    z: 24.304
+  }
+}
+instances {
+  id: "point_light_soft_white24"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -60.0
+    y: 1.0
+    z: -233.0
+  }
+  scale3 {
+    x: 23.81792
+    y: 23.81792
+    z: 23.81792
+  }
+}
+instances {
+  id: "point_light_soft_white25"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -82.0
+    y: 1.0
+    z: -208.0
+  }
+  scale3 {
+    x: 21.38752
+    y: 21.38752
+    z: 21.38752
+  }
+}
+instances {
+  id: "point_light_soft_white26"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -65.0
+    y: 1.0
+    z: -301.0
+  }
+  scale3 {
+    x: 15.6
+    y: 15.6
+    z: 15.6
+  }
+}
+instances {
+  id: "point_light_soft_white27"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -107.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 25.2
+    y: 25.2
+    z: 25.2
+  }
+}
+instances {
+  id: "point_light_soft_white28"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 2.0
+    y: 1.0
+    z: -265.0
+  }
+  scale3 {
+    x: 17.6
+    y: 17.6
+    z: 17.6
+  }
+}
+instances {
+  id: "point_light_soft_white29"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 31.0
+    y: 1.0
+    z: -285.0
+  }
+  scale3 {
+    x: 17.36
+    y: 17.36
+    z: 17.36
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/example/main/neighborhood.collection"

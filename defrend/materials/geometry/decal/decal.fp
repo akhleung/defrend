@@ -83,8 +83,8 @@ void main() {
     vec3 v = abs(var_vertex);
     float edge = 0.4825;
     vec3 v100 = floor(v * 100);
-    vec3 vf = fract(v100 / 5);
-    float line_thickness = 0.21;
+    vec3 vf = fract(v100 / 10);
+    float line_thickness = 0.2;
     if (var_vertex.z == -0.5) {
         diffuse_out = texture(diffuse_map, var_texcoord0);
     } else if (v.x > edge && v.y > edge || v.y > edge && v.z > edge || v.x > edge && v.z > edge) {
