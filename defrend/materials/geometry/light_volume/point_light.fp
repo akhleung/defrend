@@ -50,22 +50,12 @@ void main() {
 	spec_out = var_color * spec * attn;
 
 	#ifdef EDITOR // visualization for viewing point light volumes in the editor
-	// vec3 dots = abs(vec3(dot(var_normal, X), dot(var_normal, Y), dot(var_normal, Z)));
-	// vec3 rads = acos(dots);
-	// vec3 degs = floor(rads * 180 / PI);
-	// vec3 fracts = fract(degs / 12);
-
 	vec3 lat_normal = normalize(vec3(var_normal.x, 0, var_normal.z));
-	float dotl = abs(dot(lat_normal, Z));
-	float radl = acos(dotl);
-	float degl = floor(radl * 180 / PI);
-	float fractl = fract(degl / 12);
-
 	vec2 dots = abs(vec2(dot(lat_normal, X), dot(var_normal, Y)));
 	vec2 rads = acos(dots);
 	vec2 degs = floor(rads * 180 / PI);
 	vec2 fracts = fract(degs / 12);
-	if (/* fracts.x == 0 || */ fracts.x == 0 || fracts.y == 0 /* || fracts.z == 0 */) {
+	if (fracts.x == 0 || fracts.y == 0) {
 		diff_out = var_color;
 	} else {
 		discard;
