@@ -4,7 +4,9 @@
 #include "/defrend/include/lighting_functions.glsl"
 
 #define PI 3.141592654
-#define HALF_PI 1.570796327
+#define X vec3(1, 0, 0)
+#define Y vec3(0, 1, 0)
+#define Z vec3(0, 0, 1)
 
 in vec3 var_center;
 in vec4 var_color;
@@ -48,10 +50,11 @@ void main() {
 	spec_out = var_color * spec * attn;
 
 	#ifdef EDITOR // visualization for viewing point light volumes in the editor
-	float dp = abs(dot(var_normal, vec3(0, 1, 0)));
-	float rad = acos(dp);
-	float deg = floor(rad * 180 / PI);
-	if (fract(deg / 4) == 0) {
+	vec3 dots = abs(vec3(dot(var_normal, X), dot(var_normal, Y), dot(var_normal, Z)));
+	vec3 rads = acos(dots);
+	vec3 degs = floor(rads * 180 / PI);
+	vec3 fracts = fract(degs / 12);
+	if (fracts.x == 0 || fracts.y == 0 || fracts.z == 0) {
 		diff_out = var_color;
 	} else {
 		discard;

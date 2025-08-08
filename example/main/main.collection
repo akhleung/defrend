@@ -66,6 +66,7 @@ instances {
   prototype: "/example/main/ice_decal.go"
   position {
     x: -10.431182
+    y: -2.0
     z: -197.37703
   }
   rotation {
@@ -75,7 +76,7 @@ instances {
   scale3 {
     x: 10.0
     y: 10.0
-    z: 10.0
+    z: 2.0
   }
 }
 instances {
@@ -286,6 +287,62 @@ instances {
     x: 32.256
     y: 32.256
     z: 32.256
+  }
+}
+instances {
+  id: "point_light_soft_white15"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -50.0
+    y: 1.0
+    z: -301.0
+  }
+  scale3 {
+    x: 21.824
+    y: 21.824
+    z: 21.824
+  }
+}
+instances {
+  id: "point_light_soft_white16"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -51.0
+    y: 1.0
+    z: -273.0
+  }
+  scale3 {
+    x: 33.728
+    y: 33.728
+    z: 33.728
+  }
+}
+instances {
+  id: "point_light_soft_white17"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -219.0
+  }
+  scale3 {
+    x: 24.99904
+    y: 24.99904
+    z: 24.99904
+  }
+}
+instances {
+  id: "point_light_soft_white18"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -264.0
+  }
+  scale3 {
+    x: 18.74928
+    y: 18.74928
+    z: 18.74928
   }
 }
 collection_instances {
