@@ -6,14 +6,12 @@
 #define PI 3.141592654
 #define X vec3(1, 0, 0)
 #define Y vec3(0, 1, 0)
-#define Z vec3(0, 0, 1)
 
 in vec3 var_center;
 in vec4 var_color;
 in float var_radius;
 #ifdef EDITOR
 in vec3 var_normal;
-in vec3 var_vertex;
 #endif
 
 uniform sampler2D depth_buffer;
@@ -45,7 +43,7 @@ void main() {
 	vec3 to_light_normalized = normalize(to_light);
 	float diff = diffuse(to_light_normalized, normal);
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
-	float attn = attn_circ(d, var_radius);
+	float attn = attn_inv_pow(d, var_radius);
 	diff_out = var_color * diff * attn;
 	spec_out = var_color * spec * attn;
 
@@ -54,8 +52,8 @@ void main() {
 	vec2 dots = abs(vec2(dot(lat_normal, X), dot(var_normal, Y)));
 	vec2 rads = acos(dots);
 	vec2 degs = floor(rads * 180 / PI);
-	vec2 fracts = fract(degs / 12);
-	if (fracts.x == 0 || fracts.y == 0) {
+	vec2 rems = fract(degs / 12);
+	if (rems.x == 0 || rems.y == 0) {
 		diff_out = var_color;
 	} else {
 		discard;

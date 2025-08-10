@@ -80,16 +80,15 @@ void main() {
     spec_glow_out = decal_spec_glow;
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
-    vec3 v = abs(var_vertex);
+    vec3 mags = abs(var_vertex);
     float edge = 0.4825;
-    vec3 v100 = floor(v * 100);
-    vec3 vf = fract(v100 / 10);
+    vec3 rems = fract(floor(mags * 100) / 10);
     float line_thickness = 0.2;
     if (var_vertex.z == -0.5) {
         diffuse_out = texture(diffuse_map, var_texcoord0);
-    } else if (v.x > edge && v.y > edge || v.y > edge && v.z > edge || v.x > edge && v.z > edge) {
+    } else if (mags.x > edge && mags.y > edge || mags.y > edge && mags.z > edge || mags.x > edge && mags.z > edge) {
 		diffuse_out = vec4(1);
-	} else if (vf.x < line_thickness && vf.y < line_thickness) {
+	} else if (rems.x < line_thickness && rems.y < line_thickness) {
         diffuse_out = vec4(1);
     } else {
 		discard;
