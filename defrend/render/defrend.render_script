@@ -67,6 +67,7 @@ function init(self)
 		skybox		= render.predicate({"skybox"}),
 		blob_shadow	= render.predicate({"blob_shadow"}),
 		point_light	= render.predicate({"point_light"}),
+		spot_light	= render.predicate({"spot_light"}),
 		screen		= render.predicate({"screen"}),
 		text		= render.predicate({"text"}),
 		gui			= render.predicate({"gui"}),
@@ -99,19 +100,19 @@ function update(self)
 	render.set_stencil_mask(0xff)
 	render.clear(clear_options.clear_color_options)
 	render.set_viewport(0, 0, rx, ry)
-	-- setup camera view and projection
+	-- setup camera view and projection --
 	render.set_view(cameras.scene_camera.view)
 	render.set_projection(cameras.scene_camera.proj)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
-	-- render models into g-buffer
+	-- render models into g-buffer --
 	if settings.geometry.models_enabled then
 		render.enable_material("model_material")
 		render.draw(predicates.model, geometry_options)
 		render.disable_material()
 	end
 
-	-- render sprites and billboards into g-buffer
+	-- render sprites and billboards into g-buffer --
 	render.enable_state(graphics.STATE_BLEND)
 	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
 	if settings.geometry.sprites_enabled then
@@ -125,7 +126,7 @@ function update(self)
 		render.disable_material()
 	end
 
-	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer
+	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
 	render.set_render_target(post_target)
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
@@ -138,7 +139,7 @@ function update(self)
 	render.draw(predicates.screen)
 	render.disable_texture("depth_buffer")
 	render.disable_material()
-	-- render decals into g-buffer
+	-- render decals into g-buffer --
 	-- The combination of back-face culling and depth testing will prevent decals from rendering when the camera is
 	-- inside a projector box. Front-face culling requires depth testing to be disabled, since the back faces of the
 	-- projector box will be occluded by the receiving surface.
@@ -157,7 +158,7 @@ function update(self)
 		render.disable_material()
 	end
 
-	-- render the skybox
+	-- render the skybox --
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	render.disable_state(graphics.STATE_BLEND)
 	if settings.geometry.skybox_enabled then
@@ -168,24 +169,30 @@ function update(self)
 
 	render.draw_debug3d()
 
-	-- render light volumes into the light reflectance buffer
-	-- For some reason, culling front faces and enabling depth testing doesn't prevent lights from being rendered properly.
-	-- Not sure why, because one would think that the back faces would be occluded by the receiving surfaces.
+	-- render light volumes into the light reflectance buffer --
+	-- Since light volumes are rendered into an empty buffer, we can cull front-faces and keep depth-testing enabled.
+	-- Unfortunately, this means that depth-testing is useless here and there will be overdraw. If that becomes a big
+	-- problem, it may be an acceptable tradeoff to render the scene into this buffer first, to fill the depth buffer.
+	render.set_render_target(l_buffer)
+	render.clear(clear_options.clear_color_options)
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
+	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
+	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
+	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
 	if settings.light.point_lights_enabled then
-		render.set_render_target(l_buffer)
-		render.clear(clear_options.clear_color_options)
-		render.enable_state(graphics.STATE_BLEND)
-		render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
 		render.enable_material("point_light_material")
-		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-		render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
 		render.draw(predicates.point_light, geometry_options)
-		render.disable_texture("depth_buffer")
-		render.disable_texture("normal_sampler")
-		render.disable_texture("spec_glow_sampler")
 		render.disable_material()
 	end
+	if settings.light.spot_lights_enabled then
+		render.enable_material("spot_light_material")
+		render.draw(predicates.spot_light, geometry_options)
+		render.disable_material()
+	end
+	render.disable_texture("depth_buffer")
+	render.disable_texture("normal_sampler")
+	render.disable_texture("spec_glow_sampler")
 
 	render.disable_state(graphics.STATE_DEPTH_TEST)
 	render.disable_state(graphics.STATE_CULL_FACE)

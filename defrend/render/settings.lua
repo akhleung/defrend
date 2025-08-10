@@ -11,6 +11,7 @@ local M = {
 	light = {
 		sunlight_enabled = true,
 		point_lights_enabled = true,
+		spot_lights_enabled = true,
 		fog_near = 800,
 		fog_far = 1001,
 		fog_color = vmath.vector4(0),

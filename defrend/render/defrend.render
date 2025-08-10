@@ -99,3 +99,7 @@ render_resources {
   name: "copy_material"
   path: "/defrend/materials/screen/copy/copy.material"
 }
+render_resources {
+  name: "spot_light_material"
+  path: "/defrend/materials/geometry/light_volume/spot_light.material"
+}

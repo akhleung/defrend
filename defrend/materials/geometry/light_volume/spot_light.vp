@@ -1,0 +1,56 @@
+#version 420 core
+
+in vec4 position;
+#ifndef EDITOR
+in mat4 mtx_world;
+#endif
+in vec4 color;
+in vec4 start;
+
+uniform spot_light_vp {
+    #ifdef EDITOR
+    mat4 mtx_world;
+    #endif
+    mat4 mtx_view;
+    mat4 mtx_proj;
+};
+
+out vec3 var_source;
+out vec3 var_light_dir;
+out vec4 var_color;
+out float var_field;
+out float var_range;
+out float var_start;
+#ifdef EDITOR
+out vec3 var_frag_pos;
+out vec3 var_edge_pos;
+out vec3 var_lat_norm;
+out vec3 var_lat_axis;
+out float var_pcnt_start;
+#endif
+
+void main() {
+    mat4 mtx_worldview = mtx_view * mtx_world;
+    var_source = (mtx_worldview * vec4(0, 0.5, 0, 1)).xyz;
+    vec3 target = (mtx_worldview * vec4(0, -0.5, 0, 1)).xyz;
+    vec3 edge = (mtx_worldview * vec4(1, -0.5, 0, 1)).xyz;
+    var_light_dir = normalize(target - var_source);
+    var_field = dot(var_light_dir, normalize(edge - var_source));
+    var_range = distance(var_source, target);
+    var_start = start.x * var_range;
+	var_color = color;
+    gl_Position = mtx_proj * mtx_worldview * position;
+
+    #ifdef EDITOR // visualization for viewing spot light volumes in the editor
+    var_pcnt_start = 100 * start.x;
+    var_frag_pos = (mtx_worldview * position).xyz;
+    var_edge_pos = edge;
+    vec3 lat_norm = position.xyz - vec3(0, position.y, 0);
+    if (length(lat_norm) > 0) {
+        var_lat_norm = normalize(lat_norm);
+    } else {
+        var_lat_norm = vec3(0, 1, 0);
+    }
+    var_lat_axis = vec3(1, 0, 0);
+    #endif
+}

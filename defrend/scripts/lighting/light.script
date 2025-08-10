@@ -3,6 +3,7 @@ local uniforms = require "defrend.render.uniforms"
 
 go.property("sunlight_enabled", true)
 go.property("point_lights_enabled", true)
+go.property("spot_lights_enabled", true)
 go.property("sun_url", msg.url())
 go.property("sun_color", vmath.vector4(1))
 go.property("ambient_color", vmath.vector4(1))
@@ -13,6 +14,7 @@ go.property("fog_far", 1001)
 local function do_init(self)
 	settings.light.sunlight_enabled		= self.sunlight_enabled
 	settings.light.point_lights_enabled	= self.point_lights_enabled
+	settings.light.spot_lights_enabled	= self.spot_lights_enabled
 
 	settings.light.ambient_color	= self.ambient_color
 	settings.light.fog_color		= self.fog_color

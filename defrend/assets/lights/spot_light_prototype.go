@@ -1,0 +1,15 @@
+embedded_components {
+  id: "model"
+  type: "model"
+  data: "mesh: \"/defrend/assets/lights/meshes/cone.glb\"\n"
+  "name: \"{{NAME}}\"\n"
+  "materials {\n"
+  "  name: \"default\"\n"
+  "  material: \"/defrend/materials/geometry/light_volume/spot_light.material\"\n"
+  "}\n"
+  "create_go_bones: false\n"
+  ""
+  position {
+    y: -0.5
+  }
+}
