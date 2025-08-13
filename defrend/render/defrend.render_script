@@ -170,9 +170,10 @@ function update(self)
 	render.draw_debug3d()
 
 	-- render light volumes into the light reflectance buffer --
-	-- Since light volumes are rendered into an empty buffer, we can cull front-faces and keep depth-testing enabled.
-	-- Unfortunately, this means that depth-testing is useless here and there will be overdraw. If that becomes a big
-	-- problem, it may be an acceptable tradeoff to render the scene into this buffer first, to fill the depth buffer.
+	-- Since light volumes are rendered into an empty buffer, we can cull front-faces to allow the camera to move inside
+	-- the light volumes, and still keep depth-testing enabled. Unfortunately, the empty buffer means that depth-testing
+	-- is useless here, and there will be overdraw. If that becomes a big problem, it may be an acceptable tradeoff to
+	-- render the scene into this depth buffer first.
 	render.set_render_target(l_buffer)
 	render.clear(clear_options.clear_color_options)
 	render.enable_state(graphics.STATE_BLEND)

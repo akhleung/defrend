@@ -3,8 +3,8 @@ local settings = require "defrend.render.settings"
 go.property("g_buffer_diffuse_color", false)
 go.property("g_buffer_normals", false)
 go.property("g_buffer_specular_and_glow", false)
-go.property("point_light_diffuse_reflectance", false)
-go.property("point_light_specular_reflectance", false)
+go.property("light_volume_diffuse_reflectance", false)
+go.property("light_volume_specular_reflectance", false)
 go.property("shadow_atlas", false)
 go.property("ssao", false)
 
@@ -12,8 +12,8 @@ local function do_init(self)
 	settings.visualize.g_diffuse	= self.g_buffer_diffuse_color
 	settings.visualize.g_normals	= self.g_buffer_normals
 	settings.visualize.g_spec_glow	= self.g_buffer_specular_and_glow
-	settings.visualize.l_diffuse	= self.point_light_diffuse_reflectance
-	settings.visualize.l_specular	= self.point_light_specular_reflectance
+	settings.visualize.l_diffuse	= self.light_volume_diffuse_reflectance
+	settings.visualize.l_specular	= self.light_volume_specular_reflectance
 	settings.visualize.shadow_atlas	= self.shadow_atlas
 	settings.visualize.ssao			= self.ssao
 

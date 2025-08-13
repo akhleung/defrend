@@ -116,8 +116,8 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 void main() {
 	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
 	vec4 spec_glow_sample	= texture(spec_glow_sampler, var_texcoord0);
-	vec4 point_diff			= clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
-	vec4 point_spec			= clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
+	vec4 vol_diff			= clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
+	vec4 vol_spec			= clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
 
 	float depth			= texture(depth_buffer, var_texcoord0).r;
 	float z				= linearizeDepth(depth, frustum_terms.xyz);
@@ -161,8 +161,8 @@ void main() {
 	vec4 color = ambient_color * mat_diff * ao;
 	float sun_spec = specular(view_dir, directional_from, normal, shininess);
 	float sun_diff = diffuse(directional_from, normal);
-	vec4 light_spec = clamp(sun_spec * directional_color * shadow + point_spec, 0, 1);
-	vec4 light_diff = clamp((sun_diff * directional_color * shadow + point_diff) * ao + spec_glow_sample.g, 0, 1); // consider (ao + 1) / 2
+	vec4 light_spec = clamp(sun_spec * directional_color * shadow + vol_spec, 0, 1);
+	vec4 light_diff = clamp((sun_diff * directional_color * shadow + vol_diff) * ao + spec_glow_sample.g, 0, 1); // consider (ao + 1) / 2
 	color += mat_diff * light_diff + light_spec; // we only support white specular highlights for now, so omit mat_spec
 
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
