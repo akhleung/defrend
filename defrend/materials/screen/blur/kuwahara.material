@@ -1,4 +1,4 @@
-name: "kuwahara-blur"
+name: "kuwahara_blur"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
 fragment_program: "/defrend/materials/screen/blur/kuwahara.fp"
