@@ -2,7 +2,6 @@
 
 in vec2 var_texcoord0;
 
-uniform sampler2D color_sampler;
 uniform sampler2D glow_color_sampler;
 uniform sampler2D orig_glow_sampler;
 
@@ -29,6 +28,6 @@ void main() {
 	}
 	glow /= (radius * 2 + 1);
 	float orig_emissive = texture(orig_glow_sampler, var_texcoord0).g;
-	fragColor = texture(color_sampler, var_texcoord0);
-	fragColor.rgb += glow * (1 - orig_emissive / 2);
+	glow *= (1 - orig_emissive / 2);
+	fragColor = vec4(glow, 1);
 }

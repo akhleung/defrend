@@ -15,7 +15,6 @@ float	separation	= params.w;
 vec2	delta		= separation * vec2(1, 0) / resolution;
 
 layout(location = 0) out vec4 fragColor;
-layout(location = 1) out vec4 whatever;
 
 void main() {
 	vec3 color = texture(color_sampler, var_texcoord0).rgb;
@@ -31,5 +30,4 @@ void main() {
 		glow += color * emissive;
 	}
 	fragColor = vec4(glow / (radius * 2 + 1), 1);
-	whatever = vec4(0);
 }

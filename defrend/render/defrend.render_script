@@ -306,7 +306,7 @@ function update(self)
 
 	if settings.glow.enabled then
 		post_source, post_target = post_target, post_source
-		render.set_render_target(l_buffer)
+		render.set_render_target(post_target)
 		render.enable_material("glow_horizontal_material")
 		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
@@ -314,17 +314,17 @@ function update(self)
 		render.disable_texture("color_sampler")
 		render.disable_texture("spec_glow_sampler")
 		render.disable_material()
+		post_source, post_target = post_target, post_source
 		render.set_render_target(post_target)
+		render.enable_state(graphics.STATE_BLEND)
 		render.enable_material("glow_vertical_material")
-		render.enable_texture("color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.enable_texture("glow_color_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("glow_color_sampler", post_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.enable_texture("orig_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
 		render.draw(predicates.screen, glow_options)
-		render.disable_texture("color_sampler")
 		render.disable_texture("glow_color_sampler")
-		render.disable_texture("spec_glow_sampler")
 		render.disable_texture("orig_glow_sampler")
 		render.disable_material()
+		render.disable_state(graphics.STATE_BLEND)
 	end
 
 	if settings.bloom.enabled then

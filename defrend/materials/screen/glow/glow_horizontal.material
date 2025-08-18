@@ -1,5 +1,5 @@
 name: "bloom"
-tags: "bloom"
+tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
 fragment_program: "/defrend/materials/screen/glow/glow_horizontal.fp"
 vertex_constants {
