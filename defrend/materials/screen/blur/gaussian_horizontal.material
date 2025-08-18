@@ -1,4 +1,4 @@
-name: "gaussian-blur"
+name: "gaussian_blur"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
 fragment_program: "/defrend/materials/screen/blur/gaussian_horizontal.fp"

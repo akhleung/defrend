@@ -1,4 +1,4 @@
-name: "bloom"
+name: "glow_vertical"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
 fragment_program: "/defrend/materials/screen/glow/glow_vertical.fp"
