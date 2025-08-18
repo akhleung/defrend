@@ -21,6 +21,9 @@ out vec2 var_texcoord0;
 
 void main() {
 
+	// flatten the billboard model -- we're using boxes in order to get correct frustum culling on the CPU side
+	vec4 flatpos = vec4(position.xy, 0, position.w);
+
 	mat4 mtx_worldview = mtx_view * mtx_world;
 	float x_scale = length(mtx_worldview[0]);
 	float y_scale = length(mtx_worldview[1]);
@@ -39,9 +42,9 @@ void main() {
 	mtx_worldview[2][1] = 0;
 	mtx_worldview[2][2] = z_scale;
 	
-	var_frag_pos	= (mtx_worldview * position).xyz;
+	var_frag_pos	= (mtx_worldview * flatpos).xyz;
 	var_normal		= normalize(-var_frag_pos);
 	var_texcoord0	= texcoord0;
 
-	gl_Position		= mtx_proj * mtx_worldview * position;
+	gl_Position		= mtx_proj * mtx_worldview * flatpos;
 }
