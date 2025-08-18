@@ -52,3 +52,9 @@ transparent_graphics_context = 0
 [library]
 include_dirs = defrend
 
+[shader]
+exclude_gles_sm100 = 1
+
+[profiler]
+track_cpu = 1
+
