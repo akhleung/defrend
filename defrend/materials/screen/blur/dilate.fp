@@ -5,15 +5,14 @@ in vec2 var_texcoord0;
 uniform sampler2D color_sampler;
 
 uniform dilate_fp {
-	vec4 params1;
-	vec4 params2;
+	vec4 params;
 };
 
-vec2 resolution = vec2(params1.x, params1.y);
-float min_threshold = params2.x;
-float max_threshold = params2.y;
-int radius = int(params2.z);
-float separation = params2.w;
+vec2 resolution = textureSize(color_sampler, 0);
+float min_threshold = params.x;
+float max_threshold = params.y;
+int radius = int(params.z);
+float separation = params.w;
 vec3 values = vec3(0.21, 0.72, 0.07);
 
 layout(location = 0) out vec4 fragColor;

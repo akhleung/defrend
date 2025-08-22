@@ -10,9 +10,9 @@ uniform blur_fp {
 
 layout(location = 0) out vec4 fragColor;
 
-int samples = int(params.z);
-vec2 texSize  = params.xy;
-vec2 texCoord = gl_FragCoord.xy / texSize;
+int samples = int(params.x);
+vec2 resolution  = textureSize(color_sampler, 0);
+vec2 texCoord = gl_FragCoord.xy / resolution;
 
 int i     = 0;
 int j     = 0;
@@ -35,7 +35,7 @@ void findMean(int i0, int i1, int j0, int j1) {
 
     for (i = i0; i <= i1; ++i) {
         for (j = j0; j <= j1; ++j) {
-            color = texture(color_sampler, (gl_FragCoord.xy + vec2(i, j)) / texSize);
+            color = texture(color_sampler, (gl_FragCoord.xy + vec2(i, j)) / resolution);
             meanTemp += color;
             values[count] = dot(color.rgb, valueRatios);
             ++count;

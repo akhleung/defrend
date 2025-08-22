@@ -17,23 +17,21 @@ uniform outline_g_fp {
     vec4 frustum_terms;
 };
 
-vec2	resolution = vec2(params1.x, params1.y);
-
 // outline
-float	depth_threshold		= params1.z;
-float	normal_threshold	= params1.w;
-float	normal_smoothing	= params2.x;
+float	depth_threshold		= params1.x;
+float	normal_threshold	= params1.y;
+float	normal_smoothing	= params1.z;
 
 // thickness
-float	max_thickness	= params2.y;
-float	min_thickness	= params2.z;
-float	max_distance	= params2.w;
-float	min_distance	= params3.x;
+float	max_thickness	= params2.x;
+float	min_thickness	= params2.y;
+float	max_distance	= params2.z;
+float	min_distance	= params2.w;
 
 // grazing prevention
-float	grazing_fresnel_power			= params3.y;
-float	grazing_angle_mask_power		= params3.z;
-float	grazing_angle_modulation_factor	= params3.w;
+float	grazing_fresnel_power			= params3.x;
+float	grazing_angle_mask_power		= params3.y;
+float	grazing_angle_modulation_factor	= params3.z;
 
 struct UVNeighbors {
 	vec2 center; 
@@ -142,6 +140,7 @@ layout(location = 0) out vec4 fragColor;
 
 void main() {
 
+	vec2 resolution = textureSize(depth_buffer, 0);
 	float aspect = float(resolution.y) / float(resolution.x);
 	UVNeighbors n = getNeighbors(var_texcoord0, max_thickness, aspect);
 	NeighborDepthSamples depth_samples = getLinearDepthSamples(n);

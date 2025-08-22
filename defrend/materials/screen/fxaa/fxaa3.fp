@@ -19,8 +19,8 @@ float rgb_to_luma (vec3 rgb) {
 	return sqrt(dot(rgb, vec3(0.299, 0.587, 0.114)));
 }
 
-vec2 texel = 1.0 / params.xy;
-int iterations = int(params.z);
+vec2 texel = 1.0 / textureSize(color_sampler, 0);
+int iterations = int(params.x);
 
 // Performs FXAA post-process anti-aliasing as described in the Nvidia FXAA white paper and the associated shader code.
 void main() {

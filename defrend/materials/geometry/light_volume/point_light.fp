@@ -19,7 +19,6 @@ uniform sampler2D normal_sampler;
 uniform sampler2D spec_glow_sampler;
 
 uniform point_light_fp {
-	vec4 resolution;
     vec4 frustum_corner;
     vec4 frustum_terms;
 };
@@ -28,7 +27,7 @@ layout(location = 0) out vec4 diff_out;
 layout(location = 1) out vec4 spec_out;
 
 void main() {
-	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
+	vec2 texcoord = gl_FragCoord.xy / textureSize(depth_buffer, 0);
     float depth = texture(depth_buffer, texcoord).r;
 	float z = linearizeDepth(depth, frustum_terms.xyz);
 	vec3 geom_pos = viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz);

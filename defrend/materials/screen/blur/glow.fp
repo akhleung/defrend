@@ -6,12 +6,12 @@ uniform sampler2D color_sampler;
 uniform sampler2D spec_glow_sampler;
 
 uniform bloom_fp {
-	vec4 params1;
+	vec4 params;
 };
 
-vec2	resolution	= vec2(params1.x, params1.y);
-int		radius		= int(params1.z);
-float	separation	= params1.w;
+vec2	resolution	= textureSize(color_sampler, 0);
+int		radius		= int(params.x);
+float	separation	= params.y;
 
 out vec4 fragColor;
 

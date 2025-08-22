@@ -13,8 +13,8 @@ layout(location = 0) out vec4 frag_color;
 float reducemul = 0.125;
 float reducemin = 0.0078125;
 vec3 luma = vec3(0.299, 0.587, 0.114);
-vec2 u_texel = 1.0 / params.xy;
-float u_strength = params.z;
+vec2 u_texel = 1.0 / textureSize(color_sampler, 0);
+float u_strength = params.x;
 
 void main() {
     

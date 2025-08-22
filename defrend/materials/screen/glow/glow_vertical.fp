@@ -9,9 +9,9 @@ uniform glow_fp {
 	vec4 params;
 };
 
-vec2	resolution	= vec2(params.x, params.y);
-int		radius		= int(params.z);
-float	separation	= params.w;
+vec2	resolution	= textureSize(glow_color_sampler, 0);
+int		radius		= int(params.x);
+float	separation	= params.y;
 vec2	delta		= separation * vec2(0, 1) / resolution;
 
 layout(location = 0) out vec4 fragColor;

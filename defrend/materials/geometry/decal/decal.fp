@@ -19,7 +19,6 @@ uniform sampler2D spec_glow_map;
 uniform sampler2D depth_buffer;
 
 uniform decal_fp {
-	vec4 resolution;
     vec4 frustum_corner;
     vec4 frustum_terms;
 };
@@ -54,7 +53,7 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 
 void main() {
     // reconstruct the position of the scene fragment that's overlapped by this decal projector fragment
-	vec2 texcoord = gl_FragCoord.xy / resolution.xy;
+	vec2 texcoord = gl_FragCoord.xy / textureSize(depth_buffer, 0);
 	float depth = rgba_to_float(texture(depth_buffer, texcoord));
     float z = linearizeDepth(depth, frustum_terms.xyz);
     vec4 g_position = vec4(viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz), 1.0);

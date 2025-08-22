@@ -9,9 +9,9 @@ uniform bloom_fp {
 	vec4 params;
 };
 
-vec2	resolution	= vec2(params.x, params.y);
-int		radius		= int(params.z);
-float	separation	= params.w;
+vec2	resolution	= textureSize(color_sampler, 0);
+int		radius		= int(params.x);
+float	separation	= params.y;
 float	dx			= separation / resolution.x;
 float	dy			= separation / resolution.y;
 

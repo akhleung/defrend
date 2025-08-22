@@ -95,86 +95,62 @@ local outline_params1 = vmath.vector4()
 local outline_params2 = vmath.vector4()
 local outline_params3 = vmath.vector4()
 function M.outline.init()
-	outline_params1.x = settings.resolution_x
-	outline_params1.y = settings.resolution_y
-	outline_params1.z = outline.depth_threshold
-	outline_params1.w = outline.normal_threshold
+	outline_params1.x = outline.depth_threshold
+	outline_params1.y = outline.normal_threshold
+	outline_params1.z = outline.normal_smoothing
 
-	outline_params2.x = outline.normal_smoothing
-	outline_params2.y = outline.max_thickness
-	outline_params2.z = outline.min_thickness
-	outline_params2.w = outline.max_distance
+	outline_params2.x = outline.max_thickness
+	outline_params2.y = outline.min_thickness
+	outline_params2.z = outline.max_distance
+	outline_params2.w = outline.min_distance
 
-	outline_params3.x = outline.min_distance
-	outline_params3.y = outline.grazing_fresnel_power
-	outline_params3.z = outline.grazing_angle_mask_power
-	outline_params3.w = outline.grazing_angle_modulation_factor
+	outline_params3.x = outline.grazing_fresnel_power
+	outline_params3.y = outline.grazing_angle_mask_power
+	outline_params3.z = outline.grazing_angle_modulation_factor
 
 	M.outline.uniforms.params1 = outline_params1
 	M.outline.uniforms.params2 = outline_params2
+	M.outline.uniforms.params3 = outline_params3
 end
 
 local glow = settings.glow
 local glow_params = vmath.vector4()
 function M.glow.init()
-	glow_params.x = settings.resolution_x
-	glow_params.y = settings.resolution_y
-	glow_params.z = glow.radius
-	glow_params.w = glow.separation
+	glow_params.x = glow.radius
+	glow_params.y = glow.separation
 	M.glow.uniforms.params = glow_params
 end
 
 local bloom = settings.bloom
-local bloom_params1 = vmath.vector4()
-local bloom_params2 = vmath.vector4()
+local bloom_params = vmath.vector4()
 function M.bloom.init()
-	bloom_params1.x = settings.resolution_x
-	bloom_params1.y = settings.resolution_y
-	bloom_params2.x = bloom.threshold
-	bloom_params2.y = bloom.radius
-	bloom_params2.z = bloom.separation
-	bloom_params2.w = bloom.strength
-	M.bloom.uniforms.params1 = bloom_params1
-	M.bloom.uniforms.params2 = bloom_params2
+	bloom_params.x = bloom.threshold
+	bloom_params.y = bloom.radius
+	bloom_params.z = bloom.separation
+	bloom_params.w = bloom.strength
+	M.bloom.uniforms.params = bloom_params
 end
 
 local box_blur = settings.box_blur
 local box_blur_params = vmath.vector4()
 function M.box_blur.init()
-	box_blur_params.x = settings.resolution_x
-	box_blur_params.y = settings.resolution_y
-	box_blur_params.z = box_blur.radius
-	box_blur_params.w = box_blur.separation
+	box_blur_params.x = box_blur.radius
+	box_blur_params.y = box_blur.separation
 	M.box_blur.uniforms.params = box_blur_params
 end
 
-local gaussian_blur = settings.gaussian_blur
-local gaussian_blur_params = vmath.vector4()
 function M.gaussian_blur.init()
-	gaussian_blur_params.x = settings.resolution_x
-	gaussian_blur_params.y = settings.resolution_y
-	-- if gaussian_blur.horizontal then
-	-- 	gaussian_blur_params.z = 1
-	-- 	gaussian_blur_params.w = 0
-	-- else
-	-- 	gaussian_blur_params.z = 0
-	-- 	gaussian_blur_params.w = 1
-	-- end
-	M.gaussian_blur.uniforms.params = gaussian_blur_params
+	-- just leave this stub here in case we need it someday
 end
 
 local dilate = settings.dilate
-local dilate_params1 = vmath.vector4()
-local dilate_params2 = vmath.vector4()
+local dilate_params = vmath.vector4()
 function M.dilate.init()
-	dilate_params1.x = settings.resolution_x
-	dilate_params1.y = settings.resolution_y
-	dilate_params2.x = dilate.min_threshold
-	dilate_params2.y = dilate.max_threshold
-	dilate_params2.z = dilate.radius
-	dilate_params2.w = dilate.separation
-	M.dilate.uniforms.params1 = dilate_params1
-	M.dilate.uniforms.params2 = dilate_params2
+	dilate_params.x = dilate.min_threshold
+	dilate_params.y = dilate.max_threshold
+	dilate_params.z = dilate.radius
+	dilate_params.w = dilate.separation
+	M.dilate.uniforms.params = dilate_params
 end
 
 local dof = settings.dof
@@ -196,18 +172,14 @@ end
 local kuwahara_blur = settings.kuwahara_blur
 local kuwahara_blur_params = vmath.vector4()
 function M.kuwahara_blur.init()
-	kuwahara_blur_params.x = settings.resolution_x
-	kuwahara_blur_params.y = settings.resolution_y
-	kuwahara_blur_params.z = kuwahara_blur.samples
+	kuwahara_blur_params.x = kuwahara_blur.samples
 	M.kuwahara_blur.uniforms.params = kuwahara_blur_params
 end
 
 local fxaa = settings.fxaa
 local fxaa_params = vmath.vector4()
 function M.fxaa.init()
-	fxaa_params.x = settings.resolution_x
-	fxaa_params.y = settings.resolution_y
-	fxaa_params.z = fxaa.strength
+	fxaa_params.x = fxaa.strength
 	M.fxaa.uniforms.params = fxaa_params
 end
 

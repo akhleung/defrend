@@ -40,7 +40,6 @@ function init(self)
 
 	geometry_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
 	geometry_options.constants				= render.constant_buffer()
-	geometry_options.constants.resolution	= vmath.vector4(settings.resolution_x, settings.resolution_y, 0, 0) ---@diagnostic disable-line: inject-field
 
 	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	shadow_options.constants		= render.constant_buffer()
@@ -451,42 +450,6 @@ local function update_camera_uniforms()
 	dof_options.constants.frustum_terms			= frustum_terms ---@diagnostic disable-line: inject-field
 end
 
-local function update_resolution_uniforms()
-	local rx, ry = settings.resolution_x, settings.resolution_y
-
-	local geometry_resolution = geometry_options.constants.resolution
-	geometry_resolution.x, geometry_resolution.y = rx, ry
-	geometry_options.constants.resolution = geometry_resolution ---@diagnostic disable-line: inject-field
-
-	local outline_params1 = outline_options.constants.params1
-	outline_params1.x, outline_params1.y = rx, ry
-	outline_options.constants.params1 = outline_params1 ---@diagnostic disable-line: inject-field
-
-	local glow_params = glow_options.constants.params
-	glow_params.x, glow_params.y = rx, ry
-	glow_options.constants.params = glow_params ---@diagnostic disable-line: inject-field
-
-	local bloom_params1 = bloom_options.constants.params1
-	bloom_params1.x, bloom_params1.y = rx, ry
-	bloom_options.constants.params1 = bloom_params1 ---@diagnostic disable-line: inject-field
-
-	local gaussian_blur_params = gaussian_blur_options.constants.params
-	gaussian_blur_params.x, gaussian_blur_params.y = rx, ry
-	gaussian_blur_options.constants.params = gaussian_blur_params ---@diagnostic disable-line: inject-field
-
-	local dilate_params1 = dilate_options.constants.params1
-	dilate_params1.x, dilate_params1.y = rx, ry
-	dilate_options.constants.params1 = dilate_params1 ---@diagnostic disable-line: inject-field
-
-	local kuwahara_blur_params = kuwahara_blur_options.constants.params
-	kuwahara_blur_params.x, kuwahara_blur_params.y = rx, ry
-	kuwahara_blur_options.constants.params = kuwahara_blur_params ---@diagnostic disable-line: inject-field
-
-	local fxaa_params = fxaa_options.constants.params
-	fxaa_params.x, fxaa_params.y = rx, ry
-	fxaa_options.constants.params = fxaa_params ---@diagnostic disable-line: inject-field
-end
-
 local MSG_WINDOW_RESIZED		= hash("window_resized")
 local MSG_SET_VIEW_PROJ			= hash("set_view_projection")
 function on_message(self, message_id, message)
@@ -505,7 +468,6 @@ function on_message(self, message_id, message)
 		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
-		update_resolution_uniforms()
 	end
 end
 

@@ -5,15 +5,14 @@ in vec2 var_texcoord0;
 uniform sampler2D color_sampler;
 
 uniform bloom_fp {
-	vec4 params1;
-	vec4 params2;
+	vec4 params;
 };
 
-vec2	resolution	= vec2(params1.x, params1.y);
-float	threshold	= params2.x;
-int		radius		= int(params2.y);
-float	separation	= params2.z;
-float	strength	= params2.w;
+vec2	resolution	= textureSize(color_sampler, 0);
+float	threshold	= params.x;
+int		radius		= int(params.y);
+float	separation	= params.z;
+float	strength	= params.w;
 
 layout(location = 0) out vec4 fragColor;
 
