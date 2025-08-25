@@ -5,6 +5,7 @@ in vec4 position;
 in mat4 mtx_world;
 #endif
 in vec4 color;
+in vec4 attn;
 
 uniform point_light_vp {
     #ifdef EDITOR
@@ -12,11 +13,13 @@ uniform point_light_vp {
     #endif
     mat4 mtx_view;
     mat4 mtx_proj;
+    vec4 light_vol_attn;
 };
 
 out vec3 var_center;
 out vec4 var_color;
 out float var_radius;
+out float var_attn;
 #ifdef EDITOR
 out vec3 var_normal;
 #endif
@@ -27,6 +30,7 @@ void main() {
 	vec4 vertex = (mtx_worldview * position);
 	var_radius = distance(var_center, vertex.xyz);
 	var_color = color;
+    var_attn = attn.x != 0 ? attn.x : light_vol_attn.x;
     gl_Position = mtx_proj * vertex;
 
     #ifdef EDITOR // visualization for viewing point light volumes in the editor

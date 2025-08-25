@@ -10,6 +10,7 @@
 in vec3 var_center;
 in vec4 var_color;
 in float var_radius;
+in float var_attn;
 #ifdef EDITOR
 in vec3 var_normal;
 #endif
@@ -42,7 +43,7 @@ void main() {
 	vec3 to_light_normalized = normalize(to_light);
 	float diff = diffuse(to_light_normalized, normal);
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
-	float attn = attn_inv_pow(d, var_radius);
+	float attn = attn_inv_pow(d, var_radius, var_attn);
 	diff_out = var_color * diff * attn;
 	spec_out = var_color * spec * attn;
 

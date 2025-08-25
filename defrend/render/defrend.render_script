@@ -39,7 +39,7 @@ function init(self)
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
 	geometry_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
-	geometry_options.constants				= render.constant_buffer()
+	geometry_options.constants				= uniforms.geometry.uniforms
 
 	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	shadow_options.constants		= render.constant_buffer()

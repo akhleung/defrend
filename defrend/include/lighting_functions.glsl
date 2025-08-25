@@ -77,8 +77,8 @@ mediump float attn_inv_sq_smooth(mediump float d, mediump float r) {
     return strength * strength;
 }
 
-float attn_inv_pow(float d, float r) {
-    return 1.0 - pow(clamp(d / r, 0.0, 1.0), 6);
+float attn_inv_pow(float d, float r, float p) {
+    return 1.0 - pow(clamp(d / r, 0.0, 1.0), p);
 }
 
 #endif

@@ -2,6 +2,7 @@
 local settings = require "defrend.render.settings"
 
 local M = {
+	geometry			= { uniforms = render.constant_buffer() },
 	light				= {},
 	shadow				= {},
 	light_and_shadow	= { uniforms = render.constant_buffer() },
@@ -20,6 +21,7 @@ local M = {
 
 local light = settings.light
 local fog_params = vmath.vector4()
+local light_vol_attn = vmath.vector4()
 function M.light.init()
 	fog_params.x = light.fog_near
 	fog_params.y = light.fog_far
@@ -28,6 +30,11 @@ function M.light.init()
 	M.light_and_shadow.uniforms.ambient_color		= light.ambient_color
 	M.light_and_shadow.uniforms.directional_color	= light.directional_color
 	M.light_and_shadow.uniforms.directional_to		= light.directional_to
+
+	light_vol_attn.x = light.point_light_attenuation
+	light_vol_attn.y = light.spot_light_range_attenuation
+	light_vol_attn.z = light.spot_light_spread_attenuation
+	M.geometry.uniforms.light_vol_attn = light_vol_attn
 end
 
 local shadow = settings.shadow

@@ -5,7 +5,7 @@ in vec4 position;
 in mat4 mtx_world;
 #endif
 in vec4 color;
-in vec4 start;
+in vec4 start_attn;
 
 uniform spot_light_vp {
     #ifdef EDITOR
@@ -13,14 +13,17 @@ uniform spot_light_vp {
     #endif
     mat4 mtx_view;
     mat4 mtx_proj;
+    vec4 light_vol_attn;
 };
 
 out vec3 var_source;
 out vec3 var_light_dir;
 out vec4 var_color;
-out float var_field;
+out float var_spread;
 out float var_range;
 out float var_start;
+out float var_range_attn;
+out float var_spread_attn;
 #ifdef EDITOR
 out vec3 var_frag_pos;
 out vec3 var_edge_pos;
@@ -35,14 +38,16 @@ void main() {
     vec3 target = (mtx_worldview * vec4(0, -0.5, 0, 1)).xyz;
     vec3 edge = (mtx_worldview * vec4(1, -0.5, 0, 1)).xyz;
     var_light_dir = normalize(target - var_source);
-    var_field = dot(var_light_dir, normalize(edge - var_source));
+    var_spread = dot(var_light_dir, normalize(edge - var_source));
     var_range = distance(var_source, target);
-    var_start = start.x * var_range;
+    var_start = start_attn.x * var_range;
 	var_color = color;
+    var_range_attn = start_attn.y != 0 ? start_attn.y : light_vol_attn.y;
+    var_spread_attn = start_attn.z != 0 ? start_attn.z : light_vol_attn.z;
     gl_Position = mtx_proj * mtx_worldview * position;
 
     #ifdef EDITOR // visualization for viewing spot light volumes in the editor
-    var_pcnt_start = 100 * start.x;
+    var_pcnt_start = 100 * start_attn.x;
     var_frag_pos = (mtx_worldview * position).xyz;
     var_edge_pos = edge;
     vec3 lat_norm = position.xyz - vec3(0, position.y, 0);

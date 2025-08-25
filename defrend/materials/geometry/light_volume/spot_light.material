@@ -57,7 +57,7 @@ attributes {
   step_function: VERTEX_STEP_FUNCTION_INSTANCE
 }
 attributes {
-  name: "start"
+  name: "start_attn"
   double_values {
     v: 0.0
     v: 0.0

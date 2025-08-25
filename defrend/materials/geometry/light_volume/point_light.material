@@ -56,3 +56,13 @@ attributes {
   }
   step_function: VERTEX_STEP_FUNCTION_INSTANCE
 }
+attributes {
+  name: "attn"
+  double_values {
+    v: 0.0
+    v: 0.0
+    v: 0.0
+    v: 0.0
+  }
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+}

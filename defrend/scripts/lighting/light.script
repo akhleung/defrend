@@ -6,6 +6,9 @@ go.property("point_lights_enabled", true)
 go.property("spot_lights_enabled", true)
 go.property("sun_url", msg.url())
 go.property("sun_color", vmath.vector4(1))
+go.property("point_light_attenuation", 5)
+go.property("spot_light_range_attenuation", 5)
+go.property("spot_light_spread_attenuation", 1)
 go.property("ambient_color", vmath.vector4(1))
 go.property("fog_color", vmath.vector4())
 go.property("fog_near", 800)
@@ -29,6 +32,10 @@ local function do_init(self)
 	else
 		settings.light.directional_color	= vmath.vector4()
 	end
+
+	settings.light.point_light_attenuation			= self.point_light_attenuation
+	settings.light.spot_light_range_attenuation		= self.spot_light_range_attenuation
+	settings.light.spot_light_spread_attenuation	= self.spot_light_spread_attenuation
 
 	uniforms.light.init()
 end
