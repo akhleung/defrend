@@ -16,7 +16,7 @@ embedded_components {
   "    }\n"
   "  }\n"
   "  attributes {\n"
-  "    name: \"start\"\n"
+  "    name: \"start_attn\"\n"
   "    double_values {\n"
   "      v: 0.5\n"
   "      v: 0.0\n"
