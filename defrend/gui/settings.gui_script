@@ -1,0 +1,50 @@
+local druid = require("druid.druid")
+
+---@class Settings_Gui
+---@field druid druid.instance
+---@field button druid.button
+---@field text druid.text
+---@field rich_input druid.rich_input
+
+---@param self Settings_Gui
+function button_callback(self)
+	self.text:set_text("Druid button clicked")
+end
+
+---@param self Settings_Gui
+function init(self)
+	self.druid = druid.new(self)
+
+	self.button = self.druid:new_button("button1", button_callback)
+	self.text = self.druid:new_text("text1", "Hello from Druid")
+
+	self.rich_input = self.druid:new_rich_input("rich_input1")
+	self.rich_input:set_placeholder("Enter something")
+	self.rich_input.input.on_input_unselect:subscribe(function (_, text)
+		print("YOU TYPED", text)
+	end)
+end
+
+---@param self Settings_Gui
+function final(self)
+	self.druid:final()
+end
+
+---@param self Settings_Gui
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+---@param self Settings_Gui
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+---@param self Settings_Gui
+function on_input(self, action_id, action)
+	self.druid:on_input(action_id, action)
+end
+
+---@param self Settings_Gui
+function on_reload(self)
+end

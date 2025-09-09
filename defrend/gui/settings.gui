@@ -1,0 +1,117 @@
+script: "/defrend/gui/settings.gui_script"
+fonts {
+  name: "default"
+  font: "/builtins/fonts/default.font"
+}
+fonts {
+  name: "druid_text_regular"
+  font: "/druid/fonts/druid_text_regular.font"
+}
+nodes {
+  position {
+    x: 126.0
+    y: 823.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.502
+  }
+  type: TYPE_BOX
+  id: "button1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Hello"
+  font: "druid_text_regular"
+  id: "text1"
+  parent: "button1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 128.0
+    y: 716.0
+  }
+  size {
+    x: 200.0
+    y: 40.0
+  }
+  color {
+    x: 0.302
+    y: 0.302
+    z: 0.302
+  }
+  type: TYPE_BOX
+  id: "input1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "rich_input1"
+  parent: "input1"
+  inherit_alpha: true
+  template: "/druid/custom/rich_input/rich_input.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "rich_input1/root"
+  parent: "rich_input1"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "rich_input1/button"
+  parent: "rich_input1/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "rich_input1/placeholder_text"
+  parent: "rich_input1/root"
+  template_node_child: true
+}
+nodes {
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  id: "rich_input1/input_text"
+  parent: "rich_input1/root"
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "rich_input1/cursor_node"
+  parent: "rich_input1/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "rich_input1/cursor_text"
+  parent: "rich_input1/cursor_node"
+  template_node_child: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
+materials {
+  name: "gui_material"
+  material: "/builtins/materials/gui.material"
+}
+materials {
+  name: "font_fnt_material"
+  material: "/builtins/fonts/font-fnt.material"
+}
