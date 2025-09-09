@@ -38,8 +38,8 @@ function init(self)
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
-	geometry_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
-	geometry_options.constants				= uniforms.geometry.uniforms
+	geometry_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
+	geometry_options.constants		= uniforms.geometry.uniforms
 
 	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	shadow_options.constants		= render.constant_buffer()
@@ -85,7 +85,7 @@ function update(self)
 
 	local rx, ry = settings.resolution_x, settings.resolution_y
 
-	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
+	render.set_depth_func(graphics.COMPARE_FUNC_LESS)
 	render.set_depth_mask(true)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.enable_state(graphics.STATE_CULL_FACE)
@@ -158,6 +158,7 @@ function update(self)
 	end
 
 	-- render the skybox --
+	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	render.disable_state(graphics.STATE_BLEND)
 	if settings.geometry.skybox_enabled then
