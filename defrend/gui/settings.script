@@ -1,5 +1,7 @@
-local style = require "defrend.gui.style"
-local tab_lighting = require "defrend.gui.tab01_lighting"
+local style			= require "defrend.gui.style"
+local tab_lighting	= require "defrend.gui.tab01_lighting"
+local tab_shadows	= require "defrend.gui.tab02_shadows"
+local tab_ssao		= require "defrend.gui.tab03_ssao"
 
 go.property("show_settings", true)
 
@@ -19,7 +21,7 @@ function update(self, dt)
 		return
 	end
 
-	imgui.begin_window("Settings")
+	imgui.begin_window("Settings", false, imgui.WINDOWFLAGS_ALWAYSAUTORESIZE)
 	imgui.begin_tab_bar("tabs")
 
 	local tab1_open = imgui.begin_tab_item("Lighting")
@@ -28,17 +30,20 @@ function update(self, dt)
 		imgui.end_tab_item()
 	end
 
+	local tab2_open = imgui.begin_tab_item("Shadows")
+	if tab2_open then
+		tab_shadows(self)
+		imgui.end_tab_item()
+	end
+
+	local tab3_open = imgui.begin_tab_item("SSAO")
+	if tab3_open then
+		tab_ssao(self)
+		imgui.end_tab_item()
+	end
+
 	imgui.end_tab_bar()
 	imgui.end_window()
-end
-
-function fixed_update(self, dt)
-	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
-	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
-	-- Physics section of game.project
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
 end
 
 function on_message(self, message_id, message, sender)

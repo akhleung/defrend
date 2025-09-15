@@ -91,9 +91,7 @@ function update(self)
 	render.enable_state(graphics.STATE_CULL_FACE)
 	render.disable_state(graphics.STATE_BLEND)
 
-	if settings.shadow.enabled then
-		render_shadows()
-	end
+	render_shadows()
 
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
@@ -451,8 +449,8 @@ local function update_camera_uniforms()
 	dof_options.constants.frustum_terms			= frustum_terms ---@diagnostic disable-line: inject-field
 end
 
-local MSG_WINDOW_RESIZED		= hash("window_resized")
-local MSG_SET_VIEW_PROJ			= hash("set_view_projection")
+local MSG_WINDOW_RESIZED	= hash("window_resized")
+local MSG_SET_VIEW_PROJ		= hash("set_view_projection")
 function on_message(self, message_id, message)
 	local scene_camera = cameras.scene_camera
 	local gui_camera = cameras.gui_camera
@@ -473,14 +471,17 @@ function on_message(self, message_id, message)
 end
 
 render_shadows = function()
+	render.set_render_target(shadow_map)
+	render.clear(clear_options.clear_shadow_options)
+	if not settings.shadow.enabled then
+		return
+	end
 	local refresh_shadows = shadows.refresh_shadows
 	local shadow_settings = settings.shadow
 	local projections = shadow_settings.projections
 	local partitions = shadow_settings.partitions
 	local atlas_resolution = shadow_settings.atlas_resolution
 	local map_resolution = shadow_settings.map_resolution
-	render.set_render_target(shadow_map)
-	render.clear(clear_options.clear_shadow_options)
 	for i = 1, #partitions do
 		local mtx_view, mtx_proj = refresh_shadows(projections[i], i)
 		local mtx_light = mtx_proj * mtx_view

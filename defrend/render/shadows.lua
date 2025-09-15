@@ -7,9 +7,10 @@ local M = {}
 local UP = vmath.vector3(0, 1, 0)
 local MAX_NUM = 2000000000
 local MIN_NUM = -2000000000
-local frustums = {}
+local frustums
 local z_padding_factor = settings.shadow.z_padding_factor
 function M.init()
+	frustums = {}
 	for i = 1, #settings.shadow.cascade do
 		frustums[i] = {
 			min_x = 0, max_x = 0,
