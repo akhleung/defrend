@@ -56,15 +56,16 @@ local M = {
 	},
 	outline = {
 		enabled = false,
+		outline_color = vmath.vector4(0, 0, 0, 0.5),
 		-- outline
 		depth_threshold		= 0.025,
 		normal_threshold	= 0.5,
 		normal_smoothing	= 0.25,
 		-- thickness
-		max_thickness	= 1.3,
 		min_thickness	= 0.5,
-		max_distance	= 75.0,
+		max_thickness	= 1.3,
 		min_distance	= 2.0,
+		max_distance	= 75.0,
 		-- grazing prevention
 		grazing_fresnel_power			= 5.0,
 		grazing_angle_mask_power		= 1.0,
@@ -112,17 +113,10 @@ local M = {
 	},
 	fxaa = {
 		enabled = true,
-		strength = 0,
+		iterations = 3,
 	},
 	visualize = {
-		enabled = false,
-		g_diffuse = false,
-		g_normals = false,
-		g_spec_glow = false,
-		l_diffuse = false,
-		l_specular = false,
-		shadow_atlas = false,
-		ssao = false,
+		option = nil,
 	},
 }
 

@@ -1,7 +1,14 @@
-local style			= require "defrend.gui.style"
-local tab_lighting	= require "defrend.gui.tab01_lighting"
-local tab_shadows	= require "defrend.gui.tab02_shadows"
-local tab_ssao		= require "defrend.gui.tab03_ssao"
+local style		= require "defrend.gui.style"
+local visualize	= require "defrend.gui.panels.visualization"
+local geometry	= require "defrend.gui.panels.geometry"
+local lighting	= require "defrend.gui.panels.lighting"
+local shadows	= require "defrend.gui.panels.shadows"
+local ssao		= require "defrend.gui.panels.ssao"
+local glow		= require "defrend.gui.panels.glow"
+local dof		= require "defrend.gui.panels.dof"
+local outline	= require "defrend.gui.panels.outline"
+local kuwahara	= require "defrend.gui.panels.kuwahara"
+local fxaa		= require "defrend.gui.panels.fxaa"
 
 go.property("show_settings", true)
 
@@ -22,27 +29,57 @@ function update(self, dt)
 	end
 
 	imgui.begin_window("Settings", false, imgui.WINDOWFLAGS_ALWAYSAUTORESIZE)
-	imgui.begin_tab_bar("tabs")
 
-	local tab1_open = imgui.begin_tab_item("Lighting")
-	if tab1_open then
-		tab_lighting(self)
-		imgui.end_tab_item()
+	if imgui.tree_node("Visualizations") then
+		visualize(self)
+		imgui.tree_pop()
 	end
 
-	local tab2_open = imgui.begin_tab_item("Shadows")
-	if tab2_open then
-		tab_shadows(self)
-		imgui.end_tab_item()
+	if imgui.tree_node("Geometry") then
+		geometry(self)
+		imgui.tree_pop()
 	end
 
-	local tab3_open = imgui.begin_tab_item("SSAO")
-	if tab3_open then
-		tab_ssao(self)
-		imgui.end_tab_item()
+	if imgui.tree_node("Lighting") then
+		lighting(self)
+		imgui.tree_pop()
 	end
 
-	imgui.end_tab_bar()
+	if imgui.tree_node("Shadows") then
+		shadows(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("SSAO") then
+		ssao(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Glow") then
+		glow(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Depth of field") then
+		dof(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Outline") then
+		outline(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Kuwahara blur") then
+		kuwahara(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("FXAA") then
+		fxaa(self)
+		imgui.tree_pop()
+	end
+
 	imgui.end_window()
 end
 
