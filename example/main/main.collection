@@ -545,6 +545,10 @@ instances {
     z: 15.0
   }
 }
+instances {
+  id: "graphics_settings"
+  prototype: "/defrend/gui/graphics_settings.go"
+}
 collection_instances {
   id: "neighborhood"
   collection: "/example/main/neighborhood.collection"

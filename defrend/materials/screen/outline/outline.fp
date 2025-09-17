@@ -13,6 +13,7 @@ uniform outline_g_fp {
     vec4 params1;
     vec4 params2;
 	vec4 params3;
+	vec4 outline_color;
     vec4 frustum_corner;
     vec4 frustum_terms;
 };
@@ -162,7 +163,7 @@ void main() {
 	float normEdges = min(detectEdgesNormal(n, normal_sampler), 1.0);
 	
 	vec4 color = texture(color_sampler, var_texcoord0);
-	vec4 outlineColor = color * 0.25;
+	vec4 outlineColor = vec4(mix(color.rgb, outline_color.rgb, outline_color.a), outline_color.a);
 	outlineColor.a = max(depthEdges, normEdges) * outlineColor.a * fade_a;
 	fragColor.rgb = mix(color.rgb, outlineColor.xyz, outlineColor.a);
 	fragColor.a = 1;

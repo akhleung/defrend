@@ -14,5 +14,5 @@ layout(location = 0) out vec4 frag_color;
 
 void main() {
     vec4 color = texture(color_sampler, var_texcoord0);
-    frag_color = vec4(pow(color.rgb, vec3(1 / gamma)), 1.0);
+    frag_color = vec4(pow(color.rgb, vec3(1 / gamma)), color.a);
 }

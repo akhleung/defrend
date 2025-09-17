@@ -2,15 +2,16 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", false)
+go.property("outline_color", vmath.vector4(0, 0, 0, 0.5))
 -- outline detection
 go.property("depth_threshold", 0.025)
 go.property("normal_threshold", 0.5)
 go.property("normal_smoothing", 0.25)
 -- thickness
-go.property("max_thickness", 1.3)
 go.property("min_thickness", 0.5)
-go.property("max_distance", 75.0)
+go.property("max_thickness", 1.3)
 go.property("min_distance", 2.0)
+go.property("max_distance", 75.0)
 -- grazing prevention
 go.property("grazing_fresnel_power", 5.0)
 go.property("grazing_angle_mask_power", 1.0)
@@ -18,13 +19,14 @@ go.property("grazing_angle_modulation_factor", 50.0)
 
 local function do_init(self)
 	settings.outline.enabled							= self.enabled
+	settings.outline.outline_color						= self.outline_color
 	settings.outline.depth_threshold					= self.depth_threshold
 	settings.outline.normal_threshold					= self.normal_threshold
 	settings.outline.normal_smoothing					= self.normal_smoothing
-	settings.outline.max_thickness						= self.max_thickness
 	settings.outline.min_thickness						= self.min_thickness
-	settings.outline.max_distance						= self.max_distance
+	settings.outline.max_thickness						= self.max_thickness
 	settings.outline.min_distance						= self.min_distance
+	settings.outline.max_distance						= self.max_distance
 	settings.outline.grazing_fresnel_power				= self.grazing_fresnel_power
 	settings.outline.grazing_angle_mask_power			= self.grazing_angle_mask_power
 	settings.outline.grazing_angle_modulation_factor	= self.grazing_angle_modulation_factor

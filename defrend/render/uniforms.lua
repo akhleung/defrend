@@ -41,6 +41,8 @@ local shadow = settings.shadow
 local shadow_params1 = vmath.vector4()
 local shadow_params2 = vmath.vector4()
 function M.shadow.init(fov, aspect, near, far)
+	shadow.partitions = {}
+	shadow.projections = {}
 	shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
 	shadow.map_resolution = shadow.atlas_resolution / shadow.map_dimension
 	shadow.texel_size = 1 / shadow.map_resolution
@@ -115,9 +117,10 @@ function M.outline.init()
 	outline_params3.y = outline.grazing_angle_mask_power
 	outline_params3.z = outline.grazing_angle_modulation_factor
 
-	M.outline.uniforms.params1 = outline_params1
-	M.outline.uniforms.params2 = outline_params2
-	M.outline.uniforms.params3 = outline_params3
+	M.outline.uniforms.params1			= outline_params1
+	M.outline.uniforms.params2			= outline_params2
+	M.outline.uniforms.params3			= outline_params3
+	M.outline.uniforms.outline_color	= outline.outline_color
 end
 
 local glow = settings.glow
@@ -186,7 +189,7 @@ end
 local fxaa = settings.fxaa
 local fxaa_params = vmath.vector4()
 function M.fxaa.init()
-	fxaa_params.x = fxaa.strength
+	fxaa_params.x = fxaa.iterations
 	M.fxaa.uniforms.params = fxaa_params
 end
 

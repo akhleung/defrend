@@ -2,18 +2,16 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", true)
-go.property("strength", 12)
+go.property("iterations", 12)
 
 local function do_init(self)
-	settings.fxaa.enabled	= self.enabled
-	settings.fxaa.strength	= self.strength
+	settings.fxaa.enabled		= self.enabled
+	settings.fxaa.iterations	= self.iterations
 	uniforms.fxaa.init()
 end
 
 function init(self)
-	settings.fxaa.enabled	= self.enabled
-	settings.fxaa.strength	= self.strength
-	uniforms.fxaa.init()
+	do_init(self)
 end
 
 local MSG_REFRESH = hash("refresh")

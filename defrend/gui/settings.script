@@ -1,0 +1,108 @@
+local visualize	= require "defrend.gui.panels.visualization"
+local geometry	= require "defrend.gui.panels.geometry"
+local lighting	= require "defrend.gui.panels.lighting"
+local shadows	= require "defrend.gui.panels.shadows"
+local ssao		= require "defrend.gui.panels.ssao"
+local glow		= require "defrend.gui.panels.glow"
+local dof		= require "defrend.gui.panels.dof"
+local outline	= require "defrend.gui.panels.outline"
+local kuwahara	= require "defrend.gui.panels.kuwahara"
+local bloom		= require "defrend.gui.panels.bloom"
+local dilate	= require "defrend.gui.panels.dilate"
+local gaussian	= require "defrend.gui.panels.gaussian"
+local gamma		= require "defrend.gui.panels.gamma"
+local fxaa		= require "defrend.gui.panels.fxaa"
+
+go.property("enabled", true)
+
+function init(self)
+	imgui.set_ini_filename()
+end
+
+function update(self, dt)
+	if not self.enabled then
+		return
+	end
+
+	imgui.begin_window("Settings", false, imgui.WINDOWFLAGS_ALWAYSAUTORESIZE)
+
+	if imgui.tree_node("Visualizations") then
+		visualize(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Geometry") then
+		geometry(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Lighting") then
+		lighting(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Shadows") then
+		shadows(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("SSAO") then
+		ssao(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Glow") then
+		glow(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Depth of field") then
+		dof(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Outline") then
+		outline(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Kuwahara blur") then
+		kuwahara(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Bloom") then
+		bloom(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Dilate") then
+		dilate(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Gaussian blur") then
+		gaussian(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Gamma correction") then
+		gamma(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("FXAA") then
+		fxaa(self)
+		imgui.tree_pop()
+	end
+
+	imgui.end_window()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == "enable" then
+		self.enabled = true
+	elseif message_id == "disable" then
+		self.enabled = false
+	end
+end
