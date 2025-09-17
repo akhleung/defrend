@@ -8,6 +8,10 @@ local glow		= require "defrend.gui.panels.glow"
 local dof		= require "defrend.gui.panels.dof"
 local outline	= require "defrend.gui.panels.outline"
 local kuwahara	= require "defrend.gui.panels.kuwahara"
+local bloom		= require "defrend.gui.panels.bloom"
+local dilate	= require "defrend.gui.panels.dilate"
+local gaussian	= require "defrend.gui.panels.gaussian"
+local gamma		= require "defrend.gui.panels.gamma"
 local fxaa		= require "defrend.gui.panels.fxaa"
 
 go.property("show_settings", true)
@@ -72,6 +76,26 @@ function update(self, dt)
 
 	if imgui.tree_node("Kuwahara blur") then
 		kuwahara(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Bloom") then
+		bloom(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Dilate") then
+		dilate(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Gaussian blur") then
+		gaussian(self)
+		imgui.tree_pop()
+	end
+
+	if imgui.tree_node("Gamma correction") then
+		gamma(self)
 		imgui.tree_pop()
 	end
 
