@@ -594,11 +594,6 @@ collection_instances {
     properties {
       id: "shadow"
       properties {
-        id: "enabled"
-        value: "true"
-        type: PROPERTY_TYPE_BOOLEAN
-      }
-      properties {
         id: "scene_camera_url"
         value: "/camera#camera"
         type: PROPERTY_TYPE_URL
