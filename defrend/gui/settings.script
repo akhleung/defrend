@@ -1,4 +1,3 @@
-local style		= require "defrend.gui.style"
 local visualize	= require "defrend.gui.panels.visualization"
 local geometry	= require "defrend.gui.panels.geometry"
 local lighting	= require "defrend.gui.panels.lighting"
@@ -14,21 +13,14 @@ local gaussian	= require "defrend.gui.panels.gaussian"
 local gamma		= require "defrend.gui.panels.gamma"
 local fxaa		= require "defrend.gui.panels.fxaa"
 
-go.property("show_settings", true)
+go.property("enabled", true)
 
 function init(self)
-	style.set()
 	imgui.set_ini_filename()
 end
 
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
-
 function update(self, dt)
-	if not self.show_settings then
+	if not self.enabled then
 		return
 	end
 
@@ -108,25 +100,9 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
-end
-
-function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
-end
-
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Learn more: https://defold.com/manuals/hot-reload/
-	-- Remove this function if not needed
+	if message_id == "enable" then
+		self.enabled = true
+	elseif message_id == "disable" then
+		self.enabled = false
+	end
 end
