@@ -36,4 +36,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.dilate.init()
 	end
+
+	imgui.spacing()
 end

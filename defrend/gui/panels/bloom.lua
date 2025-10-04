@@ -36,4 +36,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.bloom.init()
 	end
+
+	imgui.spacing()
 end

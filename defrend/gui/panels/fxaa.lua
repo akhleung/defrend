@@ -18,4 +18,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.fxaa.init()
 	end
+
+	imgui.spacing()
 end

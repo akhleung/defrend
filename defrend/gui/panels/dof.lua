@@ -33,4 +33,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.dof.init()
 	end
+
+	imgui.spacing()
 end

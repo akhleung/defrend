@@ -88,4 +88,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.outline.init()
 	end
+
+	imgui.spacing()
 end

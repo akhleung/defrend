@@ -72,4 +72,6 @@ return function (self)
 	if uniforms_changed then
 		uniforms.ssao.init()
 	end
+
+	imgui.spacing()
 end

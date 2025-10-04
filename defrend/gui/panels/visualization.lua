@@ -34,4 +34,6 @@ return function (self)
 	if imgui.radio_button("SSAO", visualize.option == "ssao") then
 		visualize.option = "ssao"
 	end
+
+	imgui.spacing()
 end
