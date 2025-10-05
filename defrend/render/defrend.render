@@ -76,10 +76,6 @@ render_resources {
   path: "/defrend/materials/screen/blur/gaussian_vertical.material"
 }
 render_resources {
-  name: "glow_material"
-  path: "/defrend/materials/screen/glow/glow.material"
-}
-render_resources {
   name: "glow_horizontal_material"
   path: "/defrend/materials/screen/glow/glow_horizontal.material"
 }
@@ -102,4 +98,8 @@ render_resources {
 render_resources {
   name: "spot_light_material"
   path: "/defrend/materials/geometry/light_volume/spot_light.material"
+}
+render_resources {
+  name: "glow_color_material"
+  path: "/defrend/materials/screen/glow/glow_color.material"
 }

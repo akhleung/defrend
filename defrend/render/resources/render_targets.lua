@@ -2,7 +2,8 @@ local settings = require "defrend.render.settings"
 
 local M = {}
 
-local canvases
+local full_targets
+local qtr_targets
 
 function M.init()
 	local rgba_params = {
@@ -45,31 +46,57 @@ function M.init()
 			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- specular reflectance
 		}
 	)
-	local post_source = render.render_target(
-		"post_left",
+	local full_source = render.render_target(
+		"full_1",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
 		}
 	)
-	local post_target = render.render_target(
-		"post_right",
+	local full_target = render.render_target(
+		"full_2",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
+		}
+	)
+	local qtr_source = render.render_target(
+		"qtr_1",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 2,
+				height = render.get_window_height() / 2,
+			}
+		}
+	)
+	local qtr_target = render.render_target(
+		"qtr_2",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 2,
+				height = render.get_window_height() / 2,
+			}
 		}
 	)
 
 	M.shadow_map	= shadow_map
 	M.g_buffer		= g_buffer
 	M.l_buffer		= l_buffer
-	M.post_source	= post_source
-	M.post_target	= post_target
+	M.full_source	= full_source
+	M.full_target	= full_target
+	M.qtr_source	= qtr_source
+	M.qtr_target	= qtr_target
 
-	canvases = { g_buffer, l_buffer, post_source, post_target }
+	full_targets	= { g_buffer, l_buffer, full_source, full_target }
+	qtr_targets		= { qtr_source, qtr_target }
 end
 
 function M.set_resolution(w, h)
-	for _, rt in ipairs(canvases) do
+	for _, rt in ipairs(full_targets) do
 		render.set_render_target_size(rt, w, h)
+	end
+	for _, rt in ipairs(qtr_targets) do
+		render.set_render_target_size(rt, w / 2, h / 2)
 	end
 end
 

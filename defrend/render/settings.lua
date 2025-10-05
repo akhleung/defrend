@@ -73,6 +73,7 @@ local M = {
 	},
 	glow = {
 		enabled = false,
+		downsample = false;
 		radius = 4,
 		separation = 1,
 	},
@@ -89,6 +90,7 @@ local M = {
 	},
 	gaussian_blur = {
 		enabled = false,
+		downsample = false,
 	},
 	kuwahara_blur = {
 		enabled = false,
