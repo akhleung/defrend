@@ -69,11 +69,11 @@ render_resources {
 }
 render_resources {
   name: "gaussian_blur_horizontal_material"
-  path: "/defrend/materials/screen/blur/gaussian_horizontal.material"
+  path: "/defrend/materials/screen/gaussian_blur/gaussian_horizontal.material"
 }
 render_resources {
   name: "gaussian_blur_vertical_material"
-  path: "/defrend/materials/screen/blur/gaussian_vertical.material"
+  path: "/defrend/materials/screen/gaussian_blur/gaussian_vertical.material"
 }
 render_resources {
   name: "glow_horizontal_material"
@@ -102,4 +102,12 @@ render_resources {
 render_resources {
   name: "glow_color_material"
   path: "/defrend/materials/screen/glow/glow_color.material"
+}
+render_resources {
+  name: "kawase_downsample_material"
+  path: "/defrend/materials/screen/dual_kawase_blur/downsample.material"
+}
+render_resources {
+  name: "kawase_upsample_material"
+  path: "/defrend/materials/screen/dual_kawase_blur/upsample.material"
 }

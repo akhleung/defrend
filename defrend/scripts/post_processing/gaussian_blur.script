@@ -2,9 +2,11 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", false)
+go.property("separation", 1.0)
 
 local function do_init(self)
 	settings.gaussian_blur.enabled = self.enabled
+	settings.gaussian_blur.separation = self.separation
 	uniforms.gaussian_blur.init()
 end
 

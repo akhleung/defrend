@@ -1,15 +1,15 @@
 local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
-go.property("enabled", true)
-go.property("downsample", true)
+go.property("enabled", false)
 go.property("separation", 1.0)
+go.property("strength", 1.0)
 
 local function do_init(self)
-	settings.glow.enabled = self.enabled
-	settings.glow.downsample = self.downsample
-	settings.glow.separation = self.separation
-	uniforms.glow.init()
+	settings.dual_kawase_blur.enabled = self.enabled
+	settings.dual_kawase_blur.separation = self.separation
+	settings.dual_kawase_blur.strength = self.strength
+	uniforms.dual_kawase_blur.init()
 end
 
 function init(self)

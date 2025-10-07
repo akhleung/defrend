@@ -16,6 +16,7 @@ local outline_options		= {}
 local glow_options			= {}
 local bloom_options			= {}
 local gaussian_blur_options	= {}
+local dual_kawase_options	= {}
 local dilate_options		= {}
 local kuwahara_blur_options	= {}
 local gamma_options			= {}
@@ -54,6 +55,7 @@ function init(self)
 	glow_options.constants          = uniforms.glow.uniforms
 	bloom_options.constants         = uniforms.bloom.uniforms
 	gaussian_blur_options.constants = uniforms.gaussian_blur.uniforms
+	dual_kawase_options.constants	= uniforms.dual_kawase_blur.uniforms
 	dilate_options.constants        = uniforms.dilate.uniforms
 	kuwahara_blur_options.constants = uniforms.kuwahara_blur.uniforms
 	gamma_options.constants         = uniforms.gamma.uniforms
@@ -325,7 +327,7 @@ function update(self)
 			render.set_render_target(qtr_target)
 			render.enable_material("gaussian_blur_horizontal_material")
 			render.enable_texture("color_sampler", qtr_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, gaussian_blur_options)
+			render.draw(predicates.screen, glow_options)
 			render.disable_texture("color_sampler")
 			render.disable_material()
 			-- blur vertically
@@ -333,7 +335,7 @@ function update(self)
 			render.set_render_target(qtr_target)
 			render.enable_material("gaussian_blur_vertical_material")
 			render.enable_texture("color_sampler", qtr_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, gaussian_blur_options)
+			render.draw(predicates.screen, glow_options)
 			render.disable_texture("color_sampler")
 			render.disable_material()
 			-- upsample and add the blurred glow to the render
@@ -431,6 +433,27 @@ function update(self)
 			render.disable_texture("input_sampler")
 			render.disable_material()
 		end
+	end
+
+	if settings.dual_kawase_blur.enabled then
+		-- downsample
+		full_source, full_target = full_target, full_source
+		render.set_render_target(qtr_target)
+		render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
+		render.enable_material("kawase_downsample_material")
+		render.enable_texture("color_sampler", full_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, dual_kawase_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
+		-- upsample
+		qtr_source, qtr_target = qtr_target, qtr_source
+		render.set_render_target(full_target)
+		render.set_viewport(0, 0, rx, ry)
+		render.enable_material("kawase_upsample_material")
+		render.enable_texture("color_sampler", qtr_source, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.draw(predicates.screen, dual_kawase_options)
+		render.disable_texture("color_sampler")
+		render.disable_material()
 	end
 
 	if settings.dof.enabled then

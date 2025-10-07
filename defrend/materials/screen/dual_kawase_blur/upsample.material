@@ -1,7 +1,7 @@
-name: "gaussian_blur"
+name: "dual_kawase_blur_upsample"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
-fragment_program: "/defrend/materials/screen/blur/gaussian_vertical.fp"
+fragment_program: "/defrend/materials/screen/dual_kawase_blur/upsample.fp"
 vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ

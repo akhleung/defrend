@@ -72,10 +72,9 @@ local M = {
 		grazing_angle_modulation_factor	= 50.0,
 	},
 	glow = {
-		enabled = false,
-		downsample = false;
-		radius = 4,
-		separation = 1,
+		enabled = true,
+		downsample = true;
+		separation = 1.0,
 	},
 	bloom = {
 		enabled = false,
@@ -90,7 +89,13 @@ local M = {
 	},
 	gaussian_blur = {
 		enabled = false,
-		downsample = false,
+		downsample = true,
+		separation = 1.0,
+	},
+	dual_kawase_blur = {
+		enabled = false,
+		separation = 1.0,
+		strength = 1.0,
 	},
 	kuwahara_blur = {
 		enabled = false,
