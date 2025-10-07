@@ -92,6 +92,7 @@ return function (self)
 
 	if uniforms_changed then
 		uniforms.light.init()
+        uniforms_changed = false
 	end
 
 	imgui.spacing()

@@ -10,6 +10,7 @@ local kuwahara	= require "defrend.gui.panels.kuwahara"
 local bloom		= require "defrend.gui.panels.bloom"
 local dilate	= require "defrend.gui.panels.dilate"
 local gaussian	= require "defrend.gui.panels.gaussian"
+local kawase	= require "defrend.gui.panels.dual_kawase"
 local gamma		= require "defrend.gui.panels.gamma"
 local fxaa		= require "defrend.gui.panels.fxaa"
 
@@ -21,9 +22,9 @@ local renderers = {
 }
 
 local post_processors = {
-	{"Glow", glow},					{"Depth of field", dof},		{"Outline", outline},
-	{"Kuwahara blur", kuwahara},	{"Bloom", bloom},				{"Dilate", dilate},
-	{"Gaussian blur", gaussian},	{"Gamma correction", gamma},	{"FXAA", fxaa},
+	{"Glow", glow},		{"Depth of field", dof},	{"Outline", outline},			{"Kuwahara blur", kuwahara},
+	{"Bloom", bloom},	{"Dilate", dilate},			{"Gaussian blur", gaussian},	{ "Dual Kawase blur", kawase },
+	{"FXAA", fxaa},		{"Gamma correction", gamma},
 }
 local post_processors_copy = {}
 
@@ -51,8 +52,8 @@ function init(self)
 		end
 		frames = 0
 		elapsed = 0
-		table.remove(fps_history, 1)
-		table.insert(fps_history, avg_fps)
+		-- table.remove(fps_history, 1)
+		-- table.insert(fps_history, avg_fps)
 	end)
 end
 
@@ -70,7 +71,7 @@ function update(self, dt)
 	elapsed = elapsed + dt
 	frames = frames + 1
 	imgui.text(("FPS: %.2f"):format(avg_fps))
-	imgui.plot_lines("FPS plot", 0, 445, 50, fps_history)
+	-- imgui.plot_lines("FPS plot", 0, 445, 50, fps_history)
 
 	if imgui.tree_node("Visualizations") then
 		visualize(self)

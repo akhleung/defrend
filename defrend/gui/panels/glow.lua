@@ -15,8 +15,15 @@ return function (self)
 		uniforms_changed = true
 	end
 
+	local changed, value = imgui.input_float("Separation", settings.glow.separation, 0.1, 0.5)
+	if changed then
+		settings.glow.separation = vmath.clamp(value, 0, 1.5)
+		uniforms_changed = true
+	end
+
 	if uniforms_changed then
 		uniforms.glow.init()
+        uniforms_changed = false
 	end
 
 	imgui.spacing()

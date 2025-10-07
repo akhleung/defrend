@@ -17,6 +17,7 @@ return function (self)
 
 	if uniforms_changed then
 		uniforms.kuwahara_blur.init()
+        uniforms_changed = false
 	end
 
 	imgui.spacing()
