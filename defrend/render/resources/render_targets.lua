@@ -3,7 +3,7 @@ local settings = require "defrend.render.settings"
 local M = {}
 
 local full_targets
-local qtr_targets
+local quarter_targets
 
 function M.init()
 	local rgba_params = {
@@ -46,20 +46,20 @@ function M.init()
 			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- specular reflectance
 		}
 	)
-	local full_source = render.render_target(
-		"full_1",
+	local source1 = render.render_target(
+		"source1",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
 		}
 	)
-	local full_target = render.render_target(
-		"full_2",
+	local target1 = render.render_target(
+		"target1",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
 		}
 	)
-	local qtr_source = render.render_target(
-		"qtr_1",
+	local source4 = render.render_target(
+		"source4",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
 				format = graphics.TEXTURE_FORMAT_RGBA,
@@ -68,13 +68,53 @@ function M.init()
 			}
 		}
 	)
-	local qtr_target = render.render_target(
-		"qtr_2",
+	local target4 = render.render_target(
+		"target4",
 		{
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
 				format = graphics.TEXTURE_FORMAT_RGBA,
 				width = render.get_window_width() / 2,
 				height = render.get_window_height() / 2,
+			}
+		}
+	)
+	local source16 = render.render_target(
+		"source16",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 4,
+				height = render.get_window_height() / 4,
+			}
+		}
+	)
+	local target16 = render.render_target(
+		"target16",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 4,
+				height = render.get_window_height() / 4,
+			}
+		}
+	)
+	local source64 = render.render_target(
+		"source64",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 8,
+				height = render.get_window_height() / 8,
+			}
+		}
+	)
+	local target64 = render.render_target(
+		"target64",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
+				format = graphics.TEXTURE_FORMAT_RGBA,
+				width = render.get_window_width() / 8,
+				height = render.get_window_height() / 8,
 			}
 		}
 	)
@@ -82,21 +122,33 @@ function M.init()
 	M.shadow_map	= shadow_map
 	M.g_buffer		= g_buffer
 	M.l_buffer		= l_buffer
-	M.full_source	= full_source
-	M.full_target	= full_target
-	M.qtr_source	= qtr_source
-	M.qtr_target	= qtr_target
+	M.source1		= source1
+	M.target1		= target1
+	M.source4		= source4
+	M.target4		= target4
+	M.source16		= source16
+	M.target16		= target16
+	M.source64		= source64
+	M.target64		= target64
 
-	full_targets	= { g_buffer, l_buffer, full_source, full_target }
-	qtr_targets		= { qtr_source, qtr_target }
+	full_targets		= { g_buffer, l_buffer, source1, target1 }
+	quarter_targets		= { source4, target4 }
+	sixteenth_targets	= { source16, target16 }
+	sixtyfourth_targets	= { source64, target64 }
 end
 
 function M.set_resolution(w, h)
 	for _, rt in ipairs(full_targets) do
 		render.set_render_target_size(rt, w, h)
 	end
-	for _, rt in ipairs(qtr_targets) do
+	for _, rt in ipairs(quarter_targets) do
 		render.set_render_target_size(rt, w / 2, h / 2)
+	end
+	for _, rt in ipairs(sixteenth_targets) do
+		render.set_render_target_size(rt, w / 4, h / 4)
+	end
+	for _, rt in ipairs(sixtyfourth_targets) do
+		render.set_render_target_size(rt, w / 8, h / 8)
 	end
 end
 

@@ -28,6 +28,10 @@ render_resources {
   path: "/defrend/materials/geometry/light_volume/point_light.material"
 }
 render_resources {
+  name: "spot_light_material"
+  path: "/defrend/materials/geometry/light_volume/spot_light.material"
+}
+render_resources {
   name: "resolve_lighting_material"
   path: "/defrend/materials/screen/resolve_lighting/resolve_lighting.material"
 }
@@ -48,10 +52,6 @@ render_resources {
   path: "/defrend/materials/screen/gamma/gamma.material"
 }
 render_resources {
-  name: "box_blur_material"
-  path: "/defrend/materials/screen/blur/box.material"
-}
-render_resources {
   name: "dof_material"
   path: "/defrend/materials/screen/dof/dof.material"
 }
@@ -66,6 +66,10 @@ render_resources {
 render_resources {
   name: "outline_material"
   path: "/defrend/materials/screen/outline/outline.material"
+}
+render_resources {
+  name: "glow_color_material"
+  path: "/defrend/materials/screen/glow/glow_color.material"
 }
 render_resources {
   name: "gaussian_blur_horizontal_material"
@@ -96,18 +100,10 @@ render_resources {
   path: "/defrend/materials/screen/copy/copy.material"
 }
 render_resources {
-  name: "spot_light_material"
-  path: "/defrend/materials/geometry/light_volume/spot_light.material"
-}
-render_resources {
-  name: "glow_color_material"
-  path: "/defrend/materials/screen/glow/glow_color.material"
-}
-render_resources {
   name: "kawase_downsample_material"
-  path: "/defrend/materials/screen/dual_kawase_blur/downsample.material"
+  path: "/defrend/materials/screen/dual_kawase_blur/kawase_downsample.material"
 }
 render_resources {
   name: "kawase_upsample_material"
-  path: "/defrend/materials/screen/dual_kawase_blur/upsample.material"
+  path: "/defrend/materials/screen/dual_kawase_blur/kawase_upsample.material"
 }

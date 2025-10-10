@@ -2,13 +2,15 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", false)
+go.property("iterations", 1)
 go.property("separation", 1.0)
-go.property("strength", 1.0)
+go.property("bloom", 1.0)
 
 local function do_init(self)
 	settings.dual_kawase_blur.enabled = self.enabled
+	settings.dual_kawase_blur.iterations = self.iterations
 	settings.dual_kawase_blur.separation = self.separation
-	settings.dual_kawase_blur.strength = self.strength
+	settings.dual_kawase_blur.bloom = self.bloom
 	uniforms.dual_kawase_blur.init()
 end
 

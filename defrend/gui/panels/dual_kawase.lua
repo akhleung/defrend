@@ -7,15 +7,20 @@ return function (self)
 		settings.dual_kawase_blur.enabled = checked
 	end
 
+	local changed, value = imgui.input_int("Iterations", settings.dual_kawase_blur.iterations)
+	if changed then
+		settings.dual_kawase_blur.iterations = vmath.clamp(value, 1, 3)
+	end
+
 	local changed, value = imgui.input_float("Separation", settings.dual_kawase_blur.separation, 0.1, 0.5)
 	if changed then
 		settings.dual_kawase_blur.separation = vmath.clamp(value, 0, 10)
 		uniforms_changed = true
 	end
 
-    local changed, value = imgui.input_float("Strength", settings.dual_kawase_blur.strength, 0.01, 0.1)
+    local changed, value = imgui.input_float("Bloom", settings.dual_kawase_blur.bloom, 0.01, 0.1)
 	if changed then
-		settings.dual_kawase_blur.strength = vmath.clamp(value, 0, 5)
+		settings.dual_kawase_blur.bloom = vmath.clamp(value, 0, 5)
 		uniforms_changed = true
 	end
 

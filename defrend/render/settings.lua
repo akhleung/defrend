@@ -94,8 +94,9 @@ local M = {
 	},
 	dual_kawase_blur = {
 		enabled = false,
+		iterations = 1,
 		separation = 1.0,
-		strength = 1.0,
+		bloom = 1.0,
 	},
 	kuwahara_blur = {
 		enabled = false,

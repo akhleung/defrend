@@ -10,9 +10,10 @@ uniform kawase_downsample_fp {
 };
 
 vec2 resolution = textureSize(color_sampler, 0);
-float separation = params.x;
-float strength = params.y;
-vec2 offset = vec2(1, 1) * 0.5 * separation / resolution;
+float iteration = params.x;
+float separation = params.y;
+float bloom = params.z;
+vec2 offset = vec2(0.5) * separation / resolution;
 
 layout(location = 0) out vec4 fragColor;
 
@@ -22,5 +23,5 @@ void main() {
 	color += texture(color_sampler, var_texcoord0 + offset);
 	color += texture(color_sampler, var_texcoord0 - offset);
 	color += texture(color_sampler, var_texcoord0 + vec2(offset.x, -offset.y));
-	fragColor = (color / 8.0) * strength;
+	fragColor = (color / 8.0) * bloom;
 }

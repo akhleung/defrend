@@ -159,8 +159,9 @@ end
 local kawase = settings.dual_kawase_blur
 local kawase_params = vmath.vector4()
 function M.dual_kawase_blur.init()
-	kawase_params.x = kawase.separation
-	kawase_params.y = kawase.strength
+	-- kawase_params.x contains the current iteration count; will be set in the renderer
+	kawase_params.y = kawase.separation
+	kawase_params.z = kawase.bloom
 	M.dual_kawase_blur.uniforms.params = kawase_params
 end
 
