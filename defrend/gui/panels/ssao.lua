@@ -8,6 +8,10 @@ return function (self)
 	if changed then
 		settings.ssao.enabled = checked
 	end
+	local changed, checked = imgui.checkbox("Downsample", settings.ssao.downsample)
+	if changed then
+		settings.ssao.downsample = checked
+	end
 	local changed, checked = imgui.checkbox("Blur", settings.ssao.blur)
 	if changed then
 		settings.ssao.blur = checked

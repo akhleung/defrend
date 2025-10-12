@@ -43,6 +43,7 @@ local M = {
 	},
 	ssao = {
 		enabled = true,
+		downsample = false,
 		blur = true,
 		scale = 1.0,
 		samples = 16,

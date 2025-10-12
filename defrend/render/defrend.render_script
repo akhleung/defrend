@@ -27,9 +27,11 @@ local predicates
 local shadow_map
 local g_buffer
 local l_buffer
+local ssao_target
 local source1, target1
 local source4, target4
 local source16, target16
+local source64, target64
 local downsample_targets, upsample_targets
 function init(self)
 	settings.resolution_x = render.get_window_width()
@@ -213,14 +215,19 @@ function update(self)
 	render.disable_state(graphics.STATE_CULL_FACE)
 	render.disable_state(graphics.STATE_BLEND)
 
-	render.set_render_target(target1)
-	render.clear(clear_options.clear_ssao_options)
 	render.set_view(cameras.screen_camera.view)
 	render.set_projection(cameras.screen_camera.proj)
 
 	if settings.ssao.enabled then
-		local viewport_scale = settings.ssao.scale
-		render.set_viewport(0, 0, rx * viewport_scale, ry * viewport_scale)
+		if settings.ssao.downsample then
+			ssao_target = target4
+			render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
+		else
+			ssao_target = target1
+			render.set_viewport(0, 0, rx, ry)
+		end
+		render.set_render_target(ssao_target)
+		render.clear(clear_options.clear_ssao_options)
 		render.enable_material("ssao_material")
 		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
 		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
@@ -228,7 +235,6 @@ function update(self)
 		render.disable_texture("depth_buffer")
 		render.disable_texture("normal_sampler")
 		render.disable_material()
-		render.set_viewport(0, 0, rx, ry)
 		if settings.ssao.blur then
 			source1, target1 = target1, source1
 			render.set_render_target(target1)
@@ -245,6 +251,11 @@ function update(self)
 			render.disable_texture("color_sampler")
 			render.disable_material()
 		end
+		render.set_viewport(0, 0, rx, ry)
+	else
+		ssao_target = target64
+		render.set_render_target(ssao_target)
+		render.clear(clear_options.clear_ssao_options)
 	end
 
 	source1, target1 = target1, source1
@@ -254,7 +265,7 @@ function update(self)
 	render.enable_texture("diffuse_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
 	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-	render.enable_texture("ssao_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("ssao_sampler", ssao_target, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("shadow_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
 	render.enable_texture("diff_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("spec_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
@@ -285,7 +296,7 @@ function update(self)
 		elseif settings.visualize.option == "shadow_atlas" then
 			render.enable_texture("input_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
 		elseif settings.visualize.option == "ssao" then
-			render.enable_texture("input_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.enable_texture("input_sampler", ssao_target, graphics.BUFFER_TYPE_COLOR0_BIT)
 		end
 		render.draw(predicates.screen)
 		render.disable_texture("input_sampler")
