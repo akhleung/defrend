@@ -7,9 +7,9 @@ return function (self)
 		settings.gaussian_blur.enabled = checked
 	end
 
-	local changed, checked = imgui.checkbox("Downsample", settings.gaussian_blur.downsample)
+	local changed, value = imgui.input_int("Downsamples", settings.gaussian_blur.downsamples)
 	if changed then
-		settings.gaussian_blur.downsample = checked
+		settings.gaussian_blur.downsamples = vmath.clamp(value, 0, 3)
 	end
 
 	local changed, value = imgui.input_float("Separation", settings.gaussian_blur.separation, 0.1, 0.5)

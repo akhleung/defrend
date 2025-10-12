@@ -2,10 +2,12 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", false)
+go.property("downsamples", 0)
 go.property("separation", 1.0)
 
 local function do_init(self)
 	settings.gaussian_blur.enabled = self.enabled
+	settings.gaussian_blur.downsamples = vmath.clamp(self.downsamples, 0, 3)
 	settings.gaussian_blur.separation = self.separation
 	uniforms.gaussian_blur.init()
 end

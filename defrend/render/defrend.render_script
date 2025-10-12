@@ -32,7 +32,7 @@ local source1, target1
 local source4, target4
 local source16, target16
 local source64, target64
-local downsample_targets, upsample_targets
+local downsample_sources, downsample_targets, upsample_targets
 function init(self)
 	settings.resolution_x = render.get_window_width()
 	settings.resolution_y = render.get_window_height()
@@ -93,6 +93,7 @@ function init(self)
 	source64	= render_targets.source64
 	target64	= render_targets.target64
 
+	downsample_sources	= { source1, source4, source16, source64 }
 	downsample_targets	= { target1, target4, target16, target64 }
 	upsample_targets	= { target64, target16, target4, target1 }
 end
@@ -414,53 +415,51 @@ function update(self)
 	end
 
 	if settings.gaussian_blur.enabled then
-		local source1, target1 = target1, source1
+		local gaussian_source, gaussian_target = source1, target1
+		local scale = 1
+		local downsamples = settings.gaussian_blur.downsamples
 		-- downsample
-		if settings.gaussian_blur.downsample then
-			render.set_render_target(target4)
-			render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
-			render.enable_material("copy_material")
-			render.enable_texture("input_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_material("copy_material")
+		for i = 1, downsamples do
+			scale = scale * 0.5
+			gaussian_source = downsample_sources[i + 1]
+			gaussian_target = downsample_targets[i + 1]
+			render.set_render_target(gaussian_target)
+			render.set_viewport(0, 0, rx * scale, ry * scale)
+			render.enable_texture("input_sampler", downsample_targets[i], graphics.BUFFER_TYPE_COLOR0_BIT)
 			render.draw(predicates.screen)
 			render.disable_texture("input_sampler")
-			render.set_render_target(target16)
-			render.set_viewport(0, 0, rx * 0.25, ry * 0.25)
-			render.enable_texture("input_sampler", target4, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("input_sampler")
-			render.disable_material()
 		end
+		render.disable_material()
 		-- blur horizontally
-		source16, target16 = target16, source16
-		render.set_render_target(target16)
+		gaussian_source, gaussian_target = gaussian_target, gaussian_source
+		render.set_render_target(gaussian_target)
 		render.enable_material("gaussian_blur_horizontal_material")
-		render.enable_texture("color_sampler", source16, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("color_sampler", gaussian_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.draw(predicates.screen, gaussian_blur_options)
 		render.disable_texture("color_sampler")
 		render.disable_material()
 		-- blur vertically
-		source16, target16 = target16, source16
-		render.set_render_target(target16)
+		gaussian_source, gaussian_target = gaussian_target, gaussian_source
+		render.set_render_target(gaussian_target)
 		render.enable_material("gaussian_blur_vertical_material")
-		render.enable_texture("color_sampler", source16, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("color_sampler", gaussian_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.draw(predicates.screen, gaussian_blur_options)
 		render.disable_texture("color_sampler")
 		render.disable_material()
 		-- upsample
-		if settings.gaussian_blur.downsample then
-			render.set_render_target(target4)
-			render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
-			render.enable_material("copy_material")
-			render.enable_texture("input_sampler", target16, graphics.BUFFER_TYPE_COLOR0_BIT)
+		local offset = #upsample_targets - downsamples - 1
+		render.enable_material("copy_material")
+		for i = 1, downsamples do
+			scale = scale * 2
+			local offset_i = offset + i
+			render.set_render_target(upsample_targets[offset_i + 1])
+			render.set_viewport(0, 0, rx * scale, ry * scale)
+			render.enable_texture("input_sampler", upsample_targets[offset_i], graphics.BUFFER_TYPE_COLOR0_BIT)
 			render.draw(predicates.screen)
 			render.disable_texture("input_sampler")
-			render.set_render_target(target1)
-			render.set_viewport(0, 0, rx, ry)
-			render.enable_texture("input_sampler", target4, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("input_sampler")
-			render.disable_material()
 		end
+		render.disable_material()
 	end
 
 	if settings.dual_kawase_blur.enabled then

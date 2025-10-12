@@ -89,7 +89,7 @@ local M = {
 	},
 	gaussian_blur = {
 		enabled = false,
-		downsample = true,
+		downsamples = 1,
 		separation = 1.0,
 	},
 	dual_kawase_blur = {
