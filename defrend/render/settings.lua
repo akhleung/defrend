@@ -45,7 +45,6 @@ local M = {
 		enabled = true,
 		downsample = false,
 		blur = true,
-		scale = 1.0,
 		samples = 16,
 		intensity = 1.5,
 		bias_angle = 0.1,

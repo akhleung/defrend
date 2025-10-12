@@ -82,7 +82,6 @@ end
 local ssao = settings.ssao
 local ssao_params1	= vmath.vector4()
 local ssao_params2	= vmath.vector4()
-local ssao_params	= vmath.vector4() -- for sending the viewport scale to the lighting shader
 function M.ssao.init()
 	ssao_params1.x = ssao.samples
 	ssao_params1.y = ssao.intensity
@@ -94,10 +93,6 @@ function M.ssao.init()
 	ssao_params2.w = ssao.radius
 	M.ssao.uniforms.params1 = ssao_params1
 	M.ssao.uniforms.params2 = ssao_params2
-
-	-- the lighting phase needs to know the ssao viewport scale
-	ssao_params.x = settings.ssao.scale
-	M.light_and_shadow.uniforms.ssao_params = ssao_params
 end
 
 local outline = settings.outline

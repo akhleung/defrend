@@ -17,12 +17,6 @@ return function (self)
 		settings.ssao.blur = checked
 	end
 
-	local changed, value = imgui.input_float("Viewport scale", settings.ssao.scale, 0.1, 0.1)
-	if changed then
-		settings.ssao.scale = vmath.clamp(value, 0.1, 1.0)
-		uniforms_changed = true
-	end
-
 	local changed, value = imgui.input_int("Samples", settings.ssao.samples)
 	if changed then
 		settings.ssao.samples = vmath.clamp(value, 4, 64)
