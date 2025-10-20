@@ -460,6 +460,7 @@ function update(self)
 			render.disable_texture("input_sampler")
 		end
 		render.disable_material()
+		target1 = upsample_targets[#upsample_targets]
 	end
 
 	if settings.dual_kawase_blur.enabled then
@@ -489,6 +490,7 @@ function update(self)
 			render.disable_texture("color_sampler")
 		end
 		render.disable_material()
+		target1 = upsample_targets[#upsample_targets]
 	end
 
 	if settings.dof.enabled then
