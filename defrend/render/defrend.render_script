@@ -129,8 +129,6 @@ function update(self)
 	end
 
 	-- render sprites and billboards into g-buffer --
-	render.enable_state(graphics.STATE_BLEND)
-	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
 	if settings.geometry.sprites_enabled then
 		render.enable_material("sprite_material")
 		render.draw(predicates.sprite, geometry_options)
@@ -147,7 +145,6 @@ function update(self)
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
 	render.disable_state(graphics.STATE_CULL_FACE)
-	render.disable_state(graphics.STATE_BLEND)
 	render.set_view(cameras.screen_camera.view)
 	render.set_projection(cameras.screen_camera.proj)
 	render.enable_material("depth_buffer_copy_material")
@@ -163,7 +160,8 @@ function update(self)
 	render.set_render_target(g_buffer)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.enable_state(graphics.STATE_CULL_FACE)
-	render.enable_state(graphics.STATE_BLEND)
+	render.enable_state(graphics.STATE_BLEND) -- decals are safe to blend since they're projected onto opaque geometry
+	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
 	render.set_view(cameras.scene_camera.view)
 	render.set_projection(cameras.scene_camera.proj)
 	if settings.geometry.decals_enabled then
@@ -177,7 +175,7 @@ function update(self)
 	-- render the skybox --
 	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
-	render.disable_state(graphics.STATE_BLEND)
+	render.disable_state(graphics.STATE_BLEND) -- TODO: consider alpha blending so we can have overlapping skyboxes
 	if settings.geometry.skybox_enabled then
 		render.enable_material("skybox_material")
 		render.draw(predicates.skybox)
