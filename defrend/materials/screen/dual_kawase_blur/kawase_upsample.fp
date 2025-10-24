@@ -10,9 +10,8 @@ uniform kawase_upsample_fp {
 };
 
 vec2 resolution = textureSize(color_sampler, 0);
-float iteration = params.x;
-float separation = params.y;
-float bloom = params.z;
+float separation = params.x;
+float bloom = params.y;
 vec2 corner = vec2(0.5) * separation / resolution;
 vec2 top = vec2(0, corner.y) * 2;
 vec2 right = vec2(corner.x, 0) * 2;

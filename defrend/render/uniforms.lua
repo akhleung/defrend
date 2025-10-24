@@ -123,6 +123,7 @@ local glow = settings.glow
 local glow_params = vmath.vector4()
 function M.glow.init()
 	glow_params.x = glow.separation
+	glow_params.y = glow.bloom
 	M.glow.uniforms.params = glow_params
 end
 
@@ -154,9 +155,8 @@ end
 local kawase = settings.dual_kawase_blur
 local kawase_params = vmath.vector4()
 function M.dual_kawase_blur.init()
-	-- kawase_params.x contains the current iteration count; will be set in the renderer
-	kawase_params.y = kawase.separation
-	kawase_params.z = kawase.bloom
+	kawase_params.x = kawase.separation
+	kawase_params.y = kawase.bloom
 	M.dual_kawase_blur.uniforms.params = kawase_params
 end
 

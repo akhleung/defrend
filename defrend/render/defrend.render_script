@@ -1,38 +1,43 @@
 local settings			= require "defrend.render.settings"
-local uniforms			= require "defrend.render.uniforms"
+local draw_options		= require "defrend.render.resources.draw_options"
 local shadows			= require "defrend.render.shadows"
 local render_targets	= require "defrend.render.resources.render_targets"
 local clear_options		= require "defrend.render.resources.clear_options"
 local cameras			= require "defrend.render.resources.cameras"
+local predicates		= require "defrend.render.resources.predicates"
+local gaussian_blur		= require "defrend.render.post_processors.gaussian_blur"
+local dual_kawase_blur	= require "defrend.render.post_processors.dual_kawase_blur"
+local glow				= require "defrend.render.post_processors.glow"
+local dof				= require "defrend.render.post_processors.dof"
+local outline			= require "defrend.render.post_processors.outline"
+local gamma				= require "defrend.render.post_processors.gamma"
+local bloom				= require "defrend.render.post_processors.bloom"
+local kuwahara_blur		= require "defrend.render.post_processors.kuwahara_blur"
+local fxaa				= require "defrend.render.post_processors.fxaa"
+
 local render_shadows
 local render_gui
 
-local shadow_options		= {}
-local geometry_options		= {}
-local lighting_options		= {}
-local copy_options			= {}
-local ssao_options			= {}
-local outline_options		= {}
-local glow_options			= {}
-local bloom_options			= {}
-local gaussian_blur_options	= {}
-local dual_kawase_options	= {}
-local dilate_options		= {}
-local kuwahara_blur_options	= {}
-local gamma_options			= {}
-local dof_options			= {}
-local fxaa_options			= {}
+local shadow_options
+local geometry_options
+local lighting_options
+local copy_options
+local ssao_options
+local outline_options
+local glow_options
+local bloom_options
+local gaussian_blur_options
+local dual_kawase_options
+local dilate_options
+local kuwahara_blur_options
+local gamma_options
+local dof_options
+local fxaa_options
 
-local predicates
 local shadow_map
 local g_buffer
 local l_buffer
-local ssao_target
-local source1, target1
-local source4, target4
-local source16, target16
-local source64, target64
-local downsample_sources, downsample_targets, upsample_targets
+
 function init(self)
 	settings.resolution_x = render.get_window_width()
 	settings.resolution_y = render.get_window_height()
@@ -40,62 +45,40 @@ function init(self)
 	render_targets.init()
 	clear_options.init()
 	cameras.init()
+	predicates.init()
+	draw_options.init()
+
+	gaussian_blur.init()
+	dual_kawase_blur.init()
+	glow.init()
+	dof.init()
+	outline.init()
+	gamma.init()
+	bloom.init()
+	kuwahara_blur.init()
+	fxaa.init()
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
-	geometry_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
-	geometry_options.sort_order		= render.SORT_FRONT_TO_BACK
-	geometry_options.constants		= uniforms.geometry.uniforms
-	shadow_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
-	shadow_options.sort_order		= render.SORT_FRONT_TO_BACK
-	shadow_options.constants		= render.constant_buffer()
-	shadow_options.constants.bias	= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
+	geometry_options		= draw_options.geometry_options
+	shadow_options			= draw_options.shadow_options
+	lighting_options		= draw_options.lighting_options
+	copy_options			= draw_options.copy_options
+	ssao_options			= draw_options.ssao_options
+	outline_options			= draw_options.outline_options
+	glow_options			= draw_options.glow_options
+	bloom_options			= draw_options.bloom_options
+	gaussian_blur_options	= draw_options.gaussian_blur_options
+	dual_kawase_options		= draw_options.dual_kawase_options
+	dilate_options			= draw_options.dilate_options
+	kuwahara_blur_options	= draw_options.kuwahara_blur_options
+	gamma_options			= draw_options.gamma_options
+	dof_options				= draw_options.dof_options
+	fxaa_options			= draw_options.fxaa_options
 
-	lighting_options.constants		= uniforms.light_and_shadow.uniforms
-	copy_options.constants			= render.constant_buffer()
-	copy_options.constants.params	= vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
-	ssao_options.constants          = uniforms.ssao.uniforms
-	outline_options.constants       = uniforms.outline.uniforms
-	glow_options.constants          = uniforms.glow.uniforms
-	bloom_options.constants         = uniforms.bloom.uniforms
-	gaussian_blur_options.constants = uniforms.gaussian_blur.uniforms
-	dual_kawase_options.constants	= uniforms.dual_kawase_blur.uniforms
-	dilate_options.constants        = uniforms.dilate.uniforms
-	kuwahara_blur_options.constants = uniforms.kuwahara_blur.uniforms
-	gamma_options.constants         = uniforms.gamma.uniforms
-	dof_options.constants           = uniforms.dof.uniforms
-	fxaa_options.constants          = uniforms.fxaa.uniforms
-
-	predicates = {
-		model		= render.predicate({"model"}),
-		sprite		= render.predicate({"sprite"}),
-		billboard	= render.predicate({"billboard"}),
-		decal		= render.predicate({"decal"}),
-		skybox		= render.predicate({"skybox"}),
-		blob_shadow	= render.predicate({"blob_shadow"}),
-		point_light	= render.predicate({"point_light"}),
-		spot_light	= render.predicate({"spot_light"}),
-		screen		= render.predicate({"screen"}),
-		text		= render.predicate({"text"}),
-		gui			= render.predicate({"gui"}),
-		debug_text	= render.predicate({"debug_text"}),
-	}
-
-	shadow_map	= render_targets.shadow_map
-	g_buffer	= render_targets.g_buffer
-	l_buffer	= render_targets.l_buffer
-	source1		= render_targets.source1
-	target1		= render_targets.target1
-	source4		= render_targets.source4
-	target4		= render_targets.target4
-	source16	= render_targets.source16
-	target16	= render_targets.target16
-	source64	= render_targets.source64
-	target64	= render_targets.target64
-
-	downsample_sources	= { source1, source4, source16, source64 }
-	downsample_targets	= { target1, target4, target16, target64 }
-	upsample_targets	= { target64, target16, target4, target1 }
+	shadow_map = render_targets.get_shadow_map()
+	g_buffer = render_targets.get_g_buffer()
+	l_buffer = render_targets.get_l_buffer()
 end
 
 function update(self)
@@ -141,7 +124,7 @@ function update(self)
 	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
-	render.set_render_target(target1)
+	render.set_render_target(render_targets.get_post_target())
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
 	render.disable_state(graphics.STATE_CULL_FACE)
@@ -156,7 +139,7 @@ function update(self)
 	-- The combination of back-face culling and depth testing will prevent decals from rendering when the camera is
 	-- inside a projector box. Front-face culling requires depth testing to be disabled, since the back faces of the
 	-- projector box will be occluded by the receiving surface.
-	source1, target1 = target1, source1
+	render_targets.ping_pong()
 	render.set_render_target(g_buffer)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.enable_state(graphics.STATE_CULL_FACE)
@@ -166,7 +149,7 @@ function update(self)
 	render.set_projection(cameras.scene_camera.proj)
 	if settings.geometry.decals_enabled then
 		render.enable_material("decal_material")
-		render.enable_texture("depth_buffer", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+		render.enable_texture("depth_buffer", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 		render.draw(predicates.decal, geometry_options)
 		render.disable_texture("depth_buffer")
 		render.disable_material()
@@ -218,14 +201,7 @@ function update(self)
 	render.set_projection(cameras.screen_camera.proj)
 
 	if settings.ssao.enabled then
-		if settings.ssao.downsample then
-			ssao_target = target4
-			render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
-		else
-			ssao_target = target1
-			render.set_viewport(0, 0, rx, ry)
-		end
-		render.set_render_target(ssao_target)
+		render.set_render_target(render_targets.get_post_target())
 		render.clear(clear_options.clear_ssao_options)
 		render.enable_material("ssao_material")
 		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
@@ -235,36 +211,34 @@ function update(self)
 		render.disable_texture("normal_sampler")
 		render.disable_material()
 		if settings.ssao.blur then
-			source1, target1 = target1, source1
-			render.set_render_target(target1)
+			render_targets.ping_pong()
+			render.set_render_target(render_targets.get_post_target())
 			render.enable_material("gaussian_blur_horizontal_material")
-			render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.enable_texture("color_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 			render.draw(predicates.screen, gaussian_blur_options)
 			render.disable_texture("color_sampler")
 			render.disable_material()
-			source1, target1 = target1, source1
-			render.set_render_target(target1)
+			render_targets.ping_pong()
+			render.set_render_target(render_targets.get_post_target())
 			render.enable_material("gaussian_blur_vertical_material")
-			render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.enable_texture("color_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 			render.draw(predicates.screen, gaussian_blur_options)
 			render.disable_texture("color_sampler")
 			render.disable_material()
 		end
-		render.set_viewport(0, 0, rx, ry)
 	else
-		ssao_target = target64
-		render.set_render_target(ssao_target)
+		render.set_render_target(render_targets.get_post_target())
 		render.clear(clear_options.clear_ssao_options)
 	end
 
-	source1, target1 = target1, source1
-	render.set_render_target(target1)
+	render_targets.ping_pong()
+	render.set_render_target(render_targets.get_post_target())
 	render.enable_material("resolve_lighting_material")
 	render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
 	render.enable_texture("diffuse_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
 	render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-	render.enable_texture("ssao_sampler", ssao_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("ssao_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("shadow_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
 	render.enable_texture("diff_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.enable_texture("spec_light_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
@@ -295,7 +269,7 @@ function update(self)
 		elseif settings.visualize.option == "shadow_atlas" then
 			render.enable_texture("input_sampler", shadow_map, graphics.BUFFER_TYPE_DEPTH_BIT)
 		elseif settings.visualize.option == "ssao" then
-			render.enable_texture("input_sampler", ssao_target, graphics.BUFFER_TYPE_COLOR0_BIT)
+			render.enable_texture("input_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 		end
 		render.draw(predicates.screen)
 		render.disable_texture("input_sampler")
@@ -305,244 +279,54 @@ function update(self)
 	end
 
 	if settings.outline.enabled then
-		source1, target1 = target1, source1
-		render.set_render_target(target1)
-		render.enable_material("outline_material")
-		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.enable_texture("normal_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR1_BIT)
-		render.draw(predicates.screen, outline_options)
-		render.disable_texture("depth_buffer")
-		render.disable_texture("color_sampler")
-		render.disable_texture("normal_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		outline.update(settings.outline, outline_options)
 	end
 
 	if settings.gamma.enabled then
-		source1, target1 = target1, source1
-		render.set_render_target(target1)
-		render.enable_material("gamma_material")
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gamma_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		gamma.update(settings.gamma, gamma_options)
 	end
 
 	if settings.glow.enabled then
-		source1, target1 = target1, source1
-		if settings.glow.downsample then
-			-- downsample and multiply emissive strength and color
-			render.set_render_target(target4)
-			render.set_viewport(0, 0, rx * 0.5, ry * 0.5)
-			render.enable_material("glow_color_material")
-			render.enable_texture("glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-			render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("glow_sampler")
-			render.disable_texture("color_sampler")
-			render.disable_material()
-			-- gaussian blur the glow texture
-			-- blur horizontally
-			source4, target4 = target4, source4
-			render.set_render_target(target4)
-			render.enable_material("gaussian_blur_horizontal_material")
-			render.enable_texture("color_sampler", source4, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, glow_options)
-			render.disable_texture("color_sampler")
-			render.disable_material()
-			-- blur vertically
-			source4, target4 = target4, source4
-			render.set_render_target(target4)
-			render.enable_material("gaussian_blur_vertical_material")
-			render.enable_texture("color_sampler", source4, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, glow_options)
-			render.disable_texture("color_sampler")
-			render.disable_material()
-			-- upsample and add the blurred glow to the render
-			source1, target1 = target1, source1
-			source4, target4 = target4, source4
-			render.set_render_target(target1)
-			render.set_viewport(0, 0, rx, ry)
-			render.enable_state(graphics.STATE_BLEND)
-			render.enable_material("copy_material")
-			render.enable_texture("input_sampler", source4, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("input_sampler")
-			render.disable_material()
-		else
-			render.set_render_target(target1)
-			render.enable_material("glow_horizontal_material")
-			render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.enable_texture("spec_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-			render.draw(predicates.screen, glow_options)
-			render.disable_texture("color_sampler")
-			render.disable_texture("spec_glow_sampler")
-			render.disable_material()
-			source1, target1 = target1, source1
-			render.set_render_target(target1)
-			render.enable_state(graphics.STATE_BLEND)
-			render.enable_material("glow_vertical_material")
-			render.enable_texture("glow_color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.enable_texture("orig_glow_sampler", g_buffer, graphics.BUFFER_TYPE_COLOR2_BIT)
-			render.draw(predicates.screen, glow_options)
-			render.disable_texture("glow_color_sampler")
-			render.disable_texture("orig_glow_sampler")
-			render.disable_material()
-		end
-		render.disable_state(graphics.STATE_BLEND)
+		render_targets.ping_pong()
+		glow.update(settings.glow, glow_options)
 	end
 
 	if settings.bloom.enabled then
-		source1, target1 = target1, source1
-		render.set_render_target(target1)
-		render.enable_material("bloom_material")
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, bloom_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		bloom.update(settings.bloom, bloom_options)
 	end
 
 	if settings.kuwahara_blur.enabled then
-		source1, target1 = target1, source1
-		render.set_render_target(target1)
-		render.enable_material("kuwahara_blur_material")
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, kuwahara_blur_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		kuwahara_blur.update(settings.kuwahara_blur, kuwahara_blur_options)
 	end
 
 	if settings.gaussian_blur.enabled then
-		local gaussian_source, gaussian_target = source1, target1
-		local scale = 1
-		local downsamples = settings.gaussian_blur.downsamples
-		-- downsample
-		render.enable_material("copy_material")
-		for i = 1, downsamples do
-			scale = scale * 0.5
-			gaussian_source = downsample_sources[i + 1]
-			gaussian_target = downsample_targets[i + 1]
-			render.set_render_target(gaussian_target)
-			render.set_viewport(0, 0, rx * scale, ry * scale)
-			render.enable_texture("input_sampler", downsample_targets[i], graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("input_sampler")
-		end
-		render.disable_material()
-		-- blur horizontally
-		gaussian_source, gaussian_target = gaussian_target, gaussian_source
-		render.set_render_target(gaussian_target)
-		render.enable_material("gaussian_blur_horizontal_material")
-		render.enable_texture("color_sampler", gaussian_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gaussian_blur_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
-		-- blur vertically
-		gaussian_source, gaussian_target = gaussian_target, gaussian_source
-		render.set_render_target(gaussian_target)
-		render.enable_material("gaussian_blur_vertical_material")
-		render.enable_texture("color_sampler", gaussian_source, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gaussian_blur_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
-		-- upsample
-		local offset = #upsample_targets - downsamples - 1
-		render.enable_material("copy_material")
-		for i = 1, downsamples do
-			scale = scale * 2
-			local offset_i = offset + i
-			render.set_render_target(upsample_targets[offset_i + 1])
-			render.set_viewport(0, 0, rx * scale, ry * scale)
-			render.enable_texture("input_sampler", upsample_targets[offset_i], graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen)
-			render.disable_texture("input_sampler")
-		end
-		render.disable_material()
-		target1 = upsample_targets[#upsample_targets]
+		render_targets.ping_pong()
+		gaussian_blur.update(settings.gaussian_blur, gaussian_blur_options)
 	end
 
 	if settings.dual_kawase_blur.enabled then
-		local scale = 1
-		local iterations = settings.dual_kawase_blur.iterations
-		-- downsample
-		render.enable_material("kawase_downsample_material")
-		for i = 1, iterations do
-			scale = scale * 0.5
-			render.set_render_target(downsample_targets[i + 1])
-			render.set_viewport(0, 0, rx * scale, ry * scale)
-			render.enable_texture("color_sampler", downsample_targets[i], graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, dual_kawase_options)
-			render.disable_texture("color_sampler")
-		end
-		render.disable_material()
-		-- upsample
-		local offset = #upsample_targets - iterations - 1
-		render.enable_material("kawase_upsample_material")
-		for i = 1, iterations do
-			scale = scale * 2
-			local offset_i = offset + i
-			render.set_render_target(upsample_targets[offset_i + 1])
-			render.set_viewport(0, 0, rx * scale, ry * scale)
-			render.enable_texture("color_sampler", upsample_targets[offset_i], graphics.BUFFER_TYPE_COLOR0_BIT)
-			render.draw(predicates.screen, dual_kawase_options)
-			render.disable_texture("color_sampler")
-		end
-		render.disable_material()
-		target1 = upsample_targets[#upsample_targets]
+		render_targets.ping_pong()
+		dual_kawase_blur.update(settings.dual_kawase_blur, dual_kawase_options)
 	end
 
 	if settings.dof.enabled then
-		-- create a blurred render to blend with the focused render
-		source1, target1 = target1, source1
-		render.set_render_target(l_buffer)
-		render.enable_material("gaussian_blur_horizontal_material")
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gaussian_blur_options) 
-		render.disable_texture("color_sampler")
-		render.disable_material() -- post_source: focused, l_buffer: half-blurred
-		render.set_render_target(target1)
-		render.enable_material("gaussian_blur_vertical_material")
-		render.enable_texture("color_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, gaussian_blur_options)
-		render.disable_texture("color_sampler")
-		render.disable_material() -- post_source: focused, l_buffer: half-blurred, post_target: fully-blurred
-		-- dilate the blurred render too
-		render.set_render_target(l_buffer)
-		render.enable_material("dilate_material")
-		render.enable_texture("color_sampler", target1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, dilate_options)
-		render.disable_texture("color_sampler")
-		render.disable_material() -- post_source: focused, l_buffer: blurred & dilated, post_target: fully-blurred
-		-- mix the blurred & dilated render with the focused render
-		render.set_render_target(target1)
-		render.enable_material("dof_material")
-		render.enable_texture("depth_buffer", g_buffer, graphics.BUFFER_TYPE_DEPTH_BIT)
-		render.enable_texture("focused_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.enable_texture("blurred_sampler", l_buffer, graphics.BUFFER_TYPE_COLOR0_BIT)
-		local params = dof_options.constants.params
-		params.x = settings.dof.focal_depth
-		dof_options.constants.params = params ---@diagnostic disable-line: inject-field
-		render.draw(predicates.screen, dof_options)
-		render.disable_texture("depth_buffer")
-		render.disable_texture("focused_sampler")
-		render.disable_texture("blurred_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		dof.update(settings.dof, dof_options)
 	end
 
 	if settings.fxaa.enabled then
-		source1, target1 = target1, source1
-		render.set_render_target(target1)
-		render.enable_material("fxaa_material")
-		render.enable_texture("color_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
-		render.draw(predicates.screen, fxaa_options)
-		render.disable_texture("color_sampler")
-		render.disable_material()
+		render_targets.ping_pong()
+		fxaa.update(settings.fxaa, fxaa_options)
 	end
 
-	source1, target1 = target1, source1
+	render_targets.ping_pong()
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 	render.enable_material("copy_material")
-	render.enable_texture("input_sampler", source1, graphics.BUFFER_TYPE_COLOR0_BIT)
+	render.enable_texture("input_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
 	render.disable_material()

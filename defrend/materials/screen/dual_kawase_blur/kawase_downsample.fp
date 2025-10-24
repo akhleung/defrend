@@ -10,9 +10,8 @@ uniform kawase_downsample_fp {
 };
 
 vec2 resolution = textureSize(color_sampler, 0);
-float iteration = params.x;
-float separation = params.y;
-float bloom = params.z;
+float separation = params.x;
+float bloom = params.y;
 vec2 offset = vec2(0.5) * separation / resolution;
 
 layout(location = 0) out vec4 fragColor;

@@ -9,15 +9,20 @@ return function (self)
 		settings.glow.enabled = checked
 	end
 
-	local changed, checked = imgui.checkbox("Downsample", settings.glow.downsample)
+	local changed, value = imgui.input_int("Iterations", settings.glow.iterations)
 	if changed then
-		settings.glow.downsample = checked
-		uniforms_changed = true
+		settings.glow.iterations = vmath.clamp(value,1, 3)
 	end
 
 	local changed, value = imgui.input_float("Separation", settings.glow.separation, 0.1, 0.5)
 	if changed then
-		settings.glow.separation = vmath.clamp(value, 0, 1.5)
+		settings.glow.separation = vmath.clamp(value, 0, 5)
+		uniforms_changed = true
+	end
+
+	local changed, value = imgui.input_float("Bloom", settings.glow.bloom, 0.1, 0.5)
+	if changed then
+		settings.glow.bloom = vmath.clamp(value, 1.0, 5.0)
 		uniforms_changed = true
 	end
 

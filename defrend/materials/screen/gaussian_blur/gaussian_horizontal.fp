@@ -15,7 +15,7 @@ float	separation	= params.x;
 vec2	delta		= vec2(2, 0) * separation / resolution;
 // vec2	halfpixel	= vec2(0.5, 0) / resolution;
 // float	weight[5]	= float[] (0.18518, 0.15872, 0.0992, 0.04409, 0.01323);
-float offset[3] = float[](0.0, 1.3846153846 / resolution.x, 3.2307692308 / resolution.x);
+float offset[3] = float[](0.0, 1.3846153846 * separation / resolution.x, 3.2307692308 * separation / resolution.x);
 float weight[3] = float[](0.2270270270, 0.3162162162, 0.0702702703);
 
 layout(location = 0) out vec4 fragColor;

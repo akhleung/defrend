@@ -73,8 +73,9 @@ local M = {
 	},
 	glow = {
 		enabled = true,
-		downsample = true;
-		separation = 1.0,
+		iterations = 3,
+		separation = 2.0,
+		bloom = 1.0,
 	},
 	bloom = {
 		enabled = false,
