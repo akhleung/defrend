@@ -26,4 +26,6 @@ return function (self)
 	if changed then
 		settings.geometry.skybox_enabled = checked
 	end
+
+	imgui.spacing()
 end

@@ -10,93 +10,119 @@ local kuwahara	= require "defrend.gui.panels.kuwahara"
 local bloom		= require "defrend.gui.panels.bloom"
 local dilate	= require "defrend.gui.panels.dilate"
 local gaussian	= require "defrend.gui.panels.gaussian"
+local kawase	= require "defrend.gui.panels.dual_kawase"
 local gamma		= require "defrend.gui.panels.gamma"
 local fxaa		= require "defrend.gui.panels.fxaa"
 
 go.property("enabled", true)
 
+local renderers = {
+	{ "Geometry", geometry },	{ "Lighting", lighting },
+	{ "Shadows", shadows },		{ "SSAO", ssao },
+}
+
+local post_processors = {
+	{"Glow", glow},		{"Depth of field", dof},	{"Outline", outline},			{"Kuwahara blur", kuwahara},
+	{"Bloom", bloom},	{"Dilate", dilate},			{"Gaussian blur", gaussian},	{ "Dual Kawase blur", kawase },
+	{"FXAA", fxaa},		{"Gamma correction", gamma},
+}
+local post_processors_copy = {}
+
+local frames = 0
+local elapsed = 0
+local avg_fps = 0
+local fps_history = {}
+local max_history = 120
+
 function init(self)
 	imgui.set_ini_filename()
+
+	for _ = 1, max_history do
+		table.insert(fps_history, 0)
+	end
+	for _, v in ipairs(post_processors) do
+		table.insert(post_processors_copy, v)
+	end
+	timer.delay(1, true, function()
+		if elapsed == 0 then
+			avg_fps = 0
+		else
+			-- avg_fps = math.floor(frames / elapsed + 0.5)
+			avg_fps = frames / elapsed
+		end
+		frames = 0
+		elapsed = 0
+		-- table.remove(fps_history, 1)
+		-- table.insert(fps_history, avg_fps)
+	end)
 end
+
+local vec3_zero = vmath.vector3()
 
 function update(self, dt)
 	if not self.enabled then
 		return
 	end
 
+	imgui.set_next_window_pos(10, 10, imgui.COND_FIRSTUSEEVER)
+
 	imgui.begin_window("Settings", false, imgui.WINDOWFLAGS_ALWAYSAUTORESIZE)
+
+	elapsed = elapsed + dt
+	frames = frames + 1
+	imgui.text(("FPS: %.2f"):format(avg_fps))
+	-- imgui.plot_lines("FPS plot", 0, 445, 50, fps_history)
 
 	if imgui.tree_node("Visualizations") then
 		visualize(self)
 		imgui.tree_pop()
 	end
 
-	if imgui.tree_node("Geometry") then
-		geometry(self)
-		imgui.tree_pop()
+	imgui.separator()
+
+	for _, r in ipairs(renderers) do
+		if imgui.tree_node(r[1]) then
+			r[2](self)
+			imgui.tree_pop()
+		end
 	end
 
-	if imgui.tree_node("Lighting") then
-		lighting(self)
-		imgui.tree_pop()
-	end
+	imgui.separator()
 
-	if imgui.tree_node("Shadows") then
-		shadows(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("SSAO") then
-		ssao(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Glow") then
-		glow(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Depth of field") then
-		dof(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Outline") then
-		outline(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Kuwahara blur") then
-		kuwahara(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Bloom") then
-		bloom(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Dilate") then
-		dilate(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Gaussian blur") then
-		gaussian(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("Gamma correction") then
-		gamma(self)
-		imgui.tree_pop()
-	end
-
-	if imgui.tree_node("FXAA") then
-		fxaa(self)
-		imgui.tree_pop()
+	local reordered = false
+	for i, p in ipairs(post_processors) do
+		local opened = imgui.tree_node(p[1])
+		imgui.push_style_var(imgui.STYLEVAR_FRAMEPADDING, vec3_zero)
+		-- imgui.same_line(480)
+		imgui.same_line(160)
+		if imgui.button_arrow(p[1] .. " Up", imgui.DIR_UP) and i > 1 then
+			local pp = table.remove(post_processors_copy, i)
+			table.insert(post_processors_copy, i - 1, pp)
+			reordered = true
+		end
+		-- imgui.same_line(500)
+		imgui.same_line(180)
+		if imgui.button_arrow(p[1] .. " Down", imgui.DIR_DOWN) and i < #post_processors then
+			local pp = table.remove(post_processors_copy, i)
+			table.insert(post_processors_copy, i + 1, pp)
+			reordered = true
+		end
+		imgui.pop_style_var()
+		if opened then
+			p[2](self)
+			imgui.tree_pop()
+		end
 	end
 
 	imgui.end_window()
+
+	if reordered then
+		post_processors, post_processors_copy = post_processors_copy, post_processors
+		for i, v in ipairs(post_processors) do
+			post_processors_copy[i] = v
+		end
+		reordered = false
+	end
 end
 
 function on_message(self, message_id, message, sender)

@@ -2,8 +2,8 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", true)
+go.property("downsample", false)
 go.property("blur", true)
-go.property("viewport_scale", 1.0)
 go.property("samples", 16)
 go.property("intensity", 1.5)
 go.property("bias_angle", 0.1)
@@ -15,8 +15,8 @@ go.property("radius", 2.0)
 
 local function do_init(self)
 	settings.ssao.enabled		= self.enabled
+	settings.ssao.downsample	= self.downsample
 	settings.ssao.blur			= self.blur
-	settings.ssao.scale			= self.viewport_scale
 	settings.ssao.samples		= self.samples
 	settings.ssao.intensity		= self.intensity
 	settings.ssao.bias_angle	= self.bias_angle

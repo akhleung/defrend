@@ -43,8 +43,8 @@ local M = {
 	},
 	ssao = {
 		enabled = true,
+		downsample = false,
 		blur = true,
-		scale = 1.0,
 		samples = 16,
 		intensity = 1.5,
 		bias_angle = 0.1,
@@ -72,9 +72,10 @@ local M = {
 		grazing_angle_modulation_factor	= 50.0,
 	},
 	glow = {
-		enabled = false,
-		radius = 4,
-		separation = 1,
+		enabled = true,
+		iterations = 3,
+		separation = 2.0,
+		bloom = 1.0,
 	},
 	bloom = {
 		enabled = false,
@@ -89,6 +90,14 @@ local M = {
 	},
 	gaussian_blur = {
 		enabled = false,
+		downsamples = 1,
+		separation = 1.0,
+	},
+	dual_kawase_blur = {
+		enabled = false,
+		iterations = 1,
+		separation = 1.0,
+		bloom = 1.0,
 	},
 	kuwahara_blur = {
 		enabled = false,

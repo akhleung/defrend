@@ -600,34 +600,6 @@ collection_instances {
       }
     }
     properties {
-      id: "ssao"
-      properties {
-        id: "blur"
-        value: "false"
-        type: PROPERTY_TYPE_BOOLEAN
-      }
-      properties {
-        id: "bias_dist"
-        value: "0.75"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "min_distance"
-        value: "0.5"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "max_distance"
-        value: "1.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "radius"
-        value: "1.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-    }
-    properties {
       id: "light"
       properties {
         id: "sun_url"
@@ -646,22 +618,6 @@ collection_instances {
       }
     }
   }
-  instance_properties {
-    id: "post_processing"
-    properties {
-      id: "glow"
-      properties {
-        id: "radius"
-        value: "5.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "separation"
-        value: "3.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-    }
-  }
 }
 scale_along_z: 1
 embedded_instances {
@@ -669,10 +625,6 @@ embedded_instances {
   data: "components {\n"
   "  id: \"main\"\n"
   "  component: \"/example/main/main.script\"\n"
-  "}\n"
-  "components {\n"
-  "  id: \"framerate\"\n"
-  "  component: \"/example/main/framerate.script\"\n"
   "}\n"
   ""
   position {

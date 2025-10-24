@@ -8,15 +8,13 @@ return function (self)
 	if changed then
 		settings.ssao.enabled = checked
 	end
+	local changed, checked = imgui.checkbox("Downsample", settings.ssao.downsample)
+	if changed then
+		settings.ssao.downsample = checked
+	end
 	local changed, checked = imgui.checkbox("Blur", settings.ssao.blur)
 	if changed then
 		settings.ssao.blur = checked
-	end
-
-	local changed, value = imgui.input_float("Viewport scale", settings.ssao.scale, 0.1, 0.1)
-	if changed then
-		settings.ssao.scale = vmath.clamp(value, 0.1, 1.0)
-		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_int("Samples", settings.ssao.samples)
@@ -71,5 +69,8 @@ return function (self)
 
 	if uniforms_changed then
 		uniforms.ssao.init()
+        uniforms_changed = false
 	end
+
+	imgui.spacing()
 end

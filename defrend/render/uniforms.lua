@@ -12,6 +12,7 @@ local M = {
 	bloom				= { uniforms = render.constant_buffer() },
 	box_blur			= { uniforms = render.constant_buffer() },
 	gaussian_blur		= { uniforms = render.constant_buffer() },
+	dual_kawase_blur	= { uniforms = render.constant_buffer() },
 	dilate				= { uniforms = render.constant_buffer() },
 	dof					= { uniforms = render.constant_buffer() },
 	gamma				= { uniforms = render.constant_buffer() },
@@ -81,7 +82,6 @@ end
 local ssao = settings.ssao
 local ssao_params1	= vmath.vector4()
 local ssao_params2	= vmath.vector4()
-local ssao_params	= vmath.vector4() -- for sending the viewport scale to the lighting shader
 function M.ssao.init()
 	ssao_params1.x = ssao.samples
 	ssao_params1.y = ssao.intensity
@@ -93,10 +93,6 @@ function M.ssao.init()
 	ssao_params2.w = ssao.radius
 	M.ssao.uniforms.params1 = ssao_params1
 	M.ssao.uniforms.params2 = ssao_params2
-
-	-- the lighting phase needs to know the ssao viewport scale
-	ssao_params.x = settings.ssao.scale
-	M.light_and_shadow.uniforms.ssao_params = ssao_params
 end
 
 local outline = settings.outline
@@ -126,8 +122,8 @@ end
 local glow = settings.glow
 local glow_params = vmath.vector4()
 function M.glow.init()
-	glow_params.x = glow.radius
-	glow_params.y = glow.separation
+	glow_params.x = glow.separation
+	glow_params.y = glow.bloom
 	M.glow.uniforms.params = glow_params
 end
 
@@ -149,8 +145,19 @@ function M.box_blur.init()
 	M.box_blur.uniforms.params = box_blur_params
 end
 
+local gaussian = settings.gaussian_blur
+local gaussian_params = vmath.vector4()
 function M.gaussian_blur.init()
-	-- just leave this stub here in case we need it someday
+	gaussian_params.x = gaussian.separation
+	M.gaussian_blur.uniforms.params = gaussian_params
+end
+
+local kawase = settings.dual_kawase_blur
+local kawase_params = vmath.vector4()
+function M.dual_kawase_blur.init()
+	kawase_params.x = kawase.separation
+	kawase_params.y = kawase.bloom
+	M.dual_kawase_blur.uniforms.params = kawase_params
 end
 
 local dilate = settings.dilate

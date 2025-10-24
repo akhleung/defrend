@@ -25,7 +25,6 @@ uniform lighting_fp {
 	vec4 fog_color;
 	vec4 ambient_color;
 	vec4 directional_color;
-	vec4 ssao_params;
 	
 	vec4 camera_partitions[MAX_PARTITIONS];
 	mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
@@ -38,7 +37,6 @@ layout(location = 0) out vec4 frag_color;
 
 float FOG_NEAR		= fog_params.x;
 float FOG_FAR		= fog_params.y;
-float SSAO_SCALE	= ssao_params.x;
 
 float   SHADOW_MAP_SIZE     = shadow_params1.x;
 float   SHADOW_MAP_DIM      = shadow_params1.y;
@@ -155,7 +153,7 @@ void main() {
 		shadow += (1.0 - shadow) * fade;
 	}
 
-	float ao = texture(ssao_sampler, var_texcoord0 * SSAO_SCALE).r;
+	float ao = texture(ssao_sampler, var_texcoord0).r;
 	float shininess = spec_glow_sample.r * 255;
 	vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
 	vec4 color = ambient_color * mat_diff * ao;

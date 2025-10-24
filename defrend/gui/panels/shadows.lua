@@ -79,5 +79,8 @@ return function (self)
 
 	if properties_changed then
 		msg.post(SCRIPT_URL, "refresh")
+        properties_changed = false
 	end
+
+	imgui.spacing()
 end

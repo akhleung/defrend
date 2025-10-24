@@ -2,13 +2,15 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", true)
-go.property("radius", 4)
-go.property("separation", 1)
+go.property("iterations", 3)
+go.property("separation", 2.0)
+go.property("bloom", 1.0)
 
 local function do_init(self)
 	settings.glow.enabled = self.enabled
-	settings.glow.radius = self.radius
-	settings.glow.separation = self.separation
+	settings.glow.iterations = vmath.clamp(self.iterations, 1, 3)
+	settings.glow.separation = vmath.clamp(self.separation, 0, 5)
+	settings.glow.bloom = vmath.clamp(self.bloom, 1, 5)
 	uniforms.glow.init()
 end
 
