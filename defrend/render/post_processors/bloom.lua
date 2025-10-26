@@ -8,7 +8,7 @@ end
 function M.update(settings, draw_options)
     render.set_render_target(render_targets.get_post_target())
     render.enable_material("bloom_material")
-    render.enable_texture("color_sampler", render_targets.get_post_source(), graphics.BUFFER_TYPE_COLOR0_BIT)
+    render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
     render.draw(predicates.screen, draw_options)
     render.disable_texture("color_sampler")
     render.disable_material()
