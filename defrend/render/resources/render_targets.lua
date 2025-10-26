@@ -83,6 +83,12 @@ function M.init()
 			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
 		}
 	)
+	spare = render.render_target(
+		"spare",
+		{
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
+		}
+	)
 	source4 = render.render_target(
 		"source4",
 		{
@@ -147,7 +153,7 @@ function M.init()
 	source = source1
 	target = target1
 
-	full_targets		= { g_buffer, l_buffer, source1, target1 }
+	full_targets		= { g_buffer, l_buffer, source1, target1, spare }
 	quarter_targets		= { source4, target4 }
 	sixteenth_targets	= { source16, target16 }
 	sixtyfourth_targets	= { source64, target64 }
@@ -191,6 +197,10 @@ end
 
 function M.get_post_target()
 	return target
+end
+
+function M.get_post_spare()
+	return spare
 end
 
 function M.ping_pong()
