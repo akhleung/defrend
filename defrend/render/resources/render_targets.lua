@@ -5,7 +5,6 @@ local M = {}
 
 local shadow_map
 local g_buffer
-local l_buffer
 local source1
 local target1
 local source4
@@ -62,13 +61,6 @@ function M.init()
 			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normal
 			[graphics.BUFFER_TYPE_COLOR2_BIT] = rgba_params, -- specular & emissive
 			[graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
-		}
-	)
-	l_buffer = render.render_target(
-		"light_target",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse reflectance
-			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- specular reflectance
 		}
 	)
 	source1 = render.render_target(
@@ -153,7 +145,7 @@ function M.init()
 	source = source1
 	target = target1
 
-	full_targets		= { g_buffer, l_buffer, source1, target1, spare }
+	full_targets		= { g_buffer, source1, target1, spare }
 	quarter_targets		= { source4, target4 }
 	sixteenth_targets	= { source16, target16 }
 	sixtyfourth_targets	= { source64, target64 }
@@ -185,10 +177,6 @@ end
 
 function M.get_g_buffer()
 	return g_buffer
-end
-
-function M.get_l_buffer()
-	return l_buffer
 end
 
 function M.get_post_source()
