@@ -8,7 +8,7 @@
 #define Y vec3(0, 1, 0)
 
 in vec3 var_center;
-in vec4 var_color;
+in vec3 var_color;
 in float var_radius;
 in float var_attn;
 #ifdef EDITOR
@@ -24,8 +24,7 @@ uniform point_light_fp {
     vec4 frustum_terms;
 };
 
-layout(location = 0) out vec4 diff_out;
-layout(location = 1) out vec4 spec_out;
+layout(location = 0) out vec4 light_out;
 
 void main() {
 	vec2 texcoord = gl_FragCoord.xy / textureSize(depth_buffer, 0);
@@ -44,8 +43,7 @@ void main() {
 	float diff = diffuse(to_light_normalized, normal);
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
 	float attn = attn_inv_pow(d, var_radius, var_attn);
-	diff_out = var_color * diff * attn;
-	spec_out = var_color * spec * attn;
+	light_out = vec4(var_color * diff * attn, spec * attn);
 
 	#ifdef EDITOR // visualization for viewing point light volumes in the editor
 	vec3 lat_normal = normalize(vec3(var_normal.x, 0, var_normal.z));
@@ -54,7 +52,7 @@ void main() {
 	vec2 degs = floor(rads * 180 / PI);
 	vec2 rems = fract(degs / 12);
 	if (rems.x == 0 || rems.y == 0) {
-		diff_out = var_color;
+		light_out = vec4(var_color, 1.0);
 	} else {
 		discard;
 	}

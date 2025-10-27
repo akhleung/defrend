@@ -17,7 +17,7 @@ uniform point_light_vp {
 };
 
 out vec3 var_center;
-out vec4 var_color;
+out vec3 var_color;
 out float var_radius;
 out float var_attn;
 #ifdef EDITOR
@@ -29,7 +29,7 @@ void main() {
 	var_center = (mtx_worldview * vec4(0, 0, 0, 1)).xyz;
 	vec4 vertex = (mtx_worldview * position);
 	var_radius = distance(var_center, vertex.xyz);
-	var_color = color;
+	var_color = color.rgb;
     var_attn = attn.x != 0 ? attn.x : light_vol_attn.x;
     gl_Position = mtx_proj * vertex;
 

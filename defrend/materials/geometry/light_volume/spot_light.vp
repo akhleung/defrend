@@ -18,7 +18,7 @@ uniform spot_light_vp {
 
 out vec3 var_source;
 out vec3 var_light_dir;
-out vec4 var_color;
+out vec3 var_color;
 out float var_spread;
 out float var_range;
 out float var_start;
@@ -41,7 +41,7 @@ void main() {
     var_spread = dot(var_light_dir, normalize(edge - var_source));
     var_range = distance(var_source, target);
     var_start = start_attn.x * var_range;
-	var_color = color;
+	var_color = color.rgb;
     var_range_attn = start_attn.y != 0 ? start_attn.y : light_vol_attn.y;
     var_spread_attn = start_attn.z != 0 ? start_attn.z : light_vol_attn.z;
     gl_Position = mtx_proj * mtx_worldview * position;

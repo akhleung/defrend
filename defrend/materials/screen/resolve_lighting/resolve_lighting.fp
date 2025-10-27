@@ -14,8 +14,7 @@ uniform sampler2D normal_sampler;
 uniform sampler2D spec_glow_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
-uniform sampler2D diff_light_sampler;
-uniform sampler2D spec_light_sampler;
+uniform sampler2D light_sampler;
 
 uniform lighting_fp {
 	vec4 frustum_corner;
@@ -114,8 +113,9 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 void main() {
 	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
 	vec4 spec_glow_sample	= texture(spec_glow_sampler, var_texcoord0);
-	vec4 vol_diff			= clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
-	vec4 vol_spec			= clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
+	vec4 light_sample		= texture(light_sampler, var_texcoord0);
+	vec4 vol_diff			= vec4(light_sample.rgb, 1.0);
+	vec4 vol_spec			= vec4(light_sample.rgb * light_sample.a, 1.0);
 
 	float depth			= texture(depth_buffer, var_texcoord0).r;
 	float z				= linearizeDepth(depth, frustum_terms.xyz);

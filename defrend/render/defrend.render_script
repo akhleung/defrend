@@ -36,7 +36,6 @@ local fxaa_options
 
 local shadow_map
 local g_buffer
-local l_buffer
 
 function init(self)
 	settings.resolution_x = render.get_window_width()
@@ -78,7 +77,6 @@ function init(self)
 
 	shadow_map = render_targets.get_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
-	l_buffer = render_targets.get_l_buffer()
 end
 
 function update(self)
@@ -172,7 +170,7 @@ function update(self)
 	-- the light volumes, and still keep depth-testing enabled. Unfortunately, the empty buffer means that depth-testing
 	-- is useless here, and there will be overdraw. If that becomes a big problem, it may be an acceptable tradeoff to
 	-- render the scene into this depth buffer first.
-	render.set_render_target(l_buffer)
+	render.set_render_target(render_targets.get_post_spare())
 	render.clear(clear_options.clear_color_options)
 	render.enable_state(graphics.STATE_BLEND)
 	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
@@ -240,8 +238,7 @@ function update(self)
 	render.enable_texture("spec_glow_sampler", g_buffer, render_targets.G_BUFFER_SPEC_GLOW)
 	render.enable_texture("ssao_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.enable_texture("shadow_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
-	render.enable_texture("diff_light_sampler", l_buffer, render_targets.L_BUFFER_DIFFUSE)
-	render.enable_texture("spec_light_sampler", l_buffer, render_targets.L_BUFFER_SPECULAR)
+	render.enable_texture("light_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
 	render.draw(predicates.screen, lighting_options)
 	render.disable_texture("depth_buffer")
 	render.disable_texture("diffuse_sampler")
@@ -249,8 +246,7 @@ function update(self)
 	render.disable_texture("spec_glow_sampler")
 	render.disable_texture("ssao_sampler")
 	render.disable_texture("shadow_sampler")
-	render.disable_texture("diff_light_sampler")
-	render.disable_texture("spec_light_sampler")
+	render.disable_texture("light_sampler")
 	render.disable_material()
 
 	if settings.visualize.option then
@@ -263,9 +259,9 @@ function update(self)
 		elseif settings.visualize.option == "g_spec_glow" then
 			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_SPEC_GLOW)
 		elseif settings.visualize.option == "l_diffuse" then
-			render.enable_texture("input_sampler", l_buffer, render_targets.L_BUFFER_DIFFUSE)
+			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
 		elseif settings.visualize.option == "l_specular" then
-			render.enable_texture("input_sampler", l_buffer, render_targets.L_BUFFER_SPECULAR)
+			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
 		elseif settings.visualize.option == "shadow_atlas" then
 			render.enable_texture("input_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
 		elseif settings.visualize.option == "ssao" then
