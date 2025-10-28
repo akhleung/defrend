@@ -4,13 +4,12 @@ in vec3 var_frag_pos;
 in vec3 var_normal;
 in vec2 var_texcoord0;
 
-uniform sampler2D diffuse_map;
+uniform sampler2D albedo_map;
 uniform sampler2D normal_map;
 uniform sampler2D spec_glow_map;
 
-layout(location = 0) out vec4 diffuse_out;
+layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
-layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx() {
 	vec3 d_vd_x = dFdx(var_frag_pos);
@@ -42,7 +41,13 @@ vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
 }
 
 void main() {
-	diffuse_out		= texture(diffuse_map, var_texcoord0);
-	normal_out		= vec4(get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5, 1);
-	spec_glow_out	= texture(spec_glow_map, var_texcoord0);
+	vec4 spec_glow	= texture(spec_glow_map, var_texcoord0);
+	albedo_out		= vec4(texture(albedo_map, var_texcoord0).rgb, spec_glow.g);
+	normal_out		= vec4(get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5, spec_glow.r);
+
+	#ifdef EDITOR
+	// set alpha back to 1.0 to make things show up in the editor
+	albedo_out.a = 1.0;
+	normal_out.a = 1.0;
+	#endif
 }

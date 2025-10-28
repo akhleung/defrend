@@ -11,7 +11,7 @@ in vec3 var_vertex;
 #endif
 
 // samplers from the decal
-uniform sampler2D diffuse_map;
+uniform sampler2D albedo_map;
 uniform sampler2D normal_map;
 uniform sampler2D spec_glow_map;
 
@@ -23,9 +23,8 @@ uniform decal_fp {
     vec4 frustum_terms;
 };
 
-layout(location = 0) out vec4 diffuse_out;
+layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
-layout(location = 2) out vec4 spec_glow_out;
 
 mat3 get_tbn_mtx(vec3 view_pos, vec2 texcoord) {
     vec3 d_vd_x = dFdx(view_pos);
@@ -66,17 +65,15 @@ void main() {
 
     // if the scene fragment is inside the projector, use its model-space position to sample the decal texture
     d_position += 0.5; // bias [-0.5, 0.5] -> [0, 1]
-    vec4 decal_color = texture(diffuse_map, d_position.xy);
+    vec4 decal_color = texture(albedo_map, d_position.xy);
     vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
     if (decal_color.a == 0) discard; // avoid writing normals, etc
-    diffuse_out = decal_color;
+    albedo_out = vec4(decal_color.rgb, decal_spec_glow.g);
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
     mat3 tbn = get_tbn_mtx(g_position.xyz, d_position.xy);
     vec3 decal_normal = get_perturb_normal(d_position.xy, tbn) * 0.5 + 0.5;
-    normal_out = vec4(decal_normal, 1);
-
-    spec_glow_out = decal_spec_glow;
+    normal_out = vec4(decal_normal, decal_spec_glow.r);
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
     vec3 mags = abs(var_vertex);
@@ -84,11 +81,11 @@ void main() {
     vec3 rems = fract(floor(mags * 100) / 10);
     float line_thickness = 0.2;
     if (var_vertex.z == -0.5) {
-        diffuse_out = texture(diffuse_map, var_texcoord0);
+        albedo_out = texture(albedo_map, var_texcoord0);
     } else if (mags.x > edge && mags.y > edge || mags.y > edge && mags.z > edge || mags.x > edge && mags.z > edge) {
-		diffuse_out = vec4(1);
+		albedo_out = vec4(1);
 	} else if (rems.x < line_thickness && rems.y < line_thickness) {
-        diffuse_out = vec4(1);
+        albedo_out = vec4(1);
     } else {
 		discard;
 	}

@@ -7,7 +7,7 @@
 
 in vec3 var_source;
 in vec3 var_light_dir;
-in vec4 var_color;
+in vec3 var_color;
 in float var_spread;
 in float var_range;
 in float var_start;
@@ -23,15 +23,13 @@ in float var_pcnt_start;
 
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
-uniform sampler2D spec_glow_sampler;
 
 uniform spot_light_fp {
     vec4 frustum_corner;
     vec4 frustum_terms;
 };
 
-layout(location = 0) out vec4 diff_out;
-layout(location = 1) out vec4 spec_out;
+layout(location = 0) out vec4 light_out;
 
 void main() {
 
@@ -40,8 +38,7 @@ void main() {
 	float z = linearizeDepth(depth, frustum_terms.xyz);
 	vec3 geom_pos = viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz);
 	vec4 normal_sample = texture(normal_sampler, texcoord);
-	vec4 spec_sample = texture(spec_glow_sampler, texcoord);
-	float shininess = spec_sample.r * 255;
+	float shininess = normal_sample.a * 255;
 
 	vec3 to_light = var_source - geom_pos;
 	vec3 to_light_normalized = normalize(to_light);
@@ -54,8 +51,8 @@ void main() {
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
 	float attn_range = attn_inv_pow(d - var_start, var_range - var_start, var_range_attn);
 	float attn_spread = attn_inv_pow(1 - a, 1 - var_spread, var_spread_attn);
-	diff_out = var_color * diff * attn_range * attn_spread;
-	spec_out = var_color * spec * attn_range * attn_spread;
+	float attn = attn_range * attn_spread;
+	light_out = vec4(var_color * diff * attn, spec * attn);
 
 	#ifdef EDITOR // visualization for viewing spot light volumes in the editor
 	float frag_dist = distance(var_source, var_frag_pos);
@@ -71,9 +68,9 @@ void main() {
 	if (pcnt_dist < var_pcnt_start) {
 		discard;
 	} else if (abs(var_pcnt_start - pcnt_dist) < 1) {
-		diff_out = var_color;
+		light_out = vec4(var_color, 1.0);
 	} else if (rem == 0 || pcnt_dist > 98 || reml == 0) {
-		diff_out = var_color;
+		light_out = vec4(var_color, 1.0);
 	} else {
 		discard;
 	}

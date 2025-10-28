@@ -11,7 +11,7 @@ embedded_components {
   "  name: \"default\"\n"
   "  material: \"/defrend/materials/geometry/decal/decal.material\"\n"
   "  textures {\n"
-  "    sampler: \"diffuse_map\"\n"
+  "    sampler: \"albedo_map\"\n"
   "    texture: \"/example/assets/images/broken-ice-base.png\"\n"
   "  }\n"
   "  textures {\n"

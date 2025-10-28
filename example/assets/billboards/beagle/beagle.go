@@ -9,7 +9,7 @@ embedded_components {
   "}\n"
   "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
-  "  sampler: \"diffuse_map\"\n"
+  "  sampler: \"albedo_map\"\n"
   "  texture: \"/example/assets/billboards/beagle/beagle.tilesource\"\n"
   "}\n"
   "textures {\n"

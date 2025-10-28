@@ -618,6 +618,17 @@ collection_instances {
       }
     }
   }
+  instance_properties {
+    id: "post_processing"
+    properties {
+      id: "glow"
+      properties {
+        id: "separation"
+        value: "2.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+  }
 }
 scale_along_z: 1
 embedded_instances {
@@ -647,11 +658,6 @@ embedded_instances {
   "components {\n"
   "  id: \"depth_of_field_controller\"\n"
   "  component: \"/defrend/scripts/controllers/depth_of_field.script\"\n"
-  "  properties {\n"
-  "    id: \"enabled\"\n"
-  "    value: \"false\"\n"
-  "    type: PROPERTY_TYPE_BOOLEAN\n"
-  "  }\n"
   "  properties {\n"
   "    id: \"collision_group_1\"\n"
   "    value: \"buildings\"\n"
@@ -741,7 +747,7 @@ embedded_instances {
   "  name: \\\"Blue\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -757,7 +763,7 @@ embedded_instances {
   "  name: \\\"Red.001\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -773,7 +779,7 @@ embedded_instances {
   "  name: \\\"White.005\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -789,7 +795,7 @@ embedded_instances {
   "  name: \\\"Yellow.001\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -896,7 +902,7 @@ embedded_instances {
   "  name: \\\"Black.002\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/black.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -912,7 +918,7 @@ embedded_instances {
   "  name: \\\"White.004\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/white.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
@@ -928,7 +934,7 @@ embedded_instances {
   "  name: \\\"Yellow\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
-  "    sampler: \\\"diffuse_map\\\"\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/brown.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"

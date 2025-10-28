@@ -1,24 +1,27 @@
 local settings = require "defrend.render.settings"
 
-go.property("g_buffer_diffuse_color", false)
+go.property("g_buffer_albedo", false)
 go.property("g_buffer_normals", false)
-go.property("g_buffer_specular_and_glow", false)
+go.property("g_buffer_specular", false)
+go.property("g_buffer_emissive", false)
 go.property("light_volume_diffuse_reflectance", false)
 go.property("light_volume_specular_reflectance", false)
 go.property("shadow_atlas", false)
 go.property("ssao", false)
 
 local function do_init(self)
-	if self.g_buffer_diffuse_color then
-		settings.visualize.option = "g_diffuse"
+	if self.g_buffer_albedo then
+		settings.visualize.option = "g_albedo"
 	elseif self.g_buffer_normals then
 		settings.visualize.option = "g_normals"
-	elseif self.g_buffer_specular_and_glow then
-		settings.visualize.option = "g_spec_glow"
+	elseif self.g_buffer_specular then
+		settings.visualize.option = "g_specular"
+	elseif self.g_buffer_emissive then
+		settings.visualize.option = "g_emissive"
 	elseif self.light_volume_diffuse_reflectance then
-		settings.visualize.option = "l_diffuse"
+		settings.visualize.option = "reflectance_diffuse"
 	elseif self.light_volume_specular_reflectance then
-		settings.visualize.option = "l_specular"
+		settings.visualize.option = "reflectance_specular"
 	elseif self.shadow_atlas then
 		settings.visualize.option = "shadow_atlas"
 	elseif self.ssao then

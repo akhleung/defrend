@@ -19,10 +19,8 @@ function M.update(settings, draw_options)
 	-- multiply emissive strength and color
 	render.set_render_target(render_targets.get_post_target())
 	render.enable_material("glow_color_material")
-	render.enable_texture("glow_sampler", g_buffer, render_targets.G_BUFFER_SPEC_GLOW)
-	render.enable_texture("color_sampler", g_buffer, render_targets.G_BUFFER_DIFFUSE)
+	render.enable_texture("color_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
 	render.draw(predicates.screen)
-	render.disable_texture("glow_sampler")
 	render.disable_texture("color_sampler")
 	render.disable_material()
 	-- blur the emissive texture

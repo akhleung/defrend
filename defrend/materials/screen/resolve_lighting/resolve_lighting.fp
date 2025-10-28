@@ -8,14 +8,12 @@
 in vec2 var_texcoord0;
 in vec3 directional_from;
 
-uniform sampler2D diffuse_sampler;
+uniform sampler2D albedo_sampler;
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
-uniform sampler2D spec_glow_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D shadow_sampler;
-uniform sampler2D diff_light_sampler;
-uniform sampler2D spec_light_sampler;
+uniform sampler2D light_sampler;
 
 uniform lighting_fp {
 	vec4 frustum_corner;
@@ -112,10 +110,11 @@ float shadow_calc(vec4 view_pos_re_cam, vec3 normal, mat4 mtx_light, vec2 offset
 }
 
 void main() {
+	vec4 albedo_sample		= texture(albedo_sampler, var_texcoord0);
 	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
-	vec4 spec_glow_sample	= texture(spec_glow_sampler, var_texcoord0);
-	vec4 vol_diff			= clamp(texture(diff_light_sampler, var_texcoord0), 0, 1);
-	vec4 vol_spec			= clamp(texture(spec_light_sampler, var_texcoord0), 0, 1);
+	vec4 light_sample		= texture(light_sampler, var_texcoord0);
+	vec4 vol_diff			= vec4(light_sample.rgb, 1.0);
+	vec4 vol_spec			= vec4(light_sample.rgb * light_sample.a, 1.0);
 
 	float depth			= texture(depth_buffer, var_texcoord0).r;
 	float z				= linearizeDepth(depth, frustum_terms.xyz);
@@ -154,17 +153,18 @@ void main() {
 	}
 
 	float ao = texture(ssao_sampler, var_texcoord0).r;
-	float shininess = spec_glow_sample.r * 255;
-	vec4 mat_diff = texture(diffuse_sampler, var_texcoord0);
+	float emissive = albedo_sample.a;
+	float shininess = normal_sample.a * 255;
+	vec4 mat_diff = vec4(albedo_sample.rgb, 1.0);
 	vec4 color = ambient_color * mat_diff * ao;
 	float sun_spec = specular(view_dir, directional_from, normal, shininess);
 	float sun_diff = diffuse(directional_from, normal);
 	vec4 light_spec = clamp(sun_spec * directional_color * shadow + vol_spec, 0, 1);
-	vec4 light_diff = clamp((sun_diff * directional_color * shadow + vol_diff) * ao + spec_glow_sample.g, 0, 1); // consider (ao + 1) / 2
+	vec4 light_diff = clamp((sun_diff * directional_color * shadow + vol_diff) * ao + emissive, 0, 1); // consider (ao + 1) / 2
 	color += mat_diff * light_diff + light_spec; // we only support white specular highlights for now, so omit mat_spec
 
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
 	color = mix(color, fog_color, fog_intensity);
 	color.a = mat_diff.a;
-	frag_color = normal_sample.a == 0 ? texture(diffuse_sampler, var_texcoord0) : clamp(color, 0.0, 1.0);
+	frag_color = normal_sample == vec4(0) ? mat_diff : clamp(color, 0.0, 1.0);
 }
