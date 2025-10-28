@@ -17,7 +17,6 @@ in vec3 var_normal;
 
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
-uniform sampler2D spec_glow_sampler;
 
 uniform point_light_fp {
     vec4 frustum_corner;
@@ -32,8 +31,7 @@ void main() {
 	float z = linearizeDepth(depth, frustum_terms.xyz);
 	vec3 geom_pos = viewPosFromLinearDepth(z, texcoord, frustum_corner.xyz);
 	vec4 normal_sample = texture(normal_sampler, texcoord);
-	vec4 spec_sample = texture(spec_glow_sampler, texcoord);
-	float shininess = spec_sample.r * 255;
+	float shininess = normal_sample.a * 255;
 	vec3 to_light = var_center - geom_pos;
 	float d = length(to_light);
 	if (d > var_radius) discard;

@@ -80,14 +80,6 @@ render_resources {
   path: "/defrend/materials/screen/gaussian_blur/gaussian_vertical.material"
 }
 render_resources {
-  name: "glow_horizontal_material"
-  path: "/defrend/materials/screen/glow/glow_horizontal.material"
-}
-render_resources {
-  name: "glow_vertical_material"
-  path: "/defrend/materials/screen/glow/glow_vertical.material"
-}
-render_resources {
   name: "skybox_material"
   path: "/defrend/materials/geometry/skybox/skybox.material"
 }
@@ -106,4 +98,20 @@ render_resources {
 render_resources {
   name: "kawase_upsample_material"
   path: "/defrend/materials/screen/dual_kawase_blur/kawase_upsample.material"
+}
+render_resources {
+  name: "g_buffer_spec_glow_material"
+  path: "/defrend/materials/screen/visualizations/g_buffer_spec_glow.material"
+}
+render_resources {
+  name: "reflectance_specular_material"
+  path: "/defrend/materials/screen/visualizations/reflectance_specular.material"
+}
+render_resources {
+  name: "reflectance_diffuse_material"
+  path: "/defrend/materials/screen/visualizations/reflectance_diffuse.material"
+}
+render_resources {
+  name: "shadow_atlas_material"
+  path: "/defrend/materials/screen/visualizations/shadow_atlas.material"
 }

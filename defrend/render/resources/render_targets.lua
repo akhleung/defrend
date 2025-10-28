@@ -57,9 +57,8 @@ function M.init()
 	g_buffer = render.render_target(
 		"g_buffer",
 		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- diffuse color
-			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normal
-			[graphics.BUFFER_TYPE_COLOR2_BIT] = rgba_params, -- specular & emissive
+			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- albedo + emissive
+			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normal + specular
 			[graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
 		}
 	)
@@ -272,13 +271,9 @@ function M.reset()
 	source, target = sources[1], targets[1]
 end
 
-M.G_BUFFER_DIFFUSE		= graphics.BUFFER_TYPE_COLOR0_BIT
-M.G_BUFFER_NORMALS		= graphics.BUFFER_TYPE_COLOR1_BIT
-M.G_BUFFER_SPEC_GLOW	= graphics.BUFFER_TYPE_COLOR2_BIT
+M.G_BUFFER_ALBEDO		= graphics.BUFFER_TYPE_COLOR0_BIT
+M.G_BUFFER_NORMAL		= graphics.BUFFER_TYPE_COLOR1_BIT
 M.G_BUFFER_DEPTH		= graphics.BUFFER_TYPE_DEPTH_BIT
-
-M.L_BUFFER_DIFFUSE		= graphics.BUFFER_TYPE_COLOR0_BIT
-M.L_BUFFER_SPECULAR		= graphics.BUFFER_TYPE_COLOR1_BIT
 
 M.POST_COLOR			= graphics.BUFFER_TYPE_COLOR0_BIT
 

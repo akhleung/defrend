@@ -4,7 +4,7 @@ materials {
   name: "default"
   material: "/defrend/materials/geometry/model/model.material"
   textures {
-    sampler: "diffuse_map"
+    sampler: "albedo_map"
     texture: "/example/assets/images/textures-diffuse.png"
   }
   textures {

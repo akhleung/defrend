@@ -4,7 +4,7 @@ materials {
   name: "citybits_texture"
   material: "/defrend/materials/geometry/model/model.material"
   textures {
-    sampler: "diffuse_map"
+    sampler: "albedo_map"
     texture: "/example/assets/citybuilder/texture/citybits_texture.png"
   }
   textures {
