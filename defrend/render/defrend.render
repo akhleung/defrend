@@ -112,6 +112,6 @@ render_resources {
   path: "/defrend/materials/screen/visualizations/reflectance_diffuse.material"
 }
 render_resources {
-  name: "shadow_atlas_material"
-  path: "/defrend/materials/screen/visualizations/shadow_atlas.material"
+  name: "depth_buffer_material"
+  path: "/defrend/materials/screen/visualizations/depth_buffer.material"
 }

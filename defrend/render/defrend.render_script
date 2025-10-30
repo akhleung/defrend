@@ -256,6 +256,9 @@ function update(self)
 		elseif settings.visualize.option == "g_emissive" then
 			render.enable_material("g_buffer_spec_glow_material")
 			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
+		elseif settings.visualize.option == "g_depth" then
+			render.enable_material("depth_buffer_material")
+			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_DEPTH)
 		elseif settings.visualize.option == "reflectance_diffuse" then
 			render.enable_material("reflectance_diffuse_material")
 			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
@@ -263,7 +266,7 @@ function update(self)
 			render.enable_material("reflectance_specular_material")
 			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
 		elseif settings.visualize.option == "shadow_atlas" then
-			render.enable_material("shadow_atlas_material")
+			render.enable_material("depth_buffer_material")
 			render.enable_texture("input_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
 		elseif settings.visualize.option == "ssao" then
 			render.enable_material("copy_material")

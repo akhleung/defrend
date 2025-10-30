@@ -4,6 +4,7 @@ go.property("g_buffer_albedo", false)
 go.property("g_buffer_normals", false)
 go.property("g_buffer_specular", false)
 go.property("g_buffer_emissive", false)
+go.property("g_buffer_depth", false)
 go.property("light_volume_diffuse_reflectance", false)
 go.property("light_volume_specular_reflectance", false)
 go.property("shadow_atlas", false)
@@ -18,6 +19,8 @@ local function do_init(self)
 		settings.visualize.option = "g_specular"
 	elseif self.g_buffer_emissive then
 		settings.visualize.option = "g_emissive"
+	elseif self.g_buffer_depth then
+		settings.visualize.option = "g_depth"
 	elseif self.light_volume_diffuse_reflectance then
 		settings.visualize.option = "reflectance_diffuse"
 	elseif self.light_volume_specular_reflectance then

@@ -23,6 +23,10 @@ return function (self)
 		visualize.option = "g_emissive"
 	end
 
+	if imgui.radio_button("G-buffer depth", visualize.option == "g_depth") then
+		visualize.option = "g_depth"
+	end
+
 	if imgui.radio_button("Light volume diffuse reflectance", visualize.option == "reflectance_diffuse") then
 		visualize.option = "reflectance_diffuse"
 	end
