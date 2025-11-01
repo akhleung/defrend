@@ -1,8 +1,10 @@
 local M = {}
 
 local predicate_names = {
-	"model", "sprite", "billboard", "particle", "decal", "skybox",
-	"blob_shadow", "point_light", "spot_light",
+	"model", "decal", "skybox",
+	"billboard", "sprite",
+	"particle", "shadowless_particle",
+	"point_light", "spot_light", "blob_shadow",
 	"screen", "text", "gui", "debug_text",
 }
 

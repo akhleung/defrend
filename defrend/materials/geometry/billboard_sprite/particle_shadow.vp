@@ -10,12 +10,10 @@ uniform particle_vp {
 	mat4 mtx_viewproj;
 };
 
-out vec3 var_normal;
 out vec2 var_texcoord0;
 
 void main() {
 
-	var_normal		= vec3(0, 0, 1); // the view-space fragment position doesn't yield the desired result for some reason
 	var_texcoord0	= texcoord0;
 
 	// *** billboarding around the y axis
