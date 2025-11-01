@@ -5,6 +5,7 @@ local M = {
 		models_enabled = true,
 		sprites_enabled = true,
 		billboards_enabled = true,
+		particles_enabled = true,
 		decals_enabled = true,
 		skybox_enabled = true,
 	},

@@ -109,7 +109,8 @@ function update(self)
 		render.disable_material()
 	end
 
-	-- render sprites and billboards into g-buffer --
+	-- render sprites, billboards, and particles into g-buffer --
+	render.disable_state(graphics.STATE_CULL_FACE)
 	if settings.geometry.sprites_enabled then
 		render.enable_material("sprite_material")
 		render.draw(predicates.sprite, geometry_options)
@@ -120,12 +121,16 @@ function update(self)
 		render.draw(predicates.billboard, geometry_options)
 		render.disable_material()
 	end
+	if settings.geometry.particles_enabled then
+		render.enable_material("particle_material")
+		render.draw(predicates.particle, geometry_options)
+		render.disable_material()
+	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
 	render.set_render_target(render_targets.get_post_target())
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
-	render.disable_state(graphics.STATE_CULL_FACE)
 	render.set_view(cameras.screen_camera.view)
 	render.set_projection(cameras.screen_camera.proj)
 	render.enable_material("depth_buffer_copy_material")

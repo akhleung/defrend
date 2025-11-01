@@ -3,6 +3,7 @@ local settings = require "defrend.render.settings"
 go.property("models_enabled", true)
 go.property("sprites_enabled", true)
 go.property("billboards_enabled", true)
+go.property("particles_enabled", true)
 go.property("decals_enabled", true)
 go.property("skybox_enabled", true)
 
@@ -10,6 +11,7 @@ local function do_init(self)
 	settings.geometry.models_enabled		= self.models_enabled
 	settings.geometry.sprites_enabled		= self.sprites_enabled
 	settings.geometry.billboards_enabled	= self.billboards_enabled
+	settings.geometry.particles_enabled		= self.particles_enabled
 	settings.geometry.decals_enabled		= self.decals_enabled
 	settings.geometry.skybox_enabled		= self.skybox_enabled
 end

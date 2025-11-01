@@ -115,3 +115,7 @@ render_resources {
   name: "depth_buffer_material"
   path: "/defrend/materials/screen/visualizations/depth_buffer.material"
 }
+render_resources {
+  name: "particle_material"
+  path: "/defrend/materials/geometry/billboard_sprite/particle.material"
+}
