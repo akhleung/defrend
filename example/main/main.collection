@@ -549,6 +549,21 @@ instances {
   id: "graphics_settings"
   prototype: "/defrend/gui/graphics_settings.go"
 }
+instances {
+  id: "beagle_particles"
+  prototype: "/example/assets/particlefx/beagle/beagle_particles.go"
+  position {
+    x: 50.0
+  }
+}
+instances {
+  id: "beagle_particles1"
+  prototype: "/example/assets/particlefx/beagle/beagle_particles.go"
+  position {
+    x: -82.0
+    z: -323.0
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/example/main/neighborhood.collection"
@@ -668,16 +683,16 @@ embedded_instances {
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
-  "fov: 0.3927\\n"
+  "fov: 0.4\\n"
   "near_z: 1.0\\n"
-  "far_z: 1001.0\\n"
+  "far_z: 1000.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
   ""
   position {
     x: -82.0
-    y: 147.0
+    y: 161.0
     z: -260.0
   }
   rotation {
