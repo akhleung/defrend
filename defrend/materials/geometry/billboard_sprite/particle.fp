@@ -12,9 +12,20 @@ uniform particle_fp {
 layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
 
+bool even(float x) {
+	return int(x) % 2 == 0;
+}
+
+bool odd(float x) {
+	return !even(x);
+}
+
 void main() {
+	float x = gl_FragCoord.x;
+	float y = gl_FragCoord.y;
+	bool dither = spec_glow_params.z > 0 && (even(x) && odd(y) || odd(x) && even(y));
 	vec4 albedo	= texture(albedo_map, var_texcoord0);
-	if (albedo.a == 0) discard; // avoid writing to the depth buffer, normals, etc
+	if (dither || albedo.a == 0) discard; // avoid writing to the depth buffer, normals, etc
 
 	float specular = spec_glow_params.x;
 	float emissive = spec_glow_params.y;
