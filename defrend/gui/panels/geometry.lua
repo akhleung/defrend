@@ -17,6 +17,11 @@ return function (self)
 		settings.geometry.billboards_enabled = checked
 	end
 
+	local changed, checked = imgui.checkbox("Particles", settings.geometry.particles_enabled)
+	if changed then
+		settings.geometry.particles_enabled = checked
+	end
+
 	local changed, checked = imgui.checkbox("Decals", settings.geometry.decals_enabled)
 	if changed then
 		settings.geometry.decals_enabled = checked

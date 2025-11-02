@@ -23,8 +23,8 @@ void main() {
 
 	// *** billboarding around the y axis
 	vec4 center		= vec4(position.x - local_position.x, position.y, position.z - local_position.z, 1.0);
-	gl_Position		= mtx_viewproj * center - mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
+	gl_Position		= mtx_viewproj * center + mtx_proj * vec4(local_position.x, 0.0, 0.0, 0.0);
 
-	// *** billboarding around the x and y axes -- disable face culling
+	// *** billboarding around the x and y axes
 	// gl_Position = mtx_viewproj * vec4(position.xyz - local_position, 1.0) + mtx_proj * vec4(local_position.xy, 0.0, 0.0);
 }

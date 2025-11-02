@@ -1,7 +1,7 @@
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"idle_toward\"\n"
+  data: "default_animation: \"idle_right\"\n"
   "material: \"/defrend/materials/geometry/billboard_sprite/sprite.material\"\n"
   "size {\n"
   "  x: 12.0\n"

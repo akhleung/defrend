@@ -1,0 +1,31 @@
+name: "particle-shadow"
+tags: "particle"
+vertex_program: "/defrend/materials/geometry/billboard_sprite/particle_shadow.vp"
+fragment_program: "/defrend/materials/geometry/billboard_sprite/particle_shadow.fp"
+vertex_constants {
+  name: "mtx_proj"
+  type: CONSTANT_TYPE_PROJECTION
+}
+vertex_constants {
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
+}
+fragment_constants {
+  name: "spec_glow_dith"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+samplers {
+  name: "albedo_map"
+  wrap_u: WRAP_MODE_REPEAT
+  wrap_v: WRAP_MODE_REPEAT
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
+attributes {
+  name: "local_position"
+  semantic_type: SEMANTIC_TYPE_POSITION
+  vector_type: VECTOR_TYPE_VEC3
+}

@@ -21,7 +21,7 @@ render_resources {
 }
 render_resources {
   name: "blob_shadow_material"
-  path: "/defrend/materials/geometry/billboard_sprite/shadow.material"
+  path: "/defrend/materials/geometry/billboard_sprite/blob_shadow.material"
 }
 render_resources {
   name: "point_light_material"
@@ -114,4 +114,16 @@ render_resources {
 render_resources {
   name: "depth_buffer_material"
   path: "/defrend/materials/screen/visualizations/depth_buffer.material"
+}
+render_resources {
+  name: "particle_material"
+  path: "/defrend/materials/geometry/billboard_sprite/particle.material"
+}
+render_resources {
+  name: "particle_shadow_material"
+  path: "/defrend/materials/geometry/billboard_sprite/particle_shadow.material"
+}
+render_resources {
+  name: "shadowless_particle_material"
+  path: "/defrend/materials/geometry/billboard_sprite/shadowless_particle.material"
 }

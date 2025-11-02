@@ -153,7 +153,7 @@ void main() {
 	}
 
 	float ao = texture(ssao_sampler, var_texcoord0).r;
-	float emissive = albedo_sample.a;
+	float emissive = ceil(albedo_sample.a);
 	float shininess = normal_sample.a * 255;
 	vec4 mat_diff = vec4(albedo_sample.rgb, 1.0);
 	vec4 color = ambient_color * mat_diff * ao;
