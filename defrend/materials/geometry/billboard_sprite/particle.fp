@@ -6,7 +6,7 @@ in vec2 var_texcoord0;
 uniform sampler2D albedo_map;
 
 uniform particle_fp {
-	vec4 spec_glow_params;
+	vec4 spec_glow_dith;
 };
 
 layout(location = 0) out vec4 albedo_out;
@@ -23,12 +23,12 @@ bool odd(float x) {
 void main() {
 	float x = gl_FragCoord.x;
 	float y = gl_FragCoord.y;
-	bool dither = spec_glow_params.z > 0 && (even(x) && odd(y) || odd(x) && even(y));
+	bool dither = spec_glow_dith.z > 0 && (even(x) && odd(y) || odd(x) && even(y));
 	vec4 albedo	= texture(albedo_map, var_texcoord0);
 	if (dither || albedo.a == 0) discard; // avoid writing to the depth buffer, normals, etc
 
-	float specular = spec_glow_params.x;
-	float emissive = spec_glow_params.y;
+	float specular = spec_glow_dith.x;
+	float emissive = spec_glow_dith.y;
 
 	albedo_out		= vec4(albedo.rgb, emissive);
 	normal_out		= vec4(var_normal * 0.5 + 0.5, specular);

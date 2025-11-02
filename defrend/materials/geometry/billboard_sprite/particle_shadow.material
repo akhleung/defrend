@@ -1,33 +1,31 @@
-name: "billboard-shadow"
-tags: "blob_shadow"
-vertex_program: "/defrend/materials/geometry/billboard_sprite/shadow.vp"
-fragment_program: "/defrend/materials/geometry/billboard_sprite/shadow.fp"
-vertex_space: VERTEX_SPACE_LOCAL
-vertex_constants {
-  name: "mtx_view"
-  type: CONSTANT_TYPE_VIEW
-}
+name: "particle-shadow"
+tags: "particle"
+vertex_program: "/defrend/materials/geometry/billboard_sprite/particle_shadow.vp"
+fragment_program: "/defrend/materials/geometry/billboard_sprite/particle_shadow.fp"
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
 }
 vertex_constants {
-  name: "mtx_world"
-  type: CONSTANT_TYPE_WORLD
+  name: "mtx_viewproj"
+  type: CONSTANT_TYPE_VIEWPROJ
 }
-vertex_constants {
-  name: "mtx_normal"
-  type: CONSTANT_TYPE_NORMAL
+fragment_constants {
+  name: "spec_glow_dith"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+samplers {
+  name: "albedo_map"
+  wrap_u: WRAP_MODE_REPEAT
+  wrap_v: WRAP_MODE_REPEAT
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
 }
 attributes {
-  name: "mtx_world"
-  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
-  step_function: VERTEX_STEP_FUNCTION_INSTANCE
-  vector_type: VECTOR_TYPE_MAT4
-}
-attributes {
-  name: "mtx_normal"
-  semantic_type: SEMANTIC_TYPE_NORMAL_MATRIX
-  step_function: VERTEX_STEP_FUNCTION_INSTANCE
-  vector_type: VECTOR_TYPE_MAT4
+  name: "local_position"
+  semantic_type: SEMANTIC_TYPE_POSITION
+  vector_type: VECTOR_TYPE_VEC3
 }

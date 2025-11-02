@@ -1,5 +1,5 @@
 name: "particle"
-tags: "particle"
+tags: "shadowless_particle"
 vertex_program: "/defrend/materials/geometry/billboard_sprite/particle.vp"
 fragment_program: "/defrend/materials/geometry/billboard_sprite/particle.fp"
 vertex_constants {
@@ -11,7 +11,7 @@ vertex_constants {
   type: CONSTANT_TYPE_VIEWPROJ
 }
 fragment_constants {
-  name: "spec_glow_params"
+  name: "spec_glow_dith"
   type: CONSTANT_TYPE_USER
   value {
   }
