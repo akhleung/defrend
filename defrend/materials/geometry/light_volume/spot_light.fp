@@ -58,18 +58,24 @@ void main() {
 	float frag_dist = distance(var_source, var_frag_pos);
 	float edge_dist = distance(var_source, var_edge_pos);
 	float pcnt_dist = floor(100 * (frag_dist / edge_dist));
-	float step_size = 5;
+	float step_size = 10;
 	float rem = fract(pcnt_dist / step_size);
 
 	float dotl = dot(normalize(var_lat_norm - vec3(0, var_lat_norm.y, 0)), var_lat_axis);
 	float radl = acos(dotl);
 	float degl = floor(radl * 180 / PI);
-	float reml = fract(degl / 12);
+	float reml = fract(degl / 36);
 	if (pcnt_dist < var_pcnt_start) {
 		discard;
-	} else if (abs(var_pcnt_start - pcnt_dist) < 1) {
+	} else if (abs(var_pcnt_start - pcnt_dist) == 0) {
 		light_out = vec4(var_color, 1.0);
-	} else if (rem == 0 || pcnt_dist > 98 || reml == 0) {
+	} else if (rem == 0 || pcnt_dist == 100 || reml == 0) {
+		light_out = vec4(var_color, 1.0);
+	} else if (int(gl_FragCoord.y) % 4 == 0 && int(gl_FragCoord.x) % 2 == 0) {
+		light_out = vec4(var_color, 1.0);
+	} else if (int(gl_FragCoord.y) % 4 == 0) {
+		discard;
+	} else if (int(gl_FragCoord.y) % 2 == 0 && int(gl_FragCoord.x) % 2 != 0) {
 		light_out = vec4(var_color, 1.0);
 	} else {
 		discard;

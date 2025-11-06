@@ -48,8 +48,14 @@ void main() {
 	vec2 dots = abs(vec2(dot(lat_normal, X), dot(var_normal, Y)));
 	vec2 rads = acos(dots);
 	vec2 degs = floor(rads * 180 / PI);
-	vec2 rems = fract(degs / 12);
+	vec2 rems = fract(degs / 24);
 	if (rems.x == 0 || rems.y == 0) {
+		light_out = vec4(var_color, 1.0);
+	} else if (int(gl_FragCoord.y) % 4 == 0 && int(gl_FragCoord.x) % 2 == 0) {
+		light_out = vec4(var_color, 1.0);
+	} else if (int(gl_FragCoord.y) % 4 == 0) {
+		discard;
+	} else if (int(gl_FragCoord.y) % 2 == 0 && int(gl_FragCoord.x) % 2 != 0) {
 		light_out = vec4(var_color, 1.0);
 	} else {
 		discard;

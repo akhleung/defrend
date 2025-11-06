@@ -79,13 +79,19 @@ void main() {
     vec3 mags = abs(var_vertex);
     float edge = 0.4825;
     vec3 rems = fract(floor(mags * 100) / 10);
-    float line_thickness = 0.2;
+    float line_thickness = 0.1;
     if (var_vertex.z == -0.5) {
         albedo_out = texture(albedo_map, var_texcoord0);
     } else if (mags.x > edge && mags.y > edge || mags.y > edge && mags.z > edge || mags.x > edge && mags.z > edge) {
 		albedo_out = vec4(1);
 	} else if (rems.x < line_thickness && rems.y < line_thickness) {
         albedo_out = vec4(1);
+	} else if (int(gl_FragCoord.y) % 4 == 0 && int(gl_FragCoord.x) % 2 == 0) {
+		albedo_out = vec4(1);
+	} else if (int(gl_FragCoord.y) % 4 == 0) {
+		discard;
+	} else if (int(gl_FragCoord.y) % 2 == 0 && int(gl_FragCoord.x) % 2 != 0) {
+		albedo_out = vec4(1);
     } else {
 		discard;
 	}
