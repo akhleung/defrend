@@ -100,20 +100,16 @@ render_resources {
   path: "/defrend/materials/screen/dual_kawase_blur/kawase_upsample.material"
 }
 render_resources {
-  name: "g_buffer_spec_glow_material"
-  path: "/defrend/materials/screen/visualizations/g_buffer_spec_glow.material"
+  name: "copy_a_material"
+  path: "/defrend/materials/screen/visualizations/copy_a.material"
 }
 render_resources {
-  name: "reflectance_specular_material"
-  path: "/defrend/materials/screen/visualizations/reflectance_specular.material"
+  name: "copy_rgb_material"
+  path: "/defrend/materials/screen/visualizations/copy_rgb.material"
 }
 render_resources {
-  name: "reflectance_diffuse_material"
-  path: "/defrend/materials/screen/visualizations/reflectance_diffuse.material"
-}
-render_resources {
-  name: "depth_buffer_material"
-  path: "/defrend/materials/screen/visualizations/depth_buffer.material"
+  name: "copy_r_material"
+  path: "/defrend/materials/screen/visualizations/copy_r.material"
 }
 render_resources {
   name: "particle_material"
