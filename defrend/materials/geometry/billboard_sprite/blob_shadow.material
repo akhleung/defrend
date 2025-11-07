@@ -19,6 +19,12 @@ vertex_constants {
   name: "mtx_normal"
   type: CONSTANT_TYPE_NORMAL
 }
+vertex_constants {
+  name: "bias"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
 attributes {
   name: "mtx_world"
   semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
