@@ -3,7 +3,6 @@ local draw_options		= require "defrend.render.resources.draw_options"
 local shadows			= require "defrend.render.shadows"
 local render_targets	= require "defrend.render.resources.render_targets"
 local clear_options		= require "defrend.render.resources.clear_options"
-local cameras			= require "defrend.render.resources.cameras"
 local predicates		= require "defrend.render.resources.predicates"
 local gaussian_blur		= require "defrend.render.post_processors.gaussian_blur"
 local dual_kawase_blur	= require "defrend.render.post_processors.dual_kawase_blur"
@@ -37,13 +36,15 @@ local fxaa_options
 local shadow_map
 local g_buffer
 
+local screen_camera
+local gui_camera
+
 function init(self)
 	settings.resolution_x = render.get_window_width()
 	settings.resolution_y = render.get_window_height()
 
 	render_targets.init()
 	clear_options.init()
-	cameras.init()
 	predicates.init()
 	draw_options.init()
 
@@ -77,13 +78,30 @@ function init(self)
 
 	shadow_map = render_targets.get_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
+
+	local identity = vmath.matrix4()
+	local screen_proj = vmath.matrix4_orthographic(-.5, .5, -.5, .5, -1, 1)
+	screen_camera = {
+		view = identity,
+		proj = screen_proj,
+		viewproj = screen_proj * identity,
+	}
+
+	local gui_proj = vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1)
+	gui_camera = {
+		view = identity,
+		proj = gui_proj,
+		viewproj = gui_proj * identity,
+	}
 end
 
+local cull = { use_frustum = true }
 function update(self)
 
 	if not self.valid then return end
 
 	local rx, ry = settings.resolution_x, settings.resolution_y
+	local cam = settings.scene_camera_url
 
 	render.set_depth_func(graphics.COMPARE_FUNC_LESS)
 	render.set_depth_mask(true)
@@ -98,8 +116,7 @@ function update(self)
 	render.clear(clear_options.clear_color_options)
 	render.set_viewport(0, 0, rx, ry)
 	-- setup camera view and projection --
-	render.set_view(cameras.scene_camera.view)
-	render.set_projection(cameras.scene_camera.proj)
+	render.set_camera(cam, cull)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
 	-- render models into g-buffer --
@@ -134,8 +151,9 @@ function update(self)
 	render.set_render_target(render_targets.get_post_target())
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
-	render.set_view(cameras.screen_camera.view)
-	render.set_projection(cameras.screen_camera.proj)
+	render.set_camera()
+	render.set_view(screen_camera.view)
+	render.set_projection(screen_camera.proj)
 	render.enable_material("depth_buffer_copy_material")
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.draw(predicates.screen)
@@ -152,8 +170,7 @@ function update(self)
 	render.set_render_target(g_buffer)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.enable_state(graphics.STATE_CULL_FACE)
-	render.set_view(cameras.scene_camera.view)
-	render.set_projection(cameras.scene_camera.proj)
+	render.set_camera(cam, cull)
 	if settings.geometry.decals_enabled then
 		render.enable_material("decal_material")
 		render.enable_texture("depth_buffer", render_targets.get_post_source(), render_targets.POST_COLOR)
@@ -165,6 +182,7 @@ function update(self)
 	-- render the skybox --
 	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
+	render.set_camera(cam) -- set this again to turn off frustum culling for the skybox
 	if settings.geometry.skybox_enabled then
 		render.enable_material("skybox_material")
 		render.draw(predicates.skybox)
@@ -201,8 +219,9 @@ function update(self)
 	render.disable_state(graphics.STATE_CULL_FACE)
 	render.disable_state(graphics.STATE_BLEND)
 
-	render.set_view(cameras.screen_camera.view)
-	render.set_projection(cameras.screen_camera.proj)
+	render.set_camera()
+	render.set_view(screen_camera.view)
+	render.set_projection(screen_camera.proj)
 
 	if settings.ssao.enabled then
 		render.set_render_target(render_targets.get_post_target())
@@ -350,19 +369,24 @@ local frustum_corner_ndc	= vmath.vector4(1.0)
 local frustum_corner
 local frustum_terms			= vmath.vector4()
 local function update_camera_uniforms()
-	local camera = cameras.scene_camera
+	local cam = settings.scene_camera_url
+	local view = camera.get_view(cam)
+	local proj = camera.get_projection(cam)
+	local proj_inv = vmath.inv(proj)
+	local viewproj = proj * view
+	local near = camera.get_near_z(cam)
 
-	frustum_corner		= camera.proj_inv * frustum_corner_ndc
+	frustum_corner		= proj_inv * frustum_corner_ndc
 	frustum_corner		= frustum_corner / frustum_corner.w
-	frustum_corner.w	= -camera.near
+	frustum_corner.w	= -near
 	frustum_terms.x		= frustum_corner.z * frustum_corner.w * 2
 	frustum_terms.y		= frustum_corner.z + frustum_corner.w
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
-	geometry_options.frustum					= camera.viewproj
+	geometry_options.frustum					= viewproj
 	geometry_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
 	geometry_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
-	lighting_options.constants.mtx_view			= camera.view ---@diagnostic disable-line: inject-field
+	lighting_options.constants.mtx_view			= view ---@diagnostic disable-line: inject-field
 	lighting_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
 	lighting_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
 	ssao_options.constants.frustum_corner		= frustum_corner ---@diagnostic disable-line: inject-field
@@ -375,14 +399,7 @@ end
 local MSG_WINDOW_RESIZED	= hash("window_resized")
 local MSG_SET_VIEW_PROJ		= hash("set_view_projection")
 function on_message(self, message_id, message)
-	local scene_camera = cameras.scene_camera
-	local gui_camera = cameras.gui_camera
 	if message_id == MSG_SET_VIEW_PROJ then
-		scene_camera.view		= message.view
-		scene_camera.proj		= message.projection
-		scene_camera.viewproj	= scene_camera.proj * scene_camera.view
-		scene_camera.view_inv	= vmath.inv(scene_camera.view)
-		scene_camera.proj_inv	= vmath.inv(scene_camera.proj)
 		update_camera_uniforms()
 	elseif message_id == MSG_WINDOW_RESIZED then
 		settings.resolution_x = render.get_window_width()
@@ -428,16 +445,15 @@ render_shadows = function()
 		render.set_cull_face(graphics.FACE_TYPE_FRONT)
 		render.draw(predicates.blob_shadow, shadow_options)
 		render.disable_material()
-		lighting_options.constants.mtx_lights[i] = mtx_light * cameras.scene_camera.view_inv ---@diagnostic disable-line: undefined-field
+		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(camera.get_view(settings.scene_camera_url))
 	end
 	render.disable_material()
 end
 
 render_gui = function ()
-	local camera_gui = cameras.gui_camera
-	geometry_options.frustum = camera_gui.viewproj
-	render.set_view(camera_gui.view)
-	render.set_projection(camera_gui.proj)
+	geometry_options.frustum = gui_camera.viewproj
+	render.set_view(gui_camera.view)
+	render.set_projection(gui_camera.proj)
 	render.enable_state(graphics.STATE_STENCIL_TEST)
 	render.draw(predicates.debug_text, geometry_options)
 	render.draw(predicates.gui, geometry_options)

@@ -1,9 +1,9 @@
-local cameras = require "defrend.render.resources.cameras"
-
+local settings = require "defrend.render.settings"
 local M = {}
 
 function M.screen_to_world(x, y)
-    local inv_mtx = vmath.inv(cameras.scene_camera.viewproj)
+    local cam = settings.scene_camera_url
+    local inv_mtx = vmath.inv(camera.get_projection(cam) * camera.get_view(cam))
     local w, h    = window.get_size()
 
     local near = inv_mtx * vmath.vector4(x / w * 2 - 1, y / h * 2 - 1, -1, 1)

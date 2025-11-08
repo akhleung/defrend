@@ -1,0 +1,28 @@
+local settings = require "defrend.render.settings"
+
+local MSG_ENABLE = hash("enable")
+local MSG_REFRESH = hash("refresh")
+
+go.property("scene_camera_url", msg.url())
+-- TODO: consdier adding properties for a screen camera and gui camera (not really required though because they're
+-- generally fixed and can be assumed to cover a unit quad and a screen-sized quad, respectively)
+
+local function do_init(self)
+	settings.scene_camera_url = self.scene_camera_url
+	msg.post(self.scene_camera_url, MSG_ENABLE)
+end
+
+function init(self)
+	do_init(self)
+	msg.post("/defrend/lighting#shadow", MSG_REFRESH)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
+end
+
+function on_reload(self)
+	do_init(self)
+end

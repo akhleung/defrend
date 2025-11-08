@@ -1,5 +1,6 @@
 ---@diagnostic disable: inject-field
 local settings = require "defrend.render.settings"
+local shadows = require "defrend.render.shadows"
 
 local M = {
 	geometry			= { uniforms = render.constant_buffer() },
@@ -41,21 +42,13 @@ end
 local shadow = settings.shadow
 local shadow_params1 = vmath.vector4()
 local shadow_params2 = vmath.vector4()
-function M.shadow.init(fov, aspect, near, far)
-	shadow.partitions = {}
-	shadow.projections = {}
-	shadow.map_dimension = math.ceil(math.sqrt(#shadow.cascade))
-	shadow.map_resolution = shadow.atlas_resolution / shadow.map_dimension
-	shadow.texel_size = 1 / shadow.map_resolution
-	local total_range = far - near
-	for i = 1, #shadow.cascade do
-		far = near + total_range * shadow.cascade[i]
-		local y_offset = math.floor((i - 1) / shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
-		local x_offset = ((i - 1) % shadow.map_dimension) / shadow.map_dimension -- * shadow.map_resolution
-		shadow.partitions[i] = vmath.vector4(x_offset, y_offset, far, shadow.biases[i])
-		shadow.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
-		near = far
-	end
+function M.shadow.init()
+	local fov		= camera.get_fov(settings.scene_camera_url)
+	local aspect	= camera.get_aspect_ratio(settings.scene_camera_url)
+	local near		= camera.get_near_z(settings.scene_camera_url)
+	local far		= camera.get_far_z(settings.scene_camera_url)
+
+	shadows.init(fov, aspect, near, far)
 	shadow_params1.x = shadow.map_resolution
 	shadow_params1.y = shadow.map_dimension
 	shadow_params1.z = shadow.poisson_scale

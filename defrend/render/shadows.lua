@@ -1,5 +1,4 @@
 local settings = require "defrend.render.settings"
-local cameras = require "defrend.render.resources.cameras"
 local shadow_settings = settings.shadow
 
 local M = {}
@@ -9,7 +8,22 @@ local MAX_NUM = 2000000000
 local MIN_NUM = -2000000000
 local frustums
 local z_padding_factor = settings.shadow.z_padding_factor
-function M.init()
+function M.init(fov, aspect, near, far)
+	settings.shadow.partitions = {}
+	settings.shadow.projections = {}
+	settings.shadow.map_dimension = math.ceil(math.sqrt(#settings.shadow.cascade))
+	settings.shadow.map_resolution = settings.shadow.atlas_resolution / settings.shadow.map_dimension
+	settings.shadow.texel_size = 1 / settings.shadow.map_resolution
+	local total_range = far - near
+	for i = 1, #settings.shadow.cascade do
+		far = near + total_range * settings.shadow.cascade[i]
+		local y_offset = math.floor((i - 1) / settings.shadow.map_dimension) / settings.shadow.map_dimension -- * shadow.map_resolution
+		local x_offset = ((i - 1) % settings.shadow.map_dimension) / settings.shadow.map_dimension -- * shadow.map_resolution
+		settings.shadow.partitions[i] = vmath.vector4(x_offset, y_offset, far, settings.shadow.biases[i])
+		settings.shadow.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
+		near = far
+	end
+
 	frustums = {}
 	for i = 1, #settings.shadow.cascade do
 		frustums[i] = {
@@ -118,7 +132,7 @@ local world_corners = {
 
 get_light_view_mtx_and_camera_frustum = function(cam_proj)
 	-- get the camera frustum in world space
-	local mtx_inv = vmath.inv(cam_proj * cameras.scene_camera.view)
+	local mtx_inv = vmath.inv(cam_proj * camera.get_view(settings.scene_camera_url))
 	for i = 1, 8 do
 		local world_corner = mtx_inv * ndc_corners[i]
 		world_corner.x = world_corner.x / world_corner.w

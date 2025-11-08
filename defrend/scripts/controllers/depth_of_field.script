@@ -1,5 +1,4 @@
 local settings	= require "defrend.render.settings"
-local cameras	= require "defrend.render.resources.cameras"
 local defrend	= require "defrend.render.defrend"
 
 go.property("enabled", false)
@@ -62,7 +61,7 @@ local function pick(self, x, y)
 	local picks		= physics.raycast(near, far, pickables, raycast_options)
 	if picks then
 		local picked = picks[1].position
-		local focal_point = cameras.scene_camera.view * vmath.vector4(picked.x, picked.y, picked.z, 1)
+		local focal_point = camera.get_view(settings.scene_camera_url) * vmath.vector4(picked.x, picked.y, picked.z, 1)
 		local focal_depth = -focal_point.z
 		return focal_depth
 	end

@@ -1,6 +1,7 @@
 local M = {
 	resolution_x = 0,
 	resolution_y = 0,
+	scene_camera_url = nil,
 	geometry = {
 		models_enabled = true,
 		sprites_enabled = true,

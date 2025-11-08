@@ -1,11 +1,11 @@
 local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 local shadows = require "defrend.render.shadows"
-local cameras = require "defrend.render.resources.cameras"
+
+local MSG_REFRESH = hash("refresh")
 
 go.property("enabled", true)
 go.property("stable_shadows", true)
-go.property("scene_camera_url", msg.url())
 go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
 go.property("cascade_transition_range", 10)
@@ -49,23 +49,16 @@ local function do_init(self)
 	settings.shadow.poisson_scale		= self.poisson_scale
 	settings.shadow.soft_penumbras		= self.soft_penumbras
 
-	local fov		= camera.get_fov(self.scene_camera_url)
-	local aspect	= camera.get_aspect_ratio(self.scene_camera_url)
-	local near		= camera.get_near_z(self.scene_camera_url)
-	local far		= camera.get_far_z(self.scene_camera_url)
-
-	cameras.set_scene_camera_projection(fov, aspect, near, far)
-    uniforms.shadow.init(fov, aspect, near, far)
-	shadows.init()
+    uniforms.shadow.init()
 end
 
 function init(self)
-	do_init(self)
+	-- wait for the camera config script to send a refresh message to this script since we can't fully initialize
+	-- shadows without the camera frustum
 end
 
-local MSG_REFRESH = hash("refresh")
 function on_message(self, message_id, message, sender)
-	if message_id == MSG_REFRESH then
+	if message_id == MSG_REFRESH and settings.scene_camera_url then
 		do_init(self)
 	end
 end

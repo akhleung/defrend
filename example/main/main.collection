@@ -564,6 +564,20 @@ instances {
     z: -323.0
   }
 }
+instances {
+  id: "point_light_soft_white30"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 1.5
+    y: 0.5
+    z: 1.0
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
 collection_instances {
   id: "neighborhood"
   collection: "/example/main/neighborhood.collection"
@@ -605,15 +619,18 @@ collection_instances {
   id: "defrend"
   collection: "/defrend/defrend.collection"
   instance_properties {
-    id: "lighting"
+    id: "renderer"
     properties {
-      id: "shadow"
+      id: "cameras"
       properties {
         id: "scene_camera_url"
         value: "/camera#camera"
         type: PROPERTY_TYPE_URL
       }
     }
+  }
+  instance_properties {
+    id: "lighting"
     properties {
       id: "light"
       properties {
@@ -3205,4 +3222,63 @@ embedded_instances {
   children: "spot_light_magenta1"
   children: "spot_light_magenta2"
   data: ""
+}
+embedded_instances {
+  id: "pillar"
+  children: "rotating_light"
+  data: "components {\n"
+  "  id: \"cube\"\n"
+  "  component: \"/example/assets/models/cube.model\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube1\"\n"
+  "  component: \"/example/assets/models/cube.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube2\"\n"
+  "  component: \"/example/assets/models/cube.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube3\"\n"
+  "  component: \"/example/assets/models/cube.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube4\"\n"
+  "  component: \"/example/assets/models/cube.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -69.0
+    y: -1.0
+    z: -193.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+embedded_instances {
+  id: "rotating_light"
+  children: "point_light_soft_white30"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    y: 1.5
+  }
 }

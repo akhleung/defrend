@@ -12,6 +12,10 @@ embedded_instances {
   "  id: \"geometry\"\n"
   "  component: \"/defrend/scripts/geometry.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"cameras\"\n"
+  "  component: \"/defrend/scripts/cameras.script\"\n"
+  "}\n"
   ""
 }
 embedded_instances {
