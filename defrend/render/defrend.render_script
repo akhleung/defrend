@@ -373,7 +373,6 @@ local function update_camera_uniforms()
 	local view = camera.get_view(cam)
 	local proj = camera.get_projection(cam)
 	local proj_inv = vmath.inv(proj)
-	local viewproj = proj * view
 	local near = camera.get_near_z(cam)
 
 	frustum_corner		= proj_inv * frustum_corner_ndc
@@ -383,17 +382,16 @@ local function update_camera_uniforms()
 	frustum_terms.y		= frustum_corner.z + frustum_corner.w
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
-	geometry_options.frustum					= viewproj
-	geometry_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	geometry_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
-	lighting_options.constants.mtx_view			= view ---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_terms	= frustum_terms ---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_corner		= frustum_corner ---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_corner	= frustum_corner ---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_terms		= frustum_terms ---@diagnostic disable-line: inject-field
-	dof_options.constants.frustum_terms			= frustum_terms ---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
+	lighting_options.constants.mtx_view			= view				---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	lighting_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_corner		= frustum_corner	---@diagnostic disable-line: inject-field
+	ssao_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
+	outline_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
+	dof_options.constants.frustum_terms			= frustum_terms		---@diagnostic disable-line: inject-field
 end
 
 local MSG_WINDOW_RESIZED	= hash("window_resized")
