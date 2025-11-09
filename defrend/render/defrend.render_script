@@ -196,6 +196,7 @@ function update(self)
 	-- can cull front faces, which will allow the camera to move inside light volumes without causing them to be
 	-- culled. If overdraw becomes a big problem, it may be an acceptable tradeoff to render the whole scene into this
 	-- buffer first.
+	render.set_camera(cam, cull)
 	render.set_render_target(render_targets.get_post_spare())
 	render.clear(clear_options.clear_color_options)
 	render.enable_state(graphics.STATE_BLEND)

@@ -20,7 +20,6 @@ local M = {
 }
 
 function M.init()
-	M.geometry_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	M.geometry_options.sort_order		= render.SORT_FRONT_TO_BACK
 	M.geometry_options.constants		= uniforms.geometry.uniforms
 	M.shadow_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
