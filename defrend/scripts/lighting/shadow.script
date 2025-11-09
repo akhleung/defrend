@@ -8,6 +8,10 @@ go.property("enabled", true)
 go.property("stable_shadows", true)
 go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
+go.property("partition_1_tint", vmath.vector4(0))
+go.property("partition_2_tint", vmath.vector4(0))
+go.property("partition_3_tint", vmath.vector4(0))
+go.property("partition_4_tint", vmath.vector4(0))
 go.property("cascade_transition_range", 10)
 go.property("atlas_resolution", 4096)
 go.property("light_frustum_z_padding", 0.5)
@@ -27,14 +31,17 @@ local function do_init(self)
 
 	local cascade	= { self.cascade.x, self.cascade.y, self.cascade.z, self.cascade.w }
 	local biases	= { self.biases.x, self.biases.y, self.biases.z, self.biases.w }
+	local tints		= { self.partition_1_tint, self.partition_2_tint, self.partition_3_tint, self.partition_4_tint }
 	settings.shadow.cascade	= {}
 	settings.shadow.biases	= {}
+	settings.shadow.tints	= {}
 	if settings.shadow.enabled then
 		for i = 1, #cascade do
 			-- stop adding partitions to the cascade when a size of 0 is encountered
 			if cascade[i] == 0 then break end
 			settings.shadow.cascade[i] = cascade[i]
 			settings.shadow.biases[i] = biases[i]
+			settings.shadow.tints[i] = tints[i]
 		end
 		if #settings.shadow.cascade == 0 then
 			settings.shadow.enabled = false

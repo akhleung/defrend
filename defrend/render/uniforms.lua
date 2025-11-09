@@ -63,13 +63,8 @@ function M.shadow.init()
 	M.light_and_shadow.uniforms.shadow_params1		= shadow_params1
 	M.light_and_shadow.uniforms.shadow_params2		= shadow_params2
 	M.light_and_shadow.uniforms.camera_partitions	= shadow.partitions
-	M.light_and_shadow.uniforms.mtx_lights			= {}
-	M.light_and_shadow.uniforms.shadow_colors		= {
-		vmath.vector4(1, 0, 0, 1),
-		vmath.vector4(0, 1, 0, 1),
-		vmath.vector4(0, 0, 1, 1),
-		vmath.vector4(0, 0, 1, 1),
-	}
+	M.light_and_shadow.uniforms.mtx_lights			= {} -- will be populated when the render script refreshes the shadows
+	M.light_and_shadow.uniforms.shadow_tints		= shadow.tints
 end
 
 local ssao = settings.ssao

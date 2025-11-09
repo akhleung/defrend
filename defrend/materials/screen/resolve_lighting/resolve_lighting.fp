@@ -28,7 +28,7 @@ uniform lighting_fp {
 	mat4 mtx_lights[MAX_PARTITIONS]; // (light's proj mtx) * (light's view mtx) * (camera's inverse view mtx)
 	vec4 shadow_params1;
 	vec4 shadow_params2;
-	vec4 shadow_colors[MAX_PARTITIONS];
+	vec4 shadow_tints[MAX_PARTITIONS];
 };
 
 layout(location = 0) out vec4 frag_color;
@@ -123,6 +123,7 @@ void main() {
 	vec3 normal			= normalize(normal_sample.xyz * 2.0 - 1.0); // rescale/bias [0, 1] -> [-1, 1]
 
 	float shadow = 1;
+	vec4 tint = vec4(0, 0, 0, 1);
 	float near_edge, far_edge;
 	int i;
 	for (i = 0, near_edge = 0, far_edge = 0; i < NUM_PARTITIONS; ++i, near_edge = far_edge) {
@@ -134,6 +135,7 @@ void main() {
 		if (var_frag_pos.z < -far_edge) continue;
 		// otherwise try to cast a shadow using this partition
 		shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i], offset, bias);
+		tint.rgb = shadow_tints[i].rgb;
 		// if this fragment isn't near the far edge of this partition, or we're in the last partition, finish here
 		float dist = far_edge + var_frag_pos.z;
 		if (TRANSITION_RANGE == 0 || dist > TRANSITION_RANGE || i >= NUM_PARTITIONS - 1) break;
@@ -142,7 +144,10 @@ void main() {
 		vec2 next_offset = next_part.xy;
 		float next_bias = next_part.w;
 		float next_shadow = shadow_calc(vec4(var_frag_pos, 1.0), normal, mtx_lights[i + 1], next_offset, next_bias);
-		shadow = mix(next_shadow, shadow, dist / TRANSITION_RANGE);
+		vec4 next_tint = vec4(shadow_tints[i + 1].rgb, 1);
+		float transition_ratio = dist / TRANSITION_RANGE;
+		shadow = mix(next_shadow, shadow, transition_ratio);
+		tint = mix(next_tint, tint, transition_ratio);
 		// at this point we've tried to cast a shadow using the appropriate partition, so finish here
 		break;
 	}
@@ -151,6 +156,9 @@ void main() {
 		float fade = smoothstep(mix(near_edge, far_edge, 0.75), far_edge, -var_frag_pos.z);
 		shadow += (1.0 - shadow) * fade;
 	}
+	// because tinting the shadow doesn't really make sense physically (since it's the absence of light), we need to
+	// mix the shadow tint with the light color, proportional to the shadow's magnitude
+	tint.rgb = mix(directional_color.rgb, tint.rgb, 1.0 - shadow);
 
 	float ao = texture(ssao_sampler, var_texcoord0).r;
 	float emissive = ceil(albedo_sample.a);
@@ -159,8 +167,8 @@ void main() {
 	vec4 color = ambient_color * mat_diff * ao;
 	float sun_spec = specular(view_dir, directional_from, normal, shininess);
 	float sun_diff = diffuse(directional_from, normal);
-	vec4 light_spec = clamp(sun_spec * directional_color * shadow + vol_spec, 0, 1);
-	vec4 light_diff = clamp((sun_diff * directional_color * shadow + vol_diff) * ao + emissive, 0, 1); // consider (ao + 1) / 2
+	vec4 light_spec = clamp(sun_spec * tint + vol_spec, 0, 1);
+	vec4 light_diff = clamp((sun_diff * tint + vol_diff) * ao + emissive, 0, 1); // consider (ao + 1) / 2
 	color += mat_diff * light_diff + light_spec; // we only support white specular highlights for now, so omit mat_spec
 
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);

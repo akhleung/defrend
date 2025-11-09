@@ -33,6 +33,7 @@ local M = {
 		soft_penumbras = true,
 		cascade = { 0.20, 0.10, 0.10, 0.20 },
 		biases = { 0.5, 0.75, 0.75, 1.2 },
+		tints = { vmath.vector4(0), vmath.vector4(0), vmath.vector4(0), vmath.vector4(0) },
 		transition_range = 10,
 		z_padding_factor = 0.5,
 		atlas_resolution = 4096,

@@ -1,6 +1,15 @@
 local SCRIPT_URL = "/defrend/lighting#shadow"
 local p_props = { "cascade.x", "cascade.y", "cascade.z", "cascade.w" }
+local t_props = { "partition_1_tint", "partition_2_tint", "partition_3_tint", "partition_4_tint" }
 local b_props = { "biases.x", "biases.y", "biases.z", "biases.w" }
+local visualize = false
+local saved_tints = {}
+local visualization_tints = {
+	vmath.vector4(1, 0, 0, 0),
+	vmath.vector4(0, 1, 0, 0),
+	vmath.vector4(0, 0, 1, 0),
+	vmath.vector4(1, 1, 0, 0),
+}
 
 return function (self)
 	local properties_changed = false
@@ -38,6 +47,34 @@ return function (self)
 			go.set(SCRIPT_URL, b_props[i], vmath.clamp(value, 0, 10))
 			properties_changed = true
 		end
+	end
+	imgui.separator()
+	imgui.text("Partition tints:")
+	for i = 1, 4 do
+		imgui.push_id(("Partition %d tint"):format(i))
+		local old_partition_tint = go.get(SCRIPT_URL, t_props[i])
+		local new_partition_tint = vmath.vector4(old_partition_tint) ---@diagnostic disable-line: param-type-mismatch
+		imgui.color_edit4(("Partition %d"):format(i), new_partition_tint, imgui.COLOREDITFLAGS_NOALPHA)
+		if new_partition_tint ~= old_partition_tint then
+			go.set(SCRIPT_URL, t_props[i], new_partition_tint)
+			properties_changed = true
+		end
+		imgui.pop_id()
+	end
+	local changed, checked = imgui.checkbox("Visualize partitions", visualize)
+	if changed and checked then
+		visualize = true
+		for i = 1, 4 do
+			saved_tints[i] = go.get(SCRIPT_URL, t_props[i])
+			go.set(SCRIPT_URL, t_props[i], visualization_tints[i])
+		end
+		properties_changed = true
+	elseif changed and not checked then
+		visualize = false
+		for i = 1, 4 do
+			go.set(SCRIPT_URL, t_props[i], saved_tints[i])
+		end
+		properties_changed = true
 	end
 	imgui.separator()
 
