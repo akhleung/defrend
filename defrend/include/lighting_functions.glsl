@@ -28,6 +28,12 @@ mediump vec2 hash22(mediump vec2 p) {
     return fract(vec2((p3.x + p3.y) * p3.z, (p3.x+p3.z)*p3.y));
 }
 
+mediump float hash13(mediump vec3 p3) {
+	p3 = fract(p3 * MOD3);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
 mediump vec2 hash23(mediump vec3 p3) {
 	p3 = fract(p3 * MOD3);
     p3 += dot(p3, p3.yzx + 19.19);

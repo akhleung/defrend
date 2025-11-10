@@ -8,6 +8,7 @@ local M = {
 	shadow				= {},
 	light_and_shadow	= { uniforms = render.constant_buffer() },
 	ssao				= { uniforms = render.constant_buffer() },
+	ssao_blur			= { uniforms = render.constant_buffer() },
 	outline				= { uniforms = render.constant_buffer() },
 	glow				= { uniforms = render.constant_buffer() },
 	bloom				= { uniforms = render.constant_buffer() },
@@ -70,6 +71,8 @@ end
 local ssao = settings.ssao
 local ssao_params1	= vmath.vector4()
 local ssao_params2	= vmath.vector4()
+local ssao_params3	= vmath.vector4()
+local ssao_blur_params = vmath.vector4()
 function M.ssao.init()
 	ssao_params1.x = ssao.samples
 	ssao_params1.y = ssao.intensity
@@ -79,8 +82,16 @@ function M.ssao.init()
 	ssao_params2.y = ssao.max_distance
 	ssao_params2.z = ssao.attenuation
 	ssao_params2.w = ssao.radius
+	ssao_params3.x = ssao.granularity
+	ssao_params3.y = ssao.hash_factor
 	M.ssao.uniforms.params1 = ssao_params1
 	M.ssao.uniforms.params2 = ssao_params2
+	M.ssao.uniforms.params3 = ssao_params3
+
+	ssao_blur_params.x = ssao.blur_radius
+	ssao_blur_params.y = ssao.blur_depth_threshold
+	ssao_blur_params.z = ssao.blur_normal_threshold
+	M.ssao_blur.uniforms.params = ssao_blur_params
 end
 
 local outline = settings.outline

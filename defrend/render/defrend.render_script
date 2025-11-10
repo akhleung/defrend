@@ -65,6 +65,7 @@ function init(self)
 	lighting_options		= draw_options.lighting_options
 	copy_options			= draw_options.copy_options
 	ssao_options			= draw_options.ssao_options
+	ssao_blur_options		= draw_options.ssao_blur_options
 	outline_options			= draw_options.outline_options
 	glow_options			= draw_options.glow_options
 	bloom_options			= draw_options.bloom_options
@@ -224,9 +225,9 @@ function update(self)
 	render.set_view(screen_camera.view)
 	render.set_projection(screen_camera.proj)
 
+	render.set_render_target(render_targets.get_post_target())
+	render.clear(clear_options.clear_ssao_options)
 	if settings.ssao.enabled then
-		render.set_render_target(render_targets.get_post_target())
-		render.clear(clear_options.clear_ssao_options)
 		render.enable_material("ssao_material")
 		render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 		render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
@@ -234,25 +235,43 @@ function update(self)
 		render.disable_texture("depth_buffer")
 		render.disable_texture("normal_sampler")
 		render.disable_material()
-		if settings.ssao.blur then
+		if settings.ssao.blur and settings.ssao.blur_compares_normals then
 			render_targets.ping_pong()
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("gaussian_blur_horizontal_material")
+			render.enable_material("ssao_blur_horizontal_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, gaussian_blur_options)
+			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
+			render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
+			render.draw(predicates.screen, ssao_blur_options)
 			render.disable_texture("color_sampler")
 			render.disable_material()
 			render_targets.ping_pong()
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("gaussian_blur_vertical_material")
+			render.enable_material("ssao_blur_vertical_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, gaussian_blur_options)
+			render.draw(predicates.screen, ssao_blur_options)
 			render.disable_texture("color_sampler")
+			render.disable_texture("depth_buffer")
+			render.disable_texture("normal_sampler")
+			render.disable_material()
+		elseif settings.ssao.blur then
+			render_targets.ping_pong()
+			render.set_render_target(render_targets.get_post_target())
+			render.enable_material("ssao_blur_horizontal_depth_only_material")
+			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
+			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
+			render.draw(predicates.screen, ssao_blur_options)
+			render.disable_texture("color_sampler")
+			render.disable_material()
+			render_targets.ping_pong()
+			render.set_render_target(render_targets.get_post_target())
+			render.enable_material("ssao_blur_vertical_depth_only_material")
+			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
+			render.draw(predicates.screen, ssao_blur_options)
+			render.disable_texture("color_sampler")
+			render.disable_texture("depth_buffer")
 			render.disable_material()
 		end
-	else
-		render.set_render_target(render_targets.get_post_target())
-		render.clear(clear_options.clear_ssao_options)
 	end
 
 	render_targets.ping_pong()
@@ -371,10 +390,11 @@ local frustum_corner
 local frustum_terms			= vmath.vector4()
 local function update_camera_uniforms()
 	local cam = settings.scene_camera_url
+	local near = camera.get_near_z(cam)
 	local view = camera.get_view(cam)
 	local proj = camera.get_projection(cam)
+	local view_inv = vmath.inv(view)
 	local proj_inv = vmath.inv(proj)
-	local near = camera.get_near_z(cam)
 
 	frustum_corner		= proj_inv * frustum_corner_ndc
 	frustum_corner		= frustum_corner / frustum_corner.w
@@ -383,16 +403,18 @@ local function update_camera_uniforms()
 	frustum_terms.y		= frustum_corner.z + frustum_corner.w
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
-	geometry_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
-	geometry_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
-	lighting_options.constants.mtx_view			= view				---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
-	lighting_options.constants.frustum_terms	= frustum_terms		---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_corner		= frustum_corner	---@diagnostic disable-line: inject-field
-	ssao_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_corner	= frustum_corner	---@diagnostic disable-line: inject-field
-	outline_options.constants.frustum_terms		= frustum_terms		---@diagnostic disable-line: inject-field
-	dof_options.constants.frustum_terms			= frustum_terms		---@diagnostic disable-line: inject-field
+	geometry_options.constants.frustum_corner	= frustum_corner
+	geometry_options.constants.frustum_terms	= frustum_terms
+	lighting_options.constants.mtx_view			= view
+	lighting_options.constants.frustum_corner	= frustum_corner
+	lighting_options.constants.frustum_terms	= frustum_terms
+	ssao_options.constants.frustum_corner		= frustum_corner
+	ssao_options.constants.frustum_terms		= frustum_terms
+	ssao_options.constants.mtx_view_inv			= view_inv
+	ssao_blur_options.constants.frustum_terms	= frustum_terms
+	outline_options.constants.frustum_corner	= frustum_corner
+	outline_options.constants.frustum_terms		= frustum_terms
+	dof_options.constants.frustum_terms			= frustum_terms
 end
 
 local MSG_WINDOW_RESIZED	= hash("window_resized")
