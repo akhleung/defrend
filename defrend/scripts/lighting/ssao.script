@@ -2,8 +2,6 @@ local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
 
 go.property("enabled", true)
-go.property("downsample", false)
-go.property("blur", true)
 go.property("samples", 16)
 go.property("intensity", 1.5)
 go.property("bias_angle", 0.1)
@@ -12,11 +10,17 @@ go.property("min_distance", 1.0)
 go.property("max_distance", 4.0)
 go.property("attenuation", 1.0)
 go.property("radius", 2.0)
+go.property("granularity", 200)
+go.property("hash_factor", 100)
+go.property("blur", true)
+go.property("blur_radius", 4)
+go.property("blur_depth_threshold", 0.2)
+go.property("blur_normal_threshold", 0.85)
+go.property("blur_compares_normals", false)
 
 local function do_init(self)
 	settings.ssao.enabled		= self.enabled
 	settings.ssao.downsample	= self.downsample
-	settings.ssao.blur			= self.blur
 	settings.ssao.samples		= self.samples
 	settings.ssao.intensity		= self.intensity
 	settings.ssao.bias_angle	= self.bias_angle
@@ -25,6 +29,13 @@ local function do_init(self)
 	settings.ssao.max_distance	= self.max_distance
 	settings.ssao.attenuation	= self.attenuation
 	settings.ssao.radius		= self.radius
+	settings.ssao.granularity	= self.granularity
+	settings.ssao.hash_factor	= self.hash_factor
+	settings.ssao.blur					= self.blur
+	settings.ssao.blur_radius			= self.blur_radius
+	settings.ssao.blur_depth_threshold	= self.blur_depth_threshold
+	settings.ssao.blur_normal_threshold = self.blur_normal_threshold
+	settings.ssao.blur_compares_normals	= self.blur_compares_normals
 	uniforms.ssao.init()
 end
 

@@ -8,14 +8,6 @@ return function (self)
 	if changed then
 		settings.ssao.enabled = checked
 	end
-	local changed, checked = imgui.checkbox("Downsample", settings.ssao.downsample)
-	if changed then
-		settings.ssao.downsample = checked
-	end
-	local changed, checked = imgui.checkbox("Blur", settings.ssao.blur)
-	if changed then
-		settings.ssao.blur = checked
-	end
 
 	local changed, value = imgui.input_int("Samples", settings.ssao.samples)
 	if changed then
@@ -61,10 +53,47 @@ return function (self)
 		settings.ssao.attenuation = vmath.clamp(value, 0.0, 50)
 		uniforms_changed = true
 	end
+
 	local changed, value = imgui.input_float("Radius", settings.ssao.radius, 0.05, 0.5)
 	if changed then
 		settings.ssao.radius = vmath.clamp(value, 0.1, 50)
 		uniforms_changed = true
+	end
+
+	local changed, value = imgui.input_int("Granularity", settings.ssao.granularity)
+	if changed then
+		settings.ssao.granularity = vmath.clamp(value, 1, 10000)
+		uniforms_changed = true
+	end
+
+	local changed, value = imgui.input_float("Hash factor", settings.ssao.hash_factor, 1, 10)
+	if changed then
+		settings.ssao.hash_factor = vmath.clamp(value, 1, 10000)
+		uniforms_changed = true
+	end
+
+	local changed, checked = imgui.checkbox("Blur", settings.ssao.blur)
+	if changed then
+		settings.ssao.blur = checked
+	end
+	local changed, value = imgui.input_int("Blur radius", settings.ssao.blur_radius)
+	if changed then
+		settings.ssao.blur_radius = vmath.clamp(value, 2, 32)
+		uniforms_changed = true
+	end
+	local changed, value = imgui.input_float("Blur depth threshold", settings.ssao.blur_depth_threshold, 0.01, 0.1)
+	if changed then
+		settings.ssao.blur_depth_threshold = vmath.clamp(value, 0, 100)
+		uniforms_changed = true
+	end
+	local changed, value = imgui.input_float("Blur normal threshold", settings.ssao.blur_normal_threshold, 0.01, 0.1)
+	if changed then
+		settings.ssao.blur_normal_threshold = vmath.clamp(value, -1, 1)
+		uniforms_changed = true
+	end
+	local changed, checked = imgui.checkbox("Blur compares normals", settings.ssao.blur_compares_normals)
+	if changed then
+		settings.ssao.blur_compares_normals = checked
 	end
 
 	if uniforms_changed then

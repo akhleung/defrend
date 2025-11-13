@@ -7,6 +7,7 @@ local M = {
 	lighting_options		= {},
 	copy_options			= {},
 	ssao_options			= {},
+	ssao_blur_options		= {},
 	outline_options			= {},
 	glow_options			= {},
 	bloom_options			= {},
@@ -31,6 +32,7 @@ function M.init()
 	M.copy_options.constants			= render.constant_buffer()
 	M.copy_options.constants.params		= vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
 	M.ssao_options.constants			= uniforms.ssao.uniforms
+	M.ssao_blur_options.constants		= uniforms.ssao_blur.uniforms
 	M.outline_options.constants			= uniforms.outline.uniforms
 	M.glow_options.constants			= uniforms.glow.uniforms
 	M.bloom_options.constants			= uniforms.bloom.uniforms

@@ -11,8 +11,10 @@ uniform sampler2D normal_sampler;
 uniform ssao_fp {
 	vec4 params1;
 	vec4 params2;
+	vec4 params3;
 	vec4 frustum_corner;
 	vec4 frustum_terms;
+	mat4 mtx_view_inv;
 };
 
 int   samples		= int(params1.x);
@@ -23,6 +25,8 @@ float min_distance	= params2.x;
 float max_distance	= params2.y;
 float attn			= params2.z;
 float radius		= params2.w;
+float granularity	= params3.x;
+float hash_factor	= params3.y;
 
 const float goldenAngle = 2.4;
 
@@ -33,9 +37,10 @@ void main() {
 	float depth		= texture(depth_buffer, var_texcoord0).r;
 	float z			= linearizeDepth(depth, frustum_terms.xyz);
 	vec3  origin	= viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
+	vec4  w_orig	= floor(mtx_view_inv * vec4(origin, 1.0) * granularity) / granularity;
 	float z_norm	= (origin.z - frustum_corner.w) / (frustum_corner.z - frustum_corner.w);
   	vec3  normal	= texture(normal_sampler, var_texcoord0).xyz * 2.0 - 1.0;
-	float rotation	= hash12(var_texcoord0 * 100) * 6.28;
+	float rotation	= hash13(w_orig.xyz * hash_factor) * 6.28;
 	float r			= radius / abs(origin.z);
 	float rStart	= r * z_norm * bias_dist;
 	float rStep		= (r - rStart) / samples;
