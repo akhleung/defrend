@@ -28,7 +28,11 @@ local downsampling_level = 0 -- [0, 3]; scale is (1/(2^downsampling_level))^2
 local scale = 1
 local x, y
 
+local initialized = false
 function M.init()
+	if initialized then
+		return
+	end
 	x, y = render.get_window_width(), render.get_window_height()
 	local rgba_params = {
 		format	= graphics.TEXTURE_FORMAT_RGBA,
@@ -151,6 +155,8 @@ function M.init()
 
 	sources	= { source1, source4, source16, source64 }
 	targets	= { target1, target4, target16, target64 }
+
+	initialized = true
 end
 
 function M.set_resolution(w, h)

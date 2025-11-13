@@ -14,6 +14,27 @@ local bloom				= require "defrend.render.post_processors.bloom"
 local kuwahara_blur		= require "defrend.render.post_processors.kuwahara_blur"
 local fxaa				= require "defrend.render.post_processors.fxaa"
 
+local geometry_renderers	= require("defrend.render.geometry_renderers")
+local render_models			= geometry_renderers.render_models
+local render_sprites		= geometry_renderers.render_sprites
+local render_billboards		= geometry_renderers.render_billboards
+local render_particles		= geometry_renderers.render_particles
+local render_decals			= geometry_renderers.render_decals
+local render_skybox			= geometry_renderers.render_skybox
+
+local lighting_renderers	= require("defrend.render.lighting_renderers")
+local render_point_lights	= lighting_renderers.render_point_lights
+local render_spot_lights	= lighting_renderers.render_spot_lights
+local resolve_lighting		= lighting_renderers.resolve_lighting
+
+local shadow_renderers			= require("defrend.render.shadow_renderers")
+local render_model_shadows		= shadow_renderers.render_model_shadows
+local render_blob_shadows		= shadow_renderers.render_blob_shadows
+local render_particle_shadows	= shadow_renderers.render_particle_shadows
+local render_ssao				= shadow_renderers.render_ssao
+local blur_ssao					= shadow_renderers.blur_ssao
+local blur_ssao_depth_only		= shadow_renderers.blur_ssao_depth_only
+
 local render_shadows
 local render_gui
 
@@ -47,6 +68,10 @@ function init(self)
 	clear_options.init()
 	predicates.init()
 	draw_options.init()
+
+	geometry_renderers.init()
+	lighting_renderers.init()
+	shadow_renderers.init()
 
 	gaussian_blur.init()
 	dual_kawase_blur.init()
@@ -118,34 +143,24 @@ function update(self)
 	render.set_viewport(0, 0, rx, ry)
 	-- setup camera view and projection --
 	render.set_camera(cam, cull)
+	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
 	-- render models into g-buffer --
 	if settings.geometry.models_enabled then
-		render.enable_material("model_material")
-		render.draw(predicates.model, geometry_options)
-		render.disable_material()
+		render_models()
 	end
 
 	-- render sprites, billboards, and particles into g-buffer --
 	render.disable_state(graphics.STATE_CULL_FACE)
 	if settings.geometry.sprites_enabled then
-		render.enable_material("sprite_material")
-		render.draw(predicates.sprite, geometry_options)
-		render.disable_material()
+		render_sprites()
 	end
 	if settings.geometry.billboards_enabled then
-		render.enable_material("billboard_material")
-		render.draw(predicates.billboard, geometry_options)
-		render.disable_material()
+		render_billboards()
 	end
 	if settings.geometry.particles_enabled then
-		render.enable_material("particle_material")
-		render.draw(predicates.particle, geometry_options)
-		render.disable_material()
-		render.enable_material("shadowless_particle_material")
-		render.draw(predicates.shadowless_particle, geometry_options)
-		render.disable_material()
+		render_particles()
 	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
@@ -173,11 +188,7 @@ function update(self)
 	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_camera(cam, cull)
 	if settings.geometry.decals_enabled then
-		render.enable_material("decal_material")
-		render.enable_texture("depth_buffer", render_targets.get_post_source(), render_targets.POST_COLOR)
-		render.draw(predicates.decal, geometry_options)
-		render.disable_texture("depth_buffer")
-		render.disable_material()
+		render_decals()
 	end
 
 	-- render the skybox --
@@ -185,9 +196,7 @@ function update(self)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	render.set_camera(cam) -- set this again to turn off frustum culling for the skybox
 	if settings.geometry.skybox_enabled then
-		render.enable_material("skybox_material")
-		render.draw(predicates.skybox)
-		render.disable_material()
+		render_skybox()
 	end
 
 	render.draw_debug3d()
@@ -205,14 +214,10 @@ function update(self)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
 	if settings.light.point_lights_enabled then
-		render.enable_material("point_light_material")
-		render.draw(predicates.point_light, geometry_options)
-		render.disable_material()
+		render_point_lights()
 	end
 	if settings.light.spot_lights_enabled then
-		render.enable_material("spot_light_material")
-		render.draw(predicates.spot_light, geometry_options)
-		render.disable_material()
+		render_spot_lights()
 	end
 	render.disable_texture("depth_buffer")
 	render.disable_texture("normal_sampler")
@@ -228,69 +233,18 @@ function update(self)
 	render.set_render_target(render_targets.get_post_target())
 	render.clear(clear_options.clear_ssao_options)
 	if settings.ssao.enabled then
-		render.enable_material("ssao_material")
-		render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-		render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-		render.draw(predicates.screen, ssao_options)
-		render.disable_texture("depth_buffer")
-		render.disable_texture("normal_sampler")
-		render.disable_material()
+		render_ssao()
 		if settings.ssao.blur and settings.ssao.blur_compares_normals then
 			render_targets.ping_pong()
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_horizontal_material")
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-			render.draw(predicates.screen, ssao_blur_options)
-			render.disable_texture("color_sampler")
-			render.disable_material()
-			render_targets.ping_pong()
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_vertical_material")
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, ssao_blur_options)
-			render.disable_texture("color_sampler")
-			render.disable_texture("depth_buffer")
-			render.disable_texture("normal_sampler")
-			render.disable_material()
+			blur_ssao()
 		elseif settings.ssao.blur then
 			render_targets.ping_pong()
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_horizontal_depth_only_material")
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.draw(predicates.screen, ssao_blur_options)
-			render.disable_texture("color_sampler")
-			render.disable_material()
-			render_targets.ping_pong()
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_vertical_depth_only_material")
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, ssao_blur_options)
-			render.disable_texture("color_sampler")
-			render.disable_texture("depth_buffer")
-			render.disable_material()
+			blur_ssao_depth_only()
 		end
 	end
 
 	render_targets.ping_pong()
-	render.set_render_target(render_targets.get_post_target())
-	render.enable_material("resolve_lighting_material")
-	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-	render.enable_texture("albedo_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
-	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-	render.enable_texture("ssao_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-	render.enable_texture("shadow_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
-	render.enable_texture("light_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
-	render.draw(predicates.screen, lighting_options)
-	render.disable_texture("depth_buffer")
-	render.disable_texture("albedo_sampler")
-	render.disable_texture("normal_sampler")
-	render.disable_texture("ssao_sampler")
-	render.disable_texture("shadow_sampler")
-	render.disable_texture("light_sampler")
-	render.disable_material()
+	resolve_lighting()
 
 	if settings.visualize.option then
 		render.set_render_target(render.RENDER_TARGET_DEFAULT)
@@ -453,19 +407,12 @@ render_shadows = function()
 		local y_offset = partition.y * atlas_resolution
 		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 		shadow_options.frustum = mtx_light
-		render.enable_material("shadow_material")
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
-		render.draw(predicates.model, shadow_options)
-		render.disable_material()
-		render.disable_state(graphics.STATE_CULL_FACE)
-		render.enable_material("particle_shadow_material")
-		render.draw(predicates.particle, shadow_options)
-		render.disable_material()
-		render.enable_state(graphics.STATE_CULL_FACE)
-		render.enable_material("blob_shadow_material")
+		render_model_shadows()
 		render.set_cull_face(graphics.FACE_TYPE_FRONT)
-		render.draw(predicates.blob_shadow, shadow_options)
-		render.disable_material()
+		render_blob_shadows()
+		render.disable_state(graphics.STATE_CULL_FACE)
+		render_particle_shadows()
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(camera.get_view(settings.scene_camera_url))
 	end
 	render.disable_material()
