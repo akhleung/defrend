@@ -118,6 +118,7 @@ function update(self)
 	render.set_viewport(0, 0, rx, ry)
 	-- setup camera view and projection --
 	render.set_camera(cam, cull)
+	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
 	-- render models into g-buffer --
@@ -453,18 +454,17 @@ render_shadows = function()
 		local y_offset = partition.y * atlas_resolution
 		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 		shadow_options.frustum = mtx_light
-		render.enable_material("shadow_material")
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
+		render.enable_material("shadow_material")
 		render.draw(predicates.model, shadow_options)
+		render.disable_material()
+		render.set_cull_face(graphics.FACE_TYPE_FRONT)
+		render.enable_material("blob_shadow_material")
+		render.draw(predicates.blob_shadow, shadow_options)
 		render.disable_material()
 		render.disable_state(graphics.STATE_CULL_FACE)
 		render.enable_material("particle_shadow_material")
 		render.draw(predicates.particle, shadow_options)
-		render.disable_material()
-		render.enable_state(graphics.STATE_CULL_FACE)
-		render.enable_material("blob_shadow_material")
-		render.set_cull_face(graphics.FACE_TYPE_FRONT)
-		render.draw(predicates.blob_shadow, shadow_options)
 		render.disable_material()
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(camera.get_view(settings.scene_camera_url))
 	end
