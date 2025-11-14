@@ -455,17 +455,23 @@ render_shadows = function()
 		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 		shadow_options.frustum = mtx_light
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
-		render.enable_material("shadow_material")
-		render.draw(predicates.model, shadow_options)
-		render.disable_material()
+		if settings.geometry.models_enabled then
+			render.enable_material("shadow_material")
+			render.draw(predicates.model, shadow_options)
+			render.disable_material()
+		end
 		render.set_cull_face(graphics.FACE_TYPE_FRONT)
-		render.enable_material("blob_shadow_material")
-		render.draw(predicates.blob_shadow, shadow_options)
-		render.disable_material()
+		if settings.geometry.sprites_enabled or settings.geometry.billboards_enabled then
+			render.enable_material("blob_shadow_material")
+			render.draw(predicates.blob_shadow, shadow_options)
+			render.disable_material()
+		end
 		render.disable_state(graphics.STATE_CULL_FACE)
-		render.enable_material("particle_shadow_material")
-		render.draw(predicates.particle, shadow_options)
-		render.disable_material()
+		if settings.geometry.particles_enabled then
+			render.enable_material("particle_shadow_material")
+			render.draw(predicates.particle, shadow_options)
+			render.disable_material()
+		end
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(camera.get_view(settings.scene_camera_url))
 	end
 	render.disable_material()
