@@ -114,7 +114,7 @@ local world_corners = {
 -- is a brute-force approach that rotates the camera in a sphere, calculates a bounding box for each rotation, and
 -- returns the largest. I'm sure there's an analytical method for calculating this, but researching and implementing
 -- it isn't currently a priority since this calculation will only be done occasionally -- i.e., when the camera
--- projection changes, or if the directional light moves.
+-- projection changes.
 local EYE = vmath.vector3(0)
 local slices = 20
 get_minimal_bounding_box_for_camera_frustum = function(cam_proj)
@@ -139,7 +139,7 @@ get_minimal_bounding_box_for_camera_frustum = function(cam_proj)
 				min_y, max_y = math.min(min_y, light_corner.y), math.max(max_y, light_corner.y)
 				min_z, max_z = math.min(min_z, light_corner.z), math.max(max_z, light_corner.z)
 			end
-			-- keep track of the largest frustum dimensions and use them to create a stable projection matrix
+			-- keep track of the largest frustum dimensions encountered so far
 			if min_x < bbox.min_x then bbox.min_x = min_x end
 			if max_x > bbox.max_x then bbox.max_x = max_x end
 			if min_y < bbox.min_y then bbox.min_y = min_y end
