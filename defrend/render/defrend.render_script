@@ -444,8 +444,9 @@ render_shadows = function()
 	local partitions = shadow_settings.partitions
 	local atlas_resolution = shadow_settings.atlas_resolution
 	local map_resolution = shadow_settings.map_resolution
+	local cam_view = camera.get_view(settings.scene_camera_url)
 	for i = 1, #partitions do
-		local mtx_view, mtx_proj = refresh_shadows(projections[i], i)
+		local mtx_view, mtx_proj = refresh_shadows(cam_view, projections[i], i)
 		local mtx_light = mtx_proj * mtx_view
 		render.set_view(mtx_view)
 		render.set_projection(mtx_proj)
@@ -472,7 +473,7 @@ render_shadows = function()
 			render.draw(predicates.particle, shadow_options)
 			render.disable_material()
 		end
-		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(camera.get_view(settings.scene_camera_url))
+		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(cam_view)
 	end
 	render.disable_material()
 end
