@@ -3,6 +3,7 @@ local uniforms = require "defrend.render.uniforms"
 local shadows = require "defrend.render.shadows"
 
 local MSG_REFRESH = hash("refresh")
+local MSG_RESIZE_SHADOW_MAP = hash("resize_shadow_map")
 
 go.property("enabled", true)
 go.property("stable_shadows", true)
@@ -57,6 +58,7 @@ local function do_init(self)
 	settings.shadow.soft_penumbras		= self.soft_penumbras
 
     uniforms.shadow.init()
+	msg.post("@render:", MSG_RESIZE_SHADOW_MAP, { resolution = self.atlas_resolution })
 end
 
 function init(self)

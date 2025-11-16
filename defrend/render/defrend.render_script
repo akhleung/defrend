@@ -420,6 +420,7 @@ end
 
 local MSG_WINDOW_RESIZED	= hash("window_resized")
 local MSG_SET_VIEW_PROJ		= hash("set_view_projection")
+local MSG_RESIZE_SHADOW_MAP	= hash("resize_shadow_map")
 function on_message(self, message_id, message)
 	if message_id == MSG_SET_VIEW_PROJ then
 		update_camera_uniforms()
@@ -429,6 +430,8 @@ function on_message(self, message_id, message)
 		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
+	elseif message_id == MSG_RESIZE_SHADOW_MAP then
+		render_targets.set_shadow_map_resolution(message.resolution)
 	end
 end
 

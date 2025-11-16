@@ -1,4 +1,7 @@
+local render_targets = require("defrend.render.resources.render_targets")
+
 local SCRIPT_URL = "/defrend/lighting#shadow"
+local MSG_RESIZE_SHADOW_MAP	= hash("resize_shadow_map")
 local p_props = { "cascade.x", "cascade.y", "cascade.z", "cascade.w" }
 local t_props = { "partition_1_tint", "partition_2_tint", "partition_3_tint", "partition_4_tint" }
 local b_props = { "biases.x", "biases.y", "biases.z", "biases.w" }
@@ -10,6 +13,7 @@ local visualization_tints = {
 	vmath.vector4(0, 0, 1, 0),
 	vmath.vector4(1, 1, 0, 0),
 }
+local atlas_resolutions = { 512, 1024, 2048, 4096, 8192 }
 
 return function (self)
 	local properties_changed = false
@@ -83,14 +87,27 @@ return function (self)
 		go.set(SCRIPT_URL, "cascade_transition_range", vmath.clamp(value, 0, 50))
 		properties_changed = true
 	end
-	local changed, value = imgui.input_int("Atlas resolution", go.get(SCRIPT_URL, "atlas_resolution"))
-	if changed then
-		go.set(SCRIPT_URL, "atlas_resolution", vmath.clamp(value, 1, 8192))
-		properties_changed = true
+
+	local current_res = go.get(SCRIPT_URL, "atlas_resolution")
+	local new_res = current_res
+	local res_changed = false
+	if imgui.begin_combo("Atlas resolution", current_res) then
+		for i = 1, #atlas_resolutions do
+			local res_option_i = atlas_resolutions[i]
+			if imgui.selectable(res_option_i, current_res == res_option_i) then
+				new_res = res_option_i
+			end
+			if new_res ~= current_res and not res_changed then
+				go.set(SCRIPT_URL, "atlas_resolution", vmath.clamp(new_res, atlas_resolutions[1], atlas_resolutions[#atlas_resolutions])) ---@diagnostic disable-line: param-type-mismatch
+				properties_changed = true
+			end
+		end
+		imgui.end_combo()
 	end
+
 	local changed, value = imgui.input_float("Light frustum Z padding", go.get(SCRIPT_URL, "light_frustum_z_padding"), 0.05, 0.1)
 	if changed then
-		go.set(SCRIPT_URL, "light_frustum_z_padding", vmath.clamp(value, 0, 5))
+		go.set(SCRIPT_URL, "light_frustum_z_padding", vmath.clamp(value, 0, 20))
 		properties_changed = true
 	end
 	local changed, value = imgui.input_int("PCF samples", go.get(SCRIPT_URL, "pcf_samples"))
