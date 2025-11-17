@@ -435,13 +435,13 @@ function on_message(self, message_id, message)
 	end
 end
 
+local refresh_shadows = shadows.refresh_shadows
 render_shadows = function()
 	render.set_render_target(shadow_map)
 	render.clear(clear_options.clear_shadow_options)
 	if not settings.shadow.enabled then
 		return
 	end
-	local refresh_shadows = shadows.refresh_shadows
 	local shadow_settings = settings.shadow
 	local projections = shadow_settings.projections
 	local partitions = shadow_settings.partitions

@@ -26,7 +26,6 @@ local M = {
 	},
 	shadow = {
 		enabled = true,
-		stable = true,
 		pcf_samples = 8,
 		poisson_samples = 4,
 		poisson_scale = 3000,

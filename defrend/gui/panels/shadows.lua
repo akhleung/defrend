@@ -1,7 +1,6 @@
 local render_targets = require("defrend.render.resources.render_targets")
 
 local SCRIPT_URL = "/defrend/lighting#shadow"
-local MSG_RESIZE_SHADOW_MAP	= hash("resize_shadow_map")
 local p_props = { "cascade.x", "cascade.y", "cascade.z", "cascade.w" }
 local t_props = { "partition_1_tint", "partition_2_tint", "partition_3_tint", "partition_4_tint" }
 local b_props = { "biases.x", "biases.y", "biases.z", "biases.w" }
@@ -21,12 +20,6 @@ return function (self)
 	local changed, checked = imgui.checkbox("Enabled", go.get(SCRIPT_URL, "enabled"))
 	if changed then
 		go.set(SCRIPT_URL, "enabled", checked)
-		properties_changed = true
-	end
-
-	local changed, checked = imgui.checkbox("Stable shadows", go.get(SCRIPT_URL, "stable_shadows"))
-	if changed then
-		go.set(SCRIPT_URL, "stable_shadows", checked)
 		properties_changed = true
 	end
 

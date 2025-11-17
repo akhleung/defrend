@@ -34,14 +34,13 @@ function M.init(fov, aspect, near, far)
 end
 
 local world_center = vmath.vector3()
-local world_center_vec4 = vmath.vector4(0, 0, 0, 1)
 local directional_to = vmath.vector3()
 local origin = vmath.vector4(0,0,0,1)
 local get_light_view_mtx_and_camera_frustum
 local get_texel_snapping_mtx
 local pad, set_vec3
 
-function M.refresh_shadows_stable(cam_view, cam_proj, i)
+function M.refresh_shadows(cam_view, cam_proj, i)
 	local mtx_light_view = get_light_view_mtx_and_camera_frustum(cam_view, cam_proj)
 	local frustum = LIGHT_FRUSTUMS[i]
 	-- extend the near plane of the light frustum to prevent clipping of shadows cast from outside the camera fov
@@ -51,70 +50,11 @@ function M.refresh_shadows_stable(cam_view, cam_proj, i)
 	return mtx_light_view, mtx_trans * mtx_light_proj
 end
 
-function M.refresh_shadows_half_stable(cam_view, cam_proj, _)
-	local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(cam_view, cam_proj)
-	-- calculate a precise bounding box around the camera frustum in the light's view space
-	local min_x, max_x = MAX_NUM, MIN_NUM
-	local min_y, max_y = MAX_NUM, MIN_NUM
-	local min_z, max_z = MAX_NUM, MIN_NUM
-	for i = 1, 8 do
-		local light_corner = mtx_light_view * world_corners[i]
-		min_x, max_x = math.min(min_x, light_corner.x), math.max(max_x, light_corner.x)
-		min_y, max_y = math.min(min_y, light_corner.y), math.max(max_y, light_corner.y)
-		min_z, max_z = math.min(min_z, light_corner.z), math.max(max_z, light_corner.z)
-	end
-	-- extend the near/far planes of the light frustum to prevent premature clipping of shadows
-	min_z, max_z = pad(min_z, max_z, Z_PADDING_FACTOR)
-	-- use the aforementioned bounding box to create the light projection matrix
-	local mtx_light_proj = vmath.matrix4_orthographic(min_x, max_x, min_y, max_y, min_z, max_z)
-	local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
-	return mtx_light_view, mtx_trans * mtx_light_proj
-end
-
-function M.refresh_shadows_stable_2(cam_view, cam_proj, _)
-	local mtx_light_view, world_corners, world_center = get_light_view_mtx_and_camera_frustum(cam_view, cam_proj)
-	-- get the max diameter and radius of the camera frustum
-	local diameter = vmath.length(world_corners[1] - world_corners[8])
-	local radius = diameter / 2
-	set_vec3(world_center_vec4, world_center)
-	local light_center = mtx_light_view * world_center_vec4
-	-- calculate the light's view and projection matrices
-	local width, depth = radius * 1.15, radius * 3
-	local mtx_light_proj = vmath.matrix4_orthographic(
-		light_center.x - width, light_center.x + width,
-		light_center.y - width, light_center.y + width,
-		light_center.z - depth, light_center.z + depth
-	)
-	local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
-	return mtx_light_view, mtx_trans * mtx_light_proj
-end
-
-local ndc_corners = {
-	vmath.vector4(-1, -1, -1, 1),
-	vmath.vector4(-1, -1, 1, 1),
-	vmath.vector4(-1, 1, -1, 1),
-	vmath.vector4(-1, 1, 1, 1),
-	vmath.vector4(1, -1, -1, 1),
-	vmath.vector4(1, -1, 1, 1),
-	vmath.vector4(1, 1, -1, 1),
-	vmath.vector4(1, 1, 1, 1),
-}
-local world_corners = {
-	vmath.vector4(), -- placeholders for type checking and preallocation
-	vmath.vector4(),
-	vmath.vector4(),
-	vmath.vector4(),
-	vmath.vector4(),
-	vmath.vector4(),
-	vmath.vector4(),
-	vmath.vector4(),
-}
-
 -- Given a desired camera frustum, find the smallest bounding box that will fit any rotation of said frustum. This
 -- is a brute-force approach that rotates the camera in a sphere, calculates a bounding box for each rotation, and
 -- returns the largest. I'm sure there's an analytical method for calculating this, but researching and implementing
--- it isn't currently a priority since this calculation will only be done occasionally -- i.e., when the camera
--- projection changes.
+-- it isn't currently a priority since this calculation will only be done occasionally (i.e., when the camera
+-- projection changes).
 local EYE = vmath.vector3(0)
 local slices = 20
 get_minimal_bounding_box_for_camera_frustum = function(cam_proj)
@@ -151,6 +91,26 @@ get_minimal_bounding_box_for_camera_frustum = function(cam_proj)
 	return bbox
 end
 
+local ndc_corners = {
+	vmath.vector4(-1, -1, -1, 1),
+	vmath.vector4(-1, -1, 1, 1),
+	vmath.vector4(-1, 1, -1, 1),
+	vmath.vector4(-1, 1, 1, 1),
+	vmath.vector4(1, -1, -1, 1),
+	vmath.vector4(1, -1, 1, 1),
+	vmath.vector4(1, 1, -1, 1),
+	vmath.vector4(1, 1, 1, 1),
+}
+local world_corners = {
+	vmath.vector4(), -- placeholders for type checking and preallocation
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+}
 get_light_view_mtx_and_camera_frustum = function(cam_view, cam_proj)
 	-- get the camera frustum in world space
 	local mtx_inv = vmath.inv(cam_proj * cam_view)
@@ -195,7 +155,5 @@ pad = function(min, max, factor)
 	local padding = (max - min) * factor
 	return min - padding, max + padding
 end
-
-M.refresh_shadows = M.refresh_shadows_stable
 
 return M
