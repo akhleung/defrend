@@ -565,18 +565,474 @@ instances {
   }
 }
 instances {
-  id: "point_light_soft_white30"
+  id: "point_light_soft_white31"
   prototype: "/example/main/point_light_soft_white.go"
   position {
-    x: 1.5
-    y: 0.5
-    z: 1.0
+    x: 31.0
+    y: 1.0
+    z: -285.0
   }
   scale3 {
-    x: 10.0
-    y: 10.0
-    z: 10.0
+    x: 17.36
+    y: 17.36
+    z: 17.36
   }
+}
+instances {
+  id: "point_light_soft_white32"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -20.0
+    y: 1.0
+    z: -250.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white33"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 16.0
+    y: 1.0
+    z: -226.0
+  }
+  scale3 {
+    x: 32.736
+    y: 32.736
+    z: 32.736
+  }
+}
+instances {
+  id: "point_light_soft_white34"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -179.0
+    y: 1.0
+    z: -234.0
+  }
+  scale3 {
+    x: 23.6
+    y: 23.6
+    z: 23.6
+  }
+}
+instances {
+  id: "point_light_soft_white35"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -252.0
+  }
+  scale3 {
+    x: 22.32
+    y: 22.32
+    z: 22.32
+  }
+}
+instances {
+  id: "point_light_soft_white36"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -147.0
+    y: 1.0
+    z: -203.0
+  }
+  scale3 {
+    x: 28.4
+    y: 28.4
+    z: 28.4
+  }
+}
+instances {
+  id: "point_light_soft_white37"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -227.0
+  }
+  scale3 {
+    x: 21.328
+    y: 21.328
+    z: 21.328
+  }
+}
+instances {
+  id: "point_light_soft_white38"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -82.0
+    y: 1.0
+    z: -208.0
+  }
+  scale3 {
+    x: 21.38752
+    y: 21.38752
+    z: 21.38752
+  }
+}
+instances {
+  id: "spot_light_magenta3"
+  prototype: "/example/main/spot_light_magenta.go"
+  position {
+    x: -10.0
+    y: 16.0
+    z: -208.0
+  }
+  rotation {
+    x: -0.17364818
+    w: 0.9848077
+  }
+  scale3 {
+    x: 15.0
+    y: 50.0
+    z: 15.0
+  }
+}
+instances {
+  id: "point_light_soft_white39"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 2.0
+    y: 1.0
+    z: -265.0
+  }
+  scale3 {
+    x: 17.6
+    y: 17.6
+    z: 17.6
+  }
+}
+instances {
+  id: "point_light_soft_white40"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -148.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white41"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -99.0
+    y: 1.0
+    z: -298.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white42"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -65.0
+    y: 1.0
+    z: -301.0
+  }
+  scale3 {
+    x: 15.6
+    y: 15.6
+    z: 15.6
+  }
+}
+instances {
+  id: "spot_light_magenta4"
+  prototype: "/example/main/spot_light_magenta.go"
+  position {
+    x: -168.0
+    y: 19.0
+    z: -201.0
+  }
+  scale3 {
+    x: 20.0
+    y: 50.0
+    z: 20.0
+  }
+}
+instances {
+  id: "spot_light_magenta5"
+  prototype: "/example/main/spot_light_magenta.go"
+  position {
+    x: -133.0
+    y: 21.0
+    z: -195.0
+  }
+  scale3 {
+    x: 20.0
+    y: 50.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_soft_white43"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -147.0
+    y: 1.0
+    z: -234.0
+  }
+  scale3 {
+    x: 24.304
+    y: 24.304
+    z: 24.304
+  }
+}
+instances {
+  id: "point_light_soft_white44"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -25.0
+    y: 1.0
+    z: -206.0
+  }
+  scale3 {
+    x: 15.6
+    y: 15.6
+    z: 15.6
+  }
+}
+instances {
+  id: "point_light_soft_white45"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -73.0
+    y: 1.0
+    z: -251.0
+  }
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_soft_white46"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -50.0
+    y: 1.0
+    z: -301.0
+  }
+  scale3 {
+    x: 21.824
+    y: 21.824
+    z: 21.824
+  }
+}
+instances {
+  id: "point_light_soft_white47"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -264.0
+  }
+  scale3 {
+    x: 18.74928
+    y: 18.74928
+    z: 18.74928
+  }
+}
+instances {
+  id: "point_light_soft_white48"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -107.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 25.2
+    y: 25.2
+    z: 25.2
+  }
+}
+instances {
+  id: "point_light_soft_white49"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 15.0
+    y: 1.0
+    z: -202.0
+  }
+  scale3 {
+    x: 24.8
+    y: 24.8
+    z: 24.8
+  }
+}
+instances {
+  id: "point_light_soft_white50"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -304.0
+  }
+  scale3 {
+    x: 18.8
+    y: 18.8
+    z: 18.8
+  }
+}
+instances {
+  id: "point_light_soft_white51"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -60.0
+    y: 1.0
+    z: -233.0
+  }
+  scale3 {
+    x: 23.81792
+    y: 23.81792
+    z: 23.81792
+  }
+}
+instances {
+  id: "point_light_soft_white52"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -51.0
+    y: 1.0
+    z: -273.0
+  }
+  scale3 {
+    x: 33.728
+    y: 33.728
+    z: 33.728
+  }
+}
+instances {
+  id: "point_light_soft_white53"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -132.0
+    y: 1.0
+    z: -219.0
+  }
+  scale3 {
+    x: 24.99904
+    y: 24.99904
+    z: 24.99904
+  }
+}
+instances {
+  id: "point_light_soft_white54"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -46.0
+    y: 1.0
+    z: -206.0
+  }
+  scale3 {
+    x: 17.6
+    y: 17.6
+    z: 17.6
+  }
+}
+instances {
+  id: "point_light_soft_white55"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -112.0
+    y: 1.0
+    z: -219.0
+  }
+  scale3 {
+    x: 28.408
+    y: 28.408
+    z: 28.408
+  }
+}
+instances {
+  id: "point_light_soft_white56"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -64.0
+    y: 1.0
+    z: -316.0
+  }
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_soft_white57"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -112.0
+    y: 1.0
+    z: -281.0
+  }
+  scale3 {
+    x: 21.2
+    y: 21.2
+    z: 21.2
+  }
+}
+instances {
+  id: "point_light_soft_white58"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 5.0
+    y: 1.0
+    z: -286.0
+  }
+  scale3 {
+    x: 25.2
+    y: 25.2
+    z: 25.2
+  }
+}
+instances {
+  id: "point_light_soft_white59"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: -20.0
+    y: 1.0
+    z: -314.0
+  }
+  scale3 {
+    x: 30.744
+    y: 30.744
+    z: 30.744
+  }
+}
+instances {
+  id: "point_light_soft_white60"
+  prototype: "/example/main/point_light_soft_white.go"
+  position {
+    x: 29.0
+    y: 1.0
+    z: -311.0
+  }
+  scale3 {
+    x: 32.256
+    y: 32.256
+    z: 32.256
+  }
+}
+instances {
+  id: "point_light_with_shadows"
+  prototype: "/example/main/point_light_with_shadows.go"
 }
 collection_instances {
   id: "neighborhood"
@@ -632,6 +1088,42 @@ collection_instances {
   instance_properties {
     id: "lighting"
     properties {
+      id: "shadow"
+      properties {
+        id: "cascade"
+        value: "0.1, 0.2, 0.3, 0.4"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+      properties {
+        id: "biases"
+        value: "0.1, 0.15, 0.2, 0.25"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+      properties {
+        id: "light_frustum_z_padding"
+        value: "2.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+    properties {
+      id: "ssao"
+      properties {
+        id: "min_distance"
+        value: "0.15"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "max_distance"
+        value: "0.5"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "radius"
+        value: "0.3"
+        type: PROPERTY_TYPE_NUMBER
+      }
+    }
+    properties {
       id: "light"
       properties {
         id: "sun_url"
@@ -662,6 +1154,15 @@ collection_instances {
     }
   }
 }
+collection_instances {
+  id: "neighborhood1"
+  collection: "/example/main/neighborhood.collection"
+  position {
+    x: 4.0
+    y: -2.0
+    z: -147.0
+  }
+}
 scale_along_z: 1
 embedded_instances {
   id: "main"
@@ -680,10 +1181,6 @@ embedded_instances {
   children: "forward"
   children: "right"
   data: "components {\n"
-  "  id: \"revolve\"\n"
-  "  component: \"/example/main/revolve.script\"\n"
-  "}\n"
-  "components {\n"
   "  id: \"freelook\"\n"
   "  component: \"/example/main/freelook.script\"\n"
   "}\n"
@@ -696,13 +1193,17 @@ embedded_instances {
   "    type: PROPERTY_TYPE_HASH\n"
   "  }\n"
   "}\n"
+  "components {\n"
+  "  id: \"scene_camera\"\n"
+  "  component: \"/defrend/scripts/controllers/scene_camera.script\"\n"
+  "}\n"
   "embedded_components {\n"
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
-  "fov: 0.4\\n"
+  "fov: 0.7\\n"
   "near_z: 1.0\\n"
-  "far_z: 1000.0\\n"
+  "far_z: 150.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
@@ -3272,7 +3773,7 @@ embedded_instances {
 }
 embedded_instances {
   id: "rotating_light"
-  children: "point_light_soft_white30"
+  children: "point_light_with_shadows"
   data: "components {\n"
   "  id: \"rotate\"\n"
   "  component: \"/example/main/rotate.script\"\n"
@@ -3280,5 +3781,45 @@ embedded_instances {
   ""
   position {
     y: 1.5
+  }
+}
+embedded_instances {
+  id: "lights1"
+  children: "point_light_soft_white31"
+  children: "point_light_soft_white32"
+  children: "point_light_soft_white33"
+  children: "point_light_soft_white34"
+  children: "point_light_soft_white35"
+  children: "point_light_soft_white36"
+  children: "point_light_soft_white37"
+  children: "point_light_soft_white38"
+  children: "point_light_soft_white39"
+  children: "point_light_soft_white40"
+  children: "point_light_soft_white41"
+  children: "point_light_soft_white42"
+  children: "point_light_soft_white43"
+  children: "point_light_soft_white44"
+  children: "point_light_soft_white45"
+  children: "point_light_soft_white46"
+  children: "point_light_soft_white47"
+  children: "point_light_soft_white48"
+  children: "point_light_soft_white49"
+  children: "point_light_soft_white50"
+  children: "point_light_soft_white51"
+  children: "point_light_soft_white52"
+  children: "point_light_soft_white53"
+  children: "point_light_soft_white54"
+  children: "point_light_soft_white55"
+  children: "point_light_soft_white56"
+  children: "point_light_soft_white57"
+  children: "point_light_soft_white58"
+  children: "point_light_soft_white59"
+  children: "point_light_soft_white60"
+  children: "spot_light_magenta3"
+  children: "spot_light_magenta4"
+  children: "spot_light_magenta5"
+  data: ""
+  position {
+    z: 143.0
   }
 }

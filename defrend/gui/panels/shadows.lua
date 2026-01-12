@@ -1,5 +1,3 @@
-local render_targets = require("defrend.render.resources.render_targets")
-
 local SCRIPT_URL = "/defrend/lighting#shadow"
 local p_props = { "cascade.x", "cascade.y", "cascade.z", "cascade.w" }
 local t_props = { "partition_1_tint", "partition_2_tint", "partition_3_tint", "partition_4_tint" }

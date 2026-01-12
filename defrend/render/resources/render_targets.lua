@@ -4,6 +4,7 @@ local predicates = require "defrend.render.resources.predicates"
 local M = {}
 
 local shadow_map
+local point_light_shadow_map
 local g_buffer
 local source1
 local target1
@@ -54,6 +55,17 @@ function M.init()
 		"shadow_map",
 		{
 			[graphics.BUFFER_TYPE_DEPTH_BIT] = shadow_depth_params,
+		}
+	)
+	point_light_shadow_map = render.render_target(
+		"point_light_shadow_map",
+		{
+			[graphics.BUFFER_TYPE_DEPTH_BIT] = {
+				format	= graphics.TEXTURE_FORMAT_DEPTH,
+				width	= settings.point_light_shadow.map_resolution * 6,
+				height	= settings.point_light_shadow.map_resolution * settings.point_light_shadow.count,
+				flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE,
+			}
 		}
 	)
 	g_buffer = render.render_target(
@@ -180,6 +192,10 @@ end
 
 function M.get_shadow_map()
 	return shadow_map
+end
+
+function M.get_point_light_shadow_map()
+	return point_light_shadow_map
 end
 
 function M.get_g_buffer()

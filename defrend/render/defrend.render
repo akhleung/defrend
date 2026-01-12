@@ -139,3 +139,7 @@ render_resources {
   name: "ssao_blur_vertical_depth_only_material"
   path: "/defrend/materials/screen/ssao/blur/blur_vertical_depth_only.material"
 }
+render_resources {
+  name: "point_light_with_shadows"
+  path: "/defrend/materials/geometry/light_volume/point_light_with_shadows.material"
+}

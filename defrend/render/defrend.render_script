@@ -1,18 +1,18 @@
-local settings			= require "defrend.render.settings"
-local draw_options		= require "defrend.render.resources.draw_options"
-local shadows			= require "defrend.render.shadows"
-local render_targets	= require "defrend.render.resources.render_targets"
-local clear_options		= require "defrend.render.resources.clear_options"
-local predicates		= require "defrend.render.resources.predicates"
-local gaussian_blur		= require "defrend.render.post_processors.gaussian_blur"
-local dual_kawase_blur	= require "defrend.render.post_processors.dual_kawase_blur"
-local glow				= require "defrend.render.post_processors.glow"
-local dof				= require "defrend.render.post_processors.dof"
-local outline			= require "defrend.render.post_processors.outline"
-local gamma				= require "defrend.render.post_processors.gamma"
-local bloom				= require "defrend.render.post_processors.bloom"
-local kuwahara_blur		= require "defrend.render.post_processors.kuwahara_blur"
-local fxaa				= require "defrend.render.post_processors.fxaa"
+local settings			= require("defrend.render.settings")
+local draw_options		= require("defrend.render.resources.draw_options")
+local lights			= require("defrend.render.lights")
+local render_targets	= require("defrend.render.resources.render_targets")
+local clear_options		= require("defrend.render.resources.clear_options")
+local predicates		= require("defrend.render.resources.predicates")
+local gaussian_blur		= require("defrend.render.post_processors.gaussian_blur")
+local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
+local glow				= require("defrend.render.post_processors.glow")
+local dof				= require("defrend.render.post_processors.dof")
+local outline			= require("defrend.render.post_processors.outline")
+local gamma				= require("defrend.render.post_processors.gamma")
+local bloom				= require("defrend.render.post_processors.bloom")
+local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
+local fxaa				= require("defrend.render.post_processors.fxaa")
 
 local render_shadows
 local render_gui
@@ -34,6 +34,7 @@ local dof_options
 local fxaa_options
 
 local shadow_map
+local point_light_shadow_map
 local g_buffer
 
 local screen_camera
@@ -78,6 +79,7 @@ function init(self)
 	fxaa_options			= draw_options.fxaa_options
 
 	shadow_map = render_targets.get_shadow_map()
+	point_light_shadow_map = render_targets.get_point_light_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
 
 	local identity = vmath.matrix4()
@@ -435,7 +437,30 @@ function on_message(self, message_id, message)
 	end
 end
 
-local refresh_shadows = shadows.refresh_shadows
+local directional_shadows = require("defrend.render.shadows.directional")
+local point_light_shadows = require("defrend.render.shadows.point_light")
+
+local function draw_shadow_casters()
+	render.set_cull_face(graphics.FACE_TYPE_BACK)
+	if settings.geometry.models_enabled then
+		render.enable_material("shadow_material")
+		render.draw(predicates.model, shadow_options)
+		render.disable_material()
+	end
+	render.set_cull_face(graphics.FACE_TYPE_FRONT)
+	if settings.geometry.sprites_enabled or settings.geometry.billboards_enabled then
+		render.enable_material("blob_shadow_material")
+		render.draw(predicates.blob_shadow, shadow_options)
+		render.disable_material()
+	end
+	render.disable_state(graphics.STATE_CULL_FACE)
+	if settings.geometry.particles_enabled then
+		render.enable_material("particle_shadow_material")
+		render.draw(predicates.particle, shadow_options)
+		render.disable_material()
+	end
+end
+
 render_shadows = function()
 	render.set_render_target(shadow_map)
 	render.clear(clear_options.clear_shadow_options)
@@ -449,7 +474,7 @@ render_shadows = function()
 	local map_resolution = shadow_settings.map_resolution
 	local cam_view = camera.get_view(settings.scene_camera_url)
 	for i = 1, #partitions do
-		local mtx_view, mtx_proj = refresh_shadows(cam_view, projections[i], i)
+		local mtx_view, mtx_proj = directional_shadows.refresh(cam_view, projections[i], i)
 		local mtx_light = mtx_proj * mtx_view
 		render.set_view(mtx_view)
 		render.set_projection(mtx_proj)
@@ -458,27 +483,35 @@ render_shadows = function()
 		local y_offset = partition.y * atlas_resolution
 		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 		shadow_options.frustum = mtx_light
-		render.set_cull_face(graphics.FACE_TYPE_BACK)
-		if settings.geometry.models_enabled then
-			render.enable_material("shadow_material")
-			render.draw(predicates.model, shadow_options)
-			render.disable_material()
-		end
-		render.set_cull_face(graphics.FACE_TYPE_FRONT)
-		if settings.geometry.sprites_enabled or settings.geometry.billboards_enabled then
-			render.enable_material("blob_shadow_material")
-			render.draw(predicates.blob_shadow, shadow_options)
-			render.disable_material()
-		end
-		render.disable_state(graphics.STATE_CULL_FACE)
-		if settings.geometry.particles_enabled then
-			render.enable_material("particle_shadow_material")
-			render.draw(predicates.particle, shadow_options)
-			render.disable_material()
-		end
+		draw_shadow_casters()
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(cam_view)
 	end
 	render.disable_material()
+end
+
+local CUBE_FACE_MTX_NAMES = { "mtx_nx", "mtx_px", "mtx_ny", "mtx_py", "mtx_nz", "mtx_pz" }
+local function render_point_light_shadows()
+	render.set_render_target(point_light_shadow_map)
+	local map_resolution = settings.point_light_shadow.map_resolution
+	local cam_view = camera.get_view(settings.scene_camera_url)
+	local light_index, count = 1, settings.point_light_shadow.count
+	for _, light in pairs(lights.POINT_LIGHTS) do
+		if light_index > count then break end
+		local light_views, light_proj = point_light_shadows.refresh(light, light_index)
+		go.set(light.model_url, "shadow_params", vmath.vector4(light_index, 0, 0, 0))
+		for cube_face = 1, 6 do
+			local light_view = light_views[cube_face]
+			local mtx_light = light_proj * light_view
+			render.set_view(light_view)
+			render.set_projection(light_proj)
+			render.set_viewport((cube_face - 1) * map_resolution, (light_index - 1) * map_resolution, map_resolution, map_resolution)
+			shadow_options.frustum = mtx_light
+			-- make sure the light matrix is passed to the shader
+			go.set(light.model_url, CUBE_FACE_MTX_NAMES[cube_face], mtx_light * vmath.inv(cam_view))
+			-- render the shadows
+			draw_shadow_casters()
+		end
+	end
 end
 
 render_gui = function ()

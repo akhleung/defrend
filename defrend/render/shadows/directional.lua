@@ -15,7 +15,6 @@ function M.init(fov, aspect, near, far)
 	settings.shadow.projections = {}
 	settings.shadow.map_dimension = math.ceil(math.sqrt(#settings.shadow.cascade))
 	settings.shadow.map_resolution = settings.shadow.atlas_resolution / settings.shadow.map_dimension
-	settings.shadow.texel_size = 1 / settings.shadow.map_resolution
 	local total_range = far - near
 	for i = 1, #settings.shadow.cascade do
 		far = near + total_range * settings.shadow.cascade[i]
@@ -40,7 +39,7 @@ local get_light_view_mtx_and_camera_frustum
 local get_texel_snapping_mtx
 local pad, set_vec3
 
-function M.refresh_shadows(cam_view, cam_proj, i)
+function M.refresh(cam_view, cam_proj, i)
 	local mtx_light_view = get_light_view_mtx_and_camera_frustum(cam_view, cam_proj)
 	local frustum = LIGHT_FRUSTUMS[i]
 	-- extend the near plane of the light frustum to prevent clipping of shadows cast from outside the camera fov
