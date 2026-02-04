@@ -1,0 +1,108 @@
+name: "point_light"
+tags: "point_light_with_shadows"
+vertex_program: "/defrend/materials/geometry/light_volume/point_light.vp"
+fragment_program: "/defrend/materials/geometry/light_volume/point_light_with_shadows.fp"
+vertex_space: VERTEX_SPACE_LOCAL
+vertex_constants {
+  name: "mtx_view"
+  type: CONSTANT_TYPE_VIEW
+}
+vertex_constants {
+  name: "mtx_proj"
+  type: CONSTANT_TYPE_PROJECTION
+}
+vertex_constants {
+  name: "mtx_world"
+  type: CONSTANT_TYPE_WORLD
+}
+fragment_constants {
+  name: "shadow_params"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "bias"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_nx"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_px"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_ny"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_py"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_nz"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_pz"
+  type: CONSTANT_TYPE_USER_MATRIX4
+  value {
+  }
+}
+samplers {
+  name: "depth_buffer"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
+samplers {
+  name: "normal_sampler"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
+attributes {
+  name: "mtx_world"
+  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  vector_type: VECTOR_TYPE_MAT4
+}
+attributes {
+  name: "color"
+  semantic_type: SEMANTIC_TYPE_COLOR
+  double_values {
+    v: 0.0
+    v: 0.0
+    v: 0.0
+    v: 0.0
+  }
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+}
+attributes {
+  name: "attn"
+  double_values {
+    v: 0.0
+    v: 0.0
+    v: 0.0
+    v: 0.0
+  }
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+}

@@ -1,0 +1,30 @@
+local lights = require("defrend.render.lights")
+
+go.property("url", msg.url())
+go.property("light_model_url", msg.url())
+
+function init(self)
+	self.url = msg.url(".")
+	self.model_url = msg.url(".")
+	self.model_url.fragment = hash("model")
+	lights.add_point_light(self)
+end
+
+function final(self)
+	lights.remove_point_light(self)
+end
+
+-- function update(self, dt)
+-- end
+
+-- function fixed_update(self, dt)
+-- end
+
+-- function on_message(self, message_id, message, sender)
+-- end
+
+-- function on_input(self, action_id, action)
+-- end
+
+-- function on_reload(self)
+-- end

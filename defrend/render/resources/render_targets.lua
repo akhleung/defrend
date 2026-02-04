@@ -4,6 +4,7 @@ local predicates = require "defrend.render.resources.predicates"
 local M = {}
 
 local shadow_map
+local point_light_shadow_map
 local g_buffer
 local source1
 local target1
@@ -27,9 +28,11 @@ local targets
 local downsampling_level = 0 -- [0, 3]; scale is (1/(2^downsampling_level))^2
 local scale = 1
 local x, y
+local sr
 
 function M.init()
 	x, y = render.get_window_width(), render.get_window_height()
+	sr = settings.shadow.atlas_resolution
 	local rgba_params = {
 		format	= graphics.TEXTURE_FORMAT_RGBA,
 		width	= render.get_window_width(),
@@ -43,8 +46,8 @@ function M.init()
 	}
 	local shadow_depth_params = {
 		format	= graphics.TEXTURE_FORMAT_DEPTH,
-		width	= settings.shadow.atlas_resolution,
-		height	= settings.shadow.atlas_resolution,
+		width	= sr,
+		height	= sr,
 		flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE, -- was render.TEXTURE_BIT
 	}
 
@@ -52,6 +55,17 @@ function M.init()
 		"shadow_map",
 		{
 			[graphics.BUFFER_TYPE_DEPTH_BIT] = shadow_depth_params,
+		}
+	)
+	point_light_shadow_map = render.render_target(
+		"point_light_shadow_map",
+		{
+			[graphics.BUFFER_TYPE_DEPTH_BIT] = {
+				format	= graphics.TEXTURE_FORMAT_DEPTH,
+				width	= settings.point_light_shadow.map_resolution * 6,
+				height	= settings.point_light_shadow.map_resolution * settings.point_light_shadow.count,
+				flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE,
+			}
 		}
 	)
 	g_buffer = render.render_target(
@@ -170,8 +184,18 @@ function M.set_resolution(w, h)
 	render.set_viewport(0, 0, w, h)
 end
 
+function M.set_shadow_map_resolution(res)
+	if res == sr then return end
+	sr = res
+	render.set_render_target_size(M.get_shadow_map(), sr, sr)
+end
+
 function M.get_shadow_map()
 	return shadow_map
+end
+
+function M.get_point_light_shadow_map()
+	return point_light_shadow_map
 end
 
 function M.get_g_buffer()

@@ -1,11 +1,10 @@
 local settings = require "defrend.render.settings"
 local uniforms = require "defrend.render.uniforms"
-local shadows = require "defrend.render.shadows"
 
 local MSG_REFRESH = hash("refresh")
+local MSG_RESIZE_SHADOW_MAP = hash("resize_shadow_map")
 
 go.property("enabled", true)
-go.property("stable_shadows", true)
 go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
 go.property("biases", vmath.vector4(0.5, 0.75, 0.75, 1.2))
 go.property("partition_1_tint", vmath.vector4(0))
@@ -22,12 +21,6 @@ go.property("soft_penumbras", true)
 
 local function do_init(self)
 	settings.shadow.enabled = self.enabled
-	settings.shadow.stable = self.stable_shadows
-	if settings.shadow.stable then
-		shadows.refresh_shadows = shadows.refresh_shadows_stable
-	else
-		shadows.refresh_shadows = shadows.refresh_shadows_half_stable
-	end
 
 	local cascade	= { self.cascade.x, self.cascade.y, self.cascade.z, self.cascade.w }
 	local biases	= { self.biases.x, self.biases.y, self.biases.z, self.biases.w }
@@ -57,6 +50,7 @@ local function do_init(self)
 	settings.shadow.soft_penumbras		= self.soft_penumbras
 
     uniforms.shadow.init()
+	msg.post("@render:", MSG_RESIZE_SHADOW_MAP, { resolution = self.atlas_resolution })
 end
 
 function init(self)

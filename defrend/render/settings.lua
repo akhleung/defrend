@@ -2,6 +2,7 @@ local M = {
 	resolution_x = 0,
 	resolution_y = 0,
 	scene_camera_url = nil,
+	scene_camera_position = vmath.vector3(),
 	geometry = {
 		models_enabled = true,
 		sprites_enabled = true,
@@ -26,7 +27,6 @@ local M = {
 	},
 	shadow = {
 		enabled = true,
-		stable = true,
 		pcf_samples = 8,
 		poisson_samples = 4,
 		poisson_scale = 3000,
@@ -40,9 +40,17 @@ local M = {
 		-- the rest will be calculated from camera settings combined with the preceding
 		map_resolution = 1,
 		map_dimension = 1,
-		texel_size = 1,
 		partitions = {},
 		projections = {},
+	},
+	point_light_shadow = {
+		enabled = true,
+		count = 1,
+		pcf_samples = 8,
+		poisson_samples = 4,
+		poisson_scale = 3000,
+		soft_penumbras = true,
+		map_resolution = 128,
 	},
 	ssao = {
 		enabled = true,

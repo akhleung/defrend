@@ -1,9 +1,10 @@
 ---@diagnostic disable: inject-field
 local settings = require "defrend.render.settings"
-local shadows = require "defrend.render.shadows"
+local shadows = require "defrend.render.shadows.directional"
 
 local M = {
 	geometry			= { uniforms = render.constant_buffer() },
+	point_light			= { uniforms = render.constant_buffer() },
 	light				= {},
 	shadow				= {},
 	light_and_shadow	= { uniforms = render.constant_buffer() },
