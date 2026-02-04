@@ -186,7 +186,7 @@ function update(self)
 	-- render the skybox --
 	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
-	render.set_camera(cam) -- set this again to turn off frustum culling for the skybox
+	render.set_camera(cam) -- call this again without a 2nd arg to disable frustum culling for the skybox
 	if settings.geometry.skybox_enabled then
 		render.enable_material("skybox_material")
 		render.draw(predicates.skybox)
@@ -277,6 +277,7 @@ function update(self)
 		end
 	end
 
+	-- resolve all the lighting and shadows with the g-buffer to produce a fully-lit non-post-processed render
 	render_targets.ping_pong()
 	render.set_render_target(render_targets.get_post_target())
 	render.enable_material("resolve_lighting_material")
@@ -295,6 +296,7 @@ function update(self)
 	render.disable_texture("light_sampler")
 	render.disable_material()
 
+	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
 		render.set_render_target(render.RENDER_TARGET_DEFAULT)
 		if settings.visualize.option == "g_albedo" then
@@ -332,6 +334,7 @@ function update(self)
 		return
 	end
 
+	-- TODO: put the post-processors in a customizable list and loop through them
 	if settings.outline.enabled then
 		render_targets.ping_pong()
 		outline.update(settings.outline, outline_options)
@@ -489,6 +492,7 @@ render_shadows = function()
 	render.disable_material()
 end
 
+-- WIP for point-light shadows
 local CUBE_FACE_MTX_NAMES = { "mtx_nx", "mtx_px", "mtx_ny", "mtx_py", "mtx_nz", "mtx_pz" }
 local function render_point_light_shadows()
 	render.set_render_target(point_light_shadow_map)

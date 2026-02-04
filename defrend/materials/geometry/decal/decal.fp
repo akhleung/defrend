@@ -63,7 +63,7 @@ void main() {
     // discard this fragment if it's outside the projector box ([-0.5, 0.5])
     if (abs_pos.x > 0.5 || abs_pos.y  > 0.5 || abs_pos.z > 0.5) discard;
 
-    // if the scene fragment is inside the projector, use its model-space position to sample the decal texture
+    // the scene fragment is inside the projector, so use its model-space position to sample the decal texture
     d_position += 0.5; // bias [-0.5, 0.5] -> [0, 1]
     vec4 decal_color = texture(albedo_map, d_position.xy);
     vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
