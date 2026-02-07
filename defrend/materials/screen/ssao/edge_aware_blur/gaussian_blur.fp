@@ -14,6 +14,7 @@ uniform sampler2D normal_sampler;
 uniform ssao_blur_horizontal_fp {
 	vec4 params;
 	vec4 frustum_terms;
+	vec4 delta;
 };
 
 #define RADIUS 5
@@ -29,11 +30,11 @@ float weight[RADIUS] = {
 float	depth_threshold = params.y;
 float	normal_threshold = params.z;
 vec2	resolution	= textureSize(color_sampler, 0);
-vec2	delta		= vec2(0, 1) / resolution;
 
 layout(location = 0) out vec4 fragColor;
 
 void main() {
+	vec2 d = delta.xy / resolution;
 
 	float result = texture(color_sampler, var_texcoord0).r * weight[0];
 	float depth = texture(depth_buffer, var_texcoord0).r;
@@ -42,7 +43,7 @@ void main() {
 	float total_weight = weight[0];
 
 	for (int i = 1; i < RADIUS; ++i) {
-		vec2 d_i = delta * i;
+		vec2 d_i = d * i;
 
 		vec2 offset_l = var_texcoord0 - d_i;
 		float depth_l = texture(depth_buffer, var_texcoord0 - d_i).r;

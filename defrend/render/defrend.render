@@ -72,12 +72,8 @@ render_resources {
   path: "/defrend/materials/screen/glow/glow_color.material"
 }
 render_resources {
-  name: "gaussian_blur_horizontal_material"
-  path: "/defrend/materials/screen/gaussian_blur/gaussian_horizontal.material"
-}
-render_resources {
-  name: "gaussian_blur_vertical_material"
-  path: "/defrend/materials/screen/gaussian_blur/gaussian_vertical.material"
+  name: "gaussian_blur_material"
+  path: "/defrend/materials/screen/gaussian_blur/gaussian_blur.material"
 }
 render_resources {
   name: "skybox_material"
@@ -124,22 +120,14 @@ render_resources {
   path: "/defrend/materials/geometry/billboard_sprite/shadowless_particle.material"
 }
 render_resources {
-  name: "ssao_blur_horizontal_material"
-  path: "/defrend/materials/screen/ssao/blur/blur_horizontal.material"
+  name: "ssao_blur_material"
+  path: "/defrend/materials/screen/ssao/edge_aware_blur/box_blur.material"
 }
 render_resources {
-  name: "ssao_blur_vertical_material"
-  path: "/defrend/materials/screen/ssao/blur/blur_vertical.material"
+  name: "ssao_blur_depth_only_material"
+  path: "/defrend/materials/screen/ssao/edge_aware_blur/box_blur_depth_only.material"
 }
 render_resources {
-  name: "ssao_blur_horizontal_depth_only_material"
-  path: "/defrend/materials/screen/ssao/blur/blur_horizontal_depth_only.material"
-}
-render_resources {
-  name: "ssao_blur_vertical_depth_only_material"
-  path: "/defrend/materials/screen/ssao/blur/blur_vertical_depth_only.material"
-}
-render_resources {
-  name: "point_light_with_shadows"
+  name: "point_light_with_shadows_material"
   path: "/defrend/materials/geometry/light_volume/point_light_with_shadows.material"
 }

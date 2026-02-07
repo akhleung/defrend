@@ -99,6 +99,11 @@ function init(self)
 end
 
 local cull = { use_frustum = true }
+local ssao_blur_h_options = { constants = render.constant_buffer() }
+local ssao_blur_v_options = { constants = render.constant_buffer() }
+ssao_blur_h_options.constants.delta = vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
+ssao_blur_v_options.constants.delta = vmath.vector4(0, 1, 0, 0) ---@diagnostic disable-line: inject-field
+
 function update(self)
 
 	if not self.valid then return end
@@ -240,37 +245,43 @@ function update(self)
 		render.disable_material()
 		if settings.ssao.blur and settings.ssao.blur_compares_normals then
 			render_targets.ping_pong()
+			ssao_blur_h_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
+			ssao_blur_h_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_horizontal_material")
+			render.enable_material("ssao_blur_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 			render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-			render.draw(predicates.screen, ssao_blur_options)
+			render.draw(predicates.screen, ssao_blur_h_options)
 			render.disable_texture("color_sampler")
-			render.disable_material()
 			render_targets.ping_pong()
+			ssao_blur_v_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
+			ssao_blur_v_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_vertical_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, ssao_blur_options)
+			render.draw(predicates.screen, ssao_blur_v_options)
 			render.disable_texture("color_sampler")
 			render.disable_texture("depth_buffer")
 			render.disable_texture("normal_sampler")
 			render.disable_material()
 		elseif settings.ssao.blur then
 			render_targets.ping_pong()
+			ssao_blur_h_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
+			ssao_blur_h_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_horizontal_depth_only_material")
+			render.enable_material("ssao_blur_depth_only_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.draw(predicates.screen, ssao_blur_options)
+			render.draw(predicates.screen, ssao_blur_h_options)
 			render.disable_texture("color_sampler")
-			render.disable_material()
+			render.disable_texture("depth_buffer")
 			render_targets.ping_pong()
+			ssao_blur_v_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
+			ssao_blur_v_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_vertical_depth_only_material")
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.draw(predicates.screen, ssao_blur_options)
+			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
+			render.draw(predicates.screen, ssao_blur_v_options)
 			render.disable_texture("color_sampler")
 			render.disable_texture("depth_buffer")
 			render.disable_material()
