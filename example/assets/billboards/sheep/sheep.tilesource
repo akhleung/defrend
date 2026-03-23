@@ -1,0 +1,12 @@
+image: "/example/assets/images/Sheep_Idle.png"
+tile_width: 128
+tile_height: 128
+collision_groups: "sheep"
+animations {
+  id: "idle"
+  start_tile: 1
+  end_tile: 6
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 8
+}
+extrude_borders: 2

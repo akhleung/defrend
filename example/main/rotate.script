@@ -1,8 +1,15 @@
+go.property("period", 16)
+go.property("reverse", false)
+
 local embiggen
 local emsmallen
 
 function init(self)
-	go.animate(".", "euler.y", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 16)
+	local direction = go.PLAYBACK_LOOP_FORWARD
+	if self.reverse then
+		direction = go.PLAYBACK_LOOP_BACKWARD
+	end
+	go.animate(".", "euler.y", direction, 360, go.EASING_LINEAR, self.period)
 	-- embiggen()
 end
 

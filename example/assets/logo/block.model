@@ -1,18 +1,18 @@
-mesh: "/example/assets/logo/block-brick.dae"
+mesh: "/builtins/assets/gltf/cube.gltf"
 name: "block"
 materials {
   name: "default"
   material: "/defrend/materials/geometry/model/model.material"
   textures {
     sampler: "albedo_map"
-    texture: "/example/assets/images/textures-diffuse.png"
+    texture: "/example/assets/images/white.png"
   }
   textures {
     sampler: "normal_map"
-    texture: "/example/assets/images/textures-normal.png"
+    texture: "/example/assets/images/flat.png"
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/example/assets/images/textures-spec-glow.png"
+    texture: "/example/assets/images/black.png"
   }
 }

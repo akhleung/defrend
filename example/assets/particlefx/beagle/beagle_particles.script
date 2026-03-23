@@ -1,4 +1,0 @@
-function init(self)
-	particlefx.play("#beagle_emitter")
-	particlefx.set_constant("#beagle_emitter", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
-end

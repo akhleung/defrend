@@ -1,11 +1,7 @@
-components {
-  id: "rotate"
-  component: "/example/main/rotate.script"
-}
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/builtins/assets/meshes/cube.dae\"\n"
+  data: "mesh: \"/builtins/assets/gltf/cube.gltf\"\n"
   "name: \"{{NAME}}\"\n"
   "materials {\n"
   "  name: \"default\"\n"
@@ -23,5 +19,6 @@ embedded_components {
   "    texture: \"/example/assets/images/broken-ice-spec-glow.png\"\n"
   "  }\n"
   "}\n"
+  "create_go_bones: false\n"
   ""
 }
