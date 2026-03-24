@@ -1,0 +1,28 @@
+components {
+  id: "sheep"
+  component: "/example/assets/billboards/sheep/sheep.script"
+}
+embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "default_animation: \"idle\"\n"
+  "material: \"/defrend/materials/geometry/billboard_sprite/sprite.material\"\n"
+  "size {\n"
+  "  x: 16.0\n"
+  "  y: 16.0\n"
+  "}\n"
+  "size_mode: SIZE_MODE_MANUAL\n"
+  "textures {\n"
+  "  sampler: \"albedo_map\"\n"
+  "  texture: \"/example/assets/billboards/sheep/sheep.tilesource\"\n"
+  "}\n"
+  "textures {\n"
+  "  sampler: \"normal_map\"\n"
+  "  texture: \"/example/assets/billboards/flat.tilesource\"\n"
+  "}\n"
+  "textures {\n"
+  "  sampler: \"spec_glow_map\"\n"
+  "  texture: \"/example/assets/billboards/matte.tilesource\"\n"
+  "}\n"
+  ""
+}

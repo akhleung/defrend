@@ -10,7 +10,7 @@ go.property("min_distance", 1.0)
 go.property("max_distance", 4.0)
 go.property("attenuation", 1.0)
 go.property("radius", 2.0)
-go.property("granularity", 200)
+go.property("granularity", 800) -- try 200 or less for a pixel-art friendly effect
 go.property("hash_factor", 100)
 go.property("blur", true)
 go.property("blur_radius", 4)

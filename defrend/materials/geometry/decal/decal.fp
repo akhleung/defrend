@@ -67,7 +67,9 @@ void main() {
     d_position += 0.5; // bias [-0.5, 0.5] -> [0, 1]
     vec4 decal_color = texture(albedo_map, d_position.xy);
     vec4 decal_spec_glow = texture(spec_glow_map, d_position.xy);
+    #ifndef EDITOR
     if (decal_color.a == 0) discard; // avoid writing normals, etc
+    #endif
     albedo_out = vec4(decal_color.rgb, decal_spec_glow.g);
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal

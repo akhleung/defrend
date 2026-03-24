@@ -3,6 +3,19 @@ tile_width: 1
 tile_height: 1
 collision_groups: "default"
 animations {
+  id: "graze"
+  start_tile: 1
+  end_tile: 1
+  fps: 8
+}
+animations {
+  id: "idle"
+  start_tile: 1
+  end_tile: 1
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 8
+}
+animations {
   id: "idle_away"
   start_tile: 1
   end_tile: 1

@@ -1,0 +1,19 @@
+mesh: "/builtins/assets/gltf/cube.gltf"
+name: "new-cube"
+materials {
+  name: "default"
+  material: "/defrend/materials/geometry/model/model.material"
+  textures {
+    sampler: "albedo_map"
+    texture: "/example/assets/images/broken-ice-base.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/example/assets/images/broken-ice-normal.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/example/assets/images/broken-ice-spec-glow.png"
+  }
+}
+create_go_bones: false

@@ -1,4 +1,4 @@
-mesh: "/builtins/assets/meshes/cube.dae"
+mesh: "/builtins/assets/gltf/cube.gltf"
 name: "skybox"
 materials {
   name: "default"
@@ -8,3 +8,4 @@ materials {
     texture: "/example/assets/skybox.cubemap"
   }
 }
+create_go_bones: false
