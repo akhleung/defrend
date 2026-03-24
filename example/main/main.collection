@@ -1406,11 +1406,8 @@ embedded_instances {
   id: "camera"
   children: "forward"
   children: "right"
+  children: "up"
   data: "components {\n"
-  "  id: \"freelook\"\n"
-  "  component: \"/example/main/freelook.script\"\n"
-  "}\n"
-  "components {\n"
   "  id: \"depth_of_field_controller\"\n"
   "  component: \"/defrend/scripts/controllers/depth_of_field.script\"\n"
   "  properties {\n"
@@ -1423,13 +1420,17 @@ embedded_instances {
   "  id: \"scene_camera\"\n"
   "  component: \"/defrend/scripts/controllers/scene_camera.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"orbit_camera\"\n"
+  "  component: \"/example/main/orbit_camera.script\"\n"
+  "}\n"
   "embedded_components {\n"
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
   "fov: 0.7\\n"
-  "near_z: 1.0\\n"
-  "far_z: 150.0\\n"
+  "near_z: 5.0\\n"
+  "far_z: 200.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
   "}\n"
@@ -3681,5 +3682,12 @@ embedded_instances {
   position {
     x: 25.0
     z: 27.0
+  }
+}
+embedded_instances {
+  id: "up"
+  data: ""
+  position {
+    y: 1.0
   }
 }
