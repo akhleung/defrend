@@ -1,0 +1,10 @@
+local function delayed_graze()
+	sprite.play_flipbook("#sprite", "idle")
+	timer.delay(math.random(3, 9), false, function ()
+		sprite.play_flipbook("#sprite", "graze", delayed_graze, {})
+	end)
+end
+
+function init(self)
+	delayed_graze()
+end

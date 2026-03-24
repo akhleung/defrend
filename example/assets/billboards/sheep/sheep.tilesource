@@ -1,7 +1,13 @@
-image: "/example/assets/images/Sheep_Idle.png"
+image: "/example/assets/images/Sheep.png"
 tile_width: 128
 tile_height: 128
 collision_groups: "sheep"
+animations {
+  id: "graze"
+  start_tile: 13
+  end_tile: 24
+  fps: 8
+}
 animations {
   id: "idle"
   start_tile: 1
@@ -9,4 +15,3 @@ animations {
   playback: PLAYBACK_LOOP_FORWARD
   fps: 8
 }
-extrude_borders: 2

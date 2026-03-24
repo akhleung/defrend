@@ -1,0 +1,11 @@
+image: "/example/assets/images/Bush4.png"
+tile_width: 128
+tile_height: 128
+collision_groups: "default"
+animations {
+  id: "idle"
+  start_tile: 1
+  end_tile: 8
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 8
+}

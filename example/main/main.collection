@@ -1172,7 +1172,123 @@ instances {
   id: "sheep1"
   prototype: "/example/assets/billboards/sheep/sheep.go"
   position {
-    y: 2.5
+    y: 2.0
+  }
+}
+instances {
+  id: "weeds_big"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: -6.0
+    y: 0.7
+    z: 2.0
+  }
+}
+instances {
+  id: "weeds_big1"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: 7.0
+    y: 0.7
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_big2"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: -2.0
+    y: 0.7
+    z: -6.0
+  }
+}
+instances {
+  id: "weeds_small"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 2.0
+    y: 0.6
+    z: 3.0
+  }
+}
+instances {
+  id: "weeds_small1"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -6.0
+    y: 0.6
+    z: 4.0
+  }
+}
+instances {
+  id: "weeds_small2"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -6.0
+    y: 0.6
+  }
+}
+instances {
+  id: "weeds_small3"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -4.0
+    y: 0.6
+    z: -5.0
+  }
+}
+instances {
+  id: "weeds_small4"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -1.0
+    y: 0.6
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_small5"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -1.0
+    y: 0.6
+    z: -8.0
+  }
+}
+instances {
+  id: "weeds_small6"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 3.0
+    y: 0.6
+    z: 4.0
+  }
+}
+instances {
+  id: "weeds_small7"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 6.0
+    y: 0.6
+    z: -2.0
+  }
+}
+instances {
+  id: "weeds_small8"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 8.0
+    y: 0.6
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_small9"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 5.0
+    y: 0.6
+    z: -5.0
   }
 }
 collection_instances {
@@ -3538,6 +3654,27 @@ embedded_instances {
 embedded_instances {
   id: "sheep"
   children: "sheep1"
+  data: ""
+  position {
+    x: 25.0
+    z: 27.0
+  }
+}
+embedded_instances {
+  id: "weeds"
+  children: "weeds_big"
+  children: "weeds_big1"
+  children: "weeds_big2"
+  children: "weeds_small"
+  children: "weeds_small1"
+  children: "weeds_small2"
+  children: "weeds_small3"
+  children: "weeds_small4"
+  children: "weeds_small5"
+  children: "weeds_small6"
+  children: "weeds_small7"
+  children: "weeds_small8"
+  children: "weeds_small9"
   data: ""
   position {
     x: 25.0

@@ -1,0 +1,3 @@
+function init(self)
+	sprite.play_flipbook("#sprite", "idle", nil, { offset = math.random() })
+end

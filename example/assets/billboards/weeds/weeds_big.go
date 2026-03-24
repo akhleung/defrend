@@ -1,6 +1,6 @@
 components {
-  id: "sheep"
-  component: "/example/assets/billboards/sheep/sheep.script"
+  id: "weeds"
+  component: "/example/assets/billboards/weeds/weeds.script"
 }
 embedded_components {
   id: "sprite"
@@ -8,13 +8,13 @@ embedded_components {
   data: "default_animation: \"idle\"\n"
   "material: \"/defrend/materials/geometry/billboard_sprite/sprite.material\"\n"
   "size {\n"
-  "  x: 16.0\n"
-  "  y: 16.0\n"
+  "  x: 6.0\n"
+  "  y: 6.0\n"
   "}\n"
   "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
   "  sampler: \"albedo_map\"\n"
-  "  texture: \"/example/assets/billboards/sheep/sheep.tilesource\"\n"
+  "  texture: \"/example/assets/billboards/weeds/weeds_big.tilesource\"\n"
   "}\n"
   "textures {\n"
   "  sampler: \"normal_map\"\n"
