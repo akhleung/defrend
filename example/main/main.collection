@@ -1469,13 +1469,15 @@ embedded_instances {
   id: "sun"
   data: ""
   position {
+    x: -97.0
     y: 150.0
+    z: 93.0
   }
   rotation {
-    x: -0.08282785
-    y: -0.9019799
-    z: -0.3736123
-    w: 0.19996414
+    x: -0.29646724
+    y: -0.23925427
+    z: -0.07698362
+    w: 0.9213784
   }
 }
 embedded_instances {
