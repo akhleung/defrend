@@ -309,7 +309,7 @@ function update(self)
 
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
-		render.set_render_target(render.RENDER_TARGET_DEFAULT)
+		render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
 		if settings.visualize.option == "g_albedo" then
 			render.enable_material("copy_rgb_material")
 			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
@@ -392,7 +392,7 @@ function update(self)
 	end
 
 	render_targets.ping_pong()
-	render.set_render_target(render.RENDER_TARGET_DEFAULT)
+	render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
 	render.enable_material("copy_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.draw(predicates.screen)
