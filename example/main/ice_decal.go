@@ -1,3 +1,12 @@
+components {
+  id: "rotate"
+  component: "/example/main/rotate.script"
+  properties {
+    id: "reverse"
+    value: "true"
+    type: PROPERTY_TYPE_BOOLEAN
+  }
+}
 embedded_components {
   id: "model"
   type: "model"
