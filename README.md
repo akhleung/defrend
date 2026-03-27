@@ -40,10 +40,13 @@ Please take a look at the **[web demo](https://akhleung.github.io/Defrend/index.
 
 ## Getting started
 
-First, add Defrend as an external dependency in your Defold project. You can either use the master archive for the latest development version, or the latest release:
+First, add Defrend as an external dependency in your Defold project. You can either use the master archive for the latest development version, or one of the releases linked in the sidebar (preferably the latest). E.g.:
 
     https://github.com/akhleung/defrend/archive/master.zip
----
+
+or
+
     https://github.com/akhleung/defrend/archive/refs/tags/1.6.1.zip
 
 ![dependencies](docs/images/game.project_project_dependencies.png)
+
