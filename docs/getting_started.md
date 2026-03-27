@@ -54,6 +54,10 @@ Add your models to the scene, make sure your camera and lights are positioned an
 
 ![basic_3d_project_screenshot](images/basic_3d_project_screenshot.png)
 
+## 6. Add the configuration GUI
+
+Finally, during development of your 3D project, it is recommended that you add the configuration GUI so that all the rendering and post-processing settings can be adjusted dynamically, with the results immediately visible.
+
 ## Next steps
 
 At this point, you should be equipped to get Defrend up and running with your own projects. Please consult the rest of the documentation for information on how to use the library's more interesting and advanced features.
