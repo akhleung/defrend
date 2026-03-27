@@ -27,7 +27,7 @@ In addition to the preceding, Defrend also offers experimental versions of the f
 
 Please take a look at the **[web demo](https://akhleung.github.io/Defrend/index.html)** to get a feel for this library's capabilities (left-click and drag to rotate the camera around the scene; middle-click and drag to move the camera vertically and laterally; use the scroll wheel to move the camera forward and backward):
 
-[![demo screenshot](images/demo.png)](https://akhleung.github.io/Defrend/index.html)
+[![demo screenshot](docs/images/demo.png)](https://akhleung.github.io/Defrend/index.html)
 
 ## Table of contents
 
