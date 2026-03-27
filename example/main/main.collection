@@ -114,7 +114,7 @@ instances {
   prototype: "/example/main/ice_decal.go"
   position {
     y: -7.0
-    z: 8.0
+    z: 9.0
   }
   rotation {
     x: 0.70710677
@@ -131,13 +131,11 @@ instances {
   prototype: "/example/main/defold_decal.go"
   position {
     y: -7.0
-    z: -8.0
+    z: -9.0
   }
   rotation {
-    x: 0.5
-    y: -0.5
-    z: 0.5
-    w: 0.5
+    x: 0.70710677
+    w: 0.70710677
   }
   scale3 {
     x: 10.0
@@ -1417,10 +1415,6 @@ embedded_instances {
   "  }\n"
   "}\n"
   "components {\n"
-  "  id: \"scene_camera\"\n"
-  "  component: \"/defrend/scripts/controllers/scene_camera.script\"\n"
-  "}\n"
-  "components {\n"
   "  id: \"orbit_camera\"\n"
   "  component: \"/example/main/orbit_camera.script\"\n"
   "}\n"
@@ -1468,7 +1462,18 @@ embedded_instances {
 }
 embedded_instances {
   id: "sun"
-  data: ""
+  data: "embedded_components {\n"
+  "  id: \"camera\"\n"
+  "  type: \"camera\"\n"
+  "  data: \"aspect_ratio: 1.0\\n"
+  "fov: 151.0\\n"
+  "near_z: 1.0\\n"
+  "far_z: 500.0\\n"
+  "orthographic_projection: 1\\n"
+  "orthographic_zoom: 15.0\\n"
+  "\"\n"
+  "}\n"
+  ""
   position {
     x: -97.0
     y: 150.0
@@ -2558,15 +2563,15 @@ embedded_instances {
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/black.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/flat.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/white.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
   "  }\\n"
   "}\\n"
   "materials {\\n"
@@ -2574,15 +2579,15 @@ embedded_instances {
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/white.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/flat.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/black.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
   "  }\\n"
   "}\\n"
   "materials {\\n"
@@ -2594,11 +2599,11 @@ embedded_instances {
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/flat.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
   "  }\\n"
   "  textures {\\n"
   "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/black.png\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
   "  }\\n"
   "}\\n"
   "\"\n"
@@ -3457,7 +3462,7 @@ embedded_instances {
   position {
     x: 25.0
     y: 11.0
-    z: 2.0
+    z: 1.0
   }
 }
 embedded_instances {

@@ -1,4 +1,4 @@
-image: "/example/assets/images/black.png"
+image: "/defrend/assets/textures/black.png"
 tile_width: 1
 tile_height: 1
 collision_groups: "default"

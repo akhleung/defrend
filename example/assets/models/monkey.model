@@ -5,7 +5,7 @@ materials {
   material: "/builtins/materials/model.material"
   textures {
     sampler: "tex0"
-    texture: "/example/assets/images/white.png"
+    texture: "/defrend/assets/textures/white.png"
   }
 }
 materials {
@@ -13,7 +13,7 @@ materials {
   material: "/builtins/materials/model.material"
   textures {
     sampler: "tex0"
-    texture: "/example/assets/images/black.png"
+    texture: "/defrend/assets/textures/black.png"
   }
 }
 materials {
@@ -21,7 +21,7 @@ materials {
   material: "/builtins/materials/model.material"
   textures {
     sampler: "tex0"
-    texture: "/example/assets/images/white.png"
+    texture: "/defrend/assets/textures/white.png"
   }
 }
 materials {

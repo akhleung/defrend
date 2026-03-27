@@ -9,10 +9,10 @@ materials {
   }
   textures {
     sampler: "normal_map"
-    texture: "/example/assets/images/flat.png"
+    texture: "/defrend/assets/textures/flat.png"
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/example/assets/images/black.png"
+    texture: "/defrend/assets/textures/black.png"
   }
 }

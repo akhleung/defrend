@@ -13,6 +13,6 @@ materials {
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/example/assets/images/black.png"
+    texture: "/defrend/assets/textures/black.png"
   }
 }

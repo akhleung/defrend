@@ -1,3 +1,12 @@
+components {
+  id: "rotate"
+  component: "/example/main/rotate.script"
+  properties {
+    id: "reverse"
+    value: "true"
+    type: PROPERTY_TYPE_BOOLEAN
+  }
+}
 embedded_components {
   id: "model"
   type: "model"
@@ -12,11 +21,11 @@ embedded_components {
   "  }\n"
   "  textures {\n"
   "    sampler: \"normal_map\"\n"
-  "    texture: \"/example/assets/images/flat.png\"\n"
+  "    texture: \"/defrend/assets/textures/flat.png\"\n"
   "  }\n"
   "  textures {\n"
   "    sampler: \"spec_glow_map\"\n"
-  "    texture: \"/example/assets/images/black.png\"\n"
+  "    texture: \"/defrend/assets/textures/black.png\"\n"
   "  }\n"
   "}\n"
   ""

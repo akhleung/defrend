@@ -5,14 +5,14 @@ materials {
   material: "/defrend/materials/geometry/model/model.material"
   textures {
     sampler: "albedo_map"
-    texture: "/example/assets/images/white.png"
+    texture: "/defrend/assets/textures/white.png"
   }
   textures {
     sampler: "normal_map"
-    texture: "/example/assets/images/flat.png"
+    texture: "/defrend/assets/textures/flat.png"
   }
   textures {
     sampler: "spec_glow_map"
-    texture: "/example/assets/images/black.png"
+    texture: "/defrend/assets/textures/black.png"
   }
 }
