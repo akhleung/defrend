@@ -31,7 +31,7 @@ In your bootstrap collection (or whichever collection requires 3D rendering), ad
 
 ![outline_defrend_collection](images/outline_defrend.collection.png)
 
-> ![NOTE]
+> [!NOTE]
 > After this step, you may need to restart Defold if textures do not appear correctly when viewing models in the editor. The shading on models may also appear flat/unlit; this is because the deferred pipeline introduces many additional stages that the Defold editor is currently unable to integrate and preview.*
 
 ## 5. Add a camera and light source
@@ -57,7 +57,7 @@ Then, in the project outline, select `defrend | renderer | lighting | light`, an
 
 Assuming your project has model assets ready to use, open them up and set their default material to `/defrend/materials/geometry/model/model.material`, provided by Defrend.
 
-> ![NOTE]
+> [!NOTE]
 > Compared to Defold's built-in model material, the Defrend version requires a normal map and specular/glow map to be specified in addition to the usual diffuse/albedo map. For convenience, Defrend provides `/defrend/assets/textures/flat.png` and `/defrend/assets/textures/black.png` that should be used as defaults if your project does not require normal mapping, specular reflections, or glow effects.
 
 ![cube_model_material](images/cube_model_material.png)
