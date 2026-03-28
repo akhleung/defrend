@@ -32,7 +32,7 @@ In your bootstrap collection (or whichever collection requires 3D rendering), ad
 ![outline_defrend_collection](images/outline_defrend.collection.png)
 
 > [!NOTE]
-> After this step, you may need to restart Defold if textures do not appear correctly when viewing models in the editor. The shading on models may also appear flat/unlit; this is because the deferred pipeline introduces many additional stages that the Defold editor is currently unable to integrate and preview.*
+> After this step, you may need to restart Defold if textures do not appear correctly when viewing models in the editor. The shading on models may also appear flat/unlit; this is because the deferred pipeline introduces many additional stages that the Defold editor is currently unable to integrate and preview.
 
 ## 5. Add a camera and light source
 
