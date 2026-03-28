@@ -20,15 +20,21 @@ In the `game.project` file, under the Bootstrap section, in the Render box, sele
 
 ![bootstrap_render](images/game.project_bootstrap_render.png)
 
-## 3. Add `defrend.collection` to your project outline
+## 3. Enable shared state for project scripts
+
+As mentioned on the [Requirements](requirements.md) page, in the `game.project` file, under the `Script` section, make sure that `Shared State` is checked, as Defrend uses numerous singleton modules to share state between various components:  
+![shared state](images/game.project_script_shared_state.png)
+
+## 4. Add `defrend.collection` to your project outline
 
 In your bootstrap collection (or whichever collection requires 3D rendering), add the collection file `/defrend/defrend.collection`. This collection file is supplied by Defrend and provides numerous components and scripts for initializing and configuring the various features of the library.
 
 ![outline_defrend_collection](images/outline_defrend.collection.png)
 
-*Note: after this step, you may need to restart Defold if textures do not appear correctly when viewing models in the editor. The shading on models may also appear flat/unlit; this is because the deferred pipeline introduces many additional stages that the Defold editor is currently unable to integrate and preview.*
+> ![NOTE]
+> After this step, you may need to restart Defold if textures do not appear correctly when viewing models in the editor. The shading on models may also appear flat/unlit; this is because the deferred pipeline introduces many additional stages that the Defold editor is currently unable to integrate and preview.*
 
-## 4. Add a camera and light source
+## 5. Add a camera and light source
 
 In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
 
@@ -36,7 +42,10 @@ First, add a camera component to the project outline; this will be the *scene ca
 
 ![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
 
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Add a camera component to the `sun` so that you can visualize its orientation more easily. Then move and rotate the `sun` so that the light points in the desired direction.
+Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
+
+> [!TIP]
+> Add a camera component to the `sun` so that you can visualize its orientation more easily.
 
 ![outline_sun](images/outline_defrend_sun.png)
 
@@ -44,9 +53,12 @@ Then, in the project outline, select `defrend | renderer | lighting | light`, an
 
 ![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
 
-## 5. Add 3D models with the appropriate materials
+## 6. Add 3D models with the appropriate materials
 
-Assuming your project has model assets ready to use, open them up and set their default material to `/defrend/materials/geometry/model/model.material`, provided by Defrend. Note that compared to Defold's built-in model material, the Defrend version requires a normal map and specular/glow map to be specified in addition to the usual diffuse/albedo map. For convenience, Defrend provides `/defrend/assets/textures/flat.png` and `/defrend/assets/textures/black.png` that should be used as defaults if your project does not require normal mapping, specular reflections, or glow effects.
+Assuming your project has model assets ready to use, open them up and set their default material to `/defrend/materials/geometry/model/model.material`, provided by Defrend.
+
+> ![NOTE]
+> Compared to Defold's built-in model material, the Defrend version requires a normal map and specular/glow map to be specified in addition to the usual diffuse/albedo map. For convenience, Defrend provides `/defrend/assets/textures/flat.png` and `/defrend/assets/textures/black.png` that should be used as defaults if your project does not require normal mapping, specular reflections, or glow effects.
 
 ![cube_model_material](images/cube_model_material.png)
 
@@ -54,9 +66,25 @@ Add your models to the scene, make sure your camera and lights are positioned an
 
 ![basic_3d_project_screenshot](images/basic_3d_project_screenshot.png)
 
-## 6. Add the configuration GUI
+## 7. Add the configuration GUI
 
-Finally, during development of your 3D project, it is recommended that you add the configuration GUI so that all the rendering and post-processing settings can be adjusted dynamically, with the results immediately visible.
+During development of your 3D project, it is recommended that you add the configuration GUI so that all the rendering and post-processing settings can be adjusted dynamically, with the results immediately visible.
+
+First, as mentioned on the [Requirements](requirements.md) page, you will need to add an additional dependency to `game.project` in order to enable *[ImGUI](https://github.com/britzl/extension-imgui)*:
+
+![imgui_dependency](images/game.project_project_dependencies_imgui.png)
+
+In order to allow ImGUI to receive input, you will also need to add `/imgui/bindings/imgui.input_binding` (or a superset of it) to the `Game Binding` field of the `Input` section of `game.project`:
+
+![input_game_binding](images/game.project_input_game_binding.png)
+
+Finally, you will need to add the `/defrend/gui/graphics_settings.go` GO to the project outline, and make sure that its `imgui` and `settings` script components are enabled:
+
+![graphics_settings](images/outline_graphics_settings.png)
+
+Now when you run the project, the configuration GUI will be displayed over the scene:
+
+![basic_3d_project_with_settings_screenshot](images/demo_with_settings.png)
 
 ## Next steps
 
