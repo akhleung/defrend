@@ -11,7 +11,7 @@ Defrend is a deferred 3D rendering pipeline for the Defold game engine. It provi
 - skyboxes
 - SSAO
 - glow effects
-- FXAA
+- FXAA 3
 - dual Kawase blur
 - Gaussian blur
 - outline effects
@@ -33,3 +33,12 @@ Please take a look at the **[web demo](https://akhleung.github.io/Defrend/index.
 
 - [Requirements](docs/requirements.md)
 - [Getting started](docs/getting_started.md)
+- [Renderable objects / materials](docs/materials.md)
+    - [Models](docs/materials.md#models)
+    - [Billboards / sprites](docs/materials.md#billboards_and_sprites)
+    - [Particle FX](docs/materials.md#particlefx)
+    - [Decals](docs/materials.md#decals)
+    - [Skybox](docs/materials.md#Skybox)
+- [Lighting](docs/lighting.md)
+- [Post-processing](docs/post_processing.md)
+- [Visualizations / debugging](docs/visualizations.md)
