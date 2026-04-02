@@ -1,96 +1,45 @@
-# Renderable objects / materials
+# Materials / renderable objects
+
+Defrend provides a number of materials that should be used instead of the built-in ones so that rendered objects can be correctly lit. Defrend also offers some materials / types of objects that have no built-in counterparts such as billboards, decals, and skyboxes. This section covers all of these materials.
 
 ## Models
 
-In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
+The model material is used to render the typical 3d object. The material file can be found in the Assets pane at:
 
-First, add a camera component to the project outline; this will be the *scene camera*, and rendering will be done from its point of view. Then, in `defrend.collection` in the project outline, select the `defrend | renderer | cameras` script component. In the `scene_camera_url` field, enter the URL of the camera component (Defrend needs to know which camera is being used to render the scene in order to perform shadow mapping correctly).
+`/defrend/materials/geometry/model/model.material`
 
-![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
+This model material takes advantage of GPU instancing so that many duplicate objects can be rendered in a performant manner. This is ideal if the scene contains large numbers of copies or reusable modular elements (e.g., foliage, modular buildings or vehicles, props, hordes of characters, etc).
 
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
+When using the model material, three textures must be provided: an albedo map, normal map, and specular / glow map.
 
-> [!TIP]
-> Add a camera component to the `sun` so that you can visualize its orientation more easily.
+![model material](images/cube_model_material.png)
 
-![outline_sun](images/outline_defrend_sun.png)
+The albedo map represents the "base color" or "diffuse color" of the object. The normal map provides surface normals. The specular / glow map combines information about specularity and emissiveness, with the red channel containing specularity and the green channel containing emissiveness. Because Defrend's focus is more on stylized and non-photorealistic rendering, specularity and emissiveness are simple scalar values; specular reflections are white, and emissive color is based on the underlying albedo of the object.
 
-Then, in the project outline, select `defrend | renderer | lighting | light`, and in the `sun_url` field, paste the URL of the `sun` GO. Also adjust the intensity of the sunlight and ambient light to lower values.
+If an object does not require normal mapping, specular reflections, or glow effects, then Defrend provides the following default textures:
 
-![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
+`/defrend/assets/textures/flat.png` for plain, flat surfaces
+
+`/defrend/assets/textures/black.png` for matte, non-emissive surfaces
+
+Defrend currently does not support non-instanced or skinned models, but these can easily be added to the pipeline.
 
 ## Billboards and sprites
 
-In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
 
-First, add a camera component to the project outline; this will be the *scene camera*, and rendering will be done from its point of view. Then, in `defrend.collection` in the project outline, select the `defrend | renderer | cameras` script component. In the `scene_camera_url` field, enter the URL of the camera component (Defrend needs to know which camera is being used to render the scene in order to perform shadow mapping correctly).
-
-![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
-
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
-
-> [!TIP]
-> Add a camera component to the `sun` so that you can visualize its orientation more easily.
-
-![outline_sun](images/outline_defrend_sun.png)
-
-Then, in the project outline, select `defrend | renderer | lighting | light`, and in the `sun_url` field, paste the URL of the `sun` GO. Also adjust the intensity of the sunlight and ambient light to lower values.
-
-![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
 
 ## Particle FX
 
-In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
 
-First, add a camera component to the project outline; this will be the *scene camera*, and rendering will be done from its point of view. Then, in `defrend.collection` in the project outline, select the `defrend | renderer | cameras` script component. In the `scene_camera_url` field, enter the URL of the camera component (Defrend needs to know which camera is being used to render the scene in order to perform shadow mapping correctly).
-
-![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
-
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
-
-> [!TIP]
-> Add a camera component to the `sun` so that you can visualize its orientation more easily.
-
-![outline_sun](images/outline_defrend_sun.png)
-
-Then, in the project outline, select `defrend | renderer | lighting | light`, and in the `sun_url` field, paste the URL of the `sun` GO. Also adjust the intensity of the sunlight and ambient light to lower values.
-
-![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
 
 ## Decals
 
-In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
 
-First, add a camera component to the project outline; this will be the *scene camera*, and rendering will be done from its point of view. Then, in `defrend.collection` in the project outline, select the `defrend | renderer | cameras` script component. In the `scene_camera_url` field, enter the URL of the camera component (Defrend needs to know which camera is being used to render the scene in order to perform shadow mapping correctly).
-
-![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
-
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
-
-> [!TIP]
-> Add a camera component to the `sun` so that you can visualize its orientation more easily.
-
-![outline_sun](images/outline_defrend_sun.png)
-
-Then, in the project outline, select `defrend | renderer | lighting | light`, and in the `sun_url` field, paste the URL of the `sun` GO. Also adjust the intensity of the sunlight and ambient light to lower values.
-
-![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
 
 ## Skybox
 
-In order to view your 3D scene, there must be a camera and at least one light, and their URLs must be provided to Defrend.
 
-First, add a camera component to the project outline; this will be the *scene camera*, and rendering will be done from its point of view. Then, in `defrend.collection` in the project outline, select the `defrend | renderer | cameras` script component. In the `scene_camera_url` field, enter the URL of the camera component (Defrend needs to know which camera is being used to render the scene in order to perform shadow mapping correctly).
 
-![outline_defrend_renderer_cameras](images/outline_defrend_renderer_cameras.png)
+## Point lights and spot lights
 
-Next, add a GO (game object) to the project outline to represent a directional light source. Since directional lights are generally intended to simulate sunlight, name this GO `sun`. Then move and rotate the `sun` so that the sunlight points in the desired direction.
-
-> [!TIP]
-> Add a camera component to the `sun` so that you can visualize its orientation more easily.
-
-![outline_sun](images/outline_defrend_sun.png)
-
-Then, in the project outline, select `defrend | renderer | lighting | light`, and in the `sun_url` field, paste the URL of the `sun` GO. Also adjust the intensity of the sunlight and ambient light to lower values.
-
-![outline_defrend_renderer_lighting_light](images/outline_defrend_renderer_lighting_light.png)
+Point lights and spot lights are represented by geometries in Defrend, and hence have custom materials as well. However, because they affect the lighting of the scene, they are described in the [Lighting](lighting.md) section of the documentation.
