@@ -4,5 +4,5 @@ components {
 }
 components {
   id: "imgui"
-  component: "/imgui/imgui.script"
+  component: "/defrend/gui/imgui.script"
 }

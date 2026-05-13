@@ -2,7 +2,6 @@ local M = {
 	resolution_x = 0,
 	resolution_y = 0,
 	scene_camera_url = nil,
-	scene_camera_position = vmath.vector3(),
 	geometry = {
 		models_enabled = true,
 		sprites_enabled = true,

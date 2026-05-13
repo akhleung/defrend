@@ -26,14 +26,14 @@ end
 
 function update(self, dt)
     -- Animate camera rotation and zoom
-    self.current_yaw = vmath.lerp(0.15, self.current_yaw, self.yaw)
-    self.current_pitch = vmath.lerp(0.15, self.current_pitch, self.pitch)
-    self.current_zoom = vmath.lerp(0.15, self.current_zoom, self.zoom_offset)
-	self.current_xy = vmath.lerp(0.15, self.current_xy, self.xy_offset)
+    self.current_yaw = vmath.lerp(0.15, self.current_yaw, self.yaw) ---@diagnostic disable-line: param-type-mismatch
+    self.current_pitch = vmath.lerp(0.15, self.current_pitch, self.pitch) ---@diagnostic disable-line: param-type-mismatch
+    self.current_zoom = vmath.lerp(0.15, self.current_zoom, self.zoom_offset) ---@diagnostic disable-line: param-type-mismatch
+	self.current_xy = vmath.lerp(0.15, self.current_xy, self.xy_offset) ---@diagnostic disable-line: param-type-mismatch
 
     -- Calculate rotation and position
-    local camera_yaw = vmath.quat_rotation_y(math.rad(self.current_yaw))
-    local camera_pitch = vmath.quat_rotation_x(math.rad(self.current_pitch))
+    local camera_yaw = vmath.quat_rotation_y(math.rad(self.current_yaw)) ---@diagnostic disable-line: param-type-mismatch
+    local camera_pitch = vmath.quat_rotation_x(math.rad(self.current_pitch)) ---@diagnostic disable-line: param-type-mismatch
     local camera_rotation = camera_yaw * camera_pitch
     local camera_position = self.offset + vmath.rotate(camera_rotation, vmath.vector3(self.current_xy.x, self.current_xy.y, self.zoom + self.current_zoom))
 
