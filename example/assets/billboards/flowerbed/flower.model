@@ -16,3 +16,4 @@ materials {
     texture: "/defrend/assets/textures/black.png"
   }
 }
+create_go_bones: false
