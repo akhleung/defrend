@@ -16,3 +16,4 @@ materials {
     texture: "/example/assets/images/broken-ice-spec-glow.png"
   }
 }
+create_go_bones: false

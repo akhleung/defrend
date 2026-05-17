@@ -28,5 +28,6 @@ embedded_components {
   "    texture: \"/defrend/assets/textures/black.png\"\n"
   "  }\n"
   "}\n"
+  "create_go_bones: false\n"
   ""
 }

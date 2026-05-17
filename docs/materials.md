@@ -60,7 +60,25 @@ Under construction.
 
 ## Decals
 
-Under construction.
+The decal material is used to project a 2D image onto a 3D surface; the projected image is called a *decal*, as the name of this material implies. The material file can be found at:
+
+`/defrend/materials/geometry/decal/decal.material`
+
+To create a decal, first create a *decal projector box* using a cube-shaped model component (Defold's built-in cube model is fine), assign the decal material to it, and then assign the textures that you want to project. Note that decals, as with [models](#models), also require an **albedo map**, **normal map**, and **specular / glow map**, which serve the same purposes as above.
+
+>[!NOTE]
+> The decal material projects the decal in the positive Z direction, relative to the projector box's local coordinates. In the editor, the visualization for the projector box shows the decal image on the negative Z side, to assist with orienting the projector box correctly.
+
+![decal projector](images/decal_projector.png)
+
+To use a decal, place the projector box in your scene, and position / orient it so that its positive Z face intersects with whatever object it should be projected on.
+
+![decal projector in scene](images/decal_projector_in_scene.png)
+
+>[!NOTE]
+> A decal will not be rendered if the camera moves inside its projector box. To minimize the chances of this, try to make the projector box as flat as possible along its Z axis. This should also improve rendering performance, as a flatter (and hence smaller) box will require fewer fragments to be rendered.
+
+For an example of all this, please examine the `/example/assets/models/decal.go` and `/example/main/defold_decal.go` objects.
 
 ## Skybox
 
