@@ -43,7 +43,7 @@ function M.refresh(cam_view, cam_proj, i)
 	local mtx_light_view = get_light_view_mtx_and_camera_frustum(cam_view, cam_proj)
 	local frustum = LIGHT_FRUSTUMS[i]
 	-- extend the near plane of the light frustum to prevent clipping of shadows cast from outside the camera fov
-	min_z = pad(frustum.min_z, frustum.max_z, Z_PADDING_FACTOR)
+	local min_z = pad(frustum.min_z, frustum.max_z, Z_PADDING_FACTOR)
 	local mtx_light_proj = vmath.matrix4_orthographic(frustum.min_x, frustum.max_x, frustum.min_y, frustum.max_y, min_z, frustum.max_z)
 	local mtx_trans = get_texel_snapping_mtx(mtx_light_view, mtx_light_proj)
 	return mtx_light_view, mtx_trans * mtx_light_proj
