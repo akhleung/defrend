@@ -31,7 +31,7 @@ The billboard material is used to render static billboards -- 2D images that alw
 `/defrend/materials/geometry/billboard_sprite/billboard.material`
 
 >[!NOTE]
-> In Defrend, billboards only rotate around the Y axis in order to mimic the appearance of characters and props in early first-person 3D games. In the future, an option will be added to enable rotation along the other axes as well.
+> In Defrend, billboards only rotate around the Y axis in order to mimic the appearance of characters and props in early first-person 3D games. In the future, an option will be added to enable rotation along the other axes as well, or disable it altogether.
 
 The billboard material should be applied to a quad or a cube model component (the reason for using a cube is that frustum culling may be more accurate; the material works by transforming the billboard's vertices in the shader, but a quad billboard may already have been culled too eagerly if it was originally oriented toward the camera edge-on, and was just outside the field of view).
 
@@ -46,7 +46,7 @@ The sprite material is used to render animated [billboards](#billboards) using t
 `/defrend/materials/geometry/billboard_sprite/sprite.material`
 
 >[!NOTE]
-> In Defrend, billboard sprites only rotate around the Y axis in order to mimic the appearance of characters and props in early first-person 3D games. In the future, an option will be added to enable rotation along the other axes as well.
+> In Defrend, billboard sprites only rotate around the Y axis in order to mimic the appearance of characters and props in early first-person 3D games. In the future, an option will be added to enable rotation along the other axes as well, or disable it altogether.
 
 As with [models](#models), sprite billboards require an **albedo map**, **normal map**, and **specular / glow map**, which serve the same purposes as above. Tile sources should be constructed out of these texture maps and provided to the material configuration:
 
@@ -82,7 +82,23 @@ For an example of all this, please examine the `/example/assets/models/decal.go`
 
 ## Skybox
 
-Under construction.
+The skybox material is used to create backdrops (i.e., *skyboxes*) that surround your 3D scene. A skybox is rendered as if the camera is inside it, and its sides are at the camera's far plane; hence, the backdrops appear behind all other rendered objects, and they appear to follow the camera, similar to how distant scenery in the real world appears to move with your point of view. The skybox material can be found at:
+
+`/defrend/materials/geometry/skybox/skybox.material`
+
+To create a skybox, you must first create a cubemap component, and provide six background images that will form the six sides:
+
+![skybox cubemap](images/skybox_cubemap.png)
+
+Each side of the cubemap will correspond to one side of the skybox. The sides of the skybox are aligned with the X, Y, and Z axes in world space. Appropriate cubemap images can be found online, along with tools for creating cubemap images from other types of images.
+
+Once you have a cubemap, create a model component for the skybox, specifying a cube mesh (Defold's built-in cube mesh is fine). Assign the skybox material, and provide your cubemap in the appropriate field:
+
+![skybox model](images/skybox_model.png)
+
+Once you have a skybox, place it anywhere in your 3D scene. The Defold editor is currently unable to show the skybox as it would actually appear in a build, so it will instead only appear as a small cube in the editor.
+
+For an example of all this, please examine `/example/assets/models/skybox.model`, and its usage in the example scene at `/example/main/main.collection`.
 
 ## Point lights and spot lights
 
