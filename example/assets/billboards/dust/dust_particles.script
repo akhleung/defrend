@@ -1,0 +1,4 @@
+function init(self)
+	particlefx.play("#dust")
+	particlefx.set_constant("#dust", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
+end

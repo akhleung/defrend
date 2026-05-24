@@ -1289,6 +1289,14 @@ instances {
     z: -5.0
   }
 }
+instances {
+  id: "dust"
+  prototype: "/example/assets/billboards/dust/dust.go"
+  position {
+    y: 1.0
+    z: 27.0
+  }
+}
 collection_instances {
   id: "defrend"
   collection: "/defrend/defrend.collection"
