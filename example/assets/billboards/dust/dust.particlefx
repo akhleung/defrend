@@ -8,12 +8,12 @@ emitters {
   tile_source: "/example/assets/billboards/dust/dust1.tilesource"
   animation: "anim"
   material: "/defrend/materials/geometry/billboard_sprite/particle.material"
-  max_particle_count: 24
+  max_particle_count: 32
   type: EMITTER_TYPE_BOX
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
-      y: 16.0
+      y: 24.0
     }
   }
   properties {

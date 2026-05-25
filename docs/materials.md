@@ -56,7 +56,21 @@ The albedo maps for sprite billboards are expected to contain completely transpa
 
 ## Particle FX
 
-Under construction.
+The particle materials are used to render the built-in particle fx component, treating the particle images as billboards. There are two separate materials; `particle.material` should be used for particle fx that cast shadows, and `shadowless_particle.material` should be used for particle fx that don't cast shadows. The material files can be found at:
+
+`/defrend/materials/geometry/billboard_sprite/particle.material`
+
+`/defrend/materials/geometry/billboard_sprite/shadowless_particle.material`
+
+>[!NOTE]
+> In Defrend, particle fx are billboarded along all axes. In the future, an option will be added to selectively enable / disable billboarding along specific axes.
+
+To create a billboarded particle fx, follow the same process as creating a built-in Defold particle fx, but apply one of the aforementioned Defrend materials.
+
+Unlike [billboards](#billboards) and [sprites](#sprites), particle fx in Defrend only use an albedo map tilesource. The materials do, however, also take a vec4 fragment constant called `spec_glow_dith` that contains flags indicating whether the particles should be shiny, emissive, and/or dithered (i.e., translucent). These flags can be set with Defold's built-in `particlefx.set_constant` function; a convenient place to do this is in a script component attached to a GO that also contains the particle fx component. Please examine the files in `/example/assets/billboards/dust` for an example.
+
+>[!NOTE]
+> After applying Defrend's particle materials, the Defold editor will no longer be able to preview the particle fx, due to the highly customized deferred pipeline. You can apply the built-in material first for a preview, then switch to the Defrend version.
 
 ## Decals
 
