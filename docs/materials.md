@@ -117,3 +117,14 @@ For an example of all this, please examine `/example/assets/models/skybox.model`
 ## Point lights and spot lights
 
 Point lights and spot lights are represented by geometries in Defrend, and hence have custom materials as well. However, because they affect the lighting of the scene, they are described in the [Lighting](lighting.md) section of the documentation.
+
+## Visualizations and debugging
+
+You can selectively enable / disable the rendering of each of these materials at runtime for debugging purposes. There are two ways to do this:
+
+- Select the flags in the `geometry` script component in the Defold collection, which should be in your scene outline:
+![geometry script component](images/geometry_script_component.png)
+- Select the flags in the `Geometry` section of the Settings GUI, which should be visible when you run your game (assuming you added it to your 3D scene as described in [Getting Started](/docs/getting_started.md)):
+![geometry settings gui](images/geometry_settings_gui.png)
+
+See also the [Visualizations / debugging](/docs/visualizations.md) page.
