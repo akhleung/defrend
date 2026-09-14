@@ -5,13 +5,17 @@ go.property("enabled", false)
 go.property("focal_depth", 100)
 go.property("blur_start", 30)
 go.property("blur_full", 40)
+go.property("blur_samples", 16)
+go.property("blur_scale", 1.0)
 
 local function do_init(self)
 	settings.dof.enabled		= self.enabled
 	settings.dof.focal_depth	= self.focal_depth
 	settings.dof.blur_start		= self.blur_start
 	settings.dof.blur_full		= self.blur_full
-	uniforms.dof.init()
+	settings.dof.blur_samples	= self.blur_samples
+	settings.dof.blur_scale		= self.blur_scale
+	uniforms.dof_coc.init()
 end
 
 function init(self)

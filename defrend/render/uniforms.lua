@@ -17,7 +17,8 @@ local M = {
 	gaussian_blur		= { uniforms = render.constant_buffer() },
 	dual_kawase_blur	= { uniforms = render.constant_buffer() },
 	dilate				= { uniforms = render.constant_buffer() },
-	dof					= { uniforms = render.constant_buffer() },
+	dof_coc				= { uniforms = render.constant_buffer() },
+	dof_blur			= { uniforms = render.constant_buffer() },
 	gamma				= { uniforms = render.constant_buffer() },
 	kuwahara_blur		= { uniforms = render.constant_buffer() },
 	fxaa				= { uniforms = render.constant_buffer() },
@@ -171,12 +172,16 @@ function M.dilate.init()
 end
 
 local dof = settings.dof
-local dof_params = vmath.vector4()
-function M.dof.init()
-	dof_params.x = dof.focal_depth
-	dof_params.y = dof.blur_start
-	dof_params.z = dof.blur_full
-	M.dof.uniforms.params = dof_params
+local dof_coc_params = vmath.vector4()
+local dof_blur_params = vmath.vector4()
+function M.dof_coc.init()
+	dof_coc_params.x = dof.focal_depth
+	dof_coc_params.y = dof.blur_start
+	dof_coc_params.z = dof.blur_full
+	dof_blur_params.x = dof.blur_samples
+	dof_blur_params.y = dof.blur_scale
+	M.dof_coc.uniforms.params = dof_coc_params
+	M.dof_blur.uniforms.params = dof_blur_params
 end
 
 local gamma = settings.gamma

@@ -4,17 +4,12 @@ components {
   position {
     y: 0.5
   }
+  rotation {
+    x: 0.70710677
+    w: 0.70710677
+  }
 }
 components {
   id: "script"
   component: "/example/assets/billboards/flowerbed/flower.script"
-}
-components {
-  id: "billboard"
-  component: "/defrend/scripts/controllers/billboard.script"
-  properties {
-    id: "pitch_factor"
-    value: "0.5"
-    type: PROPERTY_TYPE_NUMBER
-  }
 }

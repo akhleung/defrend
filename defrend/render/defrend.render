@@ -52,10 +52,6 @@ render_resources {
   path: "/defrend/materials/screen/gamma/gamma.material"
 }
 render_resources {
-  name: "dof_material"
-  path: "/defrend/materials/screen/dof/dof.material"
-}
-render_resources {
   name: "dilate_material"
   path: "/defrend/materials/screen/blur/dilate.material"
 }
@@ -130,4 +126,16 @@ render_resources {
 render_resources {
   name: "point_light_with_shadows_material"
   path: "/defrend/materials/geometry/light_volume/point_light_with_shadows.material"
+}
+render_resources {
+  name: "dof_pack_coc_material"
+  path: "/defrend/materials/screen/dof/dof_pack_coc.material"
+}
+render_resources {
+  name: "dof_blur_material"
+  path: "/defrend/materials/screen/dof/dof_blur.material"
+}
+render_resources {
+  name: "dof_resolve_material"
+  path: "/defrend/materials/screen/dof/dof_resolve.material"
 }
