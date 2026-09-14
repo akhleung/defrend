@@ -30,7 +30,8 @@ local dual_kawase_options
 local dilate_options
 local kuwahara_blur_options
 local gamma_options
-local dof_options
+local dof_coc_options
+local dof_blur_options
 local fxaa_options
 
 local shadow_map
@@ -75,7 +76,8 @@ function init(self)
 	dilate_options			= draw_options.dilate_options
 	kuwahara_blur_options	= draw_options.kuwahara_blur_options
 	gamma_options			= draw_options.gamma_options
-	dof_options				= draw_options.dof_options
+	dof_coc_options			= draw_options.dof_coc_options
+	dof_blur_options		= draw_options.dof_blur_options
 	fxaa_options			= draw_options.fxaa_options
 
 	shadow_map = render_targets.get_shadow_map()
@@ -383,7 +385,7 @@ function update(self)
 
 	if settings.dof.enabled then
 		render_targets.ping_pong()
-		dof.update(settings.dof, dof_options)
+		dof.update(settings.dof, dof_coc_options)
 	end
 
 	if settings.fxaa.enabled then
@@ -431,7 +433,8 @@ local function update_camera_uniforms()
 	ssao_blur_options.constants.frustum_terms	= frustum_terms
 	outline_options.constants.frustum_corner	= frustum_corner
 	outline_options.constants.frustum_terms		= frustum_terms
-	dof_options.constants.frustum_terms			= frustum_terms
+	dof_coc_options.constants.frustum_terms		= frustum_terms
+	dof_blur_options.constants.frustum_terms	= frustum_terms
 end
 
 local MSG_WINDOW_RESIZED	= hash("window_resized")

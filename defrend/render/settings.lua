@@ -132,6 +132,11 @@ local M = {
 		focal_depth = 200,
 		blur_start = 30,
 		blur_full = 40,
+		blur_samples = 16,
+		blur_radius = 2,
+		downsamples = 2,
+		coc_threshold = 0.005,
+		coc_visualization = 0,
 	},
 	gamma = {
 		enabled = false,

@@ -1,0 +1,34 @@
+mesh: "/example/assets/models/tree_bill.gltf"
+name: "tree_bill"
+materials {
+  name: "material_0"
+  material: "/defrend/materials/geometry/billboard_sprite/billboard.material"
+  textures {
+    sampler: "albedo_map"
+    texture: "/example/assets/models/texture.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/defrend/assets/textures/flat.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/defrend/assets/textures/black.png"
+  }
+}
+materials {
+  name: "material_1"
+  material: "/defrend/materials/geometry/model/model.material"
+  textures {
+    sampler: "albedo_map"
+    texture: "/example/assets/models/texture.png"
+  }
+  textures {
+    sampler: "normal_map"
+    texture: "/defrend/assets/textures/flat.png"
+  }
+  textures {
+    sampler: "spec_glow_map"
+    texture: "/defrend/assets/textures/black.png"
+  }
+}

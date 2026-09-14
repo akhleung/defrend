@@ -21,7 +21,7 @@ function M.update(settings, draw_options)
 	end
 	render.disable_material()
 	-- upsample
-	render_targets.ping_pong()
+	render_targets.ping_pong_downsampled()
 	render.enable_material("kawase_upsample_material")
 	for _ = 1, iterations do
 		render_targets.upsample_target_with(function (source, target)
