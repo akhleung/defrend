@@ -48,13 +48,13 @@ void main() {
 	float dist2 = focal_depth + z2;
 	float dist3 = focal_depth + z3;
 
-    float coc0 = smoothstep(blur_start, blur_full, abs(dist0)) * -sign(dist0);
-    float coc1 = smoothstep(blur_start, blur_full, abs(dist1)) * -sign(dist1);
-    float coc2 = smoothstep(blur_start, blur_full, abs(dist2)) * -sign(dist2);
-    float coc3 = smoothstep(blur_start, blur_full, abs(dist3)) * -sign(dist3);
+    float coc0 = smoothstep(blur_start, blur_full, abs(dist0)) * sign(dist0);
+    float coc1 = smoothstep(blur_start, blur_full, abs(dist1)) * sign(dist1);
+    float coc2 = smoothstep(blur_start, blur_full, abs(dist2)) * sign(dist2);
+    float coc3 = smoothstep(blur_start, blur_full, abs(dist3)) * sign(dist3);
 
     vec4 color = (color0 + color1 + color2 + color3) * 0.25;
-    float coc = min(min(min(coc0, coc1), coc2), coc3);
+    float coc = max(max(max(coc0, coc1), coc2), coc3);
 
     frag_output = vec4(color.rgb, coc * 0.5 + 0.5);
 }

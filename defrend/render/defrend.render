@@ -139,3 +139,7 @@ render_resources {
   name: "dof_resolve_material"
   path: "/defrend/materials/screen/dof/dof_resolve.material"
 }
+render_resources {
+  name: "dof_dilate_coc_material"
+  path: "/defrend/materials/screen/dof/dof_dilate_coc.material"
+}
