@@ -133,7 +133,8 @@ local M = {
 		blur_start = 30,
 		blur_full = 40,
 		blur_samples = 16,
-		blur_scale = 1,
+		blur_scale = 0.2,
+		downsamples = 2,
 	},
 	gamma = {
 		enabled = false,

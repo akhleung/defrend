@@ -42,6 +42,11 @@ return function (self)
 		uniforms_changed = true
 	end
 
+	local changed, value = imgui.input_int("Downsampling passes", settings.dof.downsamples)
+	if changed and value then
+		settings.dof.downsamples = vmath.clamp(value, 0, 3)
+	end
+
 	if uniforms_changed then
 		uniforms.dof_coc.init()
         uniforms_changed = false

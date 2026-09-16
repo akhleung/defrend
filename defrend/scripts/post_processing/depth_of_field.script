@@ -6,7 +6,8 @@ go.property("focal_depth", 100)
 go.property("blur_start", 30)
 go.property("blur_full", 40)
 go.property("blur_samples", 16)
-go.property("blur_scale", 1.0)
+go.property("blur_scale", 0.2)
+go.property("downsampling_passes", 2)
 
 local function do_init(self)
 	settings.dof.enabled		= self.enabled
@@ -19,6 +20,7 @@ local function do_init(self)
 end
 
 function init(self)
+	settings.dof.downsamples = self.downsampling_passes
 	do_init(self)
 end
 

@@ -218,6 +218,10 @@ function M.ping_pong()
 	source, sources, target, targets = target, targets, source, sources
 end
 
+function M.ping_pong_spare()
+	source, sources[1], spare = spare, spare, source
+end
+
 function M.downsample_source()
 	if downsampling_level == #sources then
 		return false
