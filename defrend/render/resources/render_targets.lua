@@ -218,6 +218,15 @@ function M.ping_pong()
 	source, sources, target, targets = target, targets, source, sources
 end
 
+function M.ping_pong_spare()
+	source, sources[1], spare = spare, spare, source
+end
+
+function M.ping_pong_downsampled()
+	local i = downsampling_level + 1
+	sources[i], targets[i] = targets[i], sources[i]
+end
+
 function M.downsample_source()
 	if downsampling_level == #sources then
 		return false
@@ -292,6 +301,8 @@ end
 
 function M.reset()
 	scale = 1
+	downsampling_level = 0
+	render.set_viewport(0, 0, x * scale, y * scale)
 	source, target = sources[1], targets[1]
 end
 

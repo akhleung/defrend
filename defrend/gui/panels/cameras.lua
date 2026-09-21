@@ -5,7 +5,7 @@ return function (self)
 
     local cam = settings.scene_camera_url
     local camera_changed = false
-    
+
     imgui.text("Scene camera")
 
 	local changed, value = imgui.input_float("Near Z", camera.get_near_z(cam), 1.0, 5.0)

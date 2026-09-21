@@ -5,16 +5,36 @@ go.property("enabled", false)
 go.property("focal_depth", 100)
 go.property("blur_start", 30)
 go.property("blur_full", 40)
+go.property("blur_samples", 16)
+go.property("blur_radius", 2)
+go.property("downsampling_passes", 2)
+go.property("focused_CoC_threshold", 0.005)
+go.property("visualize_original_CoCs", false)
+go.property("visualize_dilated_CoCs", false)
+go.property("visualize_corrected_CoCs", false)
 
 local function do_init(self)
 	settings.dof.enabled		= self.enabled
 	settings.dof.focal_depth	= self.focal_depth
 	settings.dof.blur_start		= self.blur_start
 	settings.dof.blur_full		= self.blur_full
-	uniforms.dof.init()
+	settings.dof.blur_samples	= self.blur_samples
+	settings.dof.blur_radius	= self.blur_radius
+	settings.dof.coc_threshold	= self.focused_CoC_threshold
+	if self.visualize_original_CoCs then
+		settings.dof.coc_visualization = 1.0
+	elseif self.visualize_dilated_CoCs then
+		settings.dof.coc_visualization = 2.0
+	elseif self.visualize_corrected_CoCs then
+		settings.dof.coc_visualization = 3.0
+	else
+		settings.dof.coc_visualization = 0.0
+	end
+	uniforms.dof_coc.init()
 end
 
 function init(self)
+	settings.dof.downsamples = self.downsampling_passes
 	do_init(self)
 end
 
