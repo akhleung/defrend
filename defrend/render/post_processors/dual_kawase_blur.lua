@@ -1,5 +1,7 @@
-local render_targets	= require "defrend.render.resources.render_targets"
-local predicates		= require "defrend.render.resources.predicates"
+local render_targets	= require("defrend.render.resources.render_targets")
+local predicates		= require("defrend.render.resources.predicates")
+local settings			= require("defrend.render.settings").dual_kawase_blur
+local draw_options		= require("defrend.render.resources.draw_options").dual_kawase_options
 local M = {}
 
 function M.init()
@@ -7,7 +9,14 @@ end
 
 -- TODO: Don't create closures every frame (this will require the draw options to be passed in some other way).
 --       Maybe LuaJIT is already optimizing away these closures though.
-function M.update(settings, draw_options)
+function M.update(settings_override, draw_options_override)
+	local settings, draw_options = settings, draw_options
+	if settings_override then
+		settings = settings_override
+	end
+	if draw_options_override then
+		draw_options = draw_options_override
+	end
 	local iterations = settings.iterations
 	-- downsample
 	render.enable_material("kawase_downsample_material")

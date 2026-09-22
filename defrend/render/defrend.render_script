@@ -1,18 +1,11 @@
 local settings			= require("defrend.render.settings")
-local draw_options		= require("defrend.render.resources.draw_options")
 local lights			= require("defrend.render.lights")
+local visualizations	= require("defrend.render.visualizations")
 local render_targets	= require("defrend.render.resources.render_targets")
 local clear_options		= require("defrend.render.resources.clear_options")
+local draw_options		= require("defrend.render.resources.draw_options")
 local predicates		= require("defrend.render.resources.predicates")
-local gaussian_blur		= require("defrend.render.post_processors.gaussian_blur")
-local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
-local glow				= require("defrend.render.post_processors.glow")
-local dof				= require("defrend.render.post_processors.dof")
-local outline			= require("defrend.render.post_processors.outline")
-local gamma				= require("defrend.render.post_processors.gamma")
-local bloom				= require("defrend.render.post_processors.bloom")
-local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
-local fxaa				= require("defrend.render.post_processors.fxaa")
+local post_processors	= require("defrend.render.post_processors")
 
 local render_shadows
 local render_gui
@@ -20,19 +13,7 @@ local render_gui
 local shadow_options
 local geometry_options
 local lighting_options
-local copy_options
 local ssao_options
-local outline_options
-local glow_options
-local bloom_options
-local gaussian_blur_options
-local dual_kawase_options
-local dilate_options
-local kuwahara_blur_options
-local gamma_options
-local dof_coc_options
-local dof_blur_options
-local fxaa_options
 
 local shadow_map
 local point_light_shadow_map
@@ -49,36 +30,15 @@ function init(self)
 	clear_options.init()
 	predicates.init()
 	draw_options.init()
-
-	gaussian_blur.init()
-	dual_kawase_blur.init()
-	glow.init()
-	dof.init()
-	outline.init()
-	gamma.init()
-	bloom.init()
-	kuwahara_blur.init()
-	fxaa.init()
+	post_processors.init()
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
 	geometry_options		= draw_options.geometry_options
 	shadow_options			= draw_options.shadow_options
 	lighting_options		= draw_options.lighting_options
-	copy_options			= draw_options.copy_options
 	ssao_options			= draw_options.ssao_options
 	ssao_blur_options		= draw_options.ssao_blur_options
-	outline_options			= draw_options.outline_options
-	glow_options			= draw_options.glow_options
-	bloom_options			= draw_options.bloom_options
-	gaussian_blur_options	= draw_options.gaussian_blur_options
-	dual_kawase_options		= draw_options.dual_kawase_options
-	dilate_options			= draw_options.dilate_options
-	kuwahara_blur_options	= draw_options.kuwahara_blur_options
-	gamma_options			= draw_options.gamma_options
-	dof_coc_options			= draw_options.dof_coc_options
-	dof_blur_options		= draw_options.dof_blur_options
-	fxaa_options			= draw_options.fxaa_options
 
 	shadow_map = render_targets.get_shadow_map()
 	point_light_shadow_map = render_targets.get_point_light_shadow_map()
@@ -245,15 +205,20 @@ function update(self)
 		render.disable_texture("depth_buffer")
 		render.disable_texture("normal_sampler")
 		render.disable_material()
-		if settings.ssao.blur and settings.ssao.blur_compares_normals then
+		local compare_normals = settings.ssao.blur_compares_normals
+		if settings.ssao.blur then
 			render_targets.ping_pong()
 			ssao_blur_h_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
 			ssao_blur_h_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
 			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_material")
+			if compare_normals then
+				render.enable_material("ssao_blur_material")
+				render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
+			else
+				render.enable_material("ssao_blur_depth_only_material")
+			end
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
 			render.draw(predicates.screen, ssao_blur_h_options)
 			render.disable_texture("color_sampler")
 			render_targets.ping_pong()
@@ -262,28 +227,9 @@ function update(self)
 			render.set_render_target(render_targets.get_post_target())
 			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 			render.draw(predicates.screen, ssao_blur_v_options)
-			render.disable_texture("color_sampler")
-			render.disable_texture("depth_buffer")
-			render.disable_texture("normal_sampler")
-			render.disable_material()
-		elseif settings.ssao.blur then
-			render_targets.ping_pong()
-			ssao_blur_h_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
-			ssao_blur_h_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_material("ssao_blur_depth_only_material")
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.draw(predicates.screen, ssao_blur_h_options)
-			render.disable_texture("color_sampler")
-			render.disable_texture("depth_buffer")
-			render_targets.ping_pong()
-			ssao_blur_v_options.constants.params = ssao_blur_options.constants.params ---@diagnostic disable-line: inject-field
-			ssao_blur_v_options.constants.frustum_terms = ssao_blur_options.constants.frustum_terms ---@diagnostic disable-line: inject-field
-			render.set_render_target(render_targets.get_post_target())
-			render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-			render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-			render.draw(predicates.screen, ssao_blur_v_options)
+			if compare_normals then
+				render.disable_texture("normal_sampler")
+			end
 			render.disable_texture("color_sampler")
 			render.disable_texture("depth_buffer")
 			render.disable_material()
@@ -311,87 +257,13 @@ function update(self)
 
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
-		render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
-		if settings.visualize.option == "g_albedo" then
-			render.enable_material("copy_rgb_material")
-			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
-		elseif settings.visualize.option == "g_normals" then
-			render.enable_material("copy_rgb_material")
-			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-		elseif settings.visualize.option == "g_specular" then
-			render.enable_material("copy_a_material")
-			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-		elseif settings.visualize.option == "g_emissive" then
-			render.enable_material("copy_a_material")
-			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
-		elseif settings.visualize.option == "g_depth" then
-			render.enable_material("copy_r_material")
-			render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_DEPTH)
-		elseif settings.visualize.option == "reflectance_diffuse" then
-			render.enable_material("copy_rgb_material")
-			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
-		elseif settings.visualize.option == "reflectance_specular" then
-			render.enable_material("copy_a_material")
-			render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
-		elseif settings.visualize.option == "shadow_atlas" then
-			render.enable_material("copy_r_material")
-			render.enable_texture("input_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
-		elseif settings.visualize.option == "ssao" then
-			render.enable_material("copy_rgb_material")
-			render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-		end
-		render.draw(predicates.screen)
-		render.disable_texture("input_sampler")
-		render.disable_material()
+		visualizations.update()
 		render_gui()
 		return
 	end
 
-	-- TODO: put the post-processors in a customizable list and loop through them
-	if settings.outline.enabled then
-		render_targets.ping_pong()
-		outline.update(settings.outline, outline_options)
-	end
-
-	if settings.gamma.enabled then
-		render_targets.ping_pong()
-		gamma.update(settings.gamma, gamma_options)
-	end
-
-	if settings.glow.enabled then
-		render_targets.ping_pong()
-		glow.update(settings.glow, glow_options)
-	end
-
-	if settings.bloom.enabled then
-		render_targets.ping_pong()
-		bloom.update(settings.bloom, bloom_options)
-	end
-
-	if settings.kuwahara_blur.enabled then
-		render_targets.ping_pong()
-		kuwahara_blur.update(settings.kuwahara_blur, kuwahara_blur_options)
-	end
-
-	if settings.gaussian_blur.enabled then
-		render_targets.ping_pong()
-		gaussian_blur.update(settings.gaussian_blur, gaussian_blur_options)
-	end
-
-	if settings.dual_kawase_blur.enabled then
-		render_targets.ping_pong()
-		dual_kawase_blur.update(settings.dual_kawase_blur, dual_kawase_options)
-	end
-
-	if settings.dof.enabled then
-		render_targets.ping_pong()
-		dof.update(settings.dof, dof_coc_options)
-	end
-
-	if settings.fxaa.enabled then
-		render_targets.ping_pong()
-		fxaa.update(settings.fxaa, fxaa_options)
-	end
+	-- TODO: make the post-processor list customizable
+	post_processors.update()
 
 	render_targets.ping_pong()
 	render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
@@ -403,6 +275,10 @@ function update(self)
 
 	render_gui()
 end
+
+local outline_options		= draw_options.outline_options
+local dof_coc_options		= draw_options.dof_coc_options
+local dof_blur_options		= draw_options.dof_blur_options
 
 local frustum_corner_ndc	= vmath.vector4(1.0)
 local frustum_corner

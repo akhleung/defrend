@@ -1,5 +1,8 @@
-local render_targets	= require "defrend.render.resources.render_targets"
-local predicates		= require "defrend.render.resources.predicates"
+local render_targets	= require("defrend.render.resources.render_targets")
+local predicates		= require("defrend.render.resources.predicates")
+local settings			= require("defrend.render.settings").gaussian_blur
+local draw_options		= require("defrend.render.resources.draw_options").gaussian_blur_options
+
 local M = {}
 
 function M.init()
@@ -10,7 +13,7 @@ local v_options = { constants = render.constant_buffer() }
 h_options.constants.delta = vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
 v_options.constants.delta = vmath.vector4(0, 1, 0, 0) ---@diagnostic disable-line: inject-field
 
-function M.update(settings, draw_options)
+function M.update()
 
 	local downsamples = settings.downsamples
 	-- downsample

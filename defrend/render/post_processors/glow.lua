@@ -1,6 +1,9 @@
-local render_targets	= require "defrend.render.resources.render_targets"
-local predicates		= require "defrend.render.resources.predicates"
-local dual_kawase_blur	= require "defrend.render.post_processors.dual_kawase_blur"
+local render_targets	= require("defrend.render.resources.render_targets")
+local predicates		= require("defrend.render.resources.predicates")
+local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
+local settings			= require("defrend.render.settings").glow
+local draw_options		= require("defrend.render.resources.draw_options").glow_options
+
 local M = {}
 
 local g_buffer
@@ -8,7 +11,7 @@ function M.init()
 	g_buffer = render_targets.get_g_buffer()
 end
 
-function M.update(settings, draw_options)
+function M.update()
 	-- save the main render in a spare buffer
 	render.set_render_target(render_targets.get_post_spare())
 	render.enable_material("copy_material")

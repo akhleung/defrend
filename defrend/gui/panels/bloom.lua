@@ -1,5 +1,6 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings			= require("defrend.render.settings")
+local uniforms			= require("defrend.render.uniforms")
+local post_processors	= require("defrend.render.post_processors")
 
 return function (self)
 	local uniforms_changed = false
@@ -7,28 +8,29 @@ return function (self)
 	local changed, checked = imgui.checkbox("Enabled", settings.bloom.enabled)
 	if changed then
 		settings.bloom.enabled = checked
+		post_processors.regenerate_active_list()
 	end
 
 	local changed, value = imgui.input_float("Threshold", settings.bloom.threshold, 0.01, 0.05)
-	if changed then
+	if changed and value then
 		settings.bloom.threshold = vmath.clamp(value, 0, 1)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_int("Radius", settings.bloom.radius)
-	if changed then
+	if changed and value then
 		settings.bloom.radius = vmath.clamp(value, 1, 16)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_float("Separation", settings.bloom.separation, 0.5, 1.0)
-	if changed then
+	if changed and value then
 		settings.bloom.separation = vmath.clamp(value, 1, 16)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_float("Strength", settings.bloom.strength, 0.05, 0.1)
-	if changed then
+	if changed and value then
 		settings.bloom.strength = vmath.clamp(value, 0, 1)
 		uniforms_changed = true
 	end

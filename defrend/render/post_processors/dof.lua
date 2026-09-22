@@ -1,7 +1,8 @@
-local dof_settings		= require("defrend.render.settings").dof
-local dof_blur_options	= require("defrend.render.resources.draw_options").dof_blur_options
 local render_targets	= require("defrend.render.resources.render_targets")
 local predicates		= require("defrend.render.resources.predicates")
+local settings			= require("defrend.render.settings").dof
+local coc_draw_options	= require("defrend.render.resources.draw_options").dof_coc_options
+local blur_draw_options	= require("defrend.render.resources.draw_options").dof_blur_options
 
 local M = {}
 
@@ -10,22 +11,22 @@ function M.init()
 	g_buffer = render_targets.get_g_buffer()
 end
 
-function M.update(settings, draw_options)
-	local params = draw_options.constants.params
+function M.update()
+	local params = coc_draw_options.constants.params
 	params.x = settings.focal_depth
-	draw_options.constants.params = params
+	coc_draw_options.constants.params = params
 	-- pack the focused render into the spare buffer with CoCs
 	render.set_render_target(render_targets.get_post_spare())
 	render.enable_material("dof_pack_coc_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
-	render.draw(predicates.screen, draw_options)
+	render.draw(predicates.screen, coc_draw_options)
 	render.disable_texture("input_sampler")
 	render.disable_texture("depth_buffer")
 	render.disable_material()
 	-- downsample the render with CoCs
 	render_targets.ping_pong_spare() -- swap the focused render with CoCs into the postprocessing source buffer
-	local downsamples = dof_settings.downsamples
+	local downsamples = settings.downsamples
 	for _ = 1, downsamples do
 		render_targets.downsample_source()
 	end
@@ -33,7 +34,7 @@ function M.update(settings, draw_options)
 	render.set_render_target(render_targets.get_post_target())
 	render.enable_material("dof_blur_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-	render.draw(predicates.screen, dof_blur_options)
+	render.draw(predicates.screen, blur_draw_options)
 	render.disable_texture("input_sampler")
 	render.disable_material()
 	-- resolve focused and blurred renders using the dilated CoCs
@@ -43,7 +44,7 @@ function M.update(settings, draw_options)
 	render.enable_material("dof_resolve_material")
 	render.enable_texture("focused_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.enable_texture("blurred_sampler", downsampled_target, render_targets.POST_COLOR)
-	render.draw(predicates.screen, dof_blur_options)
+	render.draw(predicates.screen, blur_draw_options)
 	render.disable_texture("focused_sampler")
 	render.disable_texture("blurred_sampler")
 	render.disable_material()

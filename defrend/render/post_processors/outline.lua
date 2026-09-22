@@ -1,5 +1,6 @@
-local render_targets	= require "defrend.render.resources.render_targets"
-local predicates		= require "defrend.render.resources.predicates"
+local render_targets	= require("defrend.render.resources.render_targets")
+local predicates		= require("defrend.render.resources.predicates")
+local draw_options      = require("defrend.render.resources.draw_options").outline_options
 local M = {}
 
 local g_buffer
@@ -7,7 +8,7 @@ function M.init()
 	g_buffer = render_targets.get_g_buffer()
 end
 
-function M.update(settings, draw_options)
+function M.update()
     render.set_render_target(render_targets.get_post_target())
     render.enable_material("outline_material")
     render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)

@@ -1,5 +1,6 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings			= require("defrend.render.settings")
+local uniforms			= require("defrend.render.uniforms")
+local post_processors	= require("defrend.render.post_processors")
 
 return function (self)
 	local uniforms_changed = false
@@ -7,6 +8,7 @@ return function (self)
 	local changed, checked = imgui.checkbox("Enabled", settings.dof.enabled)
 	if changed then
 		settings.dof.enabled = checked
+		post_processors.regenerate_active_list()
 	end
 
 	local changed, value = imgui.input_float("Focal depth", settings.dof.focal_depth, 1.0, 5.0)

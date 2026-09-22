@@ -1,25 +1,27 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings			= require("defrend.render.settings")
+local uniforms			= require("defrend.render.uniforms")
+local post_processors	= require("defrend.render.post_processors")
 
 return function (self)
 	local changed, checked = imgui.checkbox("Enabled", settings.dual_kawase_blur.enabled)
 	if changed then
 		settings.dual_kawase_blur.enabled = checked
+		post_processors.regenerate_active_list()
 	end
 
 	local changed, value = imgui.input_int("Iterations", settings.dual_kawase_blur.iterations)
-	if changed then
+	if changed and value then
 		settings.dual_kawase_blur.iterations = vmath.clamp(value, 1, 3)
 	end
 
 	local changed, value = imgui.input_float("Separation", settings.dual_kawase_blur.separation, 0.1, 0.5)
-	if changed then
+	if changed and value then
 		settings.dual_kawase_blur.separation = vmath.clamp(value, 0, 10)
 		uniforms_changed = true
 	end
 
     local changed, value = imgui.input_float("Bloom", settings.dual_kawase_blur.bloom, 0.01, 0.1)
-	if changed then
+	if changed and value then
 		settings.dual_kawase_blur.bloom = vmath.clamp(value, 0, 5)
 		uniforms_changed = true
 	end

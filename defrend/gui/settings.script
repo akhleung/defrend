@@ -1,32 +1,52 @@
-local visualize	= require "defrend.gui.panels.visualization"
-local cameras	= require "defrend.gui.panels.cameras"
-local geometry	= require "defrend.gui.panels.geometry"
-local lighting	= require "defrend.gui.panels.lighting"
-local shadows	= require "defrend.gui.panels.shadows"
-local ssao		= require "defrend.gui.panels.ssao"
-local glow		= require "defrend.gui.panels.glow"
-local dof		= require "defrend.gui.panels.dof"
-local outline	= require "defrend.gui.panels.outline"
-local kuwahara	= require "defrend.gui.panels.kuwahara"
-local bloom		= require "defrend.gui.panels.bloom"
-local dilate	= require "defrend.gui.panels.dilate"
-local gaussian	= require "defrend.gui.panels.gaussian"
-local kawase	= require "defrend.gui.panels.dual_kawase"
-local gamma		= require "defrend.gui.panels.gamma"
-local fxaa		= require "defrend.gui.panels.fxaa"
+local visualize_panel	= require("defrend.gui.panels.visualization")
+local cameras_panel		= require("defrend.gui.panels.cameras")
+local geometry_panel	= require("defrend.gui.panels.geometry")
+local lighting_panel	= require("defrend.gui.panels.lighting")
+local shadows_panel		= require("defrend.gui.panels.shadows")
+local ssao_panel		= require("defrend.gui.panels.ssao")
+local glow_panel		= require("defrend.gui.panels.glow")
+local dof_panel			= require("defrend.gui.panels.dof")
+local outline_panel		= require("defrend.gui.panels.outline")
+local kuwahara_panel	= require("defrend.gui.panels.kuwahara")
+local bloom_panel		= require("defrend.gui.panels.bloom")
+local dilate_panel		= require("defrend.gui.panels.dilate")
+local gaussian_panel	= require("defrend.gui.panels.gaussian")
+local kawase_panel		= require("defrend.gui.panels.dual_kawase")
+local gamma_panel		= require("defrend.gui.panels.gamma")
+local fxaa_panel		= require("defrend.gui.panels.fxaa")
+
+local post_processors	= require("defrend.render.post_processors")
+
+local outline			= require("defrend.render.post_processors.outline")
+local gamma				= require("defrend.render.post_processors.gamma")
+local glow				= require("defrend.render.post_processors.glow")
+local bloom				= require("defrend.render.post_processors.bloom")
+local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
+local gaussian_blur		= require("defrend.render.post_processors.gaussian_blur")
+local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
+local dof				= require("defrend.render.post_processors.dof")
+local fxaa				= require("defrend.render.post_processors.fxaa")
 
 go.property("enabled", true)
 
 local rendering = {
-	{ "Cameras", cameras },
-	{ "Geometry", geometry },	{ "Lighting", lighting },
-	{ "Shadows", shadows },		{ "SSAO", ssao },
+	{ "Cameras", cameras_panel },
+	{ "Geometry", geometry_panel },
+	{ "Lighting", lighting_panel },
+	{ "Shadows", shadows_panel },
+	{ "SSAO", ssao_panel },
 }
 
-local post_processing = {
-	{"Glow", glow},		{"Depth of field", dof},	{"Outline", outline},			{"Kuwahara blur", kuwahara},
-	{"Bloom", bloom},	{"Dilate", dilate},			{"Gaussian blur", gaussian},	{ "Dual Kawase blur", kawase },
-	{"FXAA", fxaa},		{"Gamma correction", gamma},
+local post_processing_panels = {
+	[outline]			= { name = "Outline",			draw = outline_panel },
+	[gamma]				= { name = "Gamma correction",	draw = gamma_panel },
+	[glow]				= { name = "Glow",				draw = glow_panel },
+	[bloom]				= { name = "Bloom",				draw = bloom_panel },
+	[kuwahara_blur]		= { name = "Kuwahara blur",		draw = kuwahara_panel },
+	[gaussian_blur]		= { name = "Gaussian blur",		draw = gaussian_panel },
+	[dual_kawase_blur]	= { name = "Dual Kawase blur",	draw = kawase_panel },
+	[dof]				= { name = "Depth of field",	draw = dof_panel },
+	[fxaa]				= { name = "FXAA",				draw = fxaa_panel },
 }
 local post_processors_copy = {}
 
@@ -42,7 +62,7 @@ function init(self)
 	for _ = 1, max_history do
 		table.insert(fps_history, 0)
 	end
-	for _, v in ipairs(post_processing) do
+	for _, v in ipairs(post_processing_panels) do
 		table.insert(post_processors_copy, v)
 	end
 	timer.delay(1, true, function()
@@ -59,8 +79,6 @@ function init(self)
 	end)
 end
 
-local vec3_zero = vmath.vector3()
-
 function update(self, dt)
 	if not self.enabled then
 		return
@@ -76,7 +94,7 @@ function update(self, dt)
 	-- imgui.plot_lines("FPS plot", 0, 445, 50, fps_history)
 
 	if imgui.tree_node("Visualizations") then
-		visualize(self)
+		visualize_panel(self)
 		imgui.tree_pop()
 	end
 
@@ -91,40 +109,49 @@ function update(self, dt)
 
 	imgui.separator()
 
-	local reordered = false
-	for i, p in ipairs(post_processing) do
-		local opened = imgui.tree_node(p[1])
-		imgui.push_style_var(imgui.STYLEVAR_FRAMEPADDING, vec3_zero)
-		-- imgui.same_line(480)
-		imgui.same_line(160)
-		if imgui.button_arrow(p[1] .. " Up", imgui.DIR_UP) and i > 1 then
-			local pp = table.remove(post_processors_copy, i)
-			table.insert(post_processors_copy, i - 1, pp)
-			reordered = true
-		end
-		-- imgui.same_line(500)
-		imgui.same_line(180)
-		if imgui.button_arrow(p[1] .. " Down", imgui.DIR_DOWN) and i < #post_processing then
-			local pp = table.remove(post_processors_copy, i)
-			table.insert(post_processors_copy, i + 1, pp)
-			reordered = true
-		end
-		imgui.pop_style_var()
+	for _, pp in ipairs(post_processors.master_list) do
+		local panel = post_processing_panels[pp]
+		local opened = imgui.tree_node(panel.name)
 		if opened then
-			p[2](self)
+			panel.draw(self)
 			imgui.tree_pop()
 		end
 	end
 
+	-- local reordered = false
+	-- for i, p in ipairs(post_processing_panels) do
+	-- 	local opened = imgui.tree_node(p[1])
+	-- 	imgui.push_style_var(imgui.STYLEVAR_FRAMEPADDING, vec3_zero)
+	-- 	-- imgui.same_line(480)
+	-- 	imgui.same_line(160)
+	-- 	if imgui.button_arrow(p[1] .. " Up", imgui.DIR_UP) and i > 1 then
+	-- 		local pp = table.remove(post_processors_copy, i)
+	-- 		table.insert(post_processors_copy, i - 1, pp)
+	-- 		reordered = true
+	-- 	end
+	-- 	-- imgui.same_line(500)
+	-- 	imgui.same_line(180)
+	-- 	if imgui.button_arrow(p[1] .. " Down", imgui.DIR_DOWN) and i < #post_processing_panels then
+	-- 		local pp = table.remove(post_processors_copy, i)
+	-- 		table.insert(post_processors_copy, i + 1, pp)
+	-- 		reordered = true
+	-- 	end
+	-- 	imgui.pop_style_var()
+	-- 	if opened then
+	-- 		p[2](self)
+	-- 		imgui.tree_pop()
+	-- 	end
+	-- end
+
 	imgui.end_window()
 
-	if reordered then
-		post_processing, post_processors_copy = post_processors_copy, post_processing
-		for i, v in ipairs(post_processing) do
-			post_processors_copy[i] = v
-		end
-		reordered = false
-	end
+	-- if reordered then
+	-- 	post_processing_panels, post_processors_copy = post_processors_copy, post_processing_panels
+	-- 	for i, v in ipairs(post_processing_panels) do
+	-- 		post_processors_copy[i] = v
+	-- 	end
+	-- 	reordered = false
+	-- end
 end
 
 function on_message(self, message_id, message, sender)
