@@ -13,7 +13,7 @@ local fxaa				= require("defrend.render.post_processors.fxaa")
 
 local M = {}
 
-local processors = {
+local master_list = {
 	outline,
 	gamma,
 	glow,
@@ -37,22 +37,39 @@ local processor_settings = {
 	[fxaa]				= settings.fxaa,
 }
 
-local active_list = {}
+local ordered_list = {} -- reflects the current ordering of the post-processors
+
+local active_list = {} -- contains only the enabled post-processors in their current ordering
 
 function M.init()
-	for _, pp in ipairs(processors) do
+	for _, pp in ipairs(master_list) do
 		pp.init()
+		table.insert(ordered_list, pp)
 	end
 	M.regenerate_active_list()
 end
 
 function M.regenerate_active_list()
 	active_list = {}
-	for _, pp in ipairs(processors) do
+	for _, pp in ipairs(ordered_list) do
 		if processor_settings[pp].enabled then
 			table.insert(active_list, pp)
 		end
 	end
+end
+
+function M.move_up(i)
+	if not (i > 1 and i <= #ordered_list) then
+		return
+	end
+	ordered_list[i-1], ordered_list[i] = ordered_list[i], ordered_list[i-1]
+end
+
+function M.move_down(i)
+	if not (i >= 1 and i < #ordered_list) then
+		return
+	end
+	ordered_list[i], ordered_list[i+1] = ordered_list[i+1], ordered_list[i]
 end
 
 function M.update()
@@ -62,6 +79,8 @@ function M.update()
 	end
 end
 
-M.master_list = processors
+M.master_list	= master_list
+M.ordered_list	= ordered_list
+M.active_list	= active_list
 
 return M

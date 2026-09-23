@@ -30,11 +30,11 @@ local fxaa				= require("defrend.render.post_processors.fxaa")
 go.property("enabled", true)
 
 local rendering = {
-	{ "Cameras", cameras_panel },
-	{ "Geometry", geometry_panel },
-	{ "Lighting", lighting_panel },
-	{ "Shadows", shadows_panel },
-	{ "SSAO", ssao_panel },
+	{ name = "Cameras",		draw = cameras_panel },
+	{ name = "Geometry",	draw = geometry_panel },
+	{ name = "Lighting",	draw = lighting_panel },
+	{ name = "Shadows",		draw = shadows_panel },
+	{ name = "SSAO",		draw = ssao_panel },
 }
 
 local post_processing_panels = {
@@ -48,7 +48,7 @@ local post_processing_panels = {
 	[dof]				= { name = "Depth of field",	draw = dof_panel },
 	[fxaa]				= { name = "FXAA",				draw = fxaa_panel },
 }
-local post_processors_copy = {}
+local ordered_list_copy = {}
 
 local frames = 0
 local elapsed = 0
@@ -62,8 +62,8 @@ function init(self)
 	for _ = 1, max_history do
 		table.insert(fps_history, 0)
 	end
-	for _, v in ipairs(post_processing_panels) do
-		table.insert(post_processors_copy, v)
+	for _, v in ipairs(post_processors.ordered_list) do
+		table.insert(ordered_list_copy, v)
 	end
 	timer.delay(1, true, function()
 		if elapsed == 0 then
@@ -79,6 +79,7 @@ function init(self)
 	end)
 end
 
+local vec3_zero = vmath.vector3()
 function update(self, dt)
 	if not self.enabled then
 		return
@@ -100,58 +101,51 @@ function update(self, dt)
 
 	imgui.separator()
 
-	for _, r in ipairs(rendering) do
-		if imgui.tree_node(r[1]) then
-			r[2](self)
+	for _, panel in ipairs(rendering) do
+		if imgui.tree_node(panel.name) then
+			panel.draw(self)
 			imgui.tree_pop()
 		end
 	end
 
 	imgui.separator()
 
-	for _, pp in ipairs(post_processors.master_list) do
+	local reordered = false
+	for i, pp in ipairs(ordered_list_copy) do
 		local panel = post_processing_panels[pp]
 		local opened = imgui.tree_node(panel.name)
+
+		imgui.push_style_var(imgui.STYLEVAR_FRAMEPADDING, vec3_zero)
+		-- imgui.same_line(480)
+		imgui.same_line(160)
+		if imgui.button_arrow(panel.name .. " Up", imgui.DIR_UP) then
+			post_processors.move_up(i)
+			reordered = true
+		end
+		-- imgui.same_line(500)
+		imgui.same_line(180)
+		if imgui.button_arrow(panel.name .. " Down", imgui.DIR_DOWN) then
+			post_processors.move_down(i)
+			reordered = true
+		end
+		imgui.pop_style_var()
+
 		if opened then
 			panel.draw(self)
 			imgui.tree_pop()
 		end
 	end
 
-	-- local reordered = false
-	-- for i, p in ipairs(post_processing_panels) do
-	-- 	local opened = imgui.tree_node(p[1])
-	-- 	imgui.push_style_var(imgui.STYLEVAR_FRAMEPADDING, vec3_zero)
-	-- 	-- imgui.same_line(480)
-	-- 	imgui.same_line(160)
-	-- 	if imgui.button_arrow(p[1] .. " Up", imgui.DIR_UP) and i > 1 then
-	-- 		local pp = table.remove(post_processors_copy, i)
-	-- 		table.insert(post_processors_copy, i - 1, pp)
-	-- 		reordered = true
-	-- 	end
-	-- 	-- imgui.same_line(500)
-	-- 	imgui.same_line(180)
-	-- 	if imgui.button_arrow(p[1] .. " Down", imgui.DIR_DOWN) and i < #post_processing_panels then
-	-- 		local pp = table.remove(post_processors_copy, i)
-	-- 		table.insert(post_processors_copy, i + 1, pp)
-	-- 		reordered = true
-	-- 	end
-	-- 	imgui.pop_style_var()
-	-- 	if opened then
-	-- 		p[2](self)
-	-- 		imgui.tree_pop()
-	-- 	end
-	-- end
-
 	imgui.end_window()
 
-	-- if reordered then
-	-- 	post_processing_panels, post_processors_copy = post_processors_copy, post_processing_panels
-	-- 	for i, v in ipairs(post_processing_panels) do
-	-- 		post_processors_copy[i] = v
-	-- 	end
-	-- 	reordered = false
-	-- end
+	if reordered then
+		ordered_list_copy = {}
+		for _, pp in ipairs(post_processors.ordered_list) do
+			table.insert(ordered_list_copy, pp)
+		end
+		post_processors.regenerate_active_list()
+		reordered = false
+	end
 end
 
 function on_message(self, message_id, message, sender)
