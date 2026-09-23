@@ -16,7 +16,7 @@ package = com.defold.example.basic3d
 [project]
 title = Defrend
 developer = Aaron Leung
-version = 1.6.1
+version = 1.6.2
 dependencies#0 = https://github.com/defold/extension-imgui/archive/refs/tags/2.14.0.zip
 
 [physics]
