@@ -38,9 +38,14 @@ local visualizations = {
 		get_render_target = render_targets.get_post_spare,
 		attachment = render_targets.POST_COLOR,
 	},
-	shadow_atlas = {
+	shadow_atlas_directional = {
 		material = "copy_r_material",
 		get_render_target = render_targets.get_shadow_map,
+		attachment = render_targets.SHADOW_MAP_DEPTH,
+	},
+	shadow_atlas_point_light = {
+		material = "copy_r_material",
+		get_render_target = render_targets.get_point_light_shadow_map,
 		attachment = render_targets.SHADOW_MAP_DEPTH,
 	},
 	ssao = {

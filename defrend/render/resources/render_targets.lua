@@ -190,6 +190,11 @@ function M.set_shadow_map_resolution(res)
 	render.set_render_target_size(M.get_shadow_map(), sr, sr)
 end
 
+function M.set_point_light_shadow_map_resolution(res)
+	if res == settings.point_light_shadow.map_resolution then return end
+	render.set_render_target_size(M.get_point_light_shadow_map(), res * 6, res * settings.point_light_shadow.count)
+end
+
 function M.get_shadow_map()
 	return shadow_map
 end

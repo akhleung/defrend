@@ -17,6 +17,7 @@ uniform point_light_vp {
 };
 
 out vec3 var_center;
+out vec3 var_center_w;
 out vec3 var_color;
 out float var_radius;
 out float var_attn;
@@ -26,6 +27,7 @@ out vec3 var_normal;
 
 void main() {
     mat4 mtx_worldview = mtx_view * mtx_world;
+    var_center_w = (mtx_world * vec4(0, 0, 0, 1)).xyz;
 	var_center = (mtx_worldview * vec4(0, 0, 0, 1)).xyz;
 	vec4 vertex = (mtx_worldview * position);
 	var_radius = distance(var_center, vertex.xyz);
@@ -35,7 +37,6 @@ void main() {
 
     #ifdef EDITOR // visualization for viewing point light volumes in the editor
     vec3 vertex_w = (mtx_world * position).xyz;
-    vec3 center_w = (mtx_world * vec4(0, 0, 0, 1)).xyz;
-    var_normal = normalize(vertex_w - center_w);
+    var_normal = normalize(vertex_w - var_center_w);
     #endif
 }

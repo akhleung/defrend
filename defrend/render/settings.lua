@@ -45,12 +45,13 @@ local M = {
 	},
 	point_light_shadow = {
 		enabled = true,
-		count = 1,
+		count = 6,
 		pcf_samples = 8,
 		poisson_samples = 4,
 		poisson_scale = 3000,
 		soft_penumbras = true,
-		map_resolution = 128,
+		map_resolution = 256,
+		bias = 0.5,
 	},
 	ssao = {
 		enabled = true,

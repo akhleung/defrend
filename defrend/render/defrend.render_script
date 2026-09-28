@@ -1,13 +1,15 @@
-local settings			= require("defrend.render.settings")
-local lights			= require("defrend.render.lights")
-local visualizations	= require("defrend.render.visualizations")
-local render_targets	= require("defrend.render.resources.render_targets")
-local clear_options		= require("defrend.render.resources.clear_options")
-local draw_options		= require("defrend.render.resources.draw_options")
-local predicates		= require("defrend.render.resources.predicates")
-local post_processors	= require("defrend.render.post_processors")
+local settings				= require("defrend.render.settings")
+local visualizations		= require("defrend.render.visualizations")
+local render_targets		= require("defrend.render.resources.render_targets")
+local clear_options			= require("defrend.render.resources.clear_options")
+local draw_options			= require("defrend.render.resources.draw_options")
+local predicates			= require("defrend.render.resources.predicates")
+local post_processors		= require("defrend.render.post_processors")
+local directional_shadows	= require("defrend.render.shadows.directional")
+local point_light_shadows	= require("defrend.render.shadows.point_light")
 
-local render_shadows
+local render_directional_shadows
+local render_point_light_shadows
 local render_gui
 
 local shadow_options
@@ -31,14 +33,15 @@ function init(self)
 	predicates.init()
 	draw_options.init()
 	post_processors.init()
+	point_light_shadows.init()
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
-	geometry_options		= draw_options.geometry_options
-	shadow_options			= draw_options.shadow_options
-	lighting_options		= draw_options.lighting_options
-	ssao_options			= draw_options.ssao_options
-	ssao_blur_options		= draw_options.ssao_blur_options
+	geometry_options	= draw_options.geometry_options
+	shadow_options		= draw_options.shadow_options
+	lighting_options	= draw_options.lighting_options
+	ssao_options		= draw_options.ssao_options
+	ssao_blur_options	= draw_options.ssao_blur_options
 
 	shadow_map = render_targets.get_shadow_map()
 	point_light_shadow_map = render_targets.get_point_light_shadow_map()
@@ -79,7 +82,8 @@ function update(self)
 	render.enable_state(graphics.STATE_CULL_FACE)
 	render.disable_state(graphics.STATE_BLEND)
 
-	render_shadows()
+	render_directional_shadows()
+	render_point_light_shadows()
 
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
@@ -178,6 +182,11 @@ function update(self)
 		render.enable_material("point_light_material")
 		render.draw(predicates.point_light, geometry_options)
 		render.disable_material()
+		render.enable_material("point_light_with_shadows_material")
+		render.enable_texture("shadow_map", render_targets.get_point_light_shadow_map(), render_targets.SHADOW_MAP_DEPTH)
+		render.draw(predicates.point_light_with_shadows, geometry_options)
+		render.disable_texture("shadow_map")
+		render.disable_material()
 	end
 	if settings.light.spot_lights_enabled then
 		render.enable_material("spot_light_material")
@@ -262,7 +271,7 @@ function update(self)
 		return
 	end
 
-	-- TODO: make the post-processor list customizable
+	-- render all the post-processors
 	post_processors.update()
 
 	render_targets.ping_pong()
@@ -313,9 +322,10 @@ local function update_camera_uniforms()
 	dof_blur_options.constants.frustum_terms	= frustum_terms
 end
 
-local MSG_WINDOW_RESIZED	= hash("window_resized")
-local MSG_SET_VIEW_PROJ		= hash("set_view_projection")
-local MSG_RESIZE_SHADOW_MAP	= hash("resize_shadow_map")
+local MSG_WINDOW_RESIZED				= hash("window_resized")
+local MSG_SET_VIEW_PROJ					= hash("set_view_projection")
+local MSG_RESIZE_SHADOW_MAP				= hash("resize_shadow_map")
+local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
 function on_message(self, message_id, message)
 	if message_id == MSG_SET_VIEW_PROJ then
 		update_camera_uniforms()
@@ -327,13 +337,13 @@ function on_message(self, message_id, message)
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
 	elseif message_id == MSG_RESIZE_SHADOW_MAP then
 		render_targets.set_shadow_map_resolution(message.resolution)
+	elseif message_id == MSG_RESIZE_POINT_LIGHT_SHADOW_MAP then
+		render_targets.set_point_light_shadow_map_resolution(message.resolution)
 	end
 end
 
-local directional_shadows = require("defrend.render.shadows.directional")
-local point_light_shadows = require("defrend.render.shadows.point_light")
-
 local function draw_shadow_casters()
+	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
 	if settings.geometry.models_enabled then
 		render.enable_material("shadow_material")
@@ -354,7 +364,7 @@ local function draw_shadow_casters()
 	end
 end
 
-render_shadows = function()
+render_directional_shadows = function()
 	render.set_render_target(shadow_map)
 	render.clear(clear_options.clear_shadow_options)
 	if not settings.shadow.enabled then
@@ -379,33 +389,24 @@ render_shadows = function()
 		draw_shadow_casters()
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(cam_view)
 	end
-	render.disable_material()
 end
 
--- WIP for point-light shadows
-local CUBE_FACE_MTX_NAMES = { "mtx_nx", "mtx_px", "mtx_ny", "mtx_py", "mtx_nz", "mtx_pz" }
-local function render_point_light_shadows()
-	render.set_render_target(point_light_shadow_map)
+render_point_light_shadows = function ()
 	local map_resolution = settings.point_light_shadow.map_resolution
-	local cam_view = camera.get_view(settings.scene_camera_url)
-	local light_index, count = 1, settings.point_light_shadow.count
-	for _, light in pairs(lights.POINT_LIGHTS) do
-		if light_index > count then break end
-		local light_views, light_proj = point_light_shadows.refresh(light, light_index)
-		go.set(light.model_url, "shadow_params", vmath.vector4(light_index, 0, 0, 0))
-		for cube_face = 1, 6 do
-			local light_view = light_views[cube_face]
+	render.set_render_target(point_light_shadow_map)
+	render.clear(clear_options.clear_shadow_options)
+	point_light_shadows.for_each(function (i, light_views, light_proj)
+		for face_index, light_view in ipairs(light_views) do
 			local mtx_light = light_proj * light_view
 			render.set_view(light_view)
 			render.set_projection(light_proj)
-			render.set_viewport((cube_face - 1) * map_resolution, (light_index - 1) * map_resolution, map_resolution, map_resolution)
+			local x_offset = (face_index - 1) * map_resolution
+			local y_offset = (i - 1) * map_resolution
+			render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 			shadow_options.frustum = mtx_light
-			-- make sure the light matrix is passed to the shader
-			go.set(light.model_url, CUBE_FACE_MTX_NAMES[cube_face], mtx_light * vmath.inv(cam_view))
-			-- render the shadows
 			draw_shadow_casters()
 		end
-	end
+	end)
 end
 
 render_gui = function ()
