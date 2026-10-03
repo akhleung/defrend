@@ -24,6 +24,7 @@ local function do_init(self)
 	self.params1.x = settings.point_light.shadow_map_resolution
 	self.params1.y = (self.index - 1) * settings.point_light.shadow_map_resolution
 
+	self.mtx_lights = {}
 	do_uniforms(self)
 end
 
@@ -41,8 +42,9 @@ function late_update(self)
 		return
 	end
 	for i = 1, #views do
-		go.set(self.model, MTX_NAMES[i], proj * views[i])
+		self.mtx_lights[i] = proj * views[i]
 	end
+	go.set(self.model, "mtx_lights", self.mtx_lights)
 end
 
 function on_reload(self)

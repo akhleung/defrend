@@ -21,13 +21,7 @@ uniform sampler2D normal_sampler;
 uniform sampler2D shadow_map;
 
 uniform point_light_fp {
-	// these matrices == light projection * light view (so they require a position in world space)
-	mat4 mtx_nx;
-	mat4 mtx_px;
-	mat4 mtx_ny;
-	mat4 mtx_py;
-	mat4 mtx_nz;
-	mat4 mtx_pz;
+	mat4 mtx_lights[6]; // light projections * light views (so they require a position in world space)
     vec4 frustum_corner;
     vec4 frustum_terms;
 	vec4 params1; // x: stride, y: y_offset, z: near bias, w: far bias
@@ -93,6 +87,10 @@ float test_poisson_disc(ivec2 uv, float occludee_z) {
 	return light / (POISSON_SAMPLES + 1);
 }
 
+bool is_neg(float x) {
+	return sign(x) < 0;
+}
+
 void main() {
 	ivec2 frag_coord = ivec2(gl_FragCoord.xy);
 	float depth = texelFetch(depth_buffer, frag_coord, 0).r;
@@ -112,21 +110,16 @@ void main() {
 	vec4 geom_pos_w = mtx_view_inv * vec4(geom_pos + normal * bias, 1.0);
 	vec3 geom_pos_l = geom_pos_w.xyz - var_center_w;
 	float mag_x = abs(geom_pos_l.x), mag_y = abs(geom_pos_l.y), mag_z = abs(geom_pos_l.z);
-	mat4 mtx_light;
-	float x_offset;
+	int cube_face = 0;
 	if (mag_x > mag_y && mag_x > mag_z) {
-		bool neg = sign(geom_pos_l.x) < 0;
-		mtx_light = neg ? mtx_nx : mtx_px;
-		x_offset = neg ? 0 : stride;
+		cube_face = is_neg(geom_pos_l.x) ? 0 : 1;
 	} else if (mag_y > mag_x && mag_y > mag_z) {
-		bool neg = sign(geom_pos_l.y) < 0;
-		mtx_light = neg ? mtx_ny : mtx_py;
-		x_offset = neg ? 2 * stride : 3 * stride;
+		cube_face = is_neg(geom_pos_l.y) ? 2 : 3;
 	} else {
-		bool neg = sign(geom_pos_l.z) < 0;
-		mtx_light = neg ? mtx_nz : mtx_pz;
-		x_offset = neg ? 4 * stride : 5 * stride;
+		cube_face = is_neg(geom_pos_l.z) ? 4 : 5;
 	}
+	mat4 mtx_light = mtx_lights[cube_face];
+	float x_offset = cube_face * stride;
 
 	// project the fragment into the shadow map and calculate the appropriate offsets into the shadow atlas
 	vec4 geom_pos_s = mtx_light * geom_pos_w;
