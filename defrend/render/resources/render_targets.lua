@@ -62,8 +62,8 @@ function M.init()
 		{
 			[graphics.BUFFER_TYPE_DEPTH_BIT] = {
 				format	= graphics.TEXTURE_FORMAT_DEPTH,
-				width	= settings.point_light_shadow.map_resolution * 6,
-				height	= settings.point_light_shadow.map_resolution * settings.point_light_shadow.count,
+				width	= settings.point_light.shadow_map_resolution * 6,
+				height	= settings.point_light.shadow_map_resolution * settings.point_light.shadow_caster_count,
 				flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE,
 			}
 		}
@@ -190,9 +190,9 @@ function M.set_shadow_map_resolution(res)
 	render.set_render_target_size(M.get_shadow_map(), sr, sr)
 end
 
-function M.set_point_light_shadow_map_resolution(res)
-	if res == settings.point_light_shadow.map_resolution then return end
-	render.set_render_target_size(M.get_point_light_shadow_map(), res * 6, res * settings.point_light_shadow.count)
+function M.update_point_light_shadow_map_resolution()
+	local res = settings.point_light.shadow_map_resolution
+	render.set_render_target_size(M.get_point_light_shadow_map(), res * 6, res * settings.point_light.shadow_caster_count)
 end
 
 function M.get_shadow_map()

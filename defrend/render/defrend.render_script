@@ -15,6 +15,7 @@ local render_gui
 local shadow_options
 local geometry_options
 local lighting_options
+local point_light_options
 local ssao_options
 
 local shadow_map
@@ -40,6 +41,7 @@ function init(self)
 	geometry_options	= draw_options.geometry_options
 	shadow_options		= draw_options.shadow_options
 	lighting_options	= draw_options.lighting_options
+	point_light_options	= draw_options.point_light_options
 	ssao_options		= draw_options.ssao_options
 	ssao_blur_options	= draw_options.ssao_blur_options
 
@@ -178,13 +180,13 @@ function update(self)
 	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
-	if settings.light.point_lights_enabled then
+	if settings.point_light.enabled then
 		render.enable_material("point_light_material")
 		render.draw(predicates.point_light, geometry_options)
 		render.disable_material()
 		render.enable_material("point_light_with_shadows_material")
 		render.enable_texture("shadow_map", render_targets.get_point_light_shadow_map(), render_targets.SHADOW_MAP_DEPTH)
-		render.draw(predicates.point_light_with_shadows, geometry_options)
+		render.draw(predicates.point_light_with_shadows, point_light_options)
 		render.disable_texture("shadow_map")
 		render.disable_material()
 	end
@@ -307,19 +309,21 @@ local function update_camera_uniforms()
 	frustum_terms.y		= frustum_corner.z + frustum_corner.w
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
-	geometry_options.constants.frustum_corner	= frustum_corner
-	geometry_options.constants.frustum_terms	= frustum_terms
-	lighting_options.constants.mtx_view			= view
-	lighting_options.constants.frustum_corner	= frustum_corner
-	lighting_options.constants.frustum_terms	= frustum_terms
-	ssao_options.constants.frustum_corner		= frustum_corner
-	ssao_options.constants.frustum_terms		= frustum_terms
-	ssao_options.constants.mtx_view_inv			= view_inv
-	ssao_blur_options.constants.frustum_terms	= frustum_terms
-	outline_options.constants.frustum_corner	= frustum_corner
-	outline_options.constants.frustum_terms		= frustum_terms
-	dof_coc_options.constants.frustum_terms		= frustum_terms
-	dof_blur_options.constants.frustum_terms	= frustum_terms
+	geometry_options.constants.frustum_corner		= frustum_corner
+	geometry_options.constants.frustum_terms		= frustum_terms
+	lighting_options.constants.mtx_view				= view
+	lighting_options.constants.frustum_corner		= frustum_corner
+	lighting_options.constants.frustum_terms		= frustum_terms
+	point_light_options.constants.frustum_corner	= frustum_corner
+	point_light_options.constants.frustum_terms		= frustum_terms
+	ssao_options.constants.frustum_corner			= frustum_corner
+	ssao_options.constants.frustum_terms			= frustum_terms
+	ssao_options.constants.mtx_view_inv				= view_inv
+	ssao_blur_options.constants.frustum_terms		= frustum_terms
+	outline_options.constants.frustum_corner		= frustum_corner
+	outline_options.constants.frustum_terms			= frustum_terms
+	dof_coc_options.constants.frustum_terms			= frustum_terms
+	dof_blur_options.constants.frustum_terms		= frustum_terms
 end
 
 local MSG_WINDOW_RESIZED				= hash("window_resized")
@@ -338,7 +342,7 @@ function on_message(self, message_id, message)
 	elseif message_id == MSG_RESIZE_SHADOW_MAP then
 		render_targets.set_shadow_map_resolution(message.resolution)
 	elseif message_id == MSG_RESIZE_POINT_LIGHT_SHADOW_MAP then
-		render_targets.set_point_light_shadow_map_resolution(message.resolution)
+		render_targets.update_point_light_shadow_map_resolution()
 	end
 end
 
@@ -392,10 +396,10 @@ render_directional_shadows = function()
 end
 
 render_point_light_shadows = function ()
-	local map_resolution = settings.point_light_shadow.map_resolution
+	local map_resolution = settings.point_light.shadow_map_resolution
 	render.set_render_target(point_light_shadow_map)
 	render.clear(clear_options.clear_shadow_options)
-	point_light_shadows.for_each(function (i, light_views, light_proj)
+	point_light_shadows.for_each(function (_, i, light_views, light_proj)
 		for face_index, light_view in ipairs(light_views) do
 			local mtx_light = light_proj * light_view
 			render.set_view(light_view)

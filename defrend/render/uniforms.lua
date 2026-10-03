@@ -36,10 +36,32 @@ function M.light.init()
 	M.light_and_shadow.uniforms.directional_color	= light.directional_color
 	M.light_and_shadow.uniforms.directional_to		= light.directional_to
 
-	light_vol_attn.x = light.point_light_attenuation
 	light_vol_attn.y = light.spot_light_range_attenuation
 	light_vol_attn.z = light.spot_light_spread_attenuation
 	M.geometry.uniforms.light_vol_attn = light_vol_attn
+end
+
+local params2 = vmath.vector4()
+local params3 = vmath.vector4()
+function M.point_light.init()
+	light_vol_attn.x = settings.point_light.attenuation
+
+	params2.x = settings.point_light.pcf_samples
+	params2.y = settings.point_light.poisson_samples
+	params2.z = settings.point_light.poisson_scale
+	params2.w = 0
+	if settings.point_light.soft_penumbras then
+		params2.w = 1
+	end
+
+	params3.x = settings.point_light.hash_factor
+	params3.y = settings.point_light.hash_scale
+
+	M.geometry.uniforms.light_vol_attn		= light_vol_attn;
+	-- `params1` will be set by the `point_light_with_shadows` controller script
+	M.point_light.uniforms.params2			= params2
+	M.point_light.uniforms.params3			= params3
+	M.point_light.uniforms.light_vol_attn	= light_vol_attn
 end
 
 local shadow = settings.shadow

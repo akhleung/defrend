@@ -100,14 +100,26 @@ fragment_constants {
   }
 }
 fragment_constants {
-  name: "params"
+  name: "mtx_view_inv"
+  type: CONSTANT_TYPE_VIEW_INVERSE
+}
+fragment_constants {
+  name: "params1"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "mtx_view_inv"
-  type: CONSTANT_TYPE_VIEW_INVERSE
+  name: "params2"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "params3"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 samplers {
   name: "depth_buffer"

@@ -1,0 +1,54 @@
+local settings	= require("defrend.render.settings").point_light
+local uniforms	= require("defrend.render.uniforms").point_light
+local shadows	= require("defrend.render.shadows.point_light")
+
+local MSG_REFRESH = hash("refresh")
+local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
+
+go.property("enabled", true)
+go.property("attenuation", 5)
+
+go.property("shadow_caster_count", 6)
+go.property("shadow_map_resolution", 256)
+go.property("shadow_bias_near", 0.1)
+go.property("shadow_bias_far", 0.5)
+go.property("pcf_samples", 8)
+go.property("poisson_disc_samples", 4)
+go.property("poisson_scale", 5)
+go.property("hash_factor", 7879)
+go.property("hash_scale", 5)
+go.property("soft_penumbras", true)
+
+local function do_init(self)
+	settings.enabled		= self.enabled
+	settings.attenuation	= self.attenuation
+
+	settings.shadow_caster_count	= self.shadow_caster_count
+	settings.shadow_map_resolution	= self.shadow_map_resolution
+	settings.shadow_bias_near		= self.shadow_bias_near
+	settings.shadow_bias_far		= self.shadow_bias_far
+	settings.pcf_samples			= self.pcf_samples
+	settings.poisson_samples		= self.poisson_disc_samples
+	settings.poisson_scale			= self.poisson_scale
+	settings.hash_factor			= self.hash_factor
+	settings.hash_scale				= self.hash_scale
+	settings.soft_penumbras			= self.soft_penumbras
+
+	uniforms.init()
+	shadows.init()
+	msg.post("@render:", MSG_RESIZE_POINT_LIGHT_SHADOW_MAP)
+end
+
+function init(self)
+	do_init(self)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == MSG_REFRESH then
+		do_init(self)
+	end
+end
+
+function on_reload(self)
+	do_init(self)
+end
