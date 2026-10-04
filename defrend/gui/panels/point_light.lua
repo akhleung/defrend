@@ -2,13 +2,10 @@
 local settings	= require("defrend.render.settings")
 local uniforms	= require("defrend.render.uniforms")
 local shadows	= require("defrend.render.shadows.point_light")
-
-local MSG_REFRESH						= hash("refresh")
-local MSG_UNIFORMS						= hash("uniforms")
-local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
+local queue		= require("defrend.scripts.configurators.queue")
+local msgs		= require("defrend.messages")
 
 local map_resolutions = { 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096 }
-local lights = {}
 
 return function (self)
 	local uniforms_changed = false
@@ -78,12 +75,6 @@ return function (self)
 		uniforms_changed = true
 	end
 
-	local changed, checked = imgui.checkbox("Soft penumbras", settings.point_light.soft_penumbras)
-	if changed then
-		settings.point_light.soft_penumbras = checked
-		uniforms_changed = true
-	end
-
 	local changed, value = imgui.input_float("Hash factor", settings.point_light.hash_factor, 1.0, 10.0)
 	if changed and value then
 		settings.point_light.hash_factor = vmath.clamp(value, 0.000001, 1000000)
@@ -96,20 +87,24 @@ return function (self)
 		uniforms_changed = true
 	end
 
+	local changed, checked = imgui.checkbox("Soft penumbras", settings.point_light.soft_penumbras)
+	if changed then
+		settings.point_light.soft_penumbras = checked
+		uniforms_changed = true
+	end
+
 	if uniforms_changed then
 		uniforms.point_light.init()
 		shadows.for_each(function (url)
-			msg.post(url, MSG_UNIFORMS)
+			msg.post(url, msgs.UNIFORMS)
 		end)
 		uniforms_changed = false
 	end
 
 	if shadowmap_changed then
-		msg.post("@render:", MSG_RESIZE_POINT_LIGHT_SHADOW_MAP)
+		msg.post("@render:", msgs.RESIZE_POINT_LIGHT_SHADOW_MAP)
 		shadows.init()
-		for _, url in ipairs(lights) do
-			msg.post(url, MSG_REFRESH)
-		end
+		queue.init_pending_point_lights()
 	end
 
 	imgui.spacing()

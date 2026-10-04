@@ -7,6 +7,7 @@ local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
 local directional_shadows	= require("defrend.render.shadows.directional")
 local point_light_shadows	= require("defrend.render.shadows.point_light")
+local msgs					= require("defrend.messages")
 
 local render_directional_shadows
 local render_point_light_shadows
@@ -16,6 +17,7 @@ local shadow_options
 local geometry_options
 local lighting_options
 local point_light_options
+local spot_light_options
 local ssao_options
 
 local shadow_map
@@ -42,6 +44,7 @@ function init(self)
 	shadow_options		= draw_options.shadow_options
 	lighting_options	= draw_options.lighting_options
 	point_light_options	= draw_options.point_light_options
+	spot_light_options	= draw_options.spot_light_options
 	ssao_options		= draw_options.ssao_options
 	ssao_blur_options	= draw_options.ssao_blur_options
 
@@ -190,9 +193,12 @@ function update(self)
 		render.disable_texture("shadow_map")
 		render.disable_material()
 	end
-	if settings.light.spot_lights_enabled then
+	if settings.spot_light.enabled then
 		render.enable_material("spot_light_material")
 		render.draw(predicates.spot_light, geometry_options)
+		render.disable_material()
+		render.enable_material("spot_light_with_shadows_material")
+		render.draw(predicates.spot_light_with_shadows, spot_light_options)
 		render.disable_material()
 	end
 	render.disable_texture("depth_buffer")
@@ -326,22 +332,18 @@ local function update_camera_uniforms()
 	dof_blur_options.constants.frustum_terms		= frustum_terms
 end
 
-local MSG_WINDOW_RESIZED				= hash("window_resized")
-local MSG_SET_VIEW_PROJ					= hash("set_view_projection")
-local MSG_RESIZE_SHADOW_MAP				= hash("resize_shadow_map")
-local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
 function on_message(self, message_id, message)
-	if message_id == MSG_SET_VIEW_PROJ then
+	if message_id == msgs.SET_VIEW_PROJ then
 		update_camera_uniforms()
-	elseif message_id == MSG_WINDOW_RESIZED then
+	elseif message_id == msgs.WINDOW_RESIZED then
 		settings.resolution_x = render.get_window_width()
 		settings.resolution_y = render.get_window_height()
 		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
-	elseif message_id == MSG_RESIZE_SHADOW_MAP then
+	elseif message_id == msgs.RESIZE_SHADOW_MAP then
 		render_targets.set_shadow_map_resolution(message.resolution)
-	elseif message_id == MSG_RESIZE_POINT_LIGHT_SHADOW_MAP then
+	elseif message_id == msgs.RESIZE_POINT_LIGHT_SHADOW_MAP then
 		render_targets.update_point_light_shadow_map_resolution()
 	end
 end
