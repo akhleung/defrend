@@ -5,7 +5,6 @@ local MSG_ENABLE	= hash("enable")
 local MSG_DISABLE	= hash("disable")
 local MSG_REFRESH	= hash("refresh")
 local MSG_UNIFORMS	= hash("uniforms")
-local MTX_NAMES		= { "mtx_nx", "mtx_px", "mtx_ny", "mtx_py", "mtx_nz", "mtx_pz" }
 
 go.property("enabled", true)
 
