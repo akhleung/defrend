@@ -5,6 +5,7 @@ local M = {
 	shadow_options			= {},
 	geometry_options		= {},
 	lighting_options		= {},
+	point_light_options		= {},
 	copy_options			= {},
 	ssao_options			= {},
 	ssao_blur_options		= {},
@@ -22,30 +23,39 @@ local M = {
 }
 
 function M.init()
-	M.geometry_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
-	M.geometry_options.sort_order		= render.SORT_FRONT_TO_BACK
-	M.geometry_options.constants		= uniforms.geometry.uniforms
-	M.shadow_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
-	M.shadow_options.sort_order			= render.SORT_FRONT_TO_BACK
-	M.shadow_options.constants			= render.constant_buffer()
-	M.shadow_options.constants.bias		= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
+	M.geometry_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
+	M.geometry_options.sort_order			= render.SORT_FRONT_TO_BACK
+	M.geometry_options.constants			= uniforms.geometry.uniforms
 
-	M.lighting_options.constants		= uniforms.light_and_shadow.uniforms
-	M.copy_options.constants			= render.constant_buffer()
-	M.copy_options.constants.params		= vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
-	M.ssao_options.constants			= uniforms.ssao.uniforms
-	M.ssao_blur_options.constants		= uniforms.ssao_blur.uniforms
-	M.outline_options.constants			= uniforms.outline.uniforms
-	M.glow_options.constants			= uniforms.glow.uniforms
-	M.bloom_options.constants			= uniforms.bloom.uniforms
-	M.gaussian_blur_options.constants	= uniforms.gaussian_blur.uniforms
-	M.dual_kawase_options.constants		= uniforms.dual_kawase_blur.uniforms
-	M.dilate_options.constants			= uniforms.dilate.uniforms
-	M.kuwahara_blur_options.constants	= uniforms.kuwahara_blur.uniforms
-	M.gamma_options.constants			= uniforms.gamma.uniforms
-	M.dof_coc_options.constants			= uniforms.dof_coc.uniforms
-	M.dof_blur_options.constants		= uniforms.dof_blur.uniforms
-	M.fxaa_options.constants			= uniforms.fxaa.uniforms
+	M.shadow_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
+	M.shadow_options.sort_order				= render.SORT_FRONT_TO_BACK
+	M.shadow_options.constants				= render.constant_buffer()
+	M.shadow_options.constants.bias			= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
+
+	M.lighting_options.constants			= uniforms.light_and_shadow.uniforms
+
+	M.point_light_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
+	M.point_light_options.sort_order		= render.SORT_FRONT_TO_BACK
+	M.point_light_options.constants			= uniforms.point_light.uniforms
+
+	M.copy_options.constants				= render.constant_buffer()
+	M.copy_options.constants.params			= vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field
+
+	M.ssao_options.constants				= uniforms.ssao.uniforms
+	M.ssao_blur_options.constants			= uniforms.ssao_blur.uniforms
+
+	-- post-processors
+	M.outline_options.constants				= uniforms.outline.uniforms
+	M.glow_options.constants				= uniforms.glow.uniforms
+	M.bloom_options.constants				= uniforms.bloom.uniforms
+	M.gaussian_blur_options.constants		= uniforms.gaussian_blur.uniforms
+	M.dual_kawase_options.constants			= uniforms.dual_kawase_blur.uniforms
+	M.dilate_options.constants				= uniforms.dilate.uniforms
+	M.kuwahara_blur_options.constants		= uniforms.kuwahara_blur.uniforms
+	M.gamma_options.constants				= uniforms.gamma.uniforms
+	M.dof_coc_options.constants				= uniforms.dof_coc.uniforms
+	M.dof_blur_options.constants			= uniforms.dof_blur.uniforms
+	M.fxaa_options.constants				= uniforms.fxaa.uniforms
 end
 
 return M

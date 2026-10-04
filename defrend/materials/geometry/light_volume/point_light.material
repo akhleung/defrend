@@ -22,6 +22,7 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 samplers {
   name: "normal_sampler"

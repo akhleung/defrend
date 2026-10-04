@@ -16,50 +16,36 @@ vertex_constants {
   type: CONSTANT_TYPE_WORLD
 }
 fragment_constants {
-  name: "shadow_params"
+  name: "frustum_corner"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "bias"
+  name: "frustum_terms"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "mtx_nx"
-  type: CONSTANT_TYPE_USER_MATRIX4
+  name: "mtx_view_inv"
+  type: CONSTANT_TYPE_VIEW_INVERSE
+}
+fragment_constants {
+  name: "params1"
+  type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "mtx_px"
-  type: CONSTANT_TYPE_USER_MATRIX4
+  name: "params2"
+  type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "mtx_ny"
-  type: CONSTANT_TYPE_USER_MATRIX4
-  value {
-  }
-}
-fragment_constants {
-  name: "mtx_py"
-  type: CONSTANT_TYPE_USER_MATRIX4
-  value {
-  }
-}
-fragment_constants {
-  name: "mtx_nz"
-  type: CONSTANT_TYPE_USER_MATRIX4
-  value {
-  }
-}
-fragment_constants {
-  name: "mtx_pz"
-  type: CONSTANT_TYPE_USER_MATRIX4
+  name: "params3"
+  type: CONSTANT_TYPE_USER
   value {
   }
 }
@@ -70,6 +56,7 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 samplers {
   name: "normal_sampler"
@@ -78,6 +65,16 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
+}
+samplers {
+  name: "shadow_map"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 attributes {
   name: "mtx_world"

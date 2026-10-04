@@ -5,8 +5,6 @@ local M = {}
 
 local UP = vmath.vector3(0, 1, 0)
 local RIGHT = vmath.vector3(1, 0, 0)
-local MAX_NUM = 2000000000
-local MIN_NUM = -2000000000
 local LIGHT_FRUSTUMS
 local Z_PADDING_FACTOR = settings.shadow.z_padding_factor
 local get_minimal_bounding_box_for_camera_frustum
@@ -69,9 +67,9 @@ get_minimal_bounding_box_for_camera_frustum = function(cam_proj)
 			local mtx_view = vmath.matrix4_look_at(EYE, vmath.rotate(r, RIGHT), UP)
 			local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(mtx_view, cam_proj)
 			-- calculate a precise bounding box around the camera frustum in the light's view space
-			local min_x, max_x = MAX_NUM, MIN_NUM
-			local min_y, max_y = MAX_NUM, MIN_NUM
-			local min_z, max_z = MAX_NUM, MIN_NUM
+			local min_x, max_x = math.huge, -math.huge
+			local min_y, max_y = math.huge, -math.huge
+			local min_z, max_z = math.huge, -math.huge
 			for i = 1, 8 do
 				local light_corner = mtx_light_view * world_corners[i]
 				min_x, max_x = math.min(min_x, light_corner.x), math.max(max_x, light_corner.x)

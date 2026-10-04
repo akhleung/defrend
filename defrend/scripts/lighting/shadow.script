@@ -32,9 +32,9 @@ local function do_init(self)
 		for i = 1, #cascade do
 			-- stop adding partitions to the cascade when a size of 0 is encountered
 			if cascade[i] == 0 then break end
-			settings.shadow.cascade[i] = cascade[i]
-			settings.shadow.biases[i] = biases[i]
-			settings.shadow.tints[i] = tints[i]
+			settings.shadow.cascade[i]	= cascade[i]
+			settings.shadow.biases[i]	= biases[i]
+			settings.shadow.tints[i]	= tints[i]
 		end
 		if #settings.shadow.cascade == 0 then
 			settings.shadow.enabled = false
@@ -55,7 +55,7 @@ end
 
 function init(self)
 	-- wait for the camera config script to send a refresh message to this script since we can't fully initialize
-	-- shadows without the camera frustum
+	-- directional shadows without the camera frustum
 end
 
 function on_message(self, message_id, message, sender)

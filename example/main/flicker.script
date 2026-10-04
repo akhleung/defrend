@@ -1,5 +1,5 @@
 local function flick(self)
-	local j = self.i + 1 -- don't forget, Lua arrays start at 1
+	local j = self.i + 1 -- don't forget, Lua arrays start at 1, but i % 8 is in [0, 7]
 	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, self.scales[j], go.EASING_LINEAR, self.durations[j], 0, function ()
 		flick(self)
 	end)

@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 local SCRIPT_URL = "/defrend/lighting#shadow"
 local p_props = { "cascade.x", "cascade.y", "cascade.z", "cascade.w" }
 local t_props = { "partition_1_tint", "partition_2_tint", "partition_3_tint", "partition_4_tint" }
@@ -48,7 +49,7 @@ return function (self)
 	for i = 1, 4 do
 		imgui.push_id(("Partition %d tint"):format(i))
 		local old_partition_tint = go.get(SCRIPT_URL, t_props[i])
-		local new_partition_tint = vmath.vector4(old_partition_tint) ---@diagnostic disable-line: param-type-mismatch
+		local new_partition_tint = vmath.vector4(old_partition_tint)
 		imgui.color_edit4(("Partition %d"):format(i), new_partition_tint, imgui.COLOREDITFLAGS_NOALPHA)
 		if new_partition_tint ~= old_partition_tint then
 			go.set(SCRIPT_URL, t_props[i], new_partition_tint)

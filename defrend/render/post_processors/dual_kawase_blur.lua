@@ -10,13 +10,8 @@ end
 -- TODO: Don't create closures every frame (this will require the draw options to be passed in some other way).
 --       Maybe LuaJIT is already optimizing away these closures though.
 function M.update(settings_override, draw_options_override)
-	local settings, draw_options = settings, draw_options
-	if settings_override then
-		settings = settings_override
-	end
-	if draw_options_override then
-		draw_options = draw_options_override
-	end
+	local settings = settings_override or settings
+	local draw_options = draw_options_override or draw_options
 	local iterations = settings.iterations
 	-- downsample
 	render.enable_material("kawase_downsample_material")

@@ -7,7 +7,8 @@ go.property("g_buffer_emissive", false)
 go.property("g_buffer_depth", false)
 go.property("light_volume_diffuse_reflectance", false)
 go.property("light_volume_specular_reflectance", false)
-go.property("shadow_atlas", false)
+go.property("shadow_atlas_directional", false)
+go.property("shadow_atlas_point_light", false)
 go.property("ssao", false)
 
 local function do_init(self)
@@ -25,8 +26,10 @@ local function do_init(self)
 		settings.visualize.option = "reflectance_diffuse"
 	elseif self.light_volume_specular_reflectance then
 		settings.visualize.option = "reflectance_specular"
-	elseif self.shadow_atlas then
-		settings.visualize.option = "shadow_atlas"
+	elseif self.shadow_atlas_directional then
+		settings.visualize.option = "shadow_atlas_directional"
+	elseif self.shadow_atlas_point_light then
+		settings.visualize.option = "shadow_atlas_point_light"
 	elseif self.ssao then
 		settings.visualize.option = "ssao"
 	else

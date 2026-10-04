@@ -37,6 +37,10 @@ embedded_instances {
   "  id: \"light\"\n"
   "  component: \"/defrend/scripts/lighting/light.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"point_light\"\n"
+  "  component: \"/defrend/scripts/lighting/point_light.script\"\n"
+  "}\n"
   ""
 }
 embedded_instances {

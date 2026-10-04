@@ -20,11 +20,6 @@ return function (self)
 		uniforms_changed = true
 	end
 
-	local changed, checked = imgui.checkbox("Point lights enabled", settings.light.point_lights_enabled)
-	if changed then
-		settings.light.point_lights_enabled = checked
-	end
-
 	local changed, checked = imgui.checkbox("Spot lights enabled", settings.light.spot_lights_enabled)
 	if changed then
 		settings.light.spot_lights_enabled = checked
@@ -42,22 +37,15 @@ return function (self)
 		imgui.color_edit4("Sunlight color", vmath.vector4(), imgui.COLOREDITFLAGS_ALPHABAR)
 	end
 
-	-- POINT LIGHT ATTENUATION
-	local changed, value = imgui.input_int("Point light attenuation", settings.light.point_light_attenuation)
-	if changed then
-		settings.light.point_light_attenuation = value
-		uniforms_changed = true
-	end
-
 	-- SPOT LIGHT ATTENUATION
 	local changed, value = imgui.input_int("Spot light range attenuation", settings.light.spot_light_range_attenuation)
-	if changed then
+	if changed and value then
 		settings.light.spot_light_range_attenuation = value
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_int("Spot light spread attenuation", settings.light.spot_light_spread_attenuation)
-	if changed then
+	if changed and value then
 		settings.light.spot_light_spread_attenuation = value
 		uniforms_changed = true
 	end
@@ -79,13 +67,13 @@ return function (self)
 	end
 
 	local changed, value = imgui.input_int("Fog start distance", settings.light.fog_near)
-	if changed then
+	if changed and value then
 		settings.light.fog_near = value
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_int("Fog full distance", settings.light.fog_far)
-	if changed then
+	if changed and value then
 		settings.light.fog_far = value
 		uniforms_changed = true
 	end
