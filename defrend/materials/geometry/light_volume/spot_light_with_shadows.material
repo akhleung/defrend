@@ -1,7 +1,7 @@
 name: "spot_light"
 tags: "spot_light_with_shadows"
-vertex_program: "/defrend/materials/geometry/light_volume/spot_light.vp"
-fragment_program: "/defrend/materials/geometry/light_volume/spot_light.fp"
+vertex_program: "/defrend/materials/geometry/light_volume/spot_light_with_shadows.vp"
+fragment_program: "/defrend/materials/geometry/light_volume/spot_light_with_shadows.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_view"
@@ -16,16 +16,26 @@ vertex_constants {
   type: CONSTANT_TYPE_WORLD
 }
 vertex_constants {
-  name: "start_attn"
+  name: "light_vol_attn"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
   name: "mtx_light"
-  type: CONSTANT_TYPE_USER
+  type: CONSTANT_TYPE_USER_MATRIX4
   value {
   }
+  value {
+  }
+  value {
+  }
+  value {
+  }
+}
+fragment_constants {
+  name: "mtx_view_inv"
+  type: CONSTANT_TYPE_VIEW_INVERSE
 }
 fragment_constants {
   name: "shadow_params1"
@@ -35,6 +45,24 @@ fragment_constants {
 }
 fragment_constants {
   name: "shadow_params2"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "frustum_corner"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "frustum_terms"
+  type: CONSTANT_TYPE_USER
+  value {
+  }
+}
+fragment_constants {
+  name: "texel_size"
   type: CONSTANT_TYPE_USER
   value {
   }
@@ -65,12 +93,6 @@ samplers {
   wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 attributes {
-  name: "mtx_world"
-  semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
-  step_function: VERTEX_STEP_FUNCTION_INSTANCE
-  vector_type: VECTOR_TYPE_MAT4
-}
-attributes {
   name: "color"
   semantic_type: SEMANTIC_TYPE_COLOR
   double_values {
@@ -78,6 +100,16 @@ attributes {
     v: 1.0
     v: 1.0
     v: 1.0
+  }
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+}
+attributes {
+  name: "start_attn"
+  double_values {
+    v: 0.0
+    v: 0.0
+    v: 0.0
+    v: 0.0
   }
   step_function: VERTEX_STEP_FUNCTION_INSTANCE
 }

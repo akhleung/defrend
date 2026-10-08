@@ -41,6 +41,10 @@ embedded_instances {
   "  id: \"point_light\"\n"
   "  component: \"/defrend/scripts/configurators/lighting/point_light.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"spot_light\"\n"
+  "  component: \"/defrend/scripts/configurators/lighting/spot_light.script\"\n"
+  "}\n"
   ""
 }
 embedded_instances {

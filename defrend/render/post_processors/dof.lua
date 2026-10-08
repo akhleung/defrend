@@ -23,7 +23,6 @@ function M.update()
 	render.draw(predicates.screen, coc_draw_options)
 	render.disable_texture("input_sampler")
 	render.disable_texture("depth_buffer")
-	render.disable_material()
 	-- downsample the render with CoCs
 	render_targets.ping_pong_spare() -- swap the focused render with CoCs into the postprocessing source buffer
 	local downsamples = settings.downsamples
@@ -36,7 +35,6 @@ function M.update()
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.draw(predicates.screen, blur_draw_options)
 	render.disable_texture("input_sampler")
-	render.disable_material()
 	-- resolve focused and blurred renders using the dilated CoCs
 	local downsampled_target = render_targets.get_post_target() -- save a handle to the blurred, downsampled target
 	render_targets.reset() -- skip the upsampling and reset the target back to the full-resolution textur
@@ -47,7 +45,6 @@ function M.update()
 	render.draw(predicates.screen, blur_draw_options)
 	render.disable_texture("focused_sampler")
 	render.disable_texture("blurred_sampler")
-	render.disable_material()
 end
 
 return M

@@ -19,7 +19,7 @@ return function (self)
 
 	local changed, value = imgui.input_int("Spot light spread attenuation", settings.spot_light.spread_attenuation)
 	if changed and value then
-		settings.spot_light.range_attenuation = value
+		settings.spot_light.spread_attenuation = value
 		uniforms_changed = true
 	end
 

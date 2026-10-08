@@ -39,8 +39,6 @@ function M.update()
 	render.draw(predicates.screen, v_options)
 	render.disable_texture("color_sampler")
 
-	render.disable_material()
-
 	-- upsample
 	for _ = 1, downsamples do
 		render_targets.upsample_target()
