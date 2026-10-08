@@ -14,7 +14,6 @@ go.property("fog_far", 1001)
 
 local function do_init(self)
 	settings.light.sunlight_enabled		= self.sunlight_enabled
-	settings.light.spot_lights_enabled	= self.spot_lights_enabled
 
 	settings.light.ambient_color	= self.ambient_color
 	settings.light.fog_color		= self.fog_color
@@ -29,9 +28,6 @@ local function do_init(self)
 	else
 		settings.light.directional_color	= vmath.vector4()
 	end
-
-	settings.light.spot_light_range_attenuation		= self.spot_light_range_attenuation
-	settings.light.spot_light_spread_attenuation	= self.spot_light_spread_attenuation
 
 	uniforms.light.init()
 end

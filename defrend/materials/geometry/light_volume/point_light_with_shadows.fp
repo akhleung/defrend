@@ -21,7 +21,7 @@ uniform sampler2D normal_sampler;
 uniform sampler2D shadow_map;
 
 uniform point_light_fp {
-	mat4 mtx_lights[6]; // light projections * light views (so they require a position in world space)
+	mat4 mtx_lights[6]; // light projection * light views (so they require a position in world space)
     vec4 frustum_corner;
     vec4 frustum_terms;
 	vec4 params1; // x: stride, y: y_offset, z: near bias, w: far bias

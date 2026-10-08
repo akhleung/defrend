@@ -6,6 +6,7 @@ local M = {
 	geometry_options		= {},
 	lighting_options		= {},
 	point_light_options		= {},
+	spot_light_options		= {},
 	copy_options			= {},
 	ssao_options			= {},
 	ssao_blur_options		= {},
@@ -37,6 +38,10 @@ function M.init()
 	M.point_light_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	M.point_light_options.sort_order		= render.SORT_FRONT_TO_BACK
 	M.point_light_options.constants			= uniforms.point_light.uniforms
+
+	M.spot_light_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
+	M.spot_light_options.sort_order			= render.SORT_FRONT_TO_BACK
+	M.spot_light_options.constants			= uniforms.spot_light.uniforms
 
 	M.copy_options.constants				= render.constant_buffer()
 	M.copy_options.constants.params			= vmath.vector4(1, 0, 0, 0) ---@diagnostic disable-line: inject-field

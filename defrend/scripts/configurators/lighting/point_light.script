@@ -1,9 +1,8 @@
 local settings	= require("defrend.render.settings").point_light
 local uniforms	= require("defrend.render.uniforms").point_light
 local shadows	= require("defrend.render.shadows.point_light")
-
-local MSG_REFRESH = hash("refresh")
-local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
+local queue		= require("defrend.scripts.configurators.queue")
+local msgs		= require("defrend.messages")
 
 go.property("enabled", true)
 go.property("attenuation", 5)
@@ -36,15 +35,16 @@ local function do_init(self)
 
 	uniforms.init()
 	shadows.init()
-	msg.post("@render:", MSG_RESIZE_POINT_LIGHT_SHADOW_MAP)
+	msg.post("@render:", msgs.RESIZE_POINT_LIGHT_SHADOW_MAP)
 end
 
 function init(self)
 	do_init(self)
+	queue.init_pending_point_lights()
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == MSG_REFRESH then
+	if message_id == msgs.REFRESH then
 		do_init(self)
 	end
 end

@@ -1,16 +1,11 @@
 #version 420 core
 
 in vec4 position;
-#ifndef EDITOR
-in mat4 mtx_world;
-#endif
 in vec4 color;
 in vec4 start_attn;
 
 uniform spot_light_vp {
-	#ifdef EDITOR
 	mat4 mtx_world;
-	#endif
 	mat4 mtx_view;
 	mat4 mtx_proj;
 	vec4 light_vol_attn;
@@ -22,6 +17,7 @@ out vec3 var_color;
 out float var_spread;
 out float var_range;
 out float var_start;
+out float var_coverage;
 out float var_range_attn;
 out float var_spread_attn;
 #ifdef EDITOR
@@ -41,6 +37,7 @@ void main() {
 	var_spread = dot(var_light_dir, normalize(edge - var_source));
 	var_range = distance(var_source, target);
 	var_start = start_attn.x * var_range;
+	var_coverage = var_range - var_start;
 	var_color = color.rgb;
 	var_range_attn = start_attn.y != 0 ? start_attn.y : light_vol_attn.y;
 	var_spread_attn = start_attn.z != 0 ? start_attn.z : light_vol_attn.z;

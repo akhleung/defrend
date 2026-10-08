@@ -1,11 +1,7 @@
 local settings	= require("defrend.render.settings")
 local shadows	= require("defrend.render.shadows.point_light")
-
-local MSG_ENABLE	= hash("enable")
-local MSG_DISABLE	= hash("disable")
-local MSG_REFRESH	= hash("refresh")
-local MSG_UNIFORMS	= hash("uniforms")
-local MTX_NAMES		= { "mtx_nx", "mtx_px", "mtx_ny", "mtx_py", "mtx_nz", "mtx_pz" }
+local queue		= require("defrend.scripts.configurators.queue")
+local msgs		= require("defrend.messages")
 
 go.property("enabled", true)
 
@@ -16,8 +12,6 @@ local function do_uniforms(self)
 end
 
 local function do_init(self)
-	self.url = msg.url(".")
-	self.model = msg.url("#model")
 	self.index = shadows.add_light(self.url)
 
 	self.params1 = vmath.vector4()
@@ -29,7 +23,12 @@ local function do_init(self)
 end
 
 function init(self)
-	do_init(self)
+	self.url = msg.url(".")
+	self.model = msg.url("#model")
+
+	queue.add_pending_point_light(function ()
+		do_init(self)
+	end)
 end
 
 function late_update(self)
@@ -38,7 +37,7 @@ function late_update(self)
 	end
 	local views, proj = shadows.generate_matrices(self.url)
 	if not (views and proj) then
-		msg.post(self.url, MSG_DISABLE)
+		msg.post(self.url, msgs.DISABLE)
 		return
 	end
 	for i = 1, #views do
@@ -58,16 +57,15 @@ end
 
 -- update uniforms on minor changes; init everything when shadowmap changes
 function on_message(self, message_id, message, sender)
-	if message_id == MSG_ENABLE and not self.enabled then
+	if message_id == msgs.ENABLE and not self.enabled then
 		self.enabled = true
 		self.index = shadows.add_light(self.url)
-	elseif message_id == MSG_DISABLE and self.enabled then
+	elseif message_id == msgs.DISABLE and self.enabled then
 		self.enabled = false
 		shadows.remove_light(self.url)
-	elseif message_id == MSG_REFRESH then
-		shadows.remove_light(self.url)
+	elseif message_id == msgs.REFRESH then
 		do_init(self)
-	elseif message_id == MSG_UNIFORMS then
+	elseif message_id == msgs.UNIFORMS then
 		do_uniforms(self)
 	end
 end

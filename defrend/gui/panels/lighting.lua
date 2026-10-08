@@ -6,7 +6,7 @@ local saved_sunlight_color
 return function (self)
 	local uniforms_changed = false
 
-	-- LIGHT TOGGLES
+	-- LIGHT TOGGLE
 	local changed, checked = imgui.checkbox("Sunlight enabled", settings.light.sunlight_enabled)
 	if changed then
 		if checked then
@@ -20,11 +20,6 @@ return function (self)
 		uniforms_changed = true
 	end
 
-	local changed, checked = imgui.checkbox("Spot lights enabled", settings.light.spot_lights_enabled)
-	if changed then
-		settings.light.spot_lights_enabled = checked
-	end
-
 	-- SUNLIGHT COLOR
 	if settings.light.sunlight_enabled then
 		local new_sunlight_color = vmath.vector4(settings.light.directional_color)
@@ -35,19 +30,6 @@ return function (self)
 		end
 	else
 		imgui.color_edit4("Sunlight color", vmath.vector4(), imgui.COLOREDITFLAGS_ALPHABAR)
-	end
-
-	-- SPOT LIGHT ATTENUATION
-	local changed, value = imgui.input_int("Spot light range attenuation", settings.light.spot_light_range_attenuation)
-	if changed and value then
-		settings.light.spot_light_range_attenuation = value
-		uniforms_changed = true
-	end
-
-	local changed, value = imgui.input_int("Spot light spread attenuation", settings.light.spot_light_spread_attenuation)
-	if changed and value then
-		settings.light.spot_light_spread_attenuation = value
-		uniforms_changed = true
 	end
 
 	-- AMBIENT LIGHT COLOR

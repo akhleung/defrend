@@ -13,11 +13,6 @@ local M = {
 	},
 	light = {
 		sunlight_enabled = true,
-		point_lights_enabled = true,
-		spot_lights_enabled = true,
-		point_light_attenuation = 5,
-		spot_light_range_attenuation = 5,
-		spot_light_spread_attenuation = 1,
 		fog_near = 800,
 		fog_far = 1001,
 		fog_color = vmath.vector4(0),
@@ -45,7 +40,9 @@ local M = {
 	},
 	point_light = {
 		enabled = true,
+		-- light settings
 		attenuation = 1,
+		-- shadow settings
 		shadow_caster_count = 6,
 		pcf_samples = 8,
 		poisson_samples = 4,
@@ -54,6 +51,21 @@ local M = {
 		hash_scale = 5,
 		soft_penumbras = true,
 		shadow_map_resolution = 256,
+		shadow_bias_near = 0.1,
+		shadow_bias_far = 0.5,
+	},
+	spot_light = {
+		enabled = true,
+		-- light settings
+		range_attenuation = 5,
+		spread_attenuation = 1,
+		-- shadow settings
+		pcf_samples = 8,
+		poisson_samples = 4,
+		poisson_scale = 5,
+		hash_factor = 7879,
+		hash_scale = 5,
+		soft_penumbras = true,
 		shadow_bias_near = 0.1,
 		shadow_bias_far = 0.5,
 	},

@@ -7,15 +7,18 @@ local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
 local directional_shadows	= require("defrend.render.shadows.directional")
 local point_light_shadows	= require("defrend.render.shadows.point_light")
+local msgs					= require("defrend.messages")
 
 local render_directional_shadows
 local render_point_light_shadows
+local render_spot_light_shadows
 local render_gui
 
 local shadow_options
 local geometry_options
 local lighting_options
 local point_light_options
+local spot_light_options
 local ssao_options
 
 local shadow_map
@@ -24,6 +27,8 @@ local g_buffer
 
 local screen_camera
 local gui_camera
+
+local SPOT_LIGHTS = {}
 
 function init(self)
 	settings.resolution_x = render.get_window_width()
@@ -42,6 +47,7 @@ function init(self)
 	shadow_options		= draw_options.shadow_options
 	lighting_options	= draw_options.lighting_options
 	point_light_options	= draw_options.point_light_options
+	spot_light_options	= draw_options.spot_light_options
 	ssao_options		= draw_options.ssao_options
 	ssao_blur_options	= draw_options.ssao_blur_options
 
@@ -86,6 +92,7 @@ function update(self)
 
 	render_directional_shadows()
 	render_point_light_shadows()
+	render_spot_light_shadows()
 
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
@@ -100,7 +107,6 @@ function update(self)
 	if settings.geometry.models_enabled then
 		render.enable_material("model_material")
 		render.draw(predicates.model, geometry_options)
-		render.disable_material()
 	end
 
 	-- render sprites, billboards, and particles into g-buffer --
@@ -108,20 +114,16 @@ function update(self)
 	if settings.geometry.sprites_enabled then
 		render.enable_material("sprite_material")
 		render.draw(predicates.sprite, geometry_options)
-		render.disable_material()
 	end
 	if settings.geometry.billboards_enabled then
 		render.enable_material("billboard_material")
 		render.draw(predicates.billboard, geometry_options)
-		render.disable_material()
 	end
 	if settings.geometry.particles_enabled then
 		render.enable_material("particle_material")
 		render.draw(predicates.particle, geometry_options)
-		render.disable_material()
 		render.enable_material("shadowless_particle_material")
 		render.draw(predicates.shadowless_particle, geometry_options)
-		render.disable_material()
 	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
@@ -135,7 +137,6 @@ function update(self)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.draw(predicates.screen)
 	render.disable_texture("depth_buffer")
-	render.disable_material()
 	-- render decals into g-buffer --
 	-- The usual back-face culling will prevent decals from rendering when the camera is inside a projector box. But
 	-- front-face culling requires depth testing to be disabled, since the back faces of the projector box will be
@@ -153,7 +154,6 @@ function update(self)
 		render.enable_texture("depth_buffer", render_targets.get_post_source(), render_targets.POST_COLOR)
 		render.draw(predicates.decal, geometry_options)
 		render.disable_texture("depth_buffer")
-		render.disable_material()
 	end
 
 	-- render the skybox --
@@ -163,7 +163,6 @@ function update(self)
 	if settings.geometry.skybox_enabled then
 		render.enable_material("skybox_material")
 		render.draw(predicates.skybox)
-		render.disable_material()
 	end
 
 	render.draw_debug3d()
@@ -183,17 +182,16 @@ function update(self)
 	if settings.point_light.enabled then
 		render.enable_material("point_light_material")
 		render.draw(predicates.point_light, geometry_options)
-		render.disable_material()
 		render.enable_material("point_light_with_shadows_material")
 		render.enable_texture("shadow_map", render_targets.get_point_light_shadow_map(), render_targets.SHADOW_MAP_DEPTH)
 		render.draw(predicates.point_light_with_shadows, point_light_options)
 		render.disable_texture("shadow_map")
-		render.disable_material()
 	end
-	if settings.light.spot_lights_enabled then
+	if settings.spot_light.enabled then
 		render.enable_material("spot_light_material")
 		render.draw(predicates.spot_light, geometry_options)
-		render.disable_material()
+		render.enable_material("spot_light_with_shadows_material")
+		render.draw(predicates.spot_light_with_shadows, spot_light_options)
 	end
 	render.disable_texture("depth_buffer")
 	render.disable_texture("normal_sampler")
@@ -215,7 +213,6 @@ function update(self)
 		render.draw(predicates.screen, ssao_options)
 		render.disable_texture("depth_buffer")
 		render.disable_texture("normal_sampler")
-		render.disable_material()
 		local compare_normals = settings.ssao.blur_compares_normals
 		if settings.ssao.blur then
 			render_targets.ping_pong()
@@ -243,7 +240,6 @@ function update(self)
 			end
 			render.disable_texture("color_sampler")
 			render.disable_texture("depth_buffer")
-			render.disable_material()
 		end
 	end
 
@@ -264,7 +260,6 @@ function update(self)
 	render.disable_texture("ssao_sampler")
 	render.disable_texture("shadow_sampler")
 	render.disable_texture("light_sampler")
-	render.disable_material()
 
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
@@ -282,7 +277,6 @@ function update(self)
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
-	render.disable_material()
 
 	render_gui()
 end
@@ -299,7 +293,6 @@ local function update_camera_uniforms()
 	local near = camera.get_near_z(cam)
 	local view = camera.get_view(cam)
 	local proj = camera.get_projection(cam)
-	local view_inv = vmath.inv(view)
 	local proj_inv = vmath.inv(proj)
 
 	frustum_corner		= proj_inv * frustum_corner_ndc
@@ -316,9 +309,10 @@ local function update_camera_uniforms()
 	lighting_options.constants.frustum_terms		= frustum_terms
 	point_light_options.constants.frustum_corner	= frustum_corner
 	point_light_options.constants.frustum_terms		= frustum_terms
+	spot_light_options.constants.frustum_corner		= frustum_corner
+	spot_light_options.constants.frustum_terms		= frustum_terms
 	ssao_options.constants.frustum_corner			= frustum_corner
 	ssao_options.constants.frustum_terms			= frustum_terms
-	ssao_options.constants.mtx_view_inv				= view_inv
 	ssao_blur_options.constants.frustum_terms		= frustum_terms
 	outline_options.constants.frustum_corner		= frustum_corner
 	outline_options.constants.frustum_terms			= frustum_terms
@@ -326,45 +320,42 @@ local function update_camera_uniforms()
 	dof_blur_options.constants.frustum_terms		= frustum_terms
 end
 
-local MSG_WINDOW_RESIZED				= hash("window_resized")
-local MSG_SET_VIEW_PROJ					= hash("set_view_projection")
-local MSG_RESIZE_SHADOW_MAP				= hash("resize_shadow_map")
-local MSG_RESIZE_POINT_LIGHT_SHADOW_MAP	= hash("resize_point_light_shadow_map")
 function on_message(self, message_id, message)
-	if message_id == MSG_SET_VIEW_PROJ then
+	if message_id == msgs.SET_VIEW_PROJ then
 		update_camera_uniforms()
-	elseif message_id == MSG_WINDOW_RESIZED then
+	elseif message_id == msgs.UPDATE_SPOT_LIGHT then
+		SPOT_LIGHTS[message.id] = message
+	elseif message_id == msgs.REMOVE_SPOT_LIGHT then
+		SPOT_LIGHTS[message.id] = nil
+	elseif message_id == msgs.WINDOW_RESIZED then
 		settings.resolution_x = render.get_window_width()
 		settings.resolution_y = render.get_window_height()
 		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
-	elseif message_id == MSG_RESIZE_SHADOW_MAP then
+	elseif message_id == msgs.RESIZE_SHADOW_MAP then
 		render_targets.set_shadow_map_resolution(message.resolution)
-	elseif message_id == MSG_RESIZE_POINT_LIGHT_SHADOW_MAP then
+	elseif message_id == msgs.RESIZE_POINT_LIGHT_SHADOW_MAP then
 		render_targets.update_point_light_shadow_map_resolution()
 	end
 end
 
 local function draw_shadow_casters()
 	render.enable_state(graphics.STATE_CULL_FACE)
-	render.set_cull_face(graphics.FACE_TYPE_BACK)
 	if settings.geometry.models_enabled then
+		render.set_cull_face(graphics.FACE_TYPE_BACK)
 		render.enable_material("shadow_material")
 		render.draw(predicates.model, shadow_options)
-		render.disable_material()
 	end
-	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	if settings.geometry.sprites_enabled or settings.geometry.billboards_enabled then
+		render.set_cull_face(graphics.FACE_TYPE_FRONT)
 		render.enable_material("blob_shadow_material")
 		render.draw(predicates.blob_shadow, shadow_options)
-		render.disable_material()
 	end
-	render.disable_state(graphics.STATE_CULL_FACE)
 	if settings.geometry.particles_enabled then
+		render.disable_state(graphics.STATE_CULL_FACE)
 		render.enable_material("particle_shadow_material")
 		render.draw(predicates.particle, shadow_options)
-		render.disable_material()
 	end
 end
 
@@ -396,6 +387,9 @@ render_directional_shadows = function()
 end
 
 render_point_light_shadows = function ()
+	if not settings.shadow.enabled then
+		return
+	end
 	local map_resolution = settings.point_light.shadow_map_resolution
 	render.set_render_target(point_light_shadow_map)
 	render.clear(clear_options.clear_shadow_options)
@@ -411,6 +405,21 @@ render_point_light_shadows = function ()
 			draw_shadow_casters()
 		end
 	end)
+end
+
+render_spot_light_shadows = function ()
+	if not settings.shadow.enabled then
+		return
+	end
+	for _, light in pairs(SPOT_LIGHTS) do
+		render.set_render_target(light.shadow_map)
+		render.clear(clear_options.clear_shadow_options)
+		render.set_view(light.mtx_view)
+		render.set_projection(light.mtx_proj)
+		render.set_viewport(0, 0, light.shadow_map_width, light.shadow_map_height)
+		shadow_options.frustum = light.mtx_light
+		draw_shadow_casters()
+	end
 end
 
 render_gui = function ()

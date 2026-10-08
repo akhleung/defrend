@@ -23,7 +23,6 @@ function M.update(settings_override, draw_options_override)
 			render.disable_texture("color_sampler")
 		end)
 	end
-	render.disable_material()
 	-- upsample
 	render_targets.ping_pong_downsampled()
 	render.enable_material("kawase_upsample_material")
@@ -35,7 +34,6 @@ function M.update(settings_override, draw_options_override)
 			render.disable_texture("color_sampler")
 		end)
 	end
-	render.disable_material()
 end
 
 return M

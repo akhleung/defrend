@@ -18,7 +18,6 @@ function M.update()
     render.disable_texture("depth_buffer")
     render.disable_texture("color_sampler")
     render.disable_texture("normal_sampler")
-    render.disable_material()
 end
 
 return M

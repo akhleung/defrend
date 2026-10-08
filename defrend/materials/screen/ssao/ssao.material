@@ -6,6 +6,10 @@ vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
 }
+fragment_constants {
+  name: "mtx_view_inv"
+  type: CONSTANT_TYPE_VIEW_INVERSE
+}
 samplers {
   name: "normal_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE

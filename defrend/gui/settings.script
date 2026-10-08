@@ -3,6 +3,7 @@ local cameras_panel		= require("defrend.gui.panels.cameras")
 local geometry_panel	= require("defrend.gui.panels.geometry")
 local lighting_panel	= require("defrend.gui.panels.lighting")
 local point_light_panel	= require("defrend.gui.panels.point_light")
+local spot_light_panel	= require("defrend.gui.panels.spot_light")
 local shadows_panel		= require("defrend.gui.panels.shadows")
 local ssao_panel		= require("defrend.gui.panels.ssao")
 local glow_panel		= require("defrend.gui.panels.glow")
@@ -35,6 +36,7 @@ local rendering = {
 	{ name = "Geometry",		draw = geometry_panel },
 	{ name = "Lighting",		draw = lighting_panel },
 	{ name = "Point lights",	draw = point_light_panel },
+	{ name = "Spot lights",		draw = spot_light_panel },
 	{ name = "Shadows",			draw = shadows_panel },
 	{ name = "SSAO",			draw = ssao_panel },
 }

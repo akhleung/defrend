@@ -5,7 +5,7 @@ local predicate_names = {
 	"billboard", "sprite",
 	"particle", "shadowless_particle",
 	"point_light", "spot_light", "blob_shadow",
-	"point_light_with_shadows",
+	"point_light_with_shadows", "spot_light_with_shadows",
 	"screen", "text", "gui", "debug_text",
 }
 
