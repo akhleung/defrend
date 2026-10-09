@@ -264,6 +264,7 @@ function update(self)
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
 		visualizations.update()
+		render.disable_material()
 		render_gui()
 		return
 	end
@@ -278,6 +279,7 @@ function update(self)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
 
+	render.disable_material()
 	render_gui()
 end
 

@@ -67,7 +67,6 @@ function M.update()
 	render.enable_texture("input_sampler", v.get_render_target(), v.attachment)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
-	render.disable_material()
 end
 
 return M
