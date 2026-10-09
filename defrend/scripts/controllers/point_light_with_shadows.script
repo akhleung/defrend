@@ -15,8 +15,8 @@ local function do_init(self)
 	self.index = shadows.add_light(self.url)
 
 	self.params1 = vmath.vector4()
-	self.params1.x = settings.point_light.shadow_map_resolution
-	self.params1.y = (self.index - 1) * settings.point_light.shadow_map_resolution
+	self.params1.x = settings.point_light.shadow_caster_count
+	self.params1.y = (self.index - 1) * (1 / settings.point_light.shadow_caster_count) -- normalized y-offset in atlas
 
 	self.mtx_lights = {}
 	do_uniforms(self)

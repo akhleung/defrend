@@ -24,14 +24,14 @@ uniform point_light_fp {
 	mat4 mtx_lights[6]; // light projection * light views (so they require a position in world space)
     vec4 frustum_corner;
     vec4 frustum_terms;
-	vec4 params1; // x: stride, y: y_offset, z: near bias, w: far bias
+	vec4 params1; // x: caster count, y: y_offset, z: near bias, w: far bias
 	vec4 params2; // x: pcf samples, y: poisson samples, z: poisson scale, w: soft penumbras
-	vec4 params3; // x: hash factor, y: hash scale
+	vec4 params3; // x: hash factor, y: hash scale, z: texel_size.x, w: texel_size.y
 	mat4 mtx_view_inv;
 };
 
-int		stride			= int(params1.x);
-int		y_offset		= int(params1.y);
+float	CASTER_COUNT	= params1.x;
+float	y_offset		= params1.y;
 float	near_bias		= params1.z;
 float	far_bias		= params1.w;
 int		PCF_SAMPLES		= int(params2.x);
@@ -40,49 +40,50 @@ float	POISSON_SCALE	= params2.z;
 bool	SOFT_PENUMBRAS	= bool(params2.w);
 float	HASH_FACTOR		= params3.x;
 float	HASH_SCALE		= params3.y;
+vec2	texel_size		= params3.zw;
 
-ivec2 pcf_kernel[8] = ivec2[](
-	ivec2(-1, 0),
-	ivec2(1, 0),
-	ivec2(0, -1),
-	ivec2(0, 1),
-	ivec2(-1, -1),
-	ivec2(1, 1),
-	ivec2(1, -1),
-	ivec2(-1, 1)
+vec2 pcf_kernel[8] = vec2[](
+	vec2(-1, 0)		* texel_size,
+	vec2(1, 0)		* texel_size,
+	vec2(0, -1)		* texel_size,
+	vec2(0, 1)		* texel_size,
+	vec2(-1, -1)	* texel_size,
+	vec2(1, 1)		* texel_size,
+	vec2(1, -1)		* texel_size,
+	vec2(-1, 1)		* texel_size
 );
 
 vec2 poisson_disc[16] = vec2[]( 
-	vec2(-0.94201624,	-0.39906216)	* POISSON_SCALE, 
-	vec2(0.94558609,	-0.76890725)	* POISSON_SCALE, 
-	vec2(-0.094184101,	-0.92938870)	* POISSON_SCALE, 
-	vec2(0.34495938,	0.29387760)		* POISSON_SCALE, 
-	vec2(-0.91588581,	0.45771432)		* POISSON_SCALE, 
-	vec2(-0.81544232,	-0.87912464)	* POISSON_SCALE, 
-	vec2(-0.38277543,	0.27676845)		* POISSON_SCALE, 
-	vec2(0.97484398,	0.75648379)		* POISSON_SCALE, 
-	vec2(0.44323325,	-0.97511554)	* POISSON_SCALE, 
-	vec2(0.53742981,	-0.47373420)	* POISSON_SCALE, 
-	vec2(-0.26496911,	-0.41893023)	* POISSON_SCALE, 
-	vec2(0.79197514,	0.19090188)		* POISSON_SCALE, 
-	vec2(-0.24188840,	0.99706507)		* POISSON_SCALE, 
-	vec2(-0.81409955,	0.91437590)		* POISSON_SCALE, 
-	vec2(0.19984126,	0.78641367)		* POISSON_SCALE, 
-	vec2(0.14383161,	-0.14100790) 	* POISSON_SCALE
+	vec2(-0.94201624,	-0.39906216)	* POISSON_SCALE * texel_size,
+	vec2(0.94558609,	-0.76890725)	* POISSON_SCALE * texel_size,
+	vec2(-0.094184101,	-0.92938870)	* POISSON_SCALE * texel_size,
+	vec2(0.34495938,	0.29387760)		* POISSON_SCALE * texel_size,
+	vec2(-0.91588581,	0.45771432)		* POISSON_SCALE * texel_size,
+	vec2(-0.81544232,	-0.87912464)	* POISSON_SCALE * texel_size,
+	vec2(-0.38277543,	0.27676845)		* POISSON_SCALE * texel_size,
+	vec2(0.97484398,	0.75648379)		* POISSON_SCALE * texel_size,
+	vec2(0.44323325,	-0.97511554)	* POISSON_SCALE * texel_size,
+	vec2(0.53742981,	-0.47373420)	* POISSON_SCALE * texel_size,
+	vec2(-0.26496911,	-0.41893023)	* POISSON_SCALE * texel_size,
+	vec2(0.79197514,	0.19090188)		* POISSON_SCALE * texel_size,
+	vec2(-0.24188840,	0.99706507)		* POISSON_SCALE * texel_size,
+	vec2(-0.81409955,	0.91437590)		* POISSON_SCALE * texel_size,
+	vec2(0.19984126,	0.78641367)		* POISSON_SCALE * texel_size,
+	vec2(0.14383161,	-0.14100790) 	* POISSON_SCALE * texel_size
 );
 
 layout(location = 0) out vec4 light_out;
 
-bool is_shaded(ivec2 uv, float occludee_z) {
-	return texelFetch(shadow_map, uv, 0).r < occludee_z;
+bool is_shaded(vec2 uv, float occludee_z) {
+	return texture(shadow_map, uv).r < occludee_z;
 }
 
-float test_poisson_disc(ivec2 uv, float occludee_z) {
+float test_poisson_disc(vec2 uv, float occludee_z) {
 	float light = POISSON_SAMPLES + 1;
 	light -= float(is_shaded(uv, occludee_z));
-	if (SOFT_PENUMBRAS) uv += ivec2(hash22(vec2(uv) * HASH_FACTOR) * HASH_SCALE);
+	if (SOFT_PENUMBRAS) uv += hash22(uv * HASH_FACTOR) * HASH_SCALE * texel_size;
 	for (int i = 0; i < POISSON_SAMPLES; ++i) {
-		light -= float(is_shaded(uv + ivec2(poisson_disc[i]), occludee_z));
+		light -= float(is_shaded(uv + poisson_disc[i], occludee_z));
 	}
 	return light / (POISSON_SAMPLES + 1);
 }
@@ -119,20 +120,23 @@ void main() {
 		cube_face = is_neg(geom_pos_l.z) ? 4 : 5;
 	}
 	mat4 mtx_light = mtx_lights[cube_face];
-	float x_offset = cube_face * stride;
+	float x_offset = float(cube_face) / 6.0;
 
 	// project the fragment into the shadow map and calculate the appropriate offsets into the shadow atlas
 	vec4 geom_pos_s = mtx_light * geom_pos_w;
 	geom_pos_s /= geom_pos_s.w;
-	ivec2 shadow_xy = ivec2((geom_pos_s.xy * 0.5 + 0.5) * stride);
-	shadow_xy += ivec2(x_offset, y_offset);
-	shadow_xy = clamp(shadow_xy, ivec2(x_offset, y_offset), ivec2(x_offset + stride, y_offset + stride));
+	vec2 shadow_uv = geom_pos_s.xy * 0.5 + 0.5;
+	vec2 uv_scale = vec2(1.0/6.0, 1.0/CASTER_COUNT);
+	vec2 uv_offset = vec2(x_offset, y_offset);
+	shadow_uv *= uv_scale;
+	shadow_uv += uv_offset;
+	shadow_uv = clamp(shadow_uv, uv_offset, uv_offset + uv_scale);
 
 	// sample the shadow map, compare depth of sample to depth of fragment, etc
 	float occludee_z = geom_pos_s.z * 0.5 + 0.5;
-	float light = test_poisson_disc(shadow_xy, occludee_z);
+	float light = test_poisson_disc(shadow_uv, occludee_z);
 	for (int i = 0; i < PCF_SAMPLES; ++i) {
-		light += test_poisson_disc(shadow_xy + pcf_kernel[i] + ivec2(poisson_disc[i]), occludee_z);
+		light += test_poisson_disc(shadow_uv + pcf_kernel[i] + poisson_disc[i], occludee_z);
 	}
 	light /= (PCF_SAMPLES + 1);
 

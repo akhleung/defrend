@@ -54,6 +54,8 @@ function M.point_light.init()
 
 	params3.x = point_light.hash_factor
 	params3.y = point_light.hash_scale
+	params3.z = 1 / (6 * point_light.shadow_map_resolution) -- horizontal texel size
+	params3.w = 1 / (point_light.shadow_caster_count * point_light.shadow_map_resolution) -- vertical texel size
 
 	M.geometry.uniforms.light_vol_attn		= light_vol_attn;
 	-- `params1` will be set by the `point_light_with_shadows` controller script
