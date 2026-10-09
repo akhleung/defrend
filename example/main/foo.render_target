@@ -1,0 +1,5 @@
+depth_stencil_attachment {
+  width: 0
+  height: 0
+}
+type: TYPE_CUBEMAP

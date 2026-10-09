@@ -4,46 +4,32 @@ instances {
   prototype: "/defrend/gui/graphics_settings.go"
 }
 instances {
-  id: "point_light_emitter_white1"
-  prototype: "/example/main/point_light_emitter_white.go"
-}
-instances {
-  id: "point_light_soft_white61"
-  prototype: "/example/main/point_light_soft_white.go"
+  id: "tree_bill"
+  prototype: "/example/assets/models/tree_bill.go"
+  position {
+    x: -0.669662
+    z: 27.845219
+  }
   scale3 {
-    x: 20.0
-    y: 20.0
-    z: 20.0
+    x: 8.0
+    y: 8.0
+    z: 8.0
   }
 }
 instances {
-  id: "point_light_emitter_white"
-  prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
+  id: "sheep1"
+  prototype: "/example/assets/billboards/sheep/sheep.go"
 }
 instances {
-  id: "point_light_soft_white30"
-  prototype: "/example/main/point_light_soft_white.go"
-  scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-  }
-}
-instances {
-  id: "spot_light_emitter_red"
-  prototype: "/example/main/spot_light_emitter_red.go"
+  id: "spot_light_emitter_blue"
+  prototype: "/example/main/spot_light_emitter_blue.go"
   scale3 {
     y: 2.0
   }
 }
 instances {
-  id: "spot_light_red"
-  prototype: "/example/main/spot_light_red.go"
+  id: "spot_light_blue"
+  prototype: "/example/main/spot_light_blue.go"
   position {
     y: 2.0
   }
@@ -51,6 +37,109 @@ instances {
     x: 15.0
     y: 50.0
     z: 15.0
+  }
+}
+instances {
+  id: "weeds_small9"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 5.0
+    z: -5.0
+  }
+}
+instances {
+  id: "weeds_small2"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -6.0
+  }
+}
+instances {
+  id: "weeds_small5"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -1.0
+    z: -8.0
+  }
+}
+instances {
+  id: "weeds_small3"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -4.0
+    z: -5.0
+  }
+}
+instances {
+  id: "weeds_small8"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 8.0
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_small1"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -6.0
+    z: 4.0
+  }
+}
+instances {
+  id: "weeds_small7"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 6.0
+    z: -2.0
+  }
+}
+instances {
+  id: "weeds_small4"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: -1.0
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_small"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 2.0
+    z: 3.0
+  }
+}
+instances {
+  id: "weeds_big1"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: 7.0
+    z: -4.0
+  }
+}
+instances {
+  id: "weeds_big2"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: -2.0
+    z: -6.0
+  }
+}
+instances {
+  id: "weeds_small6"
+  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  position {
+    x: 3.0
+    z: 4.0
+  }
+}
+instances {
+  id: "weeds_big"
+  prototype: "/example/assets/billboards/weeds/weeds_big.go"
+  position {
+    x: -6.0
+    z: 2.0
   }
 }
 instances {
@@ -73,15 +162,15 @@ instances {
   }
 }
 instances {
-  id: "spot_light_emitter_blue"
-  prototype: "/example/main/spot_light_emitter_blue.go"
+  id: "spot_light_emitter_red"
+  prototype: "/example/main/spot_light_emitter_red.go"
   scale3 {
     y: 2.0
   }
 }
 instances {
-  id: "spot_light_blue"
-  prototype: "/example/main/spot_light_blue.go"
+  id: "spot_light_red"
+  prototype: "/example/main/spot_light_red.go"
   position {
     y: 2.0
   }
@@ -89,6 +178,158 @@ instances {
     x: 15.0
     y: 50.0
     z: 15.0
+  }
+}
+instances {
+  id: "logo1"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -29.0
+    y: 3.0
+    z: 33.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo4"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -29.0
+    y: 9.0
+    z: 27.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo6"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -23.0
+    y: 9.0
+    z: 33.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo2"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -23.0
+    y: 3.0
+    z: 33.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo5"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -29.0
+    y: 9.0
+    z: 33.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo7"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -23.0
+    y: 9.0
+    z: 27.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -29.0
+    y: 3.0
+    z: 27.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "logo3"
+  prototype: "/example/assets/logo/logo.go"
+  position {
+    x: -23.0
+    y: 3.0
+    z: 27.0
+  }
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "point_light_soft_white30"
+  prototype: "/example/main/point_light_soft_white.go"
+  scale3 {
+    x: 30.0
+    y: 30.0
+    z: 30.0
+  }
+}
+instances {
+  id: "point_light_emitter_white"
+  prototype: "/example/main/point_light_emitter_white.go"
+  scale3 {
+    x: 2.0
+    y: 2.0
+    z: 2.0
+  }
+}
+instances {
+  id: "point_light_soft_white61"
+  prototype: "/example/main/point_light_soft_white.go"
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_emitter_white1"
+  prototype: "/example/main/point_light_emitter_white.go"
+}
+instances {
+  id: "point_light_soft_white62"
+  prototype: "/example/main/point_light_soft_white.go"
+  scale3 {
+    x: 25.0
+    y: 25.0
+    z: 25.0
   }
 }
 instances {
@@ -101,7 +342,20 @@ instances {
   }
 }
 instances {
-  id: "point_light_soft_white62"
+  id: "point_light_soft_white"
+  prototype: "/example/main/point_light_soft_white.go"
+  scale3 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+  }
+}
+instances {
+  id: "point_light_emitter_white3"
+  prototype: "/example/main/point_light_emitter_white.go"
+}
+instances {
+  id: "point_light_soft_white1"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
     x: 25.0
@@ -110,20 +364,20 @@ instances {
   }
 }
 instances {
-  id: "ice_decal"
-  prototype: "/example/main/ice_decal.go"
-  position {
-    y: -7.0
-    z: 9.0
-  }
-  rotation {
-    x: 0.70710677
-    w: 0.70710677
-  }
+  id: "point_light_emitter_white4"
+  prototype: "/example/main/point_light_emitter_white.go"
   scale3 {
-    x: 10.0
-    y: 10.0
-    z: 10.0
+    x: 1.5
+    y: 1.5
+    z: 1.5
+  }
+}
+instances {
+  id: "dust"
+  prototype: "/example/assets/billboards/dust/dust.go"
+  position {
+    y: 1.0
+    z: 27.0
   }
 }
 instances {
@@ -144,72 +398,28 @@ instances {
   }
 }
 instances {
-  id: "point_light_emitter_white3"
-  prototype: "/example/main/point_light_emitter_white.go"
-}
-instances {
-  id: "point_light_soft_white"
-  prototype: "/example/main/point_light_soft_white.go"
-  scale3 {
-    x: 20.0
-    y: 20.0
-    z: 20.0
-  }
-}
-instances {
-  id: "point_light_emitter_white4"
-  prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 1.5
-    y: 1.5
-    z: 1.5
-  }
-}
-instances {
-  id: "point_light_soft_white1"
-  prototype: "/example/main/point_light_soft_white.go"
-  scale3 {
-    x: 25.0
-    y: 25.0
-    z: 25.0
-  }
-}
-instances {
-  id: "flower1"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  id: "ice_decal"
+  prototype: "/example/main/ice_decal.go"
   position {
-    x: 2.0
-    z: 6.0
+    y: -7.0
+    z: 9.0
   }
   rotation {
-    z: 0.38268343
-    w: 0.9238795
+    x: 0.70710677
+    w: 0.70710677
   }
   scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
+    x: 10.0
+    y: 10.0
+    z: 10.0
   }
 }
 instances {
-  id: "flower2"
+  id: "flower"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: -2.0
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower3"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: 3.0
+    x: 5.0
+    z: 1.0
   }
   scale3 {
     x: 3.0
@@ -231,24 +441,14 @@ instances {
   }
 }
 instances {
-  id: "flower5"
+  id: "flower18"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: 5.0
-    z: 3.0
+    z: 6.0
   }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower6"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: -3.0
+  rotation {
+    z: 0.38268343
+    w: 0.9238795
   }
   scale3 {
     x: 3.0
@@ -283,11 +483,11 @@ instances {
   }
 }
 instances {
-  id: "flower10"
+  id: "flower5"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: 4.0
-    z: 5.0
+    x: 5.0
+    z: 3.0
   }
   scale3 {
     x: 3.0
@@ -296,11 +496,41 @@ instances {
   }
 }
 instances {
-  id: "flower11"
+  id: "flower1"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: 5.0
-    z: -1.0
+    x: 2.0
+    z: 6.0
+  }
+  rotation {
+    z: 0.38268343
+    w: 0.9238795
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower17"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower15"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: -3.0
   }
   scale3 {
     x: 3.0
@@ -335,11 +565,63 @@ instances {
   }
 }
 instances {
-  id: "flower15"
+  id: "flower10"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.0
+    z: 5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower2"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.0
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower11"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.0
+    z: -1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower6"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.0
+    z: -3.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower3"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: -5.0
-    z: -3.0
+    z: 3.0
   }
   scale3 {
     x: 3.0
@@ -361,170 +643,11 @@ instances {
   }
 }
 instances {
-  id: "flower17"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 1.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower18"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    z: 6.0
-  }
-  rotation {
-    z: 0.38268343
-    w: 0.9238795
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower"
+  id: "flower33"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
     z: 1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower9"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 2.0
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower12"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -2.0
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower19"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: 3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower20"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: -1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower21"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: 3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower22"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: -3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower23"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 3.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower24"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -1.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower25"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 4.0
-    z: 5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower26"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: -1.0
   }
   scale3 {
     x: 3.0
@@ -546,6 +669,32 @@ instances {
   }
 }
 instances {
+  id: "flower31"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower19"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: 3.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
   id: "flower28"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
@@ -559,10 +708,100 @@ instances {
   }
 }
 instances {
-  id: "flower29"
+  id: "flower32"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower26"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.0
+    z: -1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower25"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.0
+    z: 5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower12"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.0
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower9"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.0
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower23"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower20"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: -5.0
+    z: -1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower22"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.0
     z: -3.0
   }
   scale3 {
@@ -585,36 +824,11 @@ instances {
   }
 }
 instances {
-  id: "flower31"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 1.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower32"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower33"
+  id: "flower21"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
-    z: 1.0
+    z: 3.0
   }
   scale3 {
     x: 3.0
@@ -623,11 +837,24 @@ instances {
   }
 }
 instances {
-  id: "flower34"
+  id: "flower29"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: 2.0
-    z: 6.0
+    x: -5.0
+    z: -3.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower24"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.0
+    z: -5.0
   }
   scale3 {
     x: 3.0
@@ -649,19 +876,6 @@ instances {
   }
 }
 instances {
-  id: "flower36"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: 3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
   id: "flower37"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
@@ -675,11 +889,11 @@ instances {
   }
 }
 instances {
-  id: "flower38"
+  id: "flower50"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
-    z: 3.0
+    z: 1.0
   }
   scale3 {
     x: 3.0
@@ -692,97 +906,6 @@ instances {
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
-    z: -3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower40"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 3.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower41"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -1.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower42"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 4.0
-    z: 5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower43"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: -1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower44"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -4.0
-    z: 5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower45"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: 1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower46"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
     z: -3.0
   }
   scale3 {
@@ -805,11 +928,102 @@ instances {
   }
 }
 instances {
-  id: "flower48"
+  id: "flower43"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: 1.0
+    x: 5.0
+    z: -1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower45"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: 1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower40"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 3.0
     z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower44"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.0
+    z: 5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower34"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.0
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower42"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 4.0
+    z: 5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower41"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower36"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: 3.0
   }
   scale3 {
     x: 3.0
@@ -830,11 +1044,24 @@ instances {
   }
 }
 instances {
-  id: "flower50"
+  id: "flower48"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower38"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
-    z: 1.0
+    z: 3.0
   }
   scale3 {
     x: 3.0
@@ -843,76 +1070,24 @@ instances {
   }
 }
 instances {
-  id: "flower51"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 2.0
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower52"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -2.0
-    z: 6.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower53"
+  id: "flower46"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: -5.0
-    z: 3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower54"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: -1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower55"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
-    z: 3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower56"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 5.0
     z: -3.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower62"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: 1.0
   }
   scale3 {
     x: 3.0
@@ -934,11 +1109,24 @@ instances {
   }
 }
 instances {
-  id: "flower58"
+  id: "flower54"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: -1.0
-    z: -5.0
+    x: -5.0
+    z: -1.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower56"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 5.0
+    z: -3.0
   }
   scale3 {
     x: 3.0
@@ -951,6 +1139,19 @@ instances {
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 4.0
+    z: 5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower61"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -4.0
     z: 5.0
   }
   scale3 {
@@ -973,74 +1174,22 @@ instances {
   }
 }
 instances {
-  id: "flower61"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -4.0
-    z: 5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower62"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: 1.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower63"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -5.0
-    z: -3.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower64"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: -3.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
-  id: "flower65"
-  prototype: "/example/assets/billboards/flowerbed/flower.go"
-  position {
-    x: 1.0
-    z: -5.0
-  }
-  scale3 {
-    x: 3.0
-    y: 3.0
-    z: 3.0
-  }
-}
-instances {
   id: "flower66"
   prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower52"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -2.0
     z: 6.0
   }
   scale3 {
@@ -1063,243 +1212,295 @@ instances {
   }
 }
 instances {
-  id: "logo"
-  prototype: "/example/assets/logo/logo.go"
+  id: "flower63"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
-    x: -29.0
+    x: -5.0
+    z: -3.0
+  }
+  scale3 {
+    x: 3.0
     y: 3.0
-    z: 27.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo1"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -29.0
-    y: 3.0
-    z: 33.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo2"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -23.0
-    y: 3.0
-    z: 33.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo3"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -23.0
-    y: 3.0
-    z: 27.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo4"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -29.0
-    y: 9.0
-    z: 27.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo5"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -29.0
-    y: 9.0
-    z: 33.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo6"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -23.0
-    y: 9.0
-    z: 33.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "logo7"
-  prototype: "/example/assets/logo/logo.go"
-  position {
-    x: -23.0
-    y: 9.0
-    z: 27.0
-  }
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
-}
-instances {
-  id: "sheep1"
-  prototype: "/example/assets/billboards/sheep/sheep.go"
-}
-instances {
-  id: "weeds_big"
-  prototype: "/example/assets/billboards/weeds/weeds_big.go"
-  position {
-    x: -6.0
-    z: 2.0
-  }
-}
-instances {
-  id: "weeds_big1"
-  prototype: "/example/assets/billboards/weeds/weeds_big.go"
-  position {
-    x: 7.0
-    z: -4.0
-  }
-}
-instances {
-  id: "weeds_big2"
-  prototype: "/example/assets/billboards/weeds/weeds_big.go"
-  position {
-    x: -2.0
-    z: -6.0
-  }
-}
-instances {
-  id: "weeds_small"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: 2.0
     z: 3.0
   }
 }
 instances {
-  id: "weeds_small1"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: -6.0
-    z: 4.0
-  }
-}
-instances {
-  id: "weeds_small2"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: -6.0
-  }
-}
-instances {
-  id: "weeds_small3"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: -4.0
-    z: -5.0
-  }
-}
-instances {
-  id: "weeds_small4"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: -1.0
-    z: -4.0
-  }
-}
-instances {
-  id: "weeds_small5"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: -1.0
-    z: -8.0
-  }
-}
-instances {
-  id: "weeds_small6"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: 3.0
-    z: 4.0
-  }
-}
-instances {
-  id: "weeds_small7"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: 6.0
-    z: -2.0
-  }
-}
-instances {
-  id: "weeds_small8"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
-  position {
-    x: 8.0
-    z: -4.0
-  }
-}
-instances {
-  id: "weeds_small9"
-  prototype: "/example/assets/billboards/weeds/weeds_small.go"
+  id: "flower55"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
   position {
     x: 5.0
-    z: -5.0
-  }
-}
-instances {
-  id: "dust"
-  prototype: "/example/assets/billboards/dust/dust.go"
-  position {
-    y: 1.0
-    z: 27.0
-  }
-}
-instances {
-  id: "tree_bill"
-  prototype: "/example/assets/models/tree_bill.go"
-  position {
-    x: -0.669662
-    z: 27.845219
+    z: 3.0
   }
   scale3 {
-    x: 8.0
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower65"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower51"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: 2.0
+    z: 6.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower64"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -3.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower53"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -5.0
+    z: 3.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "flower58"
+  prototype: "/example/assets/billboards/flowerbed/flower.go"
+  position {
+    x: -1.0
+    z: -5.0
+  }
+  scale3 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+  }
+}
+instances {
+  id: "point_light_emitter_white5"
+  prototype: "/example/main/point_light_emitter_white.go"
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "point_light_with_shadows"
+  prototype: "/example/main/point_light_with_shadows.go"
+  component_properties {
+    id: "point_light"
+    properties {
+      id: "enabled"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "shadow_map"
+      value: "/example/main/point_light_shadowmap2.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "shadow_bias_near"
+      value: "0.1"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "shadow_bias_far"
+      value: "0.6"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "pcf_samples"
+      value: "4.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "poisson_scale"
+      value: "1.5"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "hash_scale"
+      value: "5.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  scale3 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
+  }
+}
+instances {
+  id: "point_light_emitter_white6"
+  prototype: "/example/main/point_light_emitter_white.go"
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
+}
+instances {
+  id: "point_light_with_shadows1"
+  prototype: "/example/main/point_light_with_shadows.go"
+  component_properties {
+    id: "point_light"
+    properties {
+      id: "enabled"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "shadow_map"
+      value: "/example/main/nuther_cubemap.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "shadow_bias_near"
+      value: "0.1"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "shadow_bias_far"
+      value: "0.6"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "pcf_samples"
+      value: "4.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "poisson_samples"
+      value: "4.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "poisson_scale"
+      value: "1.5"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "hash_scale"
+      value: "5.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "soft_penumbras"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+  }
+  scale3 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
+  }
+}
+instances {
+  id: "spot_light_with_shadows"
+  prototype: "/example/main/spot_light_with_shadows.go"
+  position {
+    x: 2.029313
+    y: 5.777675
+    z: -3.214168
+  }
+  rotation {
+    x: -0.23400497
+    y: -0.21367416
+    z: -0.05279952
+    w: 0.94699377
+  }
+  component_properties {
+    id: "spot_light_with_shadows"
+    properties {
+      id: "enabled"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "shadow_map"
+      value: "/example/main/shadowmap1.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "pcf_samples"
+      value: "4.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "poisson_scale"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "hash_scale"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  scale3 {
+    x: 6.0
     y: 8.0
-    z: 8.0
+    z: 6.0
+  }
+}
+instances {
+  id: "spot_light_with_shadows1"
+  prototype: "/example/main/spot_light_with_shadows.go"
+  position {
+    x: 9.623929
+    y: 4.034808
+    z: -5.71799
+  }
+  rotation {
+    x: 0.043000814
+    y: -0.20941918
+    z: -0.31389564
+    w: 0.9250752
+  }
+  component_properties {
+    id: "spot_light_with_shadows"
+    properties {
+      id: "enabled"
+      value: "false"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "shadow_map"
+      value: "/example/main/shadowmap2.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+  }
+  scale3 {
+    y: 3.0
   }
 }
 collection_instances {
@@ -1362,6 +1563,11 @@ collection_instances {
     properties {
       id: "light"
       properties {
+        id: "sunlight_enabled"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
         id: "sun_url"
         value: "/sun"
         type: PROPERTY_TYPE_URL
@@ -1372,19 +1578,45 @@ collection_instances {
         type: PROPERTY_TYPE_VECTOR4
       }
       properties {
-        id: "spot_light_range_attenuation"
-        value: "6.0"
+        id: "ambient_color"
+        value: "0.7, 0.7, 0.7, 1.0"
+        type: PROPERTY_TYPE_VECTOR4
+      }
+    }
+    properties {
+      id: "point_light"
+      properties {
+        id: "shadow_bias_far"
+        value: "0.6"
         type: PROPERTY_TYPE_NUMBER
       }
       properties {
-        id: "spot_light_spread_attenuation"
+        id: "pcf_samples"
+        value: "4.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "poisson_scale"
         value: "3.0"
         type: PROPERTY_TYPE_NUMBER
       }
       properties {
-        id: "ambient_color"
-        value: "0.7, 0.7, 0.7, 1.0"
-        type: PROPERTY_TYPE_VECTOR4
+        id: "hash_scale"
+        value: "3.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "soft_penumbras"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+    }
+    properties {
+      id: "spot_light"
+      properties {
+        id: "enabled"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
       }
     }
   }
@@ -1401,18 +1633,6 @@ collection_instances {
   }
 }
 scale_along_z: 1
-embedded_instances {
-  id: "main"
-  data: "components {\n"
-  "  id: \"main\"\n"
-  "  component: \"/example/main/main.script\"\n"
-  "}\n"
-  ""
-  position {
-    x: 5.0
-    z: 3.0
-  }
-}
 embedded_instances {
   id: "camera"
   children: "forward"
@@ -1436,7 +1656,7 @@ embedded_instances {
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.78\\n"
   "fov: 0.7\\n"
-  "near_z: 5.0\\n"
+  "near_z: 1.0\\n"
   "far_z: 200.0\\n"
   "auto_aspect_ratio: 1\\n"
   "\"\n"
@@ -1466,12 +1686,48 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "skybox"
-  data: "components {\n"
-  "  id: \"skybox\"\n"
-  "  component: \"/example/assets/models/skybox.model\"\n"
-  "}\n"
-  ""
+  id: "up"
+  data: ""
+  position {
+    y: 1.0
+  }
+}
+embedded_instances {
+  id: "scene"
+  children: "decals"
+  children: "duck"
+  children: "dust"
+  children: "floor"
+  children: "flowers"
+  children: "flowers1"
+  children: "flowers2"
+  children: "flowers3"
+  children: "ice_ball"
+  children: "light_pivot"
+  children: "light_pivot1"
+  children: "light_pivot2"
+  children: "light_pivot3"
+  children: "light_pivot4"
+  children: "logos"
+  children: "main"
+  children: "outcropping"
+  children: "outcropping1"
+  children: "pillar_brick"
+  children: "pillar_ice"
+  children: "pillar_tile"
+  children: "sheep"
+  children: "skybox"
+  children: "spotlight_blue"
+  children: "spotlight_green"
+  children: "spotlight_red"
+  children: "sun"
+  children: "tree_bill"
+  children: "wall"
+  children: "weeds"
+  data: ""
+  position {
+    x: 250.0
+  }
 }
 embedded_instances {
   id: "sun"
@@ -1497,6 +1753,1369 @@ embedded_instances {
     y: -0.23925427
     z: -0.07698362
     w: 0.9213784
+  }
+}
+embedded_instances {
+  id: "skybox"
+  data: "components {\n"
+  "  id: \"skybox\"\n"
+  "  component: \"/example/assets/models/skybox.model\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "sheep"
+  children: "sheep1"
+  data: ""
+  position {
+    x: 25.0
+    z: 27.0
+  }
+}
+embedded_instances {
+  id: "wall"
+  data: "components {\n"
+  "  id: \"cube_tile\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile1\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile2\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile3\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile4\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile5\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile6\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile7\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 7.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile8\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile9\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile10\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile11\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile12\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 7.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile13\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile14\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile15\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile16\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile17\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile18\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: -0.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile19\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 0.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile20\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 1.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile21\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 2.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile22\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 3.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile23\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 4.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile24\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 5.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile25\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 6.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile26\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: 8.0\n"
+  "    z: 7.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile27\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 0.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile28\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 2.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile29\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 6.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile30\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: -1.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile31\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 4.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile32\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 1.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile33\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 3.6\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile34\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: -0.4\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile35\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 5.6\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -35.0
+    z: -31.0
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "spotlight_blue"
+  children: "pivot_blue"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: 25.0
+    y: 32.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "weeds"
+  children: "weeds_big"
+  children: "weeds_big1"
+  children: "weeds_big2"
+  children: "weeds_small"
+  children: "weeds_small1"
+  children: "weeds_small2"
+  children: "weeds_small3"
+  children: "weeds_small4"
+  children: "weeds_small5"
+  children: "weeds_small6"
+  children: "weeds_small7"
+  children: "weeds_small8"
+  children: "weeds_small9"
+  data: ""
+  position {
+    x: 25.0
+    z: 27.0
+  }
+}
+embedded_instances {
+  id: "spotlight_green"
+  children: "pivot_green"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    y: 32.0
+    z: -20.0
+  }
+}
+embedded_instances {
+  id: "spotlight_red"
+  children: "spot_light_emitter_red"
+  children: "spot_light_red"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: -25.0
+    y: 32.0
+    z: -20.0
+  }
+  rotation {
+    x: -0.2923717
+    w: 0.9563047
+  }
+}
+embedded_instances {
+  id: "pivot_blue"
+  children: "spot_light_blue"
+  children: "spot_light_emitter_blue"
+  data: ""
+  rotation {
+    x: 0.2923717
+    w: 0.9563047
+  }
+}
+embedded_instances {
+  id: "pivot_green"
+  children: "spot_light_emitter_green"
+  children: "spot_light_green"
+  data: ""
+  rotation {
+    x: 0.20673801
+    y: 0.67620957
+    z: -0.20673801
+    w: 0.67620957
+  }
+}
+embedded_instances {
+  id: "logos"
+  children: "logo"
+  children: "logo1"
+  children: "logo2"
+  children: "logo3"
+  children: "logo4"
+  children: "logo5"
+  children: "logo6"
+  children: "logo7"
+  data: ""
+}
+embedded_instances {
+  id: "main"
+  data: "components {\n"
+  "  id: \"main\"\n"
+  "  component: \"/example/main/main.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: 5.0
+    z: 3.0
+  }
+}
+embedded_instances {
+  id: "outcropping"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: 0.2963768\n"
+  "    y: -0.15643793\n"
+  "    z: -0.19722253\n"
+  "    w: 0.9212987\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.166667\n"
+  "    z: -0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.42438525\n"
+  "    y: -0.25491706\n"
+  "    z: -0.0020011994\n"
+  "    w: 0.86885583\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.333333\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.27097893\n"
+  "    y: -0.8435091\n"
+  "    z: -0.03532822\n"
+  "    w: 0.46240118\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.333333\n"
+  "    y: -0.333333\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.5562556\n"
+  "    y: -0.18008295\n"
+  "    z: 0.40560257\n"
+  "    w: 0.70259273\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.666667\n"
+  "    y: -0.666666\n"
+  "    z: -0.833334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.4066652\n"
+  "    y: 0.051833466\n"
+  "    z: 0.8233046\n"
+  "    w: 0.3925638\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick5\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.333333\n"
+  "    y: -0.5\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.8433923\n"
+  "    y: -0.24587378\n"
+  "    z: 0.47029752\n"
+  "    w: -0.08399843\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick6\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -1.166667\n"
+  "    y: -0.5\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.28027093\n"
+  "    y: 0.13230819\n"
+  "    z: 0.1755058\n"
+  "    w: 0.9344199\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick7\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: -0.166667\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.097592756\n"
+  "    y: -0.5037822\n"
+  "    z: -0.22626771\n"
+  "    w: 0.8279385\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick8\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.333334\n"
+  "    z: -0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.6241352\n"
+  "    y: -0.40685543\n"
+  "    z: -0.22331986\n"
+  "    w: 0.6285318\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick9\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.5\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.4904846\n"
+  "    y: -0.8637331\n"
+  "    z: -0.0078245485\n"
+  "    w: 0.11545063\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick10\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.666666\n"
+  "    y: -0.5\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.20628078\n"
+  "    y: -0.3769918\n"
+  "    z: 0.4443176\n"
+  "    w: 0.7860708\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick11\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.500001\n"
+  "    y: -0.833333\n"
+  "    z: -1.333334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.059180383\n"
+  "    y: 0.042625174\n"
+  "    z: 0.7883425\n"
+  "    w: 0.6108985\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick12\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.333333\n"
+  "    y: -0.666667\n"
+  "    z: -1.333334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.6113073\n"
+  "    y: -0.24886808\n"
+  "    z: 0.74127805\n"
+  "    w: 0.12196292\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick13\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -1.666667\n"
+  "    y: -0.666667\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.11564452\n"
+  "    y: -0.16205616\n"
+  "    z: 0.02968246\n"
+  "    w: 0.9795321\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 26.0
+    y: 3.0
+    z: 3.0
+  }
+  scale3 {
+    x: 6.0
+    y: 6.0
+    z: 6.0
+  }
+}
+embedded_instances {
+  id: "outcropping1"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: 0.2963768\n"
+  "    y: -0.15643793\n"
+  "    z: -0.19722253\n"
+  "    w: 0.9212987\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.166667\n"
+  "    z: -0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.42438525\n"
+  "    y: -0.25491706\n"
+  "    z: -0.0020011994\n"
+  "    w: 0.86885583\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.333333\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.27097893\n"
+  "    y: -0.8435091\n"
+  "    z: -0.03532822\n"
+  "    w: 0.46240118\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.333333\n"
+  "    y: -0.333333\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.5562556\n"
+  "    y: -0.18008295\n"
+  "    z: 0.40560257\n"
+  "    w: 0.70259273\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.666667\n"
+  "    y: -0.666666\n"
+  "    z: -0.833334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.4066652\n"
+  "    y: 0.051833466\n"
+  "    z: 0.8233046\n"
+  "    w: 0.3925638\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick5\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.333333\n"
+  "    y: -0.5\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.8433923\n"
+  "    y: -0.24587378\n"
+  "    z: 0.47029752\n"
+  "    w: -0.08399843\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick6\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -1.166667\n"
+  "    y: -0.5\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.28027093\n"
+  "    y: 0.13230819\n"
+  "    z: 0.1755058\n"
+  "    w: 0.9344199\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick7\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: -0.166667\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.097592756\n"
+  "    y: -0.5037822\n"
+  "    z: -0.22626771\n"
+  "    w: 0.8279385\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick8\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.333334\n"
+  "    z: -0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.6241352\n"
+  "    y: -0.40685543\n"
+  "    z: -0.22331986\n"
+  "    w: 0.6285318\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick9\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.5\n"
+  "    y: -0.5\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.4904846\n"
+  "    y: -0.8637331\n"
+  "    z: -0.0078245485\n"
+  "    w: 0.11545063\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick10\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.666666\n"
+  "    y: -0.5\n"
+  "    z: 0.333333\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.20628078\n"
+  "    y: -0.3769918\n"
+  "    z: 0.4443176\n"
+  "    w: 0.7860708\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick11\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -0.500001\n"
+  "    y: -0.833333\n"
+  "    z: -1.333334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.059180383\n"
+  "    y: 0.042625174\n"
+  "    z: 0.7883425\n"
+  "    w: 0.6108985\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick12\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 0.333333\n"
+  "    y: -0.666667\n"
+  "    z: -1.333334\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.6113073\n"
+  "    y: -0.24886808\n"
+  "    z: 0.74127805\n"
+  "    w: 0.12196292\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick13\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: -1.666667\n"
+  "    y: -0.666667\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.11564452\n"
+  "    y: -0.16205616\n"
+  "    z: 0.02968246\n"
+  "    w: 0.9795321\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 21.0
+    y: 5.0
+    z: 2.0
+  }
+  rotation {
+    x: 0.1188344
+    y: -0.76107824
+    z: 0.0983754
+    w: 0.63004804
+  }
+  scale3 {
+    x: 4.0
+    y: 4.0
+    z: 4.0
+  }
+}
+embedded_instances {
+  id: "pillar_brick"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: 2.5
+    z: -20.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+embedded_instances {
+  id: "pillar_ice"
+  data: "components {\n"
+  "  id: \"cube_ice\"\n"
+  "  component: \"/example/assets/cube_ice.model\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_ice1\"\n"
+  "  component: \"/example/assets/cube_ice.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_ice2\"\n"
+  "  component: \"/example/assets/cube_ice.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_ice3\"\n"
+  "  component: \"/example/assets/cube_ice.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_ice4\"\n"
+  "  component: \"/example/assets/cube_ice.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 25.0
+    y: 2.5
+    z: -20.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+embedded_instances {
+  id: "pillar_tile"
+  data: "components {\n"
+  "  id: \"cube_tile\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile1\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile2\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile3\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_tile4\"\n"
+  "  component: \"/example/assets/cube_tile.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -25.0
+    y: 2.5
+    z: -20.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+embedded_instances {
+  id: "ice_ball"
+  data: "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/example/assets/models/ball.glb\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"Blue\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Red.001\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"White.005\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Yellow.001\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: -26.0
+    y: 3.0
+    z: 6.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
+  }
+}
+embedded_instances {
+  id: "light_pivot"
+  children: "light_bulb"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: -26.0
+    y: 8.0
+    z: 6.0
+  }
+}
+embedded_instances {
+  id: "light_pivot1"
+  children: "light_bulb1"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"8.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 25.0
+    y: 4.0
+  }
+}
+embedded_instances {
+  id: "light_pivot2"
+  children: "pivot2"
+  data: ""
+  position {
+    y: 13.0
+    z: -20.0
+  }
+  rotation {
+    z: 0.21643962
+    w: 0.976296
+  }
+}
+embedded_instances {
+  id: "light_pivot3"
+  children: "light_bulb3"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"6.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"reverse\"\n"
+  "    value: \"true\"\n"
+  "    type: PROPERTY_TYPE_BOOLEAN\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 25.0
+    y: 4.0
+  }
+}
+embedded_instances {
+  id: "light_pivot4"
+  children: "pivot"
+  data: ""
+  position {
+    x: -26.0
+    y: 12.0
+    z: 6.0
+  }
+  rotation {
+    z: 0.21643962
+    w: 0.976296
+  }
+}
+embedded_instances {
+  id: "light_bulb"
+  children: "point_light_emitter_white"
+  children: "point_light_soft_white30"
+  data: ""
+  position {
+    x: -14.0
+  }
+}
+embedded_instances {
+  id: "light_bulb1"
+  children: "point_light_emitter_white1"
+  children: "point_light_soft_white61"
+  data: ""
+  position {
+    x: 14.0
+  }
+}
+embedded_instances {
+  id: "pivot2"
+  children: "light_bulb2"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"12.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "light_bulb2"
+  children: "point_light_emitter_white2"
+  children: "point_light_soft_white62"
+  data: ""
+  position {
+    z: -12.0
+  }
+}
+embedded_instances {
+  id: "light_bulb3"
+  children: "point_light_emitter_white3"
+  children: "point_light_soft_white"
+  data: ""
+  position {
+    x: -11.0
+    y: 4.0
+  }
+}
+embedded_instances {
+  id: "pivot"
+  children: "light_bulb4"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"9.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"reverse\"\n"
+  "    value: \"true\"\n"
+  "    type: PROPERTY_TYPE_BOOLEAN\n"
+  "  }\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "light_bulb4"
+  children: "point_light_emitter_white4"
+  children: "point_light_soft_white1"
+  data: ""
+  position {
+    z: 10.0
+  }
+  scale3 {
+    x: 0.9
+    y: 0.9
+    z: 0.9
+  }
+}
+embedded_instances {
+  id: "decals"
+  children: "defold_decal"
+  children: "ice_decal"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: 25.0
+    y: 11.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "duck"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/example/assets/models/character_duck.glb\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"Black.002\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"White.004\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "materials {\\n"
+  "  name: \\\"Yellow\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/brown.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    z: 6.0
+  }
+  scale3 {
+    x: 5.0
+    y: 5.0
+    z: 5.0
   }
 }
 embedded_instances {
@@ -2262,1303 +3881,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "wall"
-  data: "components {\n"
-  "  id: \"cube_tile\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile1\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 1.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile2\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 2.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile3\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 3.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile4\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 4.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile5\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 5.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile6\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 6.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile7\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 7.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile8\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile9\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 4.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile10\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 3.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile11\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile12\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 7.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile13\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 5.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile14\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 1.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile15\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile16\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 2.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile17\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 6.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile18\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: -0.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile19\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 0.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile20\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 1.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile21\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 2.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile22\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 3.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile23\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 4.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile24\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 5.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile25\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 6.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile26\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: 8.0\n"
-  "    z: 7.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile27\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 0.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile28\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 2.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile29\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 6.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile30\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: -1.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile31\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 4.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile32\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 1.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile33\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 3.6\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile34\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: -0.4\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile35\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    x: -1.0\n"
-  "    z: 5.6\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -35.0
-    z: -31.0
-  }
-  scale3 {
-    x: 10.0
-    y: 10.0
-    z: 10.0
-  }
-}
-embedded_instances {
-  id: "duck"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/example/assets/models/character_duck.glb\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"Black.002\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"White.004\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Yellow\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/brown.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
-  ""
-  position {
-    z: 6.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
-  }
-}
-embedded_instances {
-  id: "ice_ball"
-  data: "embedded_components {\n"
-  "  id: \"model\"\n"
-  "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/example/assets/models/ball.glb\\\"\\n"
-  "name: \\\"{{NAME}}\\\"\\n"
-  "materials {\\n"
-  "  name: \\\"Blue\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Red.001\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"White.005\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Yellow.001\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
-  ""
-  position {
-    x: -26.0
-    y: 3.0
-    z: 6.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
-  }
-}
-embedded_instances {
-  id: "pillar_ice"
-  data: "components {\n"
-  "  id: \"cube_ice\"\n"
-  "  component: \"/example/assets/cube_ice.model\"\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_ice1\"\n"
-  "  component: \"/example/assets/cube_ice.model\"\n"
-  "  position {\n"
-  "    y: 1.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_ice2\"\n"
-  "  component: \"/example/assets/cube_ice.model\"\n"
-  "  position {\n"
-  "    y: 2.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_ice3\"\n"
-  "  component: \"/example/assets/cube_ice.model\"\n"
-  "  position {\n"
-  "    y: 3.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_ice4\"\n"
-  "  component: \"/example/assets/cube_ice.model\"\n"
-  "  position {\n"
-  "    y: 4.0\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 25.0
-    y: 2.5
-    z: -20.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
-  }
-}
-embedded_instances {
-  id: "pillar_brick"
-  data: "components {\n"
-  "  id: \"cube_brick\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick1\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: 1.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick2\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: 2.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick3\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: 3.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick4\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: 4.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    y: 2.5
-    z: -20.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
-  }
-}
-embedded_instances {
-  id: "pillar_tile"
-  data: "components {\n"
-  "  id: \"cube_tile\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile1\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    y: 1.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile2\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    y: 2.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile3\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    y: 3.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_tile4\"\n"
-  "  component: \"/example/assets/cube_tile.model\"\n"
-  "  position {\n"
-  "    y: 4.0\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: -25.0
-    y: 2.5
-    z: -20.0
-  }
-  scale3 {
-    x: 5.0
-    y: 5.0
-    z: 5.0
-  }
-}
-embedded_instances {
-  id: "outcropping"
-  data: "components {\n"
-  "  id: \"cube_brick\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  rotation {\n"
-  "    x: 0.2963768\n"
-  "    y: -0.15643793\n"
-  "    z: -0.19722253\n"
-  "    w: 0.9212987\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick1\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.166667\n"
-  "    z: -0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.42438525\n"
-  "    y: -0.25491706\n"
-  "    z: -0.0020011994\n"
-  "    w: 0.86885583\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick2\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.333333\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.27097893\n"
-  "    y: -0.8435091\n"
-  "    z: -0.03532822\n"
-  "    w: 0.46240118\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick3\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.333333\n"
-  "    y: -0.333333\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.5562556\n"
-  "    y: -0.18008295\n"
-  "    z: 0.40560257\n"
-  "    w: 0.70259273\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick4\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.666667\n"
-  "    y: -0.666666\n"
-  "    z: -0.833334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.4066652\n"
-  "    y: 0.051833466\n"
-  "    z: 0.8233046\n"
-  "    w: 0.3925638\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick5\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.333333\n"
-  "    y: -0.5\n"
-  "    z: -1.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.8433923\n"
-  "    y: -0.24587378\n"
-  "    z: 0.47029752\n"
-  "    w: -0.08399843\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick6\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -1.166667\n"
-  "    y: -0.5\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.28027093\n"
-  "    y: 0.13230819\n"
-  "    z: 0.1755058\n"
-  "    w: 0.9344199\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick7\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: -0.166667\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.097592756\n"
-  "    y: -0.5037822\n"
-  "    z: -0.22626771\n"
-  "    w: 0.8279385\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick8\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.333334\n"
-  "    z: -0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.6241352\n"
-  "    y: -0.40685543\n"
-  "    z: -0.22331986\n"
-  "    w: 0.6285318\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick9\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.5\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.4904846\n"
-  "    y: -0.8637331\n"
-  "    z: -0.0078245485\n"
-  "    w: 0.11545063\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick10\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.666666\n"
-  "    y: -0.5\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.20628078\n"
-  "    y: -0.3769918\n"
-  "    z: 0.4443176\n"
-  "    w: 0.7860708\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick11\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.500001\n"
-  "    y: -0.833333\n"
-  "    z: -1.333334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.059180383\n"
-  "    y: 0.042625174\n"
-  "    z: 0.7883425\n"
-  "    w: 0.6108985\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick12\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.333333\n"
-  "    y: -0.666667\n"
-  "    z: -1.333334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.6113073\n"
-  "    y: -0.24886808\n"
-  "    z: 0.74127805\n"
-  "    w: 0.12196292\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick13\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -1.666667\n"
-  "    y: -0.666667\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.11564452\n"
-  "    y: -0.16205616\n"
-  "    z: 0.02968246\n"
-  "    w: 0.9795321\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 26.0
-    y: 3.0
-    z: 3.0
-  }
-  scale3 {
-    x: 6.0
-    y: 6.0
-    z: 6.0
-  }
-}
-embedded_instances {
-  id: "outcropping1"
-  data: "components {\n"
-  "  id: \"cube_brick\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  rotation {\n"
-  "    x: 0.2963768\n"
-  "    y: -0.15643793\n"
-  "    z: -0.19722253\n"
-  "    w: 0.9212987\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick1\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.166667\n"
-  "    z: -0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.42438525\n"
-  "    y: -0.25491706\n"
-  "    z: -0.0020011994\n"
-  "    w: 0.86885583\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick2\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.333333\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.27097893\n"
-  "    y: -0.8435091\n"
-  "    z: -0.03532822\n"
-  "    w: 0.46240118\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick3\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.333333\n"
-  "    y: -0.333333\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.5562556\n"
-  "    y: -0.18008295\n"
-  "    z: 0.40560257\n"
-  "    w: 0.70259273\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick4\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.666667\n"
-  "    y: -0.666666\n"
-  "    z: -0.833334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.4066652\n"
-  "    y: 0.051833466\n"
-  "    z: 0.8233046\n"
-  "    w: 0.3925638\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick5\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.333333\n"
-  "    y: -0.5\n"
-  "    z: -1.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.8433923\n"
-  "    y: -0.24587378\n"
-  "    z: 0.47029752\n"
-  "    w: -0.08399843\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick6\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -1.166667\n"
-  "    y: -0.5\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.28027093\n"
-  "    y: 0.13230819\n"
-  "    z: 0.1755058\n"
-  "    w: 0.9344199\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick7\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    y: -0.166667\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.097592756\n"
-  "    y: -0.5037822\n"
-  "    z: -0.22626771\n"
-  "    w: 0.8279385\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick8\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.333334\n"
-  "    z: -0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.6241352\n"
-  "    y: -0.40685543\n"
-  "    z: -0.22331986\n"
-  "    w: 0.6285318\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick9\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.5\n"
-  "    y: -0.5\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.4904846\n"
-  "    y: -0.8637331\n"
-  "    z: -0.0078245485\n"
-  "    w: 0.11545063\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick10\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.666666\n"
-  "    y: -0.5\n"
-  "    z: 0.333333\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.20628078\n"
-  "    y: -0.3769918\n"
-  "    z: 0.4443176\n"
-  "    w: 0.7860708\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick11\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -0.500001\n"
-  "    y: -0.833333\n"
-  "    z: -1.333334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.059180383\n"
-  "    y: 0.042625174\n"
-  "    z: 0.7883425\n"
-  "    w: 0.6108985\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick12\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: 0.333333\n"
-  "    y: -0.666667\n"
-  "    z: -1.333334\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.6113073\n"
-  "    y: -0.24886808\n"
-  "    z: 0.74127805\n"
-  "    w: 0.12196292\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"cube_brick13\"\n"
-  "  component: \"/example/assets/cube_brick.model\"\n"
-  "  position {\n"
-  "    x: -1.666667\n"
-  "    y: -0.666667\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.11564452\n"
-  "    y: -0.16205616\n"
-  "    z: 0.02968246\n"
-  "    w: 0.9795321\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 21.0
-    y: 5.0
-    z: 2.0
-  }
-  rotation {
-    x: 0.1188344
-    y: -0.76107824
-    z: 0.0983754
-    w: 0.63004804
-  }
-  scale3 {
-    x: 4.0
-    y: 4.0
-    z: 4.0
-  }
-}
-embedded_instances {
-  id: "light_pivot1"
-  children: "light_bulb1"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "  properties {\n"
-  "    id: \"period\"\n"
-  "    value: \"8.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 25.0
-    y: 4.0
-  }
-}
-embedded_instances {
-  id: "light_bulb1"
-  children: "point_light_emitter_white1"
-  children: "point_light_soft_white61"
-  data: ""
-  position {
-    x: 14.0
-  }
-}
-embedded_instances {
-  id: "light_pivot"
-  children: "light_bulb"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  ""
-  position {
-    x: -26.0
-    y: 8.0
-    z: 6.0
-  }
-}
-embedded_instances {
-  id: "light_bulb"
-  children: "point_light_emitter_white"
-  children: "point_light_soft_white30"
-  data: ""
-  position {
-    x: -14.0
-  }
-}
-embedded_instances {
-  id: "light_pivot2"
-  children: "pivot2"
-  data: ""
-  position {
-    y: 13.0
-    z: -20.0
-  }
-  rotation {
-    z: 0.21643962
-    w: 0.976296
-  }
-}
-embedded_instances {
-  id: "spotlight_red"
-  children: "spot_light_emitter_red"
-  children: "spot_light_red"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  ""
-  position {
-    x: -25.0
-    y: 32.0
-    z: -20.0
-  }
-  rotation {
-    x: -0.2923717
-    w: 0.9563047
-  }
-}
-embedded_instances {
-  id: "spotlight_green"
-  children: "pivot_green"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  ""
-  position {
-    y: 32.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "pivot_green"
-  children: "spot_light_emitter_green"
-  children: "spot_light_green"
-  data: ""
-  rotation {
-    x: 0.20673801
-    y: 0.67620957
-    z: -0.20673801
-    w: 0.67620957
-  }
-}
-embedded_instances {
-  id: "spotlight_blue"
-  children: "pivot_blue"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  ""
-  position {
-    x: 25.0
-    y: 32.0
-    z: -20.0
-  }
-}
-embedded_instances {
-  id: "pivot_blue"
-  children: "spot_light_blue"
-  children: "spot_light_emitter_blue"
-  data: ""
-  rotation {
-    x: 0.2923717
-    w: 0.9563047
-  }
-}
-embedded_instances {
-  id: "pivot2"
-  children: "light_bulb2"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "  properties {\n"
-  "    id: \"period\"\n"
-  "    value: \"12.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "}\n"
-  ""
-}
-embedded_instances {
-  id: "light_bulb2"
-  children: "point_light_emitter_white2"
-  children: "point_light_soft_white62"
-  data: ""
-  position {
-    z: -12.0
-  }
-}
-embedded_instances {
-  id: "decals"
-  children: "defold_decal"
-  children: "ice_decal"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "}\n"
-  ""
-  position {
-    x: 25.0
-    y: 11.0
-    z: 1.0
-  }
-}
-embedded_instances {
-  id: "light_pivot3"
-  children: "light_bulb3"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "  properties {\n"
-  "    id: \"period\"\n"
-  "    value: \"6.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"reverse\"\n"
-  "    value: \"true\"\n"
-  "    type: PROPERTY_TYPE_BOOLEAN\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 25.0
-    y: 4.0
-  }
-}
-embedded_instances {
-  id: "light_bulb3"
-  children: "point_light_emitter_white3"
-  children: "point_light_soft_white"
-  data: ""
-  position {
-    x: -11.0
-    y: 4.0
-  }
-}
-embedded_instances {
-  id: "light_pivot4"
-  children: "pivot"
-  data: ""
-  position {
-    x: -26.0
-    y: 12.0
-    z: 6.0
-  }
-  rotation {
-    z: 0.21643962
-    w: 0.976296
-  }
-}
-embedded_instances {
-  id: "pivot"
-  children: "light_bulb4"
-  data: "components {\n"
-  "  id: \"rotate\"\n"
-  "  component: \"/example/main/rotate.script\"\n"
-  "  properties {\n"
-  "    id: \"period\"\n"
-  "    value: \"9.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"reverse\"\n"
-  "    value: \"true\"\n"
-  "    type: PROPERTY_TYPE_BOOLEAN\n"
-  "  }\n"
-  "}\n"
-  ""
-}
-embedded_instances {
-  id: "light_bulb4"
-  children: "point_light_emitter_white4"
-  children: "point_light_soft_white1"
-  data: ""
-  position {
-    z: 10.0
-  }
-  scale3 {
-    x: 0.9
-    y: 0.9
-    z: 0.9
-  }
-}
-embedded_instances {
   id: "flowers"
   children: "flower"
   children: "flower1"
@@ -3657,51 +3979,1044 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "logos"
-  children: "logo"
-  children: "logo1"
-  children: "logo2"
-  children: "logo3"
-  children: "logo4"
-  children: "logo5"
-  children: "logo6"
-  children: "logo7"
-  data: ""
+  id: "shadow_scene"
+  children: "floor1"
+  children: "light_with_shadow_pivot"
+  children: "light_with_shadow_pivot1"
+  children: "pillar_brick1"
+  children: "pillar_brick2"
+  children: "pillar_brick3"
+  children: "spot_light_with_shadows"
+  children: "spot_light_with_shadows1"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    y: 1.5\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    y: 2.0\n"
+  "    z: -2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
 }
 embedded_instances {
-  id: "sheep"
-  children: "sheep1"
-  data: ""
+  id: "light_with_shadow_pivot"
+  children: "light_bulb5"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"16.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"reverse\"\n"
+  "    value: \"true\"\n"
+  "    type: PROPERTY_TYPE_BOOLEAN\n"
+  "  }\n"
+  "}\n"
+  ""
   position {
-    x: 25.0
-    z: 27.0
+    x: -8.0
+    y: 2.415387
+    z: -0.987749
   }
 }
 embedded_instances {
-  id: "weeds"
-  children: "weeds_big"
-  children: "weeds_big1"
-  children: "weeds_big2"
-  children: "weeds_small"
-  children: "weeds_small1"
-  children: "weeds_small2"
-  children: "weeds_small3"
-  children: "weeds_small4"
-  children: "weeds_small5"
-  children: "weeds_small6"
-  children: "weeds_small7"
-  children: "weeds_small8"
-  children: "weeds_small9"
+  id: "light_bulb5"
+  children: "point_light_emitter_white5"
+  children: "point_light_with_shadows"
   data: ""
   position {
-    x: 25.0
-    z: 27.0
+    x: 1.0
   }
 }
 embedded_instances {
-  id: "up"
+  id: "floor1"
+  data: "components {\n"
+  "  id: \"quad_2x2_tile\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile1\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile2\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile3\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile4\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile5\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile6\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile7\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile8\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile9\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile10\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile11\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile12\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile13\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile14\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile15\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile16\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile17\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile18\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile19\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile20\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile21\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile22\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile23\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile24\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile25\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile26\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile27\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile28\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile29\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile30\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile31\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile32\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile33\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile34\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile35\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile36\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile37\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile38\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile39\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile40\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile41\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile42\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile43\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile44\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile45\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile46\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile47\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile48\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile49\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 5.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile50\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile51\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile52\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile53\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile54\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile55\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile56\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 6.0\n"
+  "    z: -1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile57\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: -1.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile58\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile59\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 1.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile60\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 2.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile61\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 3.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile62\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 4.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"quad_2x2_tile63\"\n"
+  "  component: \"/example/assets/quad_tile.model\"\n"
+  "  position {\n"
+  "    x: 5.0\n"
+  "    z: 6.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.70710677\n"
+  "    w: -0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -25.0
+    z: -25.0
+  }
+  scale3 {
+    x: 10.0
+    z: 10.0
+  }
+}
+embedded_instances {
+  id: "pillar_brick1"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 4.0
+  }
+}
+embedded_instances {
+  id: "pillar_brick2"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -3.0
+    z: 2.0
+  }
+}
+embedded_instances {
+  id: "pillar_brick3"
+  data: "components {\n"
+  "  id: \"cube_brick\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick1\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick2\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick3\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"cube_brick4\"\n"
+  "  component: \"/example/assets/cube_brick.model\"\n"
+  "  position {\n"
+  "    y: 4.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: -0.70710677\n"
+  "    w: 0.70710677\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -2.0
+    z: -1.0
+  }
+}
+embedded_instances {
+  id: "light_with_shadow_pivot1"
+  children: "light_bulb6"
+  data: "components {\n"
+  "  id: \"rotate\"\n"
+  "  component: \"/example/main/rotate.script\"\n"
+  "  properties {\n"
+  "    id: \"period\"\n"
+  "    value: \"24.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"reverse\"\n"
+  "    value: \"false\"\n"
+  "    type: PROPERTY_TYPE_BOOLEAN\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    y: 3.0
+  }
+}
+embedded_instances {
+  id: "light_bulb6"
+  children: "point_light_emitter_white6"
+  children: "point_light_with_shadows1"
   data: ""
   position {
-    y: 1.0
+    x: 1.0
   }
 }

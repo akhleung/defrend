@@ -32,19 +32,19 @@ fragment_constants {
   type: CONSTANT_TYPE_VIEW_INVERSE
 }
 fragment_constants {
-  name: "params1"
+  name: "shadow_params1"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "params2"
+  name: "shadow_params2"
   type: CONSTANT_TYPE_USER
   value {
   }
 }
 fragment_constants {
-  name: "params3"
+  name: "texel_size"
   type: CONSTANT_TYPE_USER
   value {
   }

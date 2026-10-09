@@ -1,10 +1,6 @@
 components {
-  id: "flicker"
-  component: "/example/main/flicker.script"
-}
-components {
   id: "point_light"
-  component: "/defrend/scripts/controllers/point_light.script"
+  component: "/defrend/scripts/controllers/point_light_with_shadows.script"
 }
 embedded_components {
   id: "model"

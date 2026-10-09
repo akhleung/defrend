@@ -39,28 +39,12 @@ function M.light.init()
 end
 
 local point_light = settings.point_light
-local params2 = vmath.vector4()
-local params3 = vmath.vector4()
 function M.point_light.init()
 	light_vol_attn.x = point_light.attenuation
 
-	params2.x = point_light.pcf_samples
-	params2.y = point_light.poisson_samples
-	params2.z = point_light.poisson_scale
-	params2.w = 0
-	if settings.point_light.soft_penumbras then
-		params2.w = 1
-	end
+	-- shadow mapping params will be set by the `point_light_with_shadows` controller script
 
-	params3.x = point_light.hash_factor
-	params3.y = point_light.hash_scale
-	params3.z = 1 / (6 * point_light.shadow_map_resolution) -- horizontal texel size
-	params3.w = 1 / (point_light.shadow_caster_count * point_light.shadow_map_resolution) -- vertical texel size
-
-	M.geometry.uniforms.light_vol_attn		= light_vol_attn;
-	-- `params1` will be set by the `point_light_with_shadows` controller script
-	M.point_light.uniforms.params2			= params2
-	M.point_light.uniforms.params3			= params3
+	M.geometry.uniforms.light_vol_attn		= light_vol_attn
 	M.point_light.uniforms.light_vol_attn	= light_vol_attn
 end
 
@@ -71,8 +55,8 @@ function M.spot_light.init()
 
 	-- shadow mapping params will be set by the `spot_light_with_shadows` controller script
 
-	M.geometry.uniforms.light_vol_attn = light_vol_attn
-	M.spot_light.uniforms.light_vol_attn = light_vol_attn
+	M.geometry.uniforms.light_vol_attn		= light_vol_attn
+	M.spot_light.uniforms.light_vol_attn	= light_vol_attn
 end
 
 local shadow = settings.shadow

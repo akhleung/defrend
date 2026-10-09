@@ -1,0 +1,21 @@
+#version 420 core
+
+in vec4 position;// positions are in world space
+#ifndef EDITOR
+in mat4 mtx_world;
+#endif
+
+uniform shadow_vp {
+	#ifdef EDITOR
+	mat4 mtx_world;
+	#endif
+	mat4 mtx_view;
+	mat4 mtx_viewproj;
+};
+
+out vec3 var_frag_pos;
+
+void main() {
+	var_frag_pos = (mtx_view * mtx_world * position).xyz;
+	gl_Position = mtx_viewproj * mtx_world * position;
+}

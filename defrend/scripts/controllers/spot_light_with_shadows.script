@@ -1,5 +1,4 @@
-local settings	= require("defrend.render.settings")
-local lights	= settings.spot_light
+local settings	= require("defrend.render.settings").spot_light
 local queue		= require("defrend.scripts.configurators.queue")
 local msgs		= require("defrend.messages")
 
@@ -22,9 +21,9 @@ go.property("soft_penumbras", true)
 
 local function property_or_default(property, default)
 	if property < 0 then
-		return property
-	else
 		return default
+	else
+		return property
 	end
 end
 
@@ -43,21 +42,21 @@ local function do_init(self)
 	self.texel_size = vmath.vector4(1 / attachment.width, 1 / attachment.height, 0, 0)
 
 	self.shadow_params1 = vmath.vector4()
-	self.shadow_params1.x = property_or_default(self.shadow_bias_near, lights.shadow_bias_near)
-	self.shadow_params1.y = property_or_default(self.shadow_bias_far, lights.shadow_bias_far)
+	self.shadow_params1.x = property_or_default(self.shadow_bias_near, settings.shadow_bias_near)
+	self.shadow_params1.y = property_or_default(self.shadow_bias_far, settings.shadow_bias_far)
 	self.shadow_params1.z = 0
 	if self.soft_penumbras then
 		self.shadow_params1.z = 1
 	end
-	self.shadow_params1.w = property_or_default(self.pcf_samples, lights.pcf_samples)
+	self.shadow_params1.w = property_or_default(self.pcf_samples, settings.pcf_samples)
 
 	local avg_texel_size = (self.texel_size.x + self.texel_size.y) / 2
 
 	self.shadow_params2 = vmath.vector4()
-	self.shadow_params2.x = property_or_default(self.poisson_samples, lights.poisson_samples)
-	self.shadow_params2.y = property_or_default(self.poisson_scale, lights.poisson_scale) * avg_texel_size
-	self.shadow_params2.z = property_or_default(self.hash_factor, lights.hash_factor)
-	self.shadow_params2.w = property_or_default(self.hash_scale, lights.hash_scale) * avg_texel_size
+	self.shadow_params2.x = property_or_default(self.poisson_samples, settings.poisson_samples)
+	self.shadow_params2.y = property_or_default(self.poisson_scale, settings.poisson_scale) * avg_texel_size
+	self.shadow_params2.z = property_or_default(self.hash_factor, settings.hash_factor)
+	self.shadow_params2.w = property_or_default(self.hash_scale, settings.hash_scale) * avg_texel_size
 
 	local mtx_world	= go.get_world_transform(self.url)
 	local source	= vector4_to_vector3(mtx_world * SOURCE)
@@ -67,10 +66,6 @@ local function do_init(self)
 	local to_edge	= vmath.normalize(edge - source)
 	self.fov		= 2 * math.acos(vmath.dot(to_target, to_edge))
 
-	local rt_info = resource.get_render_target_info(self.shadow_map)
-	local attachment = rt_info.attachments[1]
-	self.texture = attachment.texture
-	self.texel_size = vmath.vector4(1 / attachment.width, 1 / attachment.height, 0, 0)
 	self.message.shadow_map = rt_info.handle
 	self.message.shadow_map_width = attachment.width
 	self.message.shadow_map_height = attachment.height
@@ -108,7 +103,7 @@ function late_update(self, dt)
 	local mtx_proj	= vmath.matrix4_perspective(self.fov, 1, range * self.light_start, range)
 	local mtx_light	= mtx_proj * mtx_view
 
-	go.set(self.model, "mtx_light", mtx_light)
+	go.set(self.model, "mtx_light", mtx_light) ---@diagnostic disable-line: param-type-mismatch
 
 	self.message.mtx_view = mtx_view
 	self.message.mtx_proj = mtx_proj
@@ -130,4 +125,8 @@ end
 
 function on_reload(self)
 	do_init(self)
+end
+
+function final(self)
+	msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
 end
