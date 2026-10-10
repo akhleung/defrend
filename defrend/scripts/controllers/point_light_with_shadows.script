@@ -1,30 +1,84 @@
-local settings	= require("defrend.render.settings")
-local shadows	= require("defrend.render.shadows.point_light")
+local settings	= require("defrend.render.settings").point_light
 local queue		= require("defrend.scripts.configurators.queue")
 local msgs		= require("defrend.messages")
 
 go.property("enabled", true)
 
-local function do_uniforms(self)
-	self.params1.z = settings.point_light.shadow_bias_near
-	self.params1.w = settings.point_light.shadow_bias_far
-	go.set(self.model, "params1", self.params1)
+go.property("shadow_map", resource.render_target())
+-- set numeric properties to negative values to use the global defaults
+go.property("shadow_bias_near", 0.1)
+go.property("shadow_bias_far", 0.6)
+go.property("pcf_samples", 8)
+go.property("poisson_samples", 4)
+go.property("poisson_scale", 5)
+go.property("hash_factor", 7879)
+go.property("hash_scale", 5)
+go.property("soft_penumbras", true)
+
+local HALF_PI = math.pi / 2
+
+local PX = vmath.vector3(1, 0, 0)
+local NX = vmath.vector3(-1, 0, 0)
+local PY = vmath.vector3(0, 1, 0)
+local NY = vmath.vector3(0, -1, 0)
+local PZ = vmath.vector3(0, 0, 1)
+local NZ = vmath.vector3(0, 0, -1)
+
+local CUBE_FACES = { PX, NX, PY, NY, PZ, NZ, }
+local UP_VECTORS = { NY, NY, PZ, NZ, NY, NY, }
+
+local function property_or_default(property, default)
+	if property < 0 then
+		return default
+	else
+		return property
+	end
 end
 
 local function do_init(self)
-	self.index = shadows.add_light(self.url)
 
-	self.params1 = vmath.vector4()
-	self.params1.x = settings.point_light.shadow_caster_count
-	self.params1.y = (self.index - 1) * (1 / settings.point_light.shadow_caster_count) -- normalized y-offset in atlas
+	local rt_info = resource.get_render_target_info(self.shadow_map)
+	local attachment = rt_info.attachments[1]
+	local texel_size = 1 / attachment.width -- cubemap faces must be square, so no point in using both width and height
+	self.texture = attachment.texture
+	self.texel_size = vmath.vector4(texel_size, 0, 0, 0)
+
+	self.shadow_params1 = vmath.vector4()
+	self.shadow_params1.x = property_or_default(self.shadow_bias_near, settings.shadow_bias_near)
+	self.shadow_params1.y = property_or_default(self.shadow_bias_far, settings.shadow_bias_far)
+	self.shadow_params1.z = 0
+	if self.soft_penumbras then
+		self.shadow_params1.z = 1
+	end
+	self.shadow_params1.w = property_or_default(self.pcf_samples, settings.pcf_samples)
+
+	self.shadow_params2 = vmath.vector4()
+	self.shadow_params2.x = property_or_default(self.poisson_samples, settings.poisson_samples)
+	self.shadow_params2.y = property_or_default(self.poisson_scale, settings.poisson_scale) * texel_size
+	self.shadow_params2.z = property_or_default(self.hash_factor, settings.hash_factor)
+	self.shadow_params2.w = property_or_default(self.hash_scale, settings.hash_scale) * texel_size
 
 	self.mtx_lights = {}
-	do_uniforms(self)
+
+	self.message.shadow_map = rt_info.handle
+	self.message.shadow_map_resolution = attachment.width
+	go.set(self.model, "shadow_params1", self.shadow_params1)
+	go.set(self.model, "shadow_params2", self.shadow_params2)
+	go.set(self.model, "texel_size", self.texel_size)
+	go.set(self.model, "texture2", self.texture)
 end
 
 function init(self)
 	self.url = msg.url(".")
 	self.model = msg.url("#model")
+	self.mtx_views = {}
+	self.mtx_lights = {}
+
+	self.message = {}
+	self.message.id = self.url.path
+	self.message.url = self.url
+	self.message.mtx_views = self.mtx_views
+	self.message.mtx_lights = self.mtx_lights
 
 	queue.add_pending_point_light(function ()
 		do_init(self)
@@ -35,37 +89,37 @@ function late_update(self)
 	if not self.enabled then
 		return
 	end
-	local views, proj = shadows.generate_matrices(self.url)
-	if not (views and proj) then
-		msg.post(self.url, msgs.DISABLE)
-		return
+
+	local center = go.get_world_position(self.url)
+	local radius = go.get_world_scale_uniform(self.url) * 0.5
+	self.mtx_proj = vmath.matrix4_perspective(HALF_PI, 1, 0.1, radius)
+	for face_index = 1, 6 do
+		local mtx_view = vmath.matrix4_look_at(center, center + CUBE_FACES[face_index], UP_VECTORS[face_index])
+		self.mtx_views[face_index] = mtx_view
+		self.mtx_lights[face_index] = self.mtx_proj * mtx_view
 	end
-	for i = 1, #views do
-		self.mtx_lights[i] = proj * views[i]
-	end
+
 	go.set(self.model, "mtx_lights", self.mtx_lights)
+
+	self.message.mtx_proj = self.mtx_proj
+	msg.post("@render:", msgs.UPDATE_POINT_LIGHT, self.message)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == msgs.ENABLE and self.disabled then
+		self.enabled = true
+	elseif message_id == msgs.DISABLE and self.enabled then
+		msg.post("@render:", msgs.REMOVE_POINT_LIGHT, self.message)
+		self.enabled = false
+	elseif message_id == msgs.REFRESH then
+		do_init(self)
+	end
 end
 
 function on_reload(self)
-	shadows.remove_light(self.url)
 	do_init(self)
 end
 
 function final(self)
-	shadows.remove_light(self.url)
-end
-
--- update uniforms on minor changes; init everything when shadowmap changes
-function on_message(self, message_id, message, sender)
-	if message_id == msgs.ENABLE and not self.enabled then
-		self.enabled = true
-		self.index = shadows.add_light(self.url)
-	elseif message_id == msgs.DISABLE and self.enabled then
-		self.enabled = false
-		shadows.remove_light(self.url)
-	elseif message_id == msgs.REFRESH then
-		do_init(self)
-	elseif message_id == msgs.UNIFORMS then
-		do_uniforms(self)
-	end
+	msg.post("@render:", msgs.REMOVE_POINT_LIGHT, self.message)
 end

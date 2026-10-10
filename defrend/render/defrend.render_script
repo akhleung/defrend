@@ -28,6 +28,7 @@ local g_buffer
 local screen_camera
 local gui_camera
 
+local POINT_LIGHTS = {}
 local SPOT_LIGHTS = {}
 
 function init(self)
@@ -183,9 +184,7 @@ function update(self)
 		render.enable_material("point_light_material")
 		render.draw(predicates.point_light, geometry_options)
 		render.enable_material("point_light_with_shadows_material")
-		render.enable_texture("shadow_map", render_targets.get_point_light_shadow_map(), render_targets.SHADOW_MAP_DEPTH)
 		render.draw(predicates.point_light_with_shadows, point_light_options)
-		render.disable_texture("shadow_map")
 	end
 	if settings.spot_light.enabled then
 		render.enable_material("spot_light_material")
@@ -325,6 +324,10 @@ end
 function on_message(self, message_id, message)
 	if message_id == msgs.SET_VIEW_PROJ then
 		update_camera_uniforms()
+	elseif message_id == msgs.UPDATE_POINT_LIGHT then
+		POINT_LIGHTS[message.id] = message
+	elseif message_id == msgs.REMOVE_POINT_LIGHT then
+		POINT_LIGHTS[message.id] = nil
 	elseif message_id == msgs.UPDATE_SPOT_LIGHT then
 		SPOT_LIGHTS[message.id] = message
 	elseif message_id == msgs.REMOVE_SPOT_LIGHT then
@@ -388,25 +391,36 @@ render_directional_shadows = function()
 	end
 end
 
+local CUBE_FACES = {
+    graphics.CUBEMAP_FACE_POSITIVE_X, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_NEGATIVE_X, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_POSITIVE_Y, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_NEGATIVE_Y, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_POSITIVE_Z, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_NEGATIVE_Z, ---@diagnostic disable-line: undefined-field
+}
+local cubemap_options = {}
 render_point_light_shadows = function ()
 	if not settings.shadow.enabled then
 		return
 	end
-	local map_resolution = settings.point_light.shadow_map_resolution
-	render.set_render_target(point_light_shadow_map)
-	render.clear(clear_options.clear_shadow_options)
-	point_light_shadows.for_each(function (_, i, light_views, light_proj)
-		for face_index, light_view in ipairs(light_views) do
-			local mtx_light = light_proj * light_view
-			render.set_view(light_view)
-			render.set_projection(light_proj)
-			local x_offset = (face_index - 1) * map_resolution
-			local y_offset = (i - 1) * map_resolution
-			render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
-			shadow_options.frustum = mtx_light
+	for _, light in pairs(POINT_LIGHTS) do
+		local shadow_map = light.shadow_map
+		local resolution = light.shadow_map_resolution
+		local mtx_proj = light.mtx_proj
+		local mtx_views = light.mtx_views
+		local mtx_lights = light.mtx_lights
+		render.set_viewport(0, 0, resolution, resolution)
+		for face_index = 1, 6 do
+			cubemap_options.face = CUBE_FACES[face_index]
+			render.set_render_target(shadow_map, cubemap_options)
+			render.clear(clear_options.clear_shadow_options)
+			render.set_view(mtx_views[face_index])
+			render.set_projection(mtx_proj)
+			shadow_options.frustum = mtx_lights[face_index]
 			draw_shadow_casters()
 		end
-	end)
+	end
 end
 
 render_spot_light_shadows = function ()

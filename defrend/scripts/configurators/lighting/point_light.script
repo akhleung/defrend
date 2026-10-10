@@ -1,14 +1,11 @@
 local settings	= require("defrend.render.settings").point_light
 local uniforms	= require("defrend.render.uniforms").point_light
-local shadows	= require("defrend.render.shadows.point_light")
 local queue		= require("defrend.scripts.configurators.queue")
 local msgs		= require("defrend.messages")
 
 go.property("enabled", true)
-go.property("attenuation", 5)
+go.property("attenuation_power", 5)
 
-go.property("shadow_caster_count", 6)
-go.property("shadow_map_resolution", 256)
 go.property("shadow_bias_near", 0.1)
 go.property("shadow_bias_far", 0.5)
 go.property("pcf_samples", 8)
@@ -20,10 +17,8 @@ go.property("soft_penumbras", true)
 
 local function do_init(self)
 	settings.enabled		= self.enabled
-	settings.attenuation	= self.attenuation
+	settings.attenuation	= self.attenuation_power
 
-	settings.shadow_caster_count	= self.shadow_caster_count
-	settings.shadow_map_resolution	= self.shadow_map_resolution
 	settings.shadow_bias_near		= self.shadow_bias_near
 	settings.shadow_bias_far		= self.shadow_bias_far
 	settings.pcf_samples			= self.pcf_samples
@@ -34,8 +29,6 @@ local function do_init(self)
 	settings.soft_penumbras			= self.soft_penumbras
 
 	uniforms.init()
-	shadows.init()
-	msg.post("@render:", msgs.RESIZE_POINT_LIGHT_SHADOW_MAP)
 end
 
 function init(self)
@@ -51,4 +44,10 @@ end
 
 function on_reload(self)
 	do_init(self)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
 end
