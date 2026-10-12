@@ -400,6 +400,7 @@ local CUBE_FACES = {
     graphics.CUBEMAP_FACE_NEGATIVE_Z, ---@diagnostic disable-line: undefined-field
 }
 local cubemap_options = {}
+local radius = vmath.vector4()
 render_point_light_shadows = function ()
 	if not settings.shadow.enabled then
 		return
@@ -410,6 +411,8 @@ render_point_light_shadows = function ()
 		local mtx_proj = light.mtx_proj
 		local mtx_views = light.mtx_views
 		local mtx_lights = light.mtx_lights
+		radius.x = light.radius
+		shadow_options.constants.radius = radius
 		render.set_viewport(0, 0, resolution, resolution)
 		for face_index = 1, 6 do
 			cubemap_options.face = CUBE_FACES[face_index]
@@ -418,7 +421,12 @@ render_point_light_shadows = function ()
 			render.set_view(mtx_views[face_index])
 			render.set_projection(mtx_proj)
 			shadow_options.frustum = mtx_lights[face_index]
-			draw_shadow_casters()
+			render.enable_state(graphics.STATE_CULL_FACE)
+			if settings.geometry.models_enabled then
+				render.set_cull_face(graphics.FACE_TYPE_BACK)
+				render.enable_material("cubemap_shadow_material")
+				render.draw(predicates.model, shadow_options)
+			end
 		end
 	end
 end
