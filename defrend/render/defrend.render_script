@@ -392,18 +392,22 @@ render_directional_shadows = function()
 end
 
 local CUBE_FACES = {
-    graphics.CUBEMAP_FACE_POSITIVE_X, ---@diagnostic disable-line: undefined-field
-    graphics.CUBEMAP_FACE_NEGATIVE_X, ---@diagnostic disable-line: undefined-field
-    graphics.CUBEMAP_FACE_POSITIVE_Y, ---@diagnostic disable-line: undefined-field
-    graphics.CUBEMAP_FACE_NEGATIVE_Y, ---@diagnostic disable-line: undefined-field
-    graphics.CUBEMAP_FACE_POSITIVE_Z, ---@diagnostic disable-line: undefined-field
-    graphics.CUBEMAP_FACE_NEGATIVE_Z, ---@diagnostic disable-line: undefined-field
+    graphics.CUBEMAP_FACE_POSITIVE_X,
+    graphics.CUBEMAP_FACE_NEGATIVE_X,
+    graphics.CUBEMAP_FACE_POSITIVE_Y,
+    graphics.CUBEMAP_FACE_NEGATIVE_Y,
+    graphics.CUBEMAP_FACE_POSITIVE_Z,
+    graphics.CUBEMAP_FACE_NEGATIVE_Z,
 }
 local cubemap_options = {}
 local radius = vmath.vector4()
 render_point_light_shadows = function ()
 	if not settings.shadow.enabled then
 		return
+	end
+	if settings.geometry.models_enabled then
+		render.enable_state(graphics.STATE_CULL_FACE)
+		render.set_cull_face(graphics.FACE_TYPE_BACK)
 	end
 	for _, light in pairs(POINT_LIGHTS) do
 		local shadow_map = light.shadow_map
@@ -421,9 +425,7 @@ render_point_light_shadows = function ()
 			render.set_view(mtx_views[face_index])
 			render.set_projection(mtx_proj)
 			shadow_options.frustum = mtx_lights[face_index]
-			render.enable_state(graphics.STATE_CULL_FACE)
 			if settings.geometry.models_enabled then
-				render.set_cull_face(graphics.FACE_TYPE_BACK)
 				render.enable_material("cubemap_shadow_material")
 				render.draw(predicates.model, shadow_options)
 			end
