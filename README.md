@@ -8,5 +8,5 @@ This is a debugging snapshot to demonstrate a strange issue I've encountered whi
 
 Other notes:
 * This is a deferred rendering pipeline in which point lights are represented by sphere models and drawn with an instanced material. The built-in light components are not used.
-* During the shadowmapping phase (`cubemap_shadow.material`), I'm writing linear depth to `gl_FragDepth` in order to avoid extra math in the lighting shader. In particular, I want to avoid having to manually determine which cube face a fragment should sample from, and then manually putting that fragment into the corresponding coordinate space.
+* During the shadowmapping phase (`cubemap_shadow.material`), I'm writing linear depth to `gl_FragDepth` in order to avoid extra math in the lighting shader. In particular, I want to avoid having to manually determine which cube face a fragment should sample from, as well as having to manually put that fragment into the corresponding coordinate space.
 * In an earlier implementation, I was using the default nonlinear depth from the depth map and it worked fine. After I switched to linear depth, it seemed to work fine for a while, but at some point the glitches started and I can't seem to get it back to a properly working state.
