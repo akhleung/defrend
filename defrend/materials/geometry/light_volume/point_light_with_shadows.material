@@ -43,12 +43,6 @@ fragment_constants {
   value {
   }
 }
-fragment_constants {
-  name: "texel_size"
-  type: CONSTANT_TYPE_USER
-  value {
-  }
-}
 samplers {
   name: "depth_buffer"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE

@@ -26,7 +26,7 @@ uniform point_light_fp {
 	mat4 mtx_view_inv;
 	vec4 shadow_params1; // x: near bias, y: far bias, z: soft penumbras, w: pcf samples
 	vec4 shadow_params2; // x: poisson samples, y: poisson scale, z: hash factor, w: hash scale
-	vec4 texel_size; // x: texel size
+	vec4 texel_size; // x: texel size, y: light radius
 };
 
 float	near_bias		= shadow_params1.x;
@@ -37,7 +37,6 @@ int		POISSON_SAMPLES	= int(shadow_params2.x);
 float	POISSON_SCALE	= shadow_params2.y;
 float	HASH_FACTOR		= shadow_params2.z;
 float	HASH_SCALE		= shadow_params2.w;
-float	RADIUS			= texel_size.y;
 
 vec3 pcf_kernel[] = vec3[](
 	vec3(-1, -1, -1),
@@ -89,22 +88,19 @@ void main() {
 	float shininess = normal_sample.a * 255;
 	vec3 to_light = var_center - geom_pos;
 	float d = length(to_light);
-	if (d > RADIUS) discard;
+	if (d > var_radius) discard;
 
 	vec3 normal = normalize(normal_sample.xyz * 2.0 - 1.0);
-	float bias = mix(near_bias, far_bias, d / RADIUS);
+	float bias = mix(near_bias, far_bias, d / var_radius);
 	vec4 geom_pos_w = mtx_view_inv * vec4(geom_pos + normal * bias, 1.0);
 	vec3 geom_pos_l = geom_pos_w.xyz - var_center_w;
 
 	d = length(geom_pos_l);
-	float occludee_d = d / RADIUS;
-	float kernel_scale = occludee_d * texel_size.x * POISSON_SCALE;
-	kernel_scale = 0.05;
+	float occludee_d = d / var_radius;
 	float light = 0;
-	// light = texture(shadow_map, geom_pos_l).r < occludee_d ? 0 : 1;
 	for (int i = 0; i < 20; ++i) {
-		vec3 offset = pcf_kernel[i] * kernel_scale;
-		light += (texture(shadow_map, geom_pos_l + offset).r < occludee_d ? 0 : 1);
+		vec3 offset = pcf_kernel[i] * 0.04;
+		light += texture(shadow_map, geom_pos_l + offset).r < occludee_d ? 0 : 1;
 	}
 	light /= 20;
 
@@ -113,9 +109,8 @@ void main() {
 	vec3 to_light_normalized = normalize(to_light);
 	float diff = diffuse(to_light_normalized, normal);
 	float spec = specular(normalize(to_view), to_light_normalized, normal, shininess);
-	float attn = attn_inv_pow(d, RADIUS, var_attn);
+	float attn = attn_inv_pow(d, var_radius, var_attn);
 	light_out = vec4(var_color * diff * attn, spec * attn) * light;
-	// light_out = vec4(1, 0, 0, 0);
 
 	#ifdef EDITOR // visualization for viewing point light volumes in the editor
 	vec3 lat_normal = normalize(vec3(var_normal.x, 0, var_normal.z));
@@ -134,5 +129,6 @@ void main() {
 	} else {
 		discard;
 	}
+	light_out = vec4(var_color, 1.0);
 	#endif
 }
