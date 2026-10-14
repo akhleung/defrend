@@ -1,59 +1,12 @@
 # Defrend (pronounced "de-friend")
 
-Defrend is a deferred 3D rendering pipeline for the Defold game engine. It provides a collection of materials, shaders, scripts, and other components to facilitate the creation of 3D scenes with modern lighting and post-processing effects. Defrend currently offers the following:
+This is a debugging snapshot to demonstrate a strange issue I've encountered while implementing cubemap omnidirectional shadows. To see all aspects of the glitchy behavior, please do the following:
+1. Run the project as-is. One point light will render shadows correctly, but the other point light's shadows will flicker in and out, as if the shadowmap isn't always rendered or sampled. Additionally, some of the steady shadows appear to be geometrically incorrect.
+2. If you change the resolution of one of the cubemaps (even by only 1 pixel), the shadowmaps should render correctly.
+3. Alternatively, if you change the scale of one of the point lights so that they have different sizes, the shadowmaps should also render correctly. (E.g., change the scale of `/example/main/point_light_with_shadows.go` to 49 or 51.)
+4. When applying one of the above workarounds, try deleting the `texel_size` uniform from the `point_light_with_shadows.fp` shader and the `point_light_with_shadows.script` controller. The shadows will render incorrectly again, even though the `texel_size` uniform isn't used anywhere.
 
-- directional lighting
-- deferred, instanced point lights and spot lights
-- normal, specular, and emissive maps
-- stable, cascaded shadow mapping
-- billboard images and sprites
-- deferred, instanced decals
-- skyboxes
-- SSAO
-- glow effects
-- FXAA 3
-- dual Kawase blur
-- Gaussian blur
-- outline effects
-- comprehensive debug visualizations for the g-buffer, lighting buffers, shadow partitions, shadow map, ssao buffer, etc.
-- comprehensive GUI for dynamically configuring all the aforementioned features
-
-In addition to the preceding, Defrend also offers experimental versions of the following features, currently works-in-progress:
-
-- depth of field
-- kuwahara blur
-- bloom
-- gamma correction
-
-Please take a look at the **[web demo](https://akhleung.github.io/Defrend/index.html)** to get a feel for this library's capabilities (left-click and drag to rotate the camera around the scene; middle-click and drag to move the camera vertically and laterally; use the scroll wheel to move the camera forward and backward):
-
-[![demo screenshot](docs/images/demo.png)](https://akhleung.github.io/Defrend/index.html)
-
-## Table of contents
-
-- [Requirements](docs/requirements.md)
-- [Getting started](docs/getting_started.md)
-- [Materials / renderable objects](docs/materials.md)
-    - [Models](docs/materials.md#models)
-    - [Billboards](docs/materials.md#billboards)
-    - [Sprites](docs/materials.md#sprites)
-    - [Particle FX](docs/materials.md#particle-fx)
-    - [Decals](docs/materials.md#decals)
-    - [Skybox](docs/materials.md#Skybox)
-    - [Point lights and spot lights](docs/materials.md#point-lights-and-spot-lights)
-    - [Visualizations and debugging](docs/materials.md#visualizations-and-debugging)
-- [Lighting](docs/lighting.md)
-    - [Ambient light and distance fog](docs/lighting.md#ambient-light-and-distance-fog)
-    - [Directional lighting](docs/lighting.md#directional-lighting)
-    - [Point lights](docs/lighting.md#point-lights)
-    - [Spot lights](docs/lighting.md#spot-lights)
-    - [Shadows](docs/lighting.md#shadows)
-    - [SSAO](docs/lighting.md#ssao)
-    - [Visualizations and debugging](docs/lighting.md#visualizations-and-debugging)
-- [Post-processing](docs/post_processing.md)
-    - [Glow](docs/post_processing.md)
-    - [Dual Kawase blur](docs/post_processing.md)
-    - [Gaussian blur](docs/post_processing.md)
-    - [Outline](docs/post_processing.md)
-    - [FXAA](docs/post_processing.md)
-- [Visualizations / debugging](docs/visualizations.md)
+Other notes:
+* This is a deferred rendering pipeline in which point lights are represented by sphere models and drawn with an instanced material. The built-in light components are not used.
+* During the shadowmapping phase (`cubemap_shadow.material`), I'm writing linear depth to `gl_FragDepth` in order to avoid extra math in the lighting shader. In particular, I want to avoid having to manually determine which cube face a fragment should sample from, and then manually putting that fragment into the corresponding coordinate space.
+* In an earlier implementation, I was using the default nonlinear depth from the depth map and it worked fine. After I switched to linear depth, it seemed to work fine for a while, but at some point the glitches started and I can't seem to get it back to a properly working state.
