@@ -40,9 +40,15 @@ mediump vec2 hash23(mediump vec3 p3) {
     return fract(vec2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
-mediump vec3 hash33(vec3 p3) {
-	p3 = fract(p3 * MOD3);
-    p3 += dot(p3, p3.yxz + 19.19);
+// mediump vec3 hash33(vec3 p3) {
+// 	p3 = fract(p3 * MOD3);
+//     p3 += dot(p3, p3.yxz + 19.19);
+//     return fract((p3.xxy + p3.yxx) * p3.zyx);
+// }
+
+vec3 hash33(vec3 p3) {
+	p3 = fract(p3 * vec3(.1031, .1030, .0973));
+    p3 += dot(p3, p3.yxz + 33.33);
     return fract((p3.xxy + p3.yxx) * p3.zyx);
 }
 

@@ -8,6 +8,8 @@ go.property("light_start", 0)
 
 go.property("range_attenuation_power", 1)
 go.property("spread_attenuation_power", 1)
+
+go.property("shadows_enabled", true)
 go.property("shadow_bias_near", 0.1)
 go.property("shadow_bias_far", 0.6)
 go.property("pcf_samples", 8)
@@ -22,6 +24,8 @@ local function do_init(self)
 
 	settings.range_attenuation = self.range_attenuation_power
 	settings.spread_attenuation = self.spread_attenuation_power
+
+	settings.shadows_enabled = self.shadows_enabled
 	settings.shadow_bias_near = self.shadow_bias_near
 	settings.shadow_bias_far = self.shadow_bias_far
 	settings.pcf_samples = self.pcf_samples

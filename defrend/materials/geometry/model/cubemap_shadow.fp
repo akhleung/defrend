@@ -7,5 +7,6 @@ uniform shadow_fp {
 };
 
 void main() {
+	// write linear depth for cubemap/omnidirectional shadow mapping
 	gl_FragDepth = length(var_frag_pos) / radius.x;
 }

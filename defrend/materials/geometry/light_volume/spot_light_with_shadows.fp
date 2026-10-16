@@ -22,9 +22,9 @@ in vec3 var_lat_axis;
 in float var_pcnt_start;
 #endif
 
+uniform sampler2D shadow_map;
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
-uniform sampler2D shadow_map;
 
 uniform spot_light_fp {
 	mat4 mtx_view_inv;

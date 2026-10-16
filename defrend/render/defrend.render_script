@@ -6,7 +6,6 @@ local draw_options			= require("defrend.render.resources.draw_options")
 local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
 local directional_shadows	= require("defrend.render.shadows.directional")
-local point_light_shadows	= require("defrend.render.shadows.point_light")
 local msgs					= require("defrend.messages")
 
 local render_directional_shadows
@@ -22,7 +21,6 @@ local spot_light_options
 local ssao_options
 
 local shadow_map
-local point_light_shadow_map
 local g_buffer
 
 local screen_camera
@@ -40,7 +38,6 @@ function init(self)
 	predicates.init()
 	draw_options.init()
 	post_processors.init()
-	point_light_shadows.init()
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
@@ -53,7 +50,6 @@ function init(self)
 	ssao_blur_options	= draw_options.ssao_blur_options
 
 	shadow_map = render_targets.get_shadow_map()
-	point_light_shadow_map = render_targets.get_point_light_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
 
 	local identity = vmath.matrix4()
@@ -111,7 +107,6 @@ function update(self)
 	end
 
 	-- render sprites, billboards, and particles into g-buffer --
-	render.disable_state(graphics.STATE_CULL_FACE)
 	if settings.geometry.sprites_enabled then
 		render.enable_material("sprite_material")
 		render.draw(predicates.sprite, geometry_options)
@@ -128,6 +123,7 @@ function update(self)
 	end
 
 	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
+	render.disable_state(graphics.STATE_CULL_FACE)
 	render.set_render_target(render_targets.get_post_target())
 	render.set_depth_mask(false)
 	render.disable_state(graphics.STATE_DEPTH_TEST)
@@ -345,21 +341,16 @@ function on_message(self, message_id, message)
 	end
 end
 
-local function draw_shadow_casters()
+local function draw_shadow_casters(model_material, particle_material)
 	render.enable_state(graphics.STATE_CULL_FACE)
 	if settings.geometry.models_enabled then
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
-		render.enable_material("shadow_material")
+		render.enable_material(model_material)
 		render.draw(predicates.model, shadow_options)
-	end
-	if settings.geometry.sprites_enabled or settings.geometry.billboards_enabled then
-		render.set_cull_face(graphics.FACE_TYPE_FRONT)
-		render.enable_material("blob_shadow_material")
-		render.draw(predicates.blob_shadow, shadow_options)
 	end
 	if settings.geometry.particles_enabled then
 		render.disable_state(graphics.STATE_CULL_FACE)
-		render.enable_material("particle_shadow_material")
+		render.enable_material(particle_material)
 		render.draw(predicates.particle, shadow_options)
 	end
 end
@@ -386,7 +377,7 @@ render_directional_shadows = function()
 		local y_offset = partition.y * atlas_resolution
 		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 		shadow_options.frustum = mtx_light
-		draw_shadow_casters()
+		draw_shadow_casters("shadow_material", "particle_shadow_material")
 		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(cam_view)
 	end
 end
@@ -402,9 +393,6 @@ local CUBE_FACES = {
 local cubemap_options = {}
 local radius = vmath.vector4()
 render_point_light_shadows = function ()
-	if not settings.shadow.enabled then
-		return
-	end
 	if settings.geometry.models_enabled then
 		render.enable_state(graphics.STATE_CULL_FACE)
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
@@ -414,7 +402,6 @@ render_point_light_shadows = function ()
 		local resolution = light.shadow_map_resolution
 		local mtx_proj = light.mtx_proj
 		local mtx_views = light.mtx_views
-		local mtx_lights = light.mtx_lights
 		radius.x = light.radius
 		shadow_options.constants.radius = radius
 		render.set_viewport(0, 0, resolution, resolution)
@@ -422,29 +409,27 @@ render_point_light_shadows = function ()
 			cubemap_options.face = CUBE_FACES[face_index]
 			render.set_render_target(shadow_map, cubemap_options)
 			render.clear(clear_options.clear_shadow_options)
-			render.set_view(mtx_views[face_index])
-			render.set_projection(mtx_proj)
-			shadow_options.frustum = mtx_lights[face_index]
-			if settings.geometry.models_enabled then
-				render.enable_material("cubemap_shadow_material")
-				render.draw(predicates.model, shadow_options)
+			if settings.point_light.shadows_enabled then
+				render.set_view(mtx_views[face_index])
+				render.set_projection(mtx_proj)
+				shadow_options.frustum = mtx_proj * mtx_views[face_index]
+				draw_shadow_casters("cubemap_model_shadow_material", "cubemap_particle_shadow_material")
 			end
 		end
 	end
 end
 
 render_spot_light_shadows = function ()
-	if not settings.shadow.enabled then
-		return
-	end
 	for _, light in pairs(SPOT_LIGHTS) do
 		render.set_render_target(light.shadow_map)
 		render.clear(clear_options.clear_shadow_options)
-		render.set_view(light.mtx_view)
-		render.set_projection(light.mtx_proj)
-		render.set_viewport(0, 0, light.shadow_map_width, light.shadow_map_height)
-		shadow_options.frustum = light.mtx_light
-		draw_shadow_casters()
+		if settings.spot_light.shadows_enabled then
+			render.set_view(light.mtx_view)
+			render.set_projection(light.mtx_proj)
+			render.set_viewport(0, 0, light.shadow_map_width, light.shadow_map_height)
+			shadow_options.frustum = light.mtx_light
+			draw_shadow_casters("shadow_material", "particle_shadow_material")
+		end
 	end
 end
 

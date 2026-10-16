@@ -11,7 +11,7 @@ return function (self)
 	if changed then
 		if checked then
 			settings.light.sunlight_enabled = true
-			settings.light.directional_color = saved_sunlight_color
+			settings.light.directional_color = saved_sunlight_color or settings.light.directional_color
 		else
 			settings.light.sunlight_enabled = false
 			saved_sunlight_color = settings.light.directional_color

@@ -24,6 +24,11 @@ return function (self)
 	end
 
 	-- SHADOW SETTINGS
+	local changed, checked = imgui.checkbox("Shadows enabled", settings.spot_light.shadows_enabled)
+	if changed then
+		settings.spot_light.shadows_enabled = checked
+	end
+
 	local changed, value = imgui.input_float("Shadow bias near", settings.spot_light.shadow_bias_near, 0.05, 0.1)
 	if changed and value then
 		settings.spot_light.shadow_bias_near = value

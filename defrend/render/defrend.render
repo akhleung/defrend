@@ -144,6 +144,10 @@ render_resources {
   path: "/defrend/materials/geometry/light_volume/spot_light_with_shadows.material"
 }
 render_resources {
-  name: "cubemap_shadow_material"
+  name: "cubemap_model_shadow_material"
   path: "/defrend/materials/geometry/model/cubemap_shadow.material"
+}
+render_resources {
+  name: "cubemap_particle_shadow_material"
+  path: "/defrend/materials/geometry/billboard_sprite/cubemap_particle_shadow.material"
 }
