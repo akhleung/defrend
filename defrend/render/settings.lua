@@ -43,14 +43,11 @@ local M = {
 		-- light settings
 		attenuation = 1,
 		-- shadow settings
-		shadow_caster_count = 6,
-		pcf_samples = 8,
 		poisson_samples = 4,
-		poisson_scale = 5,
+		poisson_scale = 3,
 		hash_factor = 7879,
-		hash_scale = 5,
+		hash_scale = 3,
 		soft_penumbras = true,
-		shadow_map_resolution = 256,
 		shadow_bias_near = 0.1,
 		shadow_bias_far = 0.5,
 	},

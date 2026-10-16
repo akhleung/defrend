@@ -57,17 +57,6 @@ function M.init()
 			[graphics.BUFFER_TYPE_DEPTH_BIT] = shadow_depth_params,
 		}
 	)
-	point_light_shadow_map = render.render_target(
-		"point_light_shadow_map",
-		{
-			[graphics.BUFFER_TYPE_DEPTH_BIT] = {
-				format	= graphics.TEXTURE_FORMAT_DEPTH,
-				width	= settings.point_light.shadow_map_resolution * 6,
-				height	= settings.point_light.shadow_map_resolution * settings.point_light.shadow_caster_count,
-				flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE,
-			}
-		}
-	)
 	g_buffer = render.render_target(
 		"g_buffer",
 		{
@@ -190,17 +179,8 @@ function M.set_shadow_map_resolution(res)
 	render.set_render_target_size(M.get_shadow_map(), sr, sr)
 end
 
-function M.update_point_light_shadow_map_resolution()
-	local res = settings.point_light.shadow_map_resolution
-	render.set_render_target_size(M.get_point_light_shadow_map(), res * 6, res * settings.point_light.shadow_caster_count)
-end
-
 function M.get_shadow_map()
 	return shadow_map
-end
-
-function M.get_point_light_shadow_map()
-	return point_light_shadow_map
 end
 
 function M.get_g_buffer()

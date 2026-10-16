@@ -8,11 +8,10 @@ go.property("attenuation_power", 5)
 
 go.property("shadow_bias_near", 0.1)
 go.property("shadow_bias_far", 0.5)
-go.property("pcf_samples", 8)
 go.property("poisson_disc_samples", 4)
-go.property("poisson_scale", 5)
+go.property("poisson_scale", 3)
 go.property("hash_factor", 7879)
-go.property("hash_scale", 5)
+go.property("hash_scale", 3)
 go.property("soft_penumbras", true)
 
 local function do_init(self)
@@ -21,7 +20,6 @@ local function do_init(self)
 
 	settings.shadow_bias_near		= self.shadow_bias_near
 	settings.shadow_bias_far		= self.shadow_bias_far
-	settings.pcf_samples			= self.pcf_samples
 	settings.poisson_samples		= self.poisson_disc_samples
 	settings.poisson_scale			= self.poisson_scale
 	settings.hash_factor			= self.hash_factor

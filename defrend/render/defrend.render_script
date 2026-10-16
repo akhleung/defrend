@@ -6,7 +6,6 @@ local draw_options			= require("defrend.render.resources.draw_options")
 local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
 local directional_shadows	= require("defrend.render.shadows.directional")
-local point_light_shadows	= require("defrend.render.shadows.point_light")
 local msgs					= require("defrend.messages")
 
 local render_directional_shadows
@@ -22,7 +21,6 @@ local spot_light_options
 local ssao_options
 
 local shadow_map
-local point_light_shadow_map
 local g_buffer
 
 local screen_camera
@@ -40,7 +38,6 @@ function init(self)
 	predicates.init()
 	draw_options.init()
 	post_processors.init()
-	point_light_shadows.init()
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
@@ -53,7 +50,6 @@ function init(self)
 	ssao_blur_options	= draw_options.ssao_blur_options
 
 	shadow_map = render_targets.get_shadow_map()
-	point_light_shadow_map = render_targets.get_point_light_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
 
 	local identity = vmath.matrix4()
