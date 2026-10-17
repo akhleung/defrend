@@ -32,7 +32,6 @@ function M.init_pending_point_lights()
 	for _, f in ipairs(PENDING_POINT_LIGHTS) do
 		f()
 	end
-	PENDING_POINT_LIGHTS = {}
 	point_lights_initialized = true
 end
 
@@ -40,7 +39,6 @@ function M.init_pending_spot_lights()
 	for _, f in ipairs(PENDING_SPOT_LIGHTS) do
 		f()
 	end
-	PENDING_SPOT_LIGHTS = {}
 	spot_lights_initialized = true
 end
 

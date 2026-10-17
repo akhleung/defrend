@@ -2,7 +2,7 @@ go.property("period", 16)
 go.property("reverse", false)
 
 local embiggen
-local emsmallen
+local ensmallen
 
 function init(self)
 	local direction = go.PLAYBACK_LOOP_FORWARD
@@ -14,9 +14,9 @@ function init(self)
 end
 
 embiggen = function ()
-	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.2, go.EASING_INOUTBACK, .25, 3, emsmallen)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.2, go.EASING_INOUTBACK, .25, 3, ensmallen)
 end
 
-emsmallen = function ()
+ensmallen = function ()
 	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTBACK, .25, 3, embiggen)
 end
