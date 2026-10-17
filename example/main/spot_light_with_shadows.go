@@ -2,6 +2,10 @@ components {
   id: "spot_light_with_shadows"
   component: "/defrend/scripts/controllers/spot_light_with_shadows.script"
 }
+components {
+  id: "rotate"
+  component: "/example/main/rotate.script"
+}
 embedded_components {
   id: "model"
   type: "model"

@@ -1303,15 +1303,6 @@ instances {
   }
 }
 instances {
-  id: "point_light_emitter_white5"
-  prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 0.5
-    y: 0.5
-    z: 0.5
-  }
-}
-instances {
   id: "point_light_with_shadows"
   prototype: "/example/main/point_light_with_shadows.go"
   component_properties {
@@ -1337,18 +1328,23 @@ instances {
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
-      id: "pcf_samples"
-      value: "4.0"
+      id: "poisson_samples"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
       id: "poisson_scale"
-      value: "1.5"
+      value: "-1.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "hash_factor"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
       id: "hash_scale"
-      value: "5.0"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
   }
@@ -1393,23 +1389,23 @@ instances {
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
-      id: "pcf_samples"
-      value: "4.0"
-      type: PROPERTY_TYPE_NUMBER
-    }
-    properties {
       id: "poisson_samples"
-      value: "4.0"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
       id: "poisson_scale"
-      value: "1.5"
+      value: "-1.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "hash_factor"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
       id: "hash_scale"
-      value: "5.0"
+      value: "-1.0"
       type: PROPERTY_TYPE_NUMBER
     }
     properties {
@@ -1476,9 +1472,9 @@ instances {
   id: "spot_light_with_shadows1"
   prototype: "/example/main/spot_light_with_shadows.go"
   position {
-    x: 9.623929
-    y: 4.034808
-    z: -5.71799
+    x: 1.623929
+    y: 7.034808
+    z: 3.28201
   }
   rotation {
     x: 0.043000814
@@ -1490,7 +1486,7 @@ instances {
     id: "spot_light_with_shadows"
     properties {
       id: "enabled"
-      value: "false"
+      value: "true"
       type: PROPERTY_TYPE_BOOLEAN
     }
     properties {
@@ -1500,7 +1496,17 @@ instances {
     }
   }
   scale3 {
-    y: 3.0
+    x: 3.0
+    y: 10.0
+    z: 3.0
+  }
+}
+instances {
+  id: "dust1"
+  prototype: "/example/assets/billboards/dust/dust.go"
+  position {
+    y: 1.0
+    z: 12.0
   }
 }
 collection_instances {
@@ -1522,13 +1528,18 @@ collection_instances {
     properties {
       id: "shadow"
       properties {
+        id: "enabled"
+        value: "true"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
         id: "cascade"
         value: "0.1, 0.2, 0.3, 0.4"
         type: PROPERTY_TYPE_VECTOR4
       }
       properties {
         id: "biases"
-        value: "0.1, 0.15, 0.2, 0.25"
+        value: "0.1, 0.15, 0.2, 0.3"
         type: PROPERTY_TYPE_VECTOR4
       }
       properties {
@@ -1564,7 +1575,7 @@ collection_instances {
       id: "light"
       properties {
         id: "sunlight_enabled"
-        value: "false"
+        value: "true"
         type: PROPERTY_TYPE_BOOLEAN
       }
       properties {
@@ -1586,13 +1597,18 @@ collection_instances {
     properties {
       id: "point_light"
       properties {
-        id: "shadow_bias_far"
-        value: "0.6"
-        type: PROPERTY_TYPE_NUMBER
+        id: "enabled"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
       }
       properties {
-        id: "pcf_samples"
-        value: "4.0"
+        id: "shadows_enabled"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
+        id: "shadow_bias_far"
+        value: "0.6"
         type: PROPERTY_TYPE_NUMBER
       }
       properties {
@@ -3980,6 +3996,7 @@ embedded_instances {
 }
 embedded_instances {
   id: "shadow_scene"
+  children: "dust1"
   children: "floor1"
   children: "light_with_shadow_pivot"
   children: "light_with_shadow_pivot1"
@@ -4034,7 +4051,7 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: -8.0
+    x: -2.0
     y: 2.415387
     z: -0.987749
   }

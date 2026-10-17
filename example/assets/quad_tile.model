@@ -5,7 +5,7 @@ materials {
   material: "/defrend/materials/geometry/model/model.material"
   textures {
     sampler: "albedo_map"
-    texture: "/defrend/assets/textures/white.png"
+    texture: "/example/assets/images/brown.png"
   }
   textures {
     sampler: "normal_map"
