@@ -1,8 +1,6 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
-
-local MSG_REFRESH = hash("refresh")
-local MSG_RESIZE_SHADOW_MAP = hash("resize_shadow_map")
+local settings	= require("defrend.render.settings")
+local uniforms	= require("defrend.render.uniforms")
+local msgs		= require("defrend.messages")
 
 go.property("enabled", true)
 go.property("cascade", vmath.vector4(0.20, 0.10, 0.10, 0.20))
@@ -50,7 +48,7 @@ local function do_init(self)
 	settings.shadow.soft_penumbras		= self.soft_penumbras
 
     uniforms.shadow.init()
-	msg.post("@render:", MSG_RESIZE_SHADOW_MAP, { resolution = self.atlas_resolution })
+	msg.post("@render:", msgs.RESIZE_SHADOW_MAP, { resolution = self.atlas_resolution })
 end
 
 function init(self)
@@ -59,7 +57,7 @@ function init(self)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == MSG_REFRESH and settings.scene_camera_url then
+	if message_id == msgs.REFRESH and settings.scene_camera_url then
 		do_init(self)
 	end
 end

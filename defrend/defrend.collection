@@ -45,6 +45,10 @@ embedded_instances {
   "  id: \"spot_light\"\n"
   "  component: \"/defrend/scripts/configurators/lighting/spot_light.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"ambient_and_fog\"\n"
+  "  component: \"/defrend/scripts/configurators/lighting/ambient_and_fog.script\"\n"
+  "}\n"
   ""
 }
 embedded_instances {

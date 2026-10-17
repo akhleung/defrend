@@ -8,6 +8,7 @@ local M = {
 	spot_light			= { uniforms = render.constant_buffer() },
 	light				= {},
 	shadow				= {},
+	ambient_and_fog		= {},
 	light_and_shadow	= { uniforms = render.constant_buffer() },
 	ssao				= { uniforms = render.constant_buffer() },
 	ssao_blur			= { uniforms = render.constant_buffer() },
@@ -29,13 +30,16 @@ local light = settings.light
 local fog_params = vmath.vector4()
 local light_vol_attn = vmath.vector4()
 function M.light.init()
+	M.light_and_shadow.uniforms.directional_color	= light.directional_color
+	M.light_and_shadow.uniforms.directional_to		= light.directional_to
+end
+
+function M.ambient_and_fog.init()
 	fog_params.x = light.fog_near
 	fog_params.y = light.fog_far
 	M.light_and_shadow.uniforms.fog_params			= fog_params
 	M.light_and_shadow.uniforms.fog_color			= light.fog_color
 	M.light_and_shadow.uniforms.ambient_color		= light.ambient_color
-	M.light_and_shadow.uniforms.directional_color	= light.directional_color
-	M.light_and_shadow.uniforms.directional_to		= light.directional_to
 end
 
 local point_light = settings.point_light

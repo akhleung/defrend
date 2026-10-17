@@ -16,7 +16,7 @@ local atlas_resolutions = { 512, 1024, 2048, 4096, 8192 }
 return function (self)
 	local properties_changed = false
 
-	local changed, checked = imgui.checkbox("Enabled", go.get(SCRIPT_URL, "enabled"))
+	local changed, checked = imgui.checkbox("Shadows enabled", go.get(SCRIPT_URL, "enabled"))
 	if changed then
 		go.set(SCRIPT_URL, "enabled", checked)
 		properties_changed = true

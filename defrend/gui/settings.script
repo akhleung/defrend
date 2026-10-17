@@ -1,21 +1,21 @@
-local visualize_panel	= require("defrend.gui.panels.visualization")
-local cameras_panel		= require("defrend.gui.panels.cameras")
-local geometry_panel	= require("defrend.gui.panels.geometry")
-local lighting_panel	= require("defrend.gui.panels.lighting")
-local point_light_panel	= require("defrend.gui.panels.point_light")
-local spot_light_panel	= require("defrend.gui.panels.spot_light")
-local shadows_panel		= require("defrend.gui.panels.shadows")
-local ssao_panel		= require("defrend.gui.panels.ssao")
-local glow_panel		= require("defrend.gui.panels.glow")
-local dof_panel			= require("defrend.gui.panels.dof")
-local outline_panel		= require("defrend.gui.panels.outline")
-local kuwahara_panel	= require("defrend.gui.panels.kuwahara")
-local bloom_panel		= require("defrend.gui.panels.bloom")
-local dilate_panel		= require("defrend.gui.panels.dilate")
-local gaussian_panel	= require("defrend.gui.panels.gaussian")
-local kawase_panel		= require("defrend.gui.panels.dual_kawase")
-local gamma_panel		= require("defrend.gui.panels.gamma")
-local fxaa_panel		= require("defrend.gui.panels.fxaa")
+local visualize_panel			= require("defrend.gui.panels.visualization")
+local cameras_panel				= require("defrend.gui.panels.cameras")
+local geometry_panel			= require("defrend.gui.panels.geometry")
+local ambient_and_fog_panel		= require("defrend.gui.panels.ambient_and_fog")
+local directional_light_panel	= require("defrend.gui.panels.directional_light")
+local point_light_panel			= require("defrend.gui.panels.point_light")
+local spot_light_panel			= require("defrend.gui.panels.spot_light")
+local ssao_panel				= require("defrend.gui.panels.ssao")
+local glow_panel				= require("defrend.gui.panels.glow")
+local dof_panel					= require("defrend.gui.panels.dof")
+local outline_panel				= require("defrend.gui.panels.outline")
+local kuwahara_panel			= require("defrend.gui.panels.kuwahara")
+local bloom_panel				= require("defrend.gui.panels.bloom")
+local dilate_panel				= require("defrend.gui.panels.dilate")
+local gaussian_panel			= require("defrend.gui.panels.gaussian")
+local kawase_panel				= require("defrend.gui.panels.dual_kawase")
+local gamma_panel				= require("defrend.gui.panels.gamma")
+local fxaa_panel				= require("defrend.gui.panels.fxaa")
 
 local post_processors	= require("defrend.render.post_processors")
 
@@ -32,13 +32,13 @@ local fxaa				= require("defrend.render.post_processors.fxaa")
 go.property("enabled", true)
 
 local rendering = {
-	{ name = "Cameras",			draw = cameras_panel },
-	{ name = "Geometry",		draw = geometry_panel },
-	{ name = "Lighting",		draw = lighting_panel },
-	{ name = "Point lights",	draw = point_light_panel },
-	{ name = "Spot lights",		draw = spot_light_panel },
-	{ name = "Shadows",			draw = shadows_panel },
-	{ name = "SSAO",			draw = ssao_panel },
+	{ name = "Cameras",				draw = cameras_panel },
+	{ name = "Geometry",			draw = geometry_panel },
+	{ name = "Ambient and fog",		draw = ambient_and_fog_panel },
+	{ name = "Directional light",	draw = directional_light_panel },
+	{ name = "Point lights",		draw = point_light_panel },
+	{ name = "Spot lights",			draw = spot_light_panel },
+	{ name = "SSAO",				draw = ssao_panel },
 }
 
 local post_processing_panels = {

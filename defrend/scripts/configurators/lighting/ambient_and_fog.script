@@ -1,0 +1,30 @@
+local settings	= require("defrend.render.settings")
+local uniforms	= require("defrend.render.uniforms")
+local msgs		= require("defrend.messages")
+
+go.property("ambient_color", vmath.vector4(1))
+go.property("fog_color", vmath.vector4())
+go.property("fog_near", 800)
+go.property("fog_far", 1001)
+
+local function do_init(self)
+	settings.light.ambient_color	= self.ambient_color
+	settings.light.fog_color		= self.fog_color
+	settings.light.fog_near			= self.fog_near
+	settings.light.fog_far			= self.fog_far
+	uniforms.ambient_and_fog.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == msgs.REFRESH then
+		do_init(self)
+	end
+end
+
+function on_reload(self)
+	do_init(self)
+end
