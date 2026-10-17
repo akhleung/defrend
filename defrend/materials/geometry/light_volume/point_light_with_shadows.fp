@@ -16,9 +16,9 @@ in float var_attn;
 in vec3 var_normal;
 #endif
 
-uniform samplerCube shadow_map;
 uniform sampler2D depth_buffer;
 uniform sampler2D normal_sampler;
+uniform samplerCube shadow_map;
 
 uniform point_light_fp {
     vec4 frustum_corner;

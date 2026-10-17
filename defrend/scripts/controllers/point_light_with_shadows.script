@@ -62,7 +62,7 @@ local function do_init(self)
 	self.message.shadow_map_resolution = attachment.width
 	go.set(self.model, "shadow_params1", self.shadow_params1)
 	go.set(self.model, "shadow_params2", self.shadow_params2)
-	go.set(self.model, "texture0", self.texture)
+	go.set(self.model, "texture2", self.texture)
 end
 
 function init(self)

@@ -19,6 +19,8 @@ local M = {
 		ambient_color = vmath.vector4(0.75, 0.75, 0.75, 1.0),
 		directional_color = vmath.vector4(1.0),
 		directional_to = vmath.vector4(-1, -1, -1, 1),
+		-- for saving the color when disabling the light
+		saved_color = vmath.vector4(),
 	},
 	shadow = {
 		enabled = true,
