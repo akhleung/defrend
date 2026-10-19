@@ -1319,24 +1319,6 @@ collection_instances {
   instance_properties {
     id: "lighting"
     properties {
-      id: "shadow"
-      properties {
-        id: "cascade"
-        value: "0.1, 0.2, 0.3, 0.4"
-        type: PROPERTY_TYPE_VECTOR4
-      }
-      properties {
-        id: "biases"
-        value: "0.1, 0.15, 0.25, 0.4"
-        type: PROPERTY_TYPE_VECTOR4
-      }
-      properties {
-        id: "light_frustum_z_padding"
-        value: "2.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-    }
-    properties {
       id: "ssao"
       properties {
         id: "min_distance"
@@ -1378,6 +1360,16 @@ collection_instances {
         id: "ambient_color"
         value: "0.7, 0.7, 0.7, 0.7"
         type: PROPERTY_TYPE_VECTOR4
+      }
+      properties {
+        id: "fog_near"
+        value: "150.0"
+        type: PROPERTY_TYPE_NUMBER
+      }
+      properties {
+        id: "fog_far"
+        value: "200.0"
+        type: PROPERTY_TYPE_NUMBER
       }
     }
   }
@@ -1468,7 +1460,51 @@ embedded_instances {
 }
 embedded_instances {
   id: "sun"
-  data: "embedded_components {\n"
+  data: "components {\n"
+  "  id: \"directional_light_with_shadows\"\n"
+  "  component: \"/defrend/scripts/controllers/directional_light_with_shadows.script\"\n"
+  "  properties {\n"
+  "    id: \"color\"\n"
+  "    value: \"1.0, 1.0, 1.0, 1.0\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"shadow_atlas\"\n"
+  "    value: \"/example/main/directional_shadow_atlas.render_target\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"biases\"\n"
+  "    value: \"0.1, 0.2, 0.3, 0.4\"\n"
+  "    type: PROPERTY_TYPE_VECTOR4\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"light_frustum_z_padding\"\n"
+  "    value: \"2.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"pcf_samples\"\n"
+  "    value: \"4.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"poisson_disc_samples\"\n"
+  "    value: \"4.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"poisson_scale\"\n"
+  "    value: \"2.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"hash_scale\"\n"
+  "    value: \"2.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
   "  id: \"camera\"\n"
   "  type: \"camera\"\n"
   "  data: \"aspect_ratio: 1.0\\n"

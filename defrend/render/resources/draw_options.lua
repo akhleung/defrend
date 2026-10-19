@@ -2,25 +2,26 @@ local settings	= require "defrend.render.settings"
 local uniforms	= require "defrend.render.uniforms"
 
 local M = {
-	shadow_options			= {},
-	geometry_options		= {},
-	lighting_options		= {},
-	point_light_options		= {},
-	spot_light_options		= {},
-	copy_options			= {},
-	ssao_options			= {},
-	ssao_blur_options		= {},
-	outline_options			= {},
-	glow_options			= {},
-	bloom_options			= {},
-	gaussian_blur_options	= {},
-	dual_kawase_options		= {},
-	dilate_options			= {},
-	kuwahara_blur_options	= {},
-	gamma_options			= {},
-	dof_coc_options			= {},
-	dof_blur_options		= {},
-	fxaa_options			= {},
+	shadow_options				= {},
+	geometry_options			= {},
+	directional_light_options	= {},
+	point_light_options			= {},
+	spot_light_options			= {},
+	copy_options				= {},
+	ssao_options				= {},
+	ssao_blur_options			= {},
+	resolve_lighting_options	= {},
+	outline_options				= {},
+	glow_options				= {},
+	bloom_options				= {},
+	gaussian_blur_options		= {},
+	dual_kawase_options			= {},
+	dilate_options				= {},
+	kuwahara_blur_options		= {},
+	gamma_options				= {},
+	dof_coc_options				= {},
+	dof_blur_options			= {},
+	fxaa_options				= {},
 }
 
 function M.init()
@@ -33,7 +34,7 @@ function M.init()
 	M.shadow_options.constants				= render.constant_buffer()
 	M.shadow_options.constants.bias			= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
 
-	M.lighting_options.constants			= uniforms.light_and_shadow.uniforms
+	-- M.directional_light_options.constants	= uniforms.light_and_shadow.uniforms
 
 	M.point_light_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	M.point_light_options.sort_order		= render.SORT_FRONT_TO_BACK
@@ -48,6 +49,8 @@ function M.init()
 
 	M.ssao_options.constants				= uniforms.ssao.uniforms
 	M.ssao_blur_options.constants			= uniforms.ssao_blur.uniforms
+
+	M.resolve_lighting_options.constants	= uniforms.ambient_and_fog.uniforms
 
 	-- post-processors
 	M.outline_options.constants				= uniforms.outline.uniforms
