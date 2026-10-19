@@ -1,0 +1,283 @@
+local settings	= require("defrend.render.settings")
+local light		= settings.light
+local shadow	= settings.shadow
+local queue		= require("defrend.scripts.configurators.queue")
+local msgs		= require("defrend.messages")
+
+local SOURCE	= vmath.vector4(0, 0, 0, 1)
+local TARGET	= vmath.vector4(0, -1, 0, 1)
+local EDGE		= vmath.vector4(0.5, -1, 0, 1)
+
+local get_minimal_bounding_box_for_camera_frustum
+local get_light_view_mtx_and_camera_frustum
+local get_texel_snapping_mtx
+local pad, set_vec3
+
+go.property("enabled", true)
+go.property("color", vmath.vector4(1))
+
+go.property("shadow_atlas", resource.render_target())
+-- set numeric properties to negative values to use the global defaults
+go.property("cascade", vmath.vector4(0.10, 0.20, 0.30, 0.40))
+go.property("biases", vmath.vector4(0.1, 0.15, 0.25, 0.4))
+go.property("partition_1_tint", vmath.vector4(0))
+go.property("partition_2_tint", vmath.vector4(0))
+go.property("partition_3_tint", vmath.vector4(0))
+go.property("partition_4_tint", vmath.vector4(0))
+go.property("cascade_transition_range", 10)
+go.property("light_frustum_z_padding", 0.5)
+go.property("pcf_samples", 8)
+go.property("poisson_disc_samples", 4)
+go.property("poisson_scale", 3000)
+go.property("hash_factor", 7879)
+go.property("hash_scale", 3)
+go.property("soft_penumbras", true)
+
+local function property_or_default(property, default)
+	if property < 0 then
+		return default
+	else
+		return property
+	end
+end
+
+local function vector4_to_vector3(v)
+	return vmath.vector3(v.x, v.y, v.z)
+end
+
+local function do_init(self)
+
+	local rotation = go.get_world_rotation(self.url)
+	local direction = vmath.normalize(vmath.rotate(rotation, vmath.vector3(0, 0, -1)))
+	self.target = vmath.vector4(direction.x, direction.y, direction.z, 1)
+
+	self.active_cascade = {}
+	self.active_biases = {}
+	self.active_tints = {}
+	for i = 1, #self.cascade do
+		-- stop adding partitions to the cascade when a size of 0 is encountered
+		if self.cascade[i] == 0 then
+			break
+		end
+		self.active_cascade[i] = self.cascade[i]
+		self.active_biases[i] = self.biases[i]
+		self.active_tints[i] = self.tints[i]
+	end
+	self.map_dimension = math.ceil(math.sqrt(#self.active_cascade))
+	self.map_resolution = self.atlas_resolution / self.map_dimension
+
+	local fov		= camera.get_fov(settings.scene_camera_url)
+	local aspect	= camera.get_aspect_ratio(settings.scene_camera_url)
+	local near		= camera.get_near_z(settings.scene_camera_url)
+	local far		= camera.get_far_z(settings.scene_camera_url)
+	local total		= far - near
+	self.partitions = {} -- vector4[] of atlas offsets, far boundaries, biases
+	self.projections = {}
+	for i = 1, #self.active_cascade do
+		far = near + total * self.active_cascade[i]
+		local y_offset = math.floor((i - 1) / self.map_dimension) / self.map_dimension -- which row / num rows, normalized
+		local x_offset = ((i - 1) % self.map_dimension) / self.map_dimension -- which column / num columns, normalized
+		self.partitions[i] = vmath.vector4(x_offset, y_offset, far, self.active_biases[i])
+		self.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
+		near = far
+	end
+
+	self.light_frustums = {}
+	for i, proj in ipairs(self.projections) do
+		self.light_frustums[i] = get_minimal_bounding_box_for_camera_frustum(self, proj)
+	end
+
+	self.shadow_params1 = vmath.vector4()
+	self.shadow_params1.x = self.map_resolution
+	self.shadow_params1.y = self.map_dimension
+	self.shadow_params1.z = #self.active_cascade
+	self.shadow_params1.w = self.transition_range
+	self.shadow_params2 = vmath.vector4()
+	self.shadow_params2.x = self.pcf_samples
+	self.shadow_params1.y = self.poisson_samples
+	self.shadow_params1.z = self.poisson_scale
+	self.shadow_params2.w = 0
+	if self.soft_penumbras then
+		self.shadow_params2.w = 1
+	end
+	self.shadow_params3 = vmath.vector4()
+	self.shadow_params3.x = self.hash_factor
+	self.shadow_params3.y = self.hash_scale
+	self.mtx_views = {}
+	self.mtx_lights = {}
+	self.message.mtx_views = self.mtx_views
+	self.message.mtx_lights = self.mtx_lights
+
+	-- TODO: send shadow_params1, shadow_params2, shadow_params3, camera_partitions, mtx_lights, shadow_tints
+end
+
+function init(self)
+	self.url = msg.url(".")
+	self.message = {}
+	self.message.id = self.url.path
+	self.message.url = self.url
+
+	queue.add_pending_directional_light(function ()
+		do_init(self)
+	end)
+end
+
+function late_update(self, dt)
+	if not self.enabled then
+		return
+	end
+
+	local cam_view = camera.get_view(settings.scene_camera_url)
+	for i, light_proj in ipairs(self.projections) do
+		local light_view = get_light_view_mtx_and_camera_frustum(self, cam_view, light_proj)
+		local light_frustum = self.light_frustums[i]
+		local min_z = pad(light_frustum.min_z, light_frustum.max_z, self.light_frustum_z_padding)
+		local light_proj = vmath.matrix4_orthographic(
+			light_frustum.min_x, light_frustum.max_x,
+			light_frustum.min_y, light_frustum.max_y,
+			min_z, light_frustum.max_z
+		)
+		local light_trans = get_texel_snapping_mtx(self, light_view, light_proj)
+		self.mtx_views[i] = light_view
+		self.mtx_lights[i] = light_trans * light_proj
+	end
+
+	self.message.mtx_views = self.mtx_views
+	self.message.mtx_projs = self.projections
+	self.message.mtx_lights = self.mtx_lights
+
+
+
+	msg.post("@render:", msgs.UPDATE_SPOT_LIGHT, self.message)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == msgs.ENABLE and not self.enabled then
+		self.enabled = true
+	elseif message_id == msgs.DISABLE and self.enabled then
+		msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
+		self.enabled = false
+	elseif message_id == msgs.REFRESH then
+		do_init(self)
+	end
+end
+
+function on_reload(self)
+	do_init(self)
+end
+
+function final(self)
+	msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
+end
+
+-- HELPER FUNCTIONS
+
+-- Given a desired camera frustum, find the smallest bounding box that will fit any rotation of said frustum. This
+-- is a brute-force approach that rotates the camera in a sphere, calculates a bounding box for each rotation, and
+-- returns the largest. I'm sure there's an analytical method for calculating this, but researching and implementing
+-- it isn't currently a priority since this calculation will only be done occasionally (i.e., when the camera
+-- projection changes).
+local UP		= vmath.vector3(0, 1, 0)
+local RIGHT		= vmath.vector3(1, 0, 0)
+local CENTER	= vmath.vector3(0)
+local SLICES	= 20
+get_minimal_bounding_box_for_camera_frustum = function(self, cam_proj)
+	local bbox = {
+		min_x = 0, max_x = 0,
+		min_y = 0, max_y = 0,
+		min_z = 0, max_z = 0,
+	}
+	local delta = 360 / SLICES
+	for pitch = -180, 180 - delta, delta do
+		for yaw = -180, 180 - delta, delta do
+			local r = vmath.euler_to_quat(pitch, yaw, 0)
+			local mtx_view = vmath.matrix4_look_at(CENTER, vmath.rotate(r, RIGHT), UP)
+			local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(self, mtx_view, cam_proj)
+			-- calculate a precise bounding box around the camera frustum in the light's view space
+			local min_x, max_x = math.huge, -math.huge
+			local min_y, max_y = math.huge, -math.huge
+			local min_z, max_z = math.huge, -math.huge
+			for i = 1, 8 do
+				local light_corner = mtx_light_view * world_corners[i]
+				min_x, max_x = math.min(min_x, light_corner.x), math.max(max_x, light_corner.x)
+				min_y, max_y = math.min(min_y, light_corner.y), math.max(max_y, light_corner.y)
+				min_z, max_z = math.min(min_z, light_corner.z), math.max(max_z, light_corner.z)
+			end
+			-- keep track of the largest frustum dimensions encountered so far
+			if min_x < bbox.min_x then bbox.min_x = min_x end
+			if max_x > bbox.max_x then bbox.max_x = max_x end
+			if min_y < bbox.min_y then bbox.min_y = min_y end
+			if max_y > bbox.max_y then bbox.max_y = max_y end
+			if min_z < bbox.min_z then bbox.min_z = min_z end
+			if max_z > bbox.max_z then bbox.max_z = max_z end
+		end
+	end
+	return bbox
+end
+
+local ndc_corners = {
+	vmath.vector4(-1, -1, -1, 1),
+	vmath.vector4(-1, -1, 1, 1),
+	vmath.vector4(-1, 1, -1, 1),
+	vmath.vector4(-1, 1, 1, 1),
+	vmath.vector4(1, -1, -1, 1),
+	vmath.vector4(1, -1, 1, 1),
+	vmath.vector4(1, 1, -1, 1),
+	vmath.vector4(1, 1, 1, 1),
+}
+local world_corners = {
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+}
+local target = vmath.vector3()
+get_light_view_mtx_and_camera_frustum = function(self, cam_view, cam_proj)
+	-- get the camera frustum in world space
+	local mtx_inv = vmath.inv(cam_proj * cam_view)
+	for i = 1, 8 do
+		local world_corner = mtx_inv * ndc_corners[i]
+		world_corner.x = world_corner.x / world_corner.w
+		world_corner.y = world_corner.y / world_corner.w
+		world_corner.z = world_corner.z / world_corner.w
+		world_corner.w = 1
+		world_corners[i] = world_corner
+	end
+	-- get the center of the camera frustum
+	world_center.x, world_center.y, world_center.z = 0, 0, 0
+	for i = 1, 8 do
+		local world_corner = world_corners[i]
+		world_center.x = world_center.x + world_corner.x
+		world_center.y = world_center.y + world_corner.y
+		world_center.z = world_center.z + world_corner.z
+	end
+	world_center = world_center / 8
+	-- calculate the light's view matrix
+	set_vec3(target, self.target)
+	local mtx_light_view = vmath.matrix4_look_at(world_center - target, world_center, UP)
+	return mtx_light_view, world_corners, world_center
+end
+
+local origin = vmath.vector4(0,0,0,1)
+local offset = vmath.vector3()
+get_texel_snapping_mtx = function(self, mtx_light_view, mtx_light_proj)
+	-- create a translation matrix to snap the light projection to the nearest texel
+	local half_res = self.map_resolution / 2
+	local shadow_origin = mtx_light_proj * mtx_light_view * origin * half_res
+	offset.x = (math.floor(shadow_origin.x) - shadow_origin.x) / half_res
+	offset.y = (math.floor(shadow_origin.y) - shadow_origin.y) / half_res
+	return vmath.matrix4_translation(offset)
+end
+
+set_vec3 = function(to, from)
+	to.x, to.y, to.z = from.x, from.y, from.z
+end
+
+pad = function(min, max, factor)
+	local padding = (max - min) * factor
+	return min - padding, max + padding
+end
