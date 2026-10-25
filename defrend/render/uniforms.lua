@@ -1,6 +1,5 @@
 ---@diagnostic disable: inject-field
 local settings = require "defrend.render.settings"
-local shadows = require "defrend.render.shadows.directional"
 
 local M = {
 	geometry			= { uniforms = render.constant_buffer() },
@@ -62,34 +61,6 @@ function M.spot_light.init()
 
 	M.geometry.uniforms.light_vol_attn		= light_vol_attn
 	M.spot_light.uniforms.light_vol_attn	= light_vol_attn
-end
-
-local shadow = settings.shadow
-local shadow_params1 = vmath.vector4()
-local shadow_params2 = vmath.vector4()
-function M.shadow.init()
-	local fov		= camera.get_fov(settings.scene_camera_url)
-	local aspect	= camera.get_aspect_ratio(settings.scene_camera_url)
-	local near		= camera.get_near_z(settings.scene_camera_url)
-	local far		= camera.get_far_z(settings.scene_camera_url)
-
-	shadows.init(fov, aspect, near, far)
-	shadow_params1.x = shadow.map_resolution
-	shadow_params1.y = shadow.map_dimension
-	shadow_params1.z = shadow.poisson_scale
-	shadow_params1.w = shadow.poisson_samples
-	shadow_params2.x = shadow.pcf_samples
-	shadow_params2.y = 0
-	if shadow.soft_penumbras then
-		shadow_params2.y = 1
-	end
-	shadow_params2.z = #shadow.cascade
-	shadow_params2.w = shadow.transition_range
-	M.light_and_shadow.uniforms.shadow_params1		= shadow_params1
-	M.light_and_shadow.uniforms.shadow_params2		= shadow_params2
-	M.light_and_shadow.uniforms.camera_partitions	= shadow.partitions
-	M.light_and_shadow.uniforms.mtx_lights			= {} -- will be populated when the render script refreshes the shadows
-	M.light_and_shadow.uniforms.shadow_tints		= shadow.tints
 end
 
 local ssao = settings.ssao
