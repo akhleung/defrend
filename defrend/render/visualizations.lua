@@ -2,6 +2,8 @@ local settings			= require("defrend.render.settings")
 local predicates		= require("defrend.render.resources.predicates")
 local render_targets	= require("defrend.render.resources.render_targets")
 
+local M = {}
+
 local visualizations = {
 	g_albedo = {
 		material = "copy_rgb_material",
@@ -40,12 +42,9 @@ local visualizations = {
 	},
 	shadow_atlas_directional = {
 		material = "copy_r_material",
-		get_render_target = render_targets.get_shadow_map,
-		attachment = render_targets.SHADOW_MAP_DEPTH,
-	},
-	shadow_atlas_point_light = {
-		material = "copy_r_material",
-		get_render_target = render_targets.get_point_light_shadow_map,
+		get_render_target = function ()
+			return M.shadow_map
+		end,
 		attachment = render_targets.SHADOW_MAP_DEPTH,
 	},
 	ssao = {
@@ -54,8 +53,6 @@ local visualizations = {
 		attachment = render_targets.POST_COLOR,
 	},
 }
-
-local M = {}
 
 function M.update()
 	render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
@@ -67,6 +64,10 @@ function M.update()
 	render.enable_texture("input_sampler", v.get_render_target(), v.attachment)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
+end
+
+function M.set_shadow_map(shadow_map)
+	M.shadow_map = shadow_map
 end
 
 return M

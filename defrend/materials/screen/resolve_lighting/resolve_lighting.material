@@ -6,10 +6,6 @@ vertex_constants {
   name: "mtx_viewproj"
   type: CONSTANT_TYPE_VIEWPROJ
 }
-fragment_constants {
-  name: "mtx_view"
-  type: CONSTANT_TYPE_VIEW
-}
 samplers {
   name: "albedo_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
@@ -17,6 +13,7 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 samplers {
   name: "depth_buffer"
@@ -25,14 +22,7 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
-}
-samplers {
-  name: "normal_sampler"
-  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
-  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
-  filter_min: FILTER_MODE_MIN_NEAREST
-  filter_mag: FILTER_MODE_MAG_NEAREST
-  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 samplers {
   name: "ssao_sampler"
@@ -41,14 +31,7 @@ samplers {
   filter_min: FILTER_MODE_MIN_LINEAR
   filter_mag: FILTER_MODE_MAG_LINEAR
   max_anisotropy: 0.0
-}
-samplers {
-  name: "shadow_sampler"
-  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
-  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
-  filter_min: FILTER_MODE_MIN_NEAREST
-  filter_mag: FILTER_MODE_MAG_NEAREST
-  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }
 samplers {
   name: "light_sampler"
@@ -57,4 +40,5 @@ samplers {
   filter_min: FILTER_MODE_MIN_NEAREST
   filter_mag: FILTER_MODE_MAG_NEAREST
   max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
 }

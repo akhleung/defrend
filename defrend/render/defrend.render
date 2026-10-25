@@ -151,3 +151,7 @@ render_resources {
   name: "cubemap_particle_shadow_material"
   path: "/defrend/materials/geometry/billboard_sprite/cubemap_particle_shadow.material"
 }
+render_resources {
+  name: "directional_light_with_shadows_material"
+  path: "/defrend/materials/screen/lighting/directional_light_with_shadows.material"
+}

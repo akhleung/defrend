@@ -4,11 +4,12 @@ local shadows = require "defrend.render.shadows.directional"
 
 local M = {
 	geometry			= { uniforms = render.constant_buffer() },
+	directional_light	= { uniforms = render.constant_buffer() },
 	point_light			= { uniforms = render.constant_buffer() },
 	spot_light			= { uniforms = render.constant_buffer() },
 	light				= {},
 	shadow				= {},
-	ambient_and_fog		= {},
+	ambient_and_fog		= { uniforms = render.constant_buffer() },
 	light_and_shadow	= { uniforms = render.constant_buffer() },
 	ssao				= { uniforms = render.constant_buffer() },
 	ssao_blur			= { uniforms = render.constant_buffer() },
@@ -37,9 +38,9 @@ end
 function M.ambient_and_fog.init()
 	fog_params.x = light.fog_near
 	fog_params.y = light.fog_far
-	M.light_and_shadow.uniforms.fog_params			= fog_params
-	M.light_and_shadow.uniforms.fog_color			= light.fog_color
-	M.light_and_shadow.uniforms.ambient_color		= light.ambient_color
+	M.ambient_and_fog.uniforms.fog_params			= fog_params
+	M.ambient_and_fog.uniforms.fog_color			= light.fog_color
+	M.ambient_and_fog.uniforms.ambient_color		= light.ambient_color
 end
 
 local point_light = settings.point_light

@@ -39,10 +39,6 @@ return function (self)
 		visualize.option = "shadow_atlas_directional"
 	end
 
-	if imgui.radio_button("Shadow atlas (point lights)", visualize.option == "shadow_atlas_point_light") then
-		visualize.option = "shadow_atlas_point_light"
-	end
-
 	if imgui.radio_button("SSAO", visualize.option == "ssao") then
 		visualize.option = "ssao"
 	end

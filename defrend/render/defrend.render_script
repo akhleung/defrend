@@ -6,6 +6,7 @@ local draw_options			= require("defrend.render.resources.draw_options")
 local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
 local directional_shadows	= require("defrend.render.shadows.directional")
+local lights				= require("defrend.render.lights")
 local msgs					= require("defrend.messages")
 
 local render_directional_shadows
@@ -15,17 +16,18 @@ local render_gui
 
 local shadow_options
 local geometry_options
-local lighting_options
+local directional_light_options
 local point_light_options
 local spot_light_options
 local ssao_options
+local resolve_lighting_options
 
-local shadow_map
 local g_buffer
 
 local screen_camera
 local gui_camera
 
+local DIRECTIONAL_LIGHTS = lights.directional_lights
 local POINT_LIGHTS = {}
 local SPOT_LIGHTS = {}
 
@@ -41,15 +43,15 @@ function init(self)
 
 	self.valid = render.get_window_width() > 0 and render.get_window_height() > 0
 
-	geometry_options	= draw_options.geometry_options
-	shadow_options		= draw_options.shadow_options
-	lighting_options	= draw_options.lighting_options
-	point_light_options	= draw_options.point_light_options
-	spot_light_options	= draw_options.spot_light_options
-	ssao_options		= draw_options.ssao_options
-	ssao_blur_options	= draw_options.ssao_blur_options
+	geometry_options			= draw_options.geometry_options
+	shadow_options				= draw_options.shadow_options
+	directional_light_options	= draw_options.directional_light_options
+	point_light_options			= draw_options.point_light_options
+	spot_light_options			= draw_options.spot_light_options
+	ssao_options				= draw_options.ssao_options
+	ssao_blur_options			= draw_options.ssao_blur_options
+	resolve_lighting_options	= draw_options.resolve_lighting_options
 
-	shadow_map = render_targets.get_shadow_map()
 	g_buffer = render_targets.get_g_buffer()
 
 	local identity = vmath.matrix4()
@@ -67,6 +69,10 @@ function init(self)
 		viewproj = gui_proj * identity,
 	}
 end
+
+local frustum_corner_ndc	= vmath.vector4(1.0)
+local frustum_corner		= vmath.vector4()
+local frustum_terms			= vmath.vector4()
 
 local cull = { use_frustum = true }
 local ssao_blur_h_options = { constants = render.constant_buffer() }
@@ -188,16 +194,26 @@ function update(self)
 		render.enable_material("spot_light_with_shadows_material")
 		render.draw(predicates.spot_light_with_shadows, spot_light_options)
 	end
-	render.disable_texture("depth_buffer")
-	render.disable_texture("normal_sampler")
-
 	render.disable_state(graphics.STATE_DEPTH_TEST)
-	render.disable_state(graphics.STATE_CULL_FACE)
-	render.disable_state(graphics.STATE_BLEND)
-
+	render.set_cull_face(graphics.FACE_TYPE_BACK)
 	render.set_camera()
 	render.set_view(screen_camera.view)
 	render.set_projection(screen_camera.proj)
+	if settings.light.sunlight_enabled then
+		for light, _ in pairs(DIRECTIONAL_LIGHTS) do
+			light.uniforms.frustum_corner = frustum_corner
+			light.uniforms.frustum_terms = frustum_terms
+			directional_light_options.constants = light.uniforms
+			render.enable_texture("shadow_atlas", light.attachment, graphics.BUFFER_TYPE_DEPTH_BIT)
+			render.enable_material("directional_light_with_shadows_material")
+			render.draw(predicates.screen, directional_light_options)
+		end
+		render.disable_texture("shadow_atlas")
+	end
+	render.disable_texture("depth_buffer")
+	render.disable_texture("normal_sampler")
+
+	render.disable_state(graphics.STATE_BLEND)
 
 	render.set_render_target(render_targets.get_post_target())
 	render.clear(clear_options.clear_ssao_options)
@@ -244,16 +260,12 @@ function update(self)
 	render.enable_material("resolve_lighting_material")
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.enable_texture("albedo_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
-	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
 	render.enable_texture("ssao_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-	render.enable_texture("shadow_sampler", shadow_map, render_targets.SHADOW_MAP_DEPTH)
 	render.enable_texture("light_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
-	render.draw(predicates.screen, lighting_options)
+	render.draw(predicates.screen, resolve_lighting_options)
 	render.disable_texture("depth_buffer")
 	render.disable_texture("albedo_sampler")
-	render.disable_texture("normal_sampler")
 	render.disable_texture("ssao_sampler")
-	render.disable_texture("shadow_sampler")
 	render.disable_texture("light_sampler")
 
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
@@ -266,9 +278,8 @@ function update(self)
 
 	-- render all the post-processors
 	post_processors.update()
-
 	render_targets.ping_pong()
-	render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
+	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 	render.enable_material("copy_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.draw(predicates.screen)
@@ -278,19 +289,14 @@ function update(self)
 	render_gui()
 end
 
-local outline_options		= draw_options.outline_options
-local dof_coc_options		= draw_options.dof_coc_options
-local dof_blur_options		= draw_options.dof_blur_options
-
-local frustum_corner_ndc	= vmath.vector4(1.0)
-local frustum_corner
-local frustum_terms			= vmath.vector4()
+local outline_options	= draw_options.outline_options
+local dof_coc_options	= draw_options.dof_coc_options
+local dof_blur_options	= draw_options.dof_blur_options
 local function update_camera_uniforms()
-	local cam = settings.scene_camera_url
-	local near = camera.get_near_z(cam)
-	local view = camera.get_view(cam)
-	local proj = camera.get_projection(cam)
-	local proj_inv = vmath.inv(proj)
+	local cam		= settings.scene_camera_url
+	local near		= camera.get_near_z(cam)
+	local proj		= camera.get_projection(cam)
+	local proj_inv	= vmath.inv(proj)
 
 	frustum_corner		= proj_inv * frustum_corner_ndc
 	frustum_corner		= frustum_corner / frustum_corner.w
@@ -299,33 +305,36 @@ local function update_camera_uniforms()
 	frustum_terms.y		= frustum_corner.z + frustum_corner.w
 	frustum_terms.z		= frustum_corner.z - frustum_corner.w
 
-	geometry_options.constants.frustum_corner		= frustum_corner
-	geometry_options.constants.frustum_terms		= frustum_terms
-	lighting_options.constants.mtx_view				= view
-	lighting_options.constants.frustum_corner		= frustum_corner
-	lighting_options.constants.frustum_terms		= frustum_terms
-	point_light_options.constants.frustum_corner	= frustum_corner
-	point_light_options.constants.frustum_terms		= frustum_terms
-	spot_light_options.constants.frustum_corner		= frustum_corner
-	spot_light_options.constants.frustum_terms		= frustum_terms
-	ssao_options.constants.frustum_corner			= frustum_corner
-	ssao_options.constants.frustum_terms			= frustum_terms
-	ssao_blur_options.constants.frustum_terms		= frustum_terms
-	outline_options.constants.frustum_corner		= frustum_corner
-	outline_options.constants.frustum_terms			= frustum_terms
-	dof_coc_options.constants.frustum_terms			= frustum_terms
-	dof_blur_options.constants.frustum_terms		= frustum_terms
+	geometry_options.constants.frustum_corner			= frustum_corner
+	geometry_options.constants.frustum_terms			= frustum_terms
+	point_light_options.constants.frustum_corner		= frustum_corner
+	point_light_options.constants.frustum_terms			= frustum_terms
+	spot_light_options.constants.frustum_corner			= frustum_corner
+	spot_light_options.constants.frustum_terms			= frustum_terms
+	ssao_options.constants.frustum_corner				= frustum_corner
+	ssao_options.constants.frustum_terms				= frustum_terms
+	ssao_blur_options.constants.frustum_terms			= frustum_terms
+	resolve_lighting_options.constants.frustum_corner	= frustum_corner
+	resolve_lighting_options.constants.frustum_terms	= frustum_terms
+	outline_options.constants.frustum_corner			= frustum_corner
+	outline_options.constants.frustum_terms				= frustum_terms
+	dof_coc_options.constants.frustum_terms				= frustum_terms
+	dof_blur_options.constants.frustum_terms			= frustum_terms
 end
 
 function on_message(self, message_id, message)
 	if message_id == msgs.SET_VIEW_PROJ then
 		update_camera_uniforms()
+	elseif message_id == msgs.UPDATE_DIRECTIONAL_LIGHT then
+		DIRECTIONAL_LIGHTS[message.id] = message
 	elseif message_id == msgs.UPDATE_POINT_LIGHT then
 		POINT_LIGHTS[message.id] = message
-	elseif message_id == msgs.REMOVE_POINT_LIGHT then
-		POINT_LIGHTS[message.id] = nil
 	elseif message_id == msgs.UPDATE_SPOT_LIGHT then
 		SPOT_LIGHTS[message.id] = message
+	elseif message_id == msgs.REMOVE_DIRECTIONAL_LIGHT then
+		DIRECTIONAL_LIGHTS[message.id] = nil
+	elseif message_id == msgs.REMOVE_POINT_LIGHT then
+		POINT_LIGHTS[message.id] = nil
 	elseif message_id == msgs.REMOVE_SPOT_LIGHT then
 		SPOT_LIGHTS[message.id] = nil
 	elseif message_id == msgs.WINDOW_RESIZED then
@@ -336,8 +345,6 @@ function on_message(self, message_id, message)
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
 	elseif message_id == msgs.RESIZE_SHADOW_MAP then
 		render_targets.set_shadow_map_resolution(message.resolution)
-	elseif message_id == msgs.RESIZE_POINT_LIGHT_SHADOW_MAP then
-		render_targets.update_point_light_shadow_map_resolution()
 	end
 end
 
@@ -355,30 +362,29 @@ local function draw_shadow_casters(model_material, particle_material)
 	end
 end
 
-render_directional_shadows = function()
-	render.set_render_target(shadow_map)
-	render.clear(clear_options.clear_shadow_options)
-	if not settings.shadow.enabled then
-		return
-	end
-	local shadow_settings = settings.shadow
-	local projections = shadow_settings.projections
-	local partitions = shadow_settings.partitions
-	local atlas_resolution = shadow_settings.atlas_resolution
-	local map_resolution = shadow_settings.map_resolution
+render_directional_shadows = function ()
 	local cam_view = camera.get_view(settings.scene_camera_url)
-	for i = 1, #partitions do
-		local mtx_view, mtx_proj = directional_shadows.refresh(cam_view, projections[i], i)
-		local mtx_light = mtx_proj * mtx_view
-		render.set_view(mtx_view)
-		render.set_projection(mtx_proj)
-		local partition = partitions[i]
-		local x_offset = partition.x * atlas_resolution
-		local y_offset = partition.y * atlas_resolution
-		render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
-		shadow_options.frustum = mtx_light
-		draw_shadow_casters("shadow_material", "particle_shadow_material")
-		lighting_options.constants.mtx_lights[i] = mtx_light * vmath.inv(cam_view)
+	local cam_view_inv = vmath.inv(cam_view)
+	for light, _ in pairs(DIRECTIONAL_LIGHTS) do
+		light:update(cam_view, cam_view_inv)
+		render.set_render_target(light.render_target)
+		render.clear(clear_options.clear_shadow_options)
+		local partitions = light.partitions
+		local atlas_resolution = light.atlas_resolution
+		local map_resolution = light.map_resolution
+		local mtx_views = light.mtx_views
+		local mtx_projs = light.mtx_projs
+		local mtx_frustums = light.mtx_frustums
+		for i = 1, #partitions do
+			render.set_view(mtx_views[i])
+			render.set_projection(mtx_projs[i])
+			local partition = partitions[i]
+			local x_offset = partition.x * atlas_resolution
+			local y_offset = partition.y * atlas_resolution
+			render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
+			shadow_options.frustum = mtx_frustums[i]
+			draw_shadow_casters("shadow_material", "particle_shadow_material")
+		end
 	end
 end
 

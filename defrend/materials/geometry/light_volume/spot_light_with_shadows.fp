@@ -44,49 +44,48 @@ int POISSON_SAMPLES	= int(shadow_params2.x);
 float POISSON_SCALE	= shadow_params2.y;
 float HASH_FACTOR	= shadow_params2.z;
 float HASH_SCALE	= shadow_params2.w;
+float TEXEL_SIZE	= texel_size.x;
+
+float poisson_scale	= POISSON_SCALE * TEXEL_SIZE;
+float hash_scale	= HASH_SCALE * TEXEL_SIZE;
 
 vec2 pcf_kernel[8] = vec2[](
-	vec2(-1, 0)		* texel_size.xy,
-	vec2(1, 0)		* texel_size.xy,
-	vec2(0, -1)		* texel_size.xy,
-	vec2(0, 1)		* texel_size.xy,
-	vec2(-1, -1)	* texel_size.xy,
-	vec2(1, 1)		* texel_size.xy,
-	vec2(1, -1)		* texel_size.xy,
-	vec2(-1, 1)		* texel_size.xy
+	vec2(-1, 0),
+	vec2(1, 0),
+	vec2(0, -1),
+	vec2(0, 1),
+	vec2(-1, -1),
+	vec2(1, 1),
+	vec2(1, -1),
+	vec2(-1, 1)
 );
 
 vec2 poisson_disc[16] = vec2[]( 
-	vec2(-0.94201624,	-0.39906216)	* POISSON_SCALE, 
-	vec2(0.94558609,	-0.76890725)	* POISSON_SCALE, 
-	vec2(-0.094184101,	-0.92938870)	* POISSON_SCALE, 
-	vec2(0.34495938,	0.29387760)		* POISSON_SCALE, 
-	vec2(-0.91588581,	0.45771432)		* POISSON_SCALE, 
-	vec2(-0.81544232,	-0.87912464)	* POISSON_SCALE, 
-	vec2(-0.38277543,	0.27676845)		* POISSON_SCALE, 
-	vec2(0.97484398,	0.75648379)		* POISSON_SCALE, 
-	vec2(0.44323325,	-0.97511554)	* POISSON_SCALE, 
-	vec2(0.53742981,	-0.47373420)	* POISSON_SCALE, 
-	vec2(-0.26496911,	-0.41893023)	* POISSON_SCALE, 
-	vec2(0.79197514,	0.19090188)		* POISSON_SCALE, 
-	vec2(-0.24188840,	0.99706507)		* POISSON_SCALE, 
-	vec2(-0.81409955,	0.91437590)		* POISSON_SCALE, 
-	vec2(0.19984126,	0.78641367)		* POISSON_SCALE, 
-	vec2(0.14383161,	-0.14100790) 	* POISSON_SCALE
+	vec2(-0.94201624,	-0.39906216), 
+	vec2(0.94558609,	-0.76890725), 
+	vec2(-0.094184101,	-0.92938870), 
+	vec2(0.34495938,	0.29387760), 
+	vec2(-0.91588581,	0.45771432), 
+	vec2(-0.81544232,	-0.87912464), 
+	vec2(-0.38277543,	0.27676845), 
+	vec2(0.97484398,	0.75648379), 
+	vec2(0.44323325,	-0.97511554), 
+	vec2(0.53742981,	-0.47373420), 
+	vec2(-0.26496911,	-0.41893023), 
+	vec2(0.79197514,	0.19090188), 
+	vec2(-0.24188840,	0.99706507), 
+	vec2(-0.81409955,	0.91437590), 
+	vec2(0.19984126,	0.78641367), 
+	vec2(0.14383161,	-0.14100790)
 );
 
-bool is_shaded(vec2 uv, float occludee_z) {
-	return texture(shadow_map, uv).r < occludee_z;
-}
-
 float test_poisson_disc(vec2 uv, float occludee_z) {
-	float light = POISSON_SAMPLES + 1;
-	light -= float(is_shaded(uv, occludee_z));
-	if (SOFT_PENUMBRAS) uv += hash22(uv * HASH_FACTOR) * HASH_SCALE;
+	if (SOFT_PENUMBRAS) uv += hash22(uv * HASH_FACTOR) * hash_scale;
+	float light = POISSON_SAMPLES;
 	for (int i = 0; i < POISSON_SAMPLES; ++i) {
-		light -= float(is_shaded(uv + poisson_disc[i], occludee_z));
+		light -= float(texture(shadow_map, uv + poisson_disc[i] * poisson_scale).r < occludee_z);
 	}
-	return light / (POISSON_SAMPLES + 1);
+	return light / POISSON_SAMPLES;
 }
 
 layout(location = 0) out vec4 light_out;
@@ -115,9 +114,9 @@ void main() {
 	shadow_uv = clamp(shadow_uv, 0, 1);
 
 	float occludee_z = geom_pos_s.z * 0.5 + 0.5;
-	float light = test_poisson_disc(shadow_uv, occludee_z);
+	float light = 0;
 	for (int i = 0; i < PCF_SAMPLES; ++i) {
-		light += test_poisson_disc(shadow_uv + pcf_kernel[i] + poisson_disc[i], occludee_z);
+		light += test_poisson_disc(shadow_uv + pcf_kernel[i] * TEXEL_SIZE, occludee_z);
 	}
 	light /= (PCF_SAMPLES + 1);
 

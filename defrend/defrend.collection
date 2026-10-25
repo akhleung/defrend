@@ -104,7 +104,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/screen/resolve_lighting/resolve_lighting.material\\\"\\n"
+  "  material: \\\"/defrend/materials/screen/lighting/directional_light_with_shadows.material\\\"\\n"
   "}\\n"
   "\"\n"
   "}\n"
