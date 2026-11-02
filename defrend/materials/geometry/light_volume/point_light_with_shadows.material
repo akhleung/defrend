@@ -1,5 +1,5 @@
 name: "point_light"
-tags: "point_light_with_shadows"
+tags: "point_light"
 vertex_program: "/defrend/materials/geometry/light_volume/point_light.vp"
 fragment_program: "/defrend/materials/geometry/light_volume/point_light_with_shadows.fp"
 vertex_space: VERTEX_SPACE_LOCAL

@@ -1544,7 +1544,7 @@ embedded_instances {
   children: "weeds"
   data: ""
   position {
-    x: 500.0
+    x: 50.0
   }
 }
 embedded_instances {
@@ -3905,6 +3905,9 @@ embedded_instances {
   children: "point_light_with_shadows_pivot"
   children: "point_light_with_shadows_pivot1"
   data: ""
+  position {
+    x: -50.0
+  }
 }
 embedded_instances {
   id: "floor1"

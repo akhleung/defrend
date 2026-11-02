@@ -1,7 +1,7 @@
-name: "cubemap_shadow"
+name: "shadow"
 tags: "model"
-vertex_program: "/defrend/materials/geometry/model/cubemap_shadow.vp"
-fragment_program: "/defrend/materials/geometry/model/cubemap_shadow.fp"
+vertex_program: "/defrend/materials/geometry/model/model_shadow_map.vp"
+fragment_program: "/defrend/materials/geometry/model/model_shadow_map.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_viewproj"
@@ -10,16 +10,6 @@ vertex_constants {
 vertex_constants {
   name: "mtx_world"
   type: CONSTANT_TYPE_WORLD
-}
-vertex_constants {
-  name: "mtx_view"
-  type: CONSTANT_TYPE_VIEW
-}
-fragment_constants {
-  name: "radius"
-  type: CONSTANT_TYPE_USER
-  value {
-  }
 }
 attributes {
   name: "mtx_world"

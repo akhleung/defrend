@@ -1,18 +1,19 @@
 local M = {}
 
-local predicate_names = {
-	"model", "decal", "skybox",
-	"billboard", "sprite",
-	"particle", "shadowless_particle",
-	"point_light", "spot_light", "blob_shadow",
-	"point_light_with_shadows", "spot_light_with_shadows",
-	"screen", "text", "gui", "debug_text",
-}
-
 function M.init()
-	for _, name in ipairs(predicate_names) do
-		M[name] = render.predicate({name})
-	end
+	M.model					= render.predicate({"model"})
+	M.billboard				= render.predicate({"billboard"})
+	M.sprite				= render.predicate({"sprite"})
+	M.particle				= render.predicate({"particle"})
+	M.shadowless_particle	= render.predicate({"particle", "shadowless"})
+	M.decal					= render.predicate({"decal"})
+	M.skybox				= render.predicate({"skybox"})
+	M.point_light			= render.predicate({"point_light"})
+	M.spot_light			= render.predicate({"spot_light"})
+	M.screen				= render.predicate({"screen"})
+	M.text					= render.predicate({"text"})
+	M.gui					= render.predicate({"gui"})
+	M.debug_text			= render.predicate({"debug_text"})
 end
 
 return M

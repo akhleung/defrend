@@ -29,6 +29,8 @@ local gui_camera
 local DIRECTIONAL_LIGHTS = lights.directional_lights
 local POINT_LIGHTS = lights.point_lights
 local SPOT_LIGHTS = lights.spot_lights
+local shadow_map_materials
+local cubemap_materials
 
 function init(self)
 	settings.resolution_x = render.get_window_width()
@@ -54,7 +56,7 @@ function init(self)
 	g_buffer = render_targets.get_g_buffer()
 
 	local identity = vmath.matrix4()
-	local screen_proj = vmath.matrix4_orthographic(-.5, .5, -.5, .5, -1, 1)
+	local screen_proj = vmath.matrix4_orthographic(-1, 1, -1, 1, -1, 1)
 	screen_camera = {
 		view = identity,
 		proj = screen_proj,
@@ -66,6 +68,15 @@ function init(self)
 		view = identity,
 		proj = gui_proj,
 		viewproj = gui_proj * identity,
+	}
+
+	shadow_map_materials = {
+		model_shadow_map_material = predicates.model,
+		particle_shadow_map_material = predicates.particle,
+	}
+	cubemap_materials = {
+		model_cubemap_material = predicates.model,
+		particle_cubemap_material = predicates.particle,
 	}
 end
 
@@ -90,11 +101,13 @@ function update(self)
 	render.set_depth_mask(true)
 	render.enable_state(graphics.STATE_DEPTH_TEST)
 	render.enable_state(graphics.STATE_CULL_FACE)
+	render.set_cull_face(graphics.FACE_TYPE_BACK)
 	render.disable_state(graphics.STATE_BLEND)
 
 	render_directional_shadows()
 	render_point_light_shadows()
 	render_spot_light_shadows()
+	render.disable_material()
 
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
@@ -102,28 +115,19 @@ function update(self)
 	render.set_viewport(0, 0, rx, ry)
 	-- setup camera view and projection --
 	render.set_camera(cam, cull)
-	render.enable_state(graphics.STATE_CULL_FACE)
-	render.set_cull_face(graphics.FACE_TYPE_BACK)
 
-	-- render models into g-buffer --
+	-- render geometries into g-buffer --
 	if settings.geometry.models_enabled then
-		render.enable_material("model_material")
 		render.draw(predicates.model, geometry_options)
 	end
-
-	-- render sprites, billboards, and particles into g-buffer --
 	if settings.geometry.sprites_enabled then
-		render.enable_material("sprite_material")
 		render.draw(predicates.sprite, geometry_options)
 	end
 	if settings.geometry.billboards_enabled then
-		render.enable_material("billboard_material")
 		render.draw(predicates.billboard, geometry_options)
 	end
 	if settings.geometry.particles_enabled then
-		render.enable_material("particle_material")
 		render.draw(predicates.particle, geometry_options)
-		render.enable_material("shadowless_particle_material")
 		render.draw(predicates.shadowless_particle, geometry_options)
 	end
 
@@ -139,6 +143,7 @@ function update(self)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.draw(predicates.screen)
 	render.disable_texture("depth_buffer")
+	render.disable_material()
 	-- render decals into g-buffer --
 	-- The usual back-face culling will prevent decals from rendering when the camera is inside a projector box. But
 	-- front-face culling requires depth testing to be disabled, since the back faces of the projector box will be
@@ -152,7 +157,6 @@ function update(self)
 	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_camera(cam, cull)
 	if settings.geometry.decals_enabled then
-		render.enable_material("decal_material")
 		render.enable_texture("depth_buffer", render_targets.get_post_source(), render_targets.POST_COLOR)
 		render.draw(predicates.decal, geometry_options)
 		render.disable_texture("depth_buffer")
@@ -163,7 +167,6 @@ function update(self)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
 	render.set_camera(cam) -- call this again without a 2nd arg to disable frustum culling for the skybox
 	if settings.geometry.skybox_enabled then
-		render.enable_material("skybox_material")
 		render.draw(predicates.skybox)
 	end
 
@@ -182,16 +185,10 @@ function update(self)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
 	if settings.point_light.enabled then
-		render.enable_material("point_light_material")
 		render.draw(predicates.point_light, geometry_options)
-		render.enable_material("point_light_with_shadows_material")
-		render.draw(predicates.point_light_with_shadows, point_light_options)
 	end
 	if settings.spot_light.enabled then
-		render.enable_material("spot_light_material")
 		render.draw(predicates.spot_light, geometry_options)
-		render.enable_material("spot_light_with_shadows_material")
-		render.draw(predicates.spot_light_with_shadows, spot_light_options)
 	end
 	render.disable_state(graphics.STATE_DEPTH_TEST)
 	render.set_cull_face(graphics.FACE_TYPE_BACK)
@@ -199,12 +196,12 @@ function update(self)
 	render.set_view(screen_camera.view)
 	render.set_projection(screen_camera.proj)
 	if settings.directional_light.enabled then
+		render.enable_material("directional_light_with_shadows_material")
 		for light, _ in pairs(DIRECTIONAL_LIGHTS) do
 			light.uniforms.frustum_corner = frustum_corner
 			light.uniforms.frustum_terms = frustum_terms
 			directional_light_options.constants = light.uniforms
 			render.enable_texture("shadow_atlas", light.attachment, graphics.BUFFER_TYPE_DEPTH_BIT)
-			render.enable_material("directional_light_with_shadows_material")
 			render.draw(predicates.screen, directional_light_options)
 		end
 		render.disable_texture("shadow_atlas")
@@ -335,17 +332,10 @@ function on_message(self, message_id, message)
 	end
 end
 
-local function draw_shadow_casters(model_material, particle_material)
-	render.enable_state(graphics.STATE_CULL_FACE)
-	if settings.geometry.models_enabled then
-		render.set_cull_face(graphics.FACE_TYPE_BACK)
-		render.enable_material(model_material)
-		render.draw(predicates.model, shadow_options)
-	end
-	if settings.geometry.particles_enabled then
-		render.disable_state(graphics.STATE_CULL_FACE)
-		render.enable_material(particle_material)
-		render.draw(predicates.particle, shadow_options)
+local function draw_shadow_casters(materials)
+	for mtl, pred in pairs(materials) do
+		render.enable_material(mtl)
+		render.draw(pred, shadow_options)
 	end
 end
 
@@ -370,7 +360,7 @@ render_directional_shadows = function ()
 			local y_offset = partition.y * atlas_resolution
 			render.set_viewport(x_offset, y_offset, map_resolution, map_resolution)
 			shadow_options.frustum = mtx_frustums[i]
-			draw_shadow_casters("shadow_material", "particle_shadow_material")
+			draw_shadow_casters(shadow_map_materials)
 		end
 	end
 end
@@ -386,10 +376,6 @@ local CUBE_FACES = {
 local cubemap_options = {}
 local radius = vmath.vector4()
 render_point_light_shadows = function ()
-	if settings.geometry.models_enabled then
-		render.enable_state(graphics.STATE_CULL_FACE)
-		render.set_cull_face(graphics.FACE_TYPE_BACK)
-	end
 	for light in pairs(POINT_LIGHTS) do
 		local shadow_map = light.render_target
 		local resolution = light.shadow_map_resolution
@@ -406,7 +392,7 @@ render_point_light_shadows = function ()
 				render.set_view(mtx_views[face_index])
 				render.set_projection(mtx_proj)
 				shadow_options.frustum = mtx_proj * mtx_views[face_index]
-				draw_shadow_casters("cubemap_model_shadow_material", "cubemap_particle_shadow_material")
+				draw_shadow_casters(cubemap_materials)
 			end
 		end
 	end
@@ -421,7 +407,7 @@ render_spot_light_shadows = function ()
 			render.set_projection(light.mtx_proj)
 			render.set_viewport(0, 0, light.shadow_map_resolution, light.shadow_map_resolution)
 			shadow_options.frustum = light.mtx_light
-			draw_shadow_casters("shadow_material", "particle_shadow_material")
+			draw_shadow_casters(shadow_map_materials)
 		end
 	end
 end
