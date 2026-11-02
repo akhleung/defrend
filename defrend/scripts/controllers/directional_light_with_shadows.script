@@ -1,0 +1,308 @@
+local msgs		= require("defrend.messages")
+local lights	= require("defrend.render.lights")
+local viz		= require("defrend.render.visualizations")
+
+local do_init
+local do_update
+local get_minimal_bounding_box_for_camera_frustum
+local get_light_view_mtx_and_camera_frustum
+local get_texel_snapping_mtx
+local pad
+
+go.property("enabled", true)
+go.property("color", vmath.vector4(1))
+go.property("camera_url", msg.url())
+
+go.property("shadow_atlas", resource.render_target())
+-- set numeric properties to negative values to use the global defaults
+go.property("cascade", vmath.vector4(0.10, 0.20, 0.30, 0.40))
+go.property("biases", vmath.vector4(0.1, 0.15, 0.25, 0.4))
+go.property("partition_1_tint", vmath.vector4(0))
+go.property("partition_2_tint", vmath.vector4(0))
+go.property("partition_3_tint", vmath.vector4(0))
+go.property("partition_4_tint", vmath.vector4(0))
+go.property("cascade_transition_range", 10)
+go.property("light_frustum_z_padding", 0.5)
+go.property("pcf_samples", 4)
+go.property("poisson_disc_samples", 4)
+go.property("poisson_scale", 3)
+go.property("hash_factor", 7879)
+go.property("hash_scale", 3)
+go.property("soft_penumbras", true)
+
+---@param self Directional_Light
+function init(self)
+	self.url = msg.url(".")
+	self.id = self.url.path
+	self.init = do_init
+
+	lights.directional_lights[self] = true
+	do_init(self)
+end
+
+-- Provide this function as a method of Directional_Light, to be called by other modules in order to have more
+-- fine-grained control over the initialization / reinitialization order.
+---@param self Directional_Light
+do_init = function(self)
+	-- get the direction of the light
+	local rotation = go.get_world_rotation(self.url)
+	self.direction = vmath.normalize(vmath.rotate(rotation, vmath.vector3(0, 0, -1)))
+	-- put these partition properties into arrays so we can loop over them
+	local cascade	= { self.cascade.x, self.cascade.y, self.cascade.z, self.cascade.w }
+	local biases	= { self.biases.x, self.biases.y, self.biases.z, self.biases.w }
+	local tints		= { self.partition_1_tint, self.partition_2_tint, self.partition_3_tint, self.partition_4_tint }
+	-- collect the active partition sizes, biases, and tints; a partition size of 0 means that the rest should be ignored
+	local active_cascade	= {}
+	local active_biases		= {}
+	local active_tints		= {}
+	for i = 1, #cascade do
+		if cascade[i] == 0 then
+			break
+		end
+		active_cascade[i]	= cascade[i]
+		active_biases[i]	= biases[i]
+		active_tints[i]		= tints[i]
+	end
+	-- get the render target / texture / shadow atlas info
+	local rt_info			= resource.get_render_target_info(self.shadow_atlas)
+	local attachment		= rt_info.attachments[1]
+	assert(attachment, "shadow atlas has no attachments")
+	assert(attachment.buffer_type == graphics.BUFFER_TYPE_DEPTH_BIT, "shadow atlas must be depth-only")
+	assert(attachment.width == attachment.height, "shadow atlas must be square")
+	self.render_target		= rt_info.handle
+	self.attachment			= attachment.handle
+	self.atlas_resolution	= attachment.width
+	self.atlas_dimension	= math.ceil(math.sqrt(#active_cascade)) -- e.g., 2 for a 2x2 atlas
+	self.map_resolution		= self.atlas_resolution / self.atlas_dimension
+	-- compute metadata for each partition, as well as scene camera projections for each partition
+	local fov		= camera.get_fov(self.camera_url)
+	local aspect	= camera.get_aspect_ratio(self.camera_url)
+	local near		= camera.get_near_z(self.camera_url)
+	local far		= camera.get_far_z(self.camera_url)
+	local total		= far - near
+	self.partitions = {} -- vector4[] of x offsets, y offsets, far boundaries, biases
+	self.projections = {}
+	for i = 1, #active_cascade do
+		far = near + total * active_cascade[i]
+		local y_offset = math.floor((i - 1) / self.atlas_dimension) / self.atlas_dimension -- which row / num rows, normalized
+		local x_offset = ((i - 1) % self.atlas_dimension) / self.atlas_dimension -- which column / num columns, normalized
+		self.partitions[i] = vmath.vector4(x_offset, y_offset, far, active_biases[i])
+		self.projections[i] = vmath.matrix4_perspective(fov, aspect, near, far)
+		near = far
+	end
+	-- calculate orthographic frustums from the light's POV for each partition
+	self.light_frustums = {}
+	for i, proj in ipairs(self.projections) do
+		self.light_frustums[i] = get_minimal_bounding_box_for_camera_frustum(self, proj)
+	end
+	-- pack up all of the necessary values for the shaders
+	local shadow_params1	= vmath.vector4()
+	shadow_params1.x		= self.map_resolution
+	shadow_params1.y		= self.atlas_dimension
+	shadow_params1.z		= #active_cascade
+	shadow_params1.w		= self.cascade_transition_range
+	local shadow_params2	= vmath.vector4()
+	shadow_params2.x		= self.pcf_samples
+	shadow_params2.y		= self.poisson_disc_samples
+	shadow_params2.z		= self.poisson_scale
+	shadow_params2.w		= 0
+	if self.soft_penumbras then
+		shadow_params2.w	= 1
+	end
+	local shadow_params3	= vmath.vector4()
+	shadow_params3.x		= self.hash_factor
+	shadow_params3.y		= self.hash_scale
+	shadow_params3.z		= 1 / self.atlas_resolution -- texel size
+	-- these arrays of matrices may change on each frame update
+	self.mtx_views		= {}
+	self.mtx_projs		= {}
+	self.mtx_frustums	= {}
+	-- create the uniform buffer
+	self.uniforms = render.constant_buffer() --[[@as Directional_Light_Uniforms]]
+	-- the following uniforms won't change unless the camera, light, or shadow settings change
+	self.uniforms.color				= self.color
+	self.uniforms.direction			= vmath.vector4(self.direction.x, self.direction.y, self.direction.z, 0)
+	self.uniforms.shadow_params1	= shadow_params1
+	self.uniforms.shadow_params2	= shadow_params2
+	self.uniforms.shadow_params3	= shadow_params3
+	self.uniforms.partitions		= self.partitions
+	self.uniforms.shadow_tints		= active_tints
+	-- this uniform may change on each frame update
+	self.uniforms.mtx_lights		= {}
+	-- set the update method, which will be called by the render script
+	self.update = do_update
+
+	viz.set_shadow_map(self.attachment)
+end
+
+-- Provide this update function as a method of Directional_Light, to be called by the render script. We're doing it
+-- this way because the `update` and `late_update` lifecycle callbacks only have access to camera matrices that are
+-- one frame behind, so we need the render script to call this method directly so that it can supply up-to-date
+-- matrices.
+---@param self Directional_Light
+---@param cam_view matrix4
+---@param cam_view_inv matrix4
+do_update = function (self, cam_view, cam_view_inv)
+	if not self.enabled then
+		return
+	end
+
+	for i, light_proj in ipairs(self.projections) do
+		local light_view = get_light_view_mtx_and_camera_frustum(self, cam_view, light_proj)
+		local light_frustum = self.light_frustums[i]
+		local min_z = pad(light_frustum.min_z, light_frustum.max_z, self.light_frustum_z_padding)
+		local light_proj = vmath.matrix4_orthographic(
+			light_frustum.min_x, light_frustum.max_x,
+			light_frustum.min_y, light_frustum.max_y,
+			min_z, light_frustum.max_z
+		)
+		local light_trans = get_texel_snapping_mtx(self, light_view, light_proj)
+		light_proj = light_trans * light_proj
+		light_viewproj = light_proj * light_view
+		self.mtx_views[i] = light_view
+		self.mtx_projs[i] = light_proj
+		self.mtx_frustums[i] = light_viewproj
+		self.uniforms.mtx_lights[i] = light_viewproj * cam_view_inv
+	end
+	self.uniforms.mtx_view = cam_view
+end
+
+---@param self Directional_Light
+---@param message_id userdata
+---@param message table
+---@param sender url
+function on_message(self, message_id, message, sender)
+	if message_id == msgs.ENABLE and not self.enabled then
+		lights.directional_lights[self] = true
+		self.enabled = true
+	elseif message_id == msgs.DISABLE and self.enabled then
+		lights.directional_lights[self] = nil
+		self.enabled = false
+	elseif message_id == msgs.REFRESH then
+		do_init(self)
+	end
+end
+
+function on_reload(self)
+	do_init(self)
+end
+
+function final(self)
+	msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
+end
+
+-- HELPER FUNCTIONS
+
+-- Given a desired camera frustum, find the smallest bounding box that will fit any rotation of said frustum. This is a
+-- brute-force approach that rotates the camera in a sphere, calculates a bounding box for each rotation, and returns
+-- the largest. I'm sure there's an analytical method for calculating this, but researching and implementing it isn't a
+-- priority because this calculation will only be done occasionally (i.e., when the camera projection changes).
+local UP		= vmath.vector3(0, 1, 0)
+local RIGHT		= vmath.vector3(1, 0, 0)
+local CENTER	= vmath.vector3(0)
+local SLICES	= 20
+get_minimal_bounding_box_for_camera_frustum = function(self, cam_proj)
+	local bbox = {
+		min_x = 0, max_x = 0,
+		min_y = 0, max_y = 0,
+		min_z = 0, max_z = 0,
+	}
+	local delta = 360 / SLICES
+	for pitch = -180, 180 - delta, delta do
+		for yaw = -180, 180 - delta, delta do
+			local r = vmath.euler_to_quat(pitch, yaw, 0)
+			local mtx_view = vmath.matrix4_look_at(CENTER, vmath.rotate(r, RIGHT), UP)
+			local mtx_light_view, world_corners = get_light_view_mtx_and_camera_frustum(self, mtx_view, cam_proj)
+			-- calculate a precise bounding box around the camera frustum in the light's view space
+			local min_x, max_x = math.huge, -math.huge
+			local min_y, max_y = math.huge, -math.huge
+			local min_z, max_z = math.huge, -math.huge
+			for i = 1, 8 do
+				local light_corner = mtx_light_view * world_corners[i]
+				min_x, max_x = math.min(min_x, light_corner.x), math.max(max_x, light_corner.x)
+				min_y, max_y = math.min(min_y, light_corner.y), math.max(max_y, light_corner.y)
+				min_z, max_z = math.min(min_z, light_corner.z), math.max(max_z, light_corner.z)
+			end
+			-- keep track of the largest frustum dimensions encountered so far
+			if min_x < bbox.min_x then bbox.min_x = min_x end
+			if max_x > bbox.max_x then bbox.max_x = max_x end
+			if min_y < bbox.min_y then bbox.min_y = min_y end
+			if max_y > bbox.max_y then bbox.max_y = max_y end
+			if min_z < bbox.min_z then bbox.min_z = min_z end
+			if max_z > bbox.max_z then bbox.max_z = max_z end
+		end
+	end
+	return bbox
+end
+
+-- Given a camera's view and projection matrices, calculate a view matrix for the directional light that points at
+-- the center of the camera frustum. Also return the camera frustum's vertices in world space, as well as the center
+-- of the camera frustum in world space.
+local NDC_CORNERS = {
+	vmath.vector4(-1, -1, -1, 1),
+	vmath.vector4(-1, -1, 1, 1),
+	vmath.vector4(-1, 1, -1, 1),
+	vmath.vector4(-1, 1, 1, 1),
+	vmath.vector4(1, -1, -1, 1),
+	vmath.vector4(1, -1, 1, 1),
+	vmath.vector4(1, 1, -1, 1),
+	vmath.vector4(1, 1, 1, 1),
+}
+-- WARNING: this is essentially a static variable that we reuse in order to avoid reallocating an array of vectors
+-- each time the following function is called. It should be safe, however, since all script code run by this engine
+-- is single-threaded, and we don't keep or use the contents of this array beyond re-invocations of said function.
+local world_corners = {
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+	vmath.vector4(),
+}
+---@param self Directional_Light
+---@param cam_view matrix4
+---@param cam_proj matrix4
+get_light_view_mtx_and_camera_frustum = function(self, cam_view, cam_proj)
+	-- get the camera frustum in world space
+	local mtx_inv = vmath.inv(cam_proj * cam_view)
+	for i = 1, 8 do
+		local world_corner = mtx_inv * NDC_CORNERS[i]
+		world_corner.x = world_corner.x / world_corner.w
+		world_corner.y = world_corner.y / world_corner.w
+		world_corner.z = world_corner.z / world_corner.w
+		world_corner.w = 1
+		world_corners[i] = world_corner
+	end
+	-- get the center of the camera frustum
+	local world_center = vmath.vector3()
+	for i = 1, 8 do
+		local world_corner = world_corners[i]
+		world_center.x = world_center.x + world_corner.x
+		world_center.y = world_center.y + world_corner.y
+		world_center.z = world_center.z + world_corner.z
+	end
+	world_center = world_center / 8
+	-- calculate the light's view matrix
+	local mtx_light_view = vmath.matrix4_look_at(world_center - self.direction, world_center, UP)
+	return mtx_light_view, world_corners, world_center
+end
+
+-- Create a translation matrix to snap the light projection to the nearest shadow map texel.
+local ORIGIN = vmath.vector4(0,0,0,1)
+get_texel_snapping_mtx = function(self, mtx_light_view, mtx_light_proj)
+	local half_res = self.map_resolution / 2
+	local shadow_origin = mtx_light_proj * mtx_light_view * ORIGIN * half_res
+	local offset = vmath.vector3(
+		(math.floor(shadow_origin.x) - shadow_origin.x) / half_res,
+		(math.floor(shadow_origin.y) - shadow_origin.y) / half_res,
+		0
+	)
+	return vmath.matrix4_translation(offset)
+end
+
+pad = function(min, max, factor)
+	local padding = (max - min) * factor
+	return min - padding, max + padding
+end

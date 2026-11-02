@@ -7,6 +7,8 @@ local UP = vmath.vector3(0, 1, 0)
 local DOWN = vmath.vector3(0, -1, 0)
 local SENSITIVITY = 8
 
+go.property("camera_url", msg.url())
+
 local euler_x = hash("euler.x")
 local euler_y = hash("euler.y")
 local euler_z = hash("euler.z")
@@ -81,7 +83,7 @@ function on_input(self, action_id, action)
 	else
 		if command == actions.LEFT_CLICK then
 			pprint("CLICKED", action)
-			local near, far = defrend.screen_to_world(action.screen_x, action.screen_y)
+			local near, far = defrend.screen_to_world(self.camera_url, action.screen_x, action.screen_y)
 			local picks = physics.raycast(near, far, pickables, raycast_options)
 			if picks then
 				pprint("PICKED", picks[1])

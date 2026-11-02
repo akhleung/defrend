@@ -1,6 +1,6 @@
-local settings	= require "defrend.render.settings"
-local uniforms	= require "defrend.render.uniforms"
-local queue		= require("defrend.scripts.configurators.queue")
+local settings	= require("defrend.render.settings")
+local uniforms	= require("defrend.render.uniforms")
+local lights	= require("defrend.render.lights")
 
 return function (self)
 	local uniforms_changed = false
@@ -79,7 +79,9 @@ return function (self)
 
 	if uniforms_changed then
 		uniforms.spot_light.init()
-		queue.init_pending_spot_lights()
+		for light in pairs(lights.spot_lights) do
+			light:init()
+		end
 		uniforms_changed = false
 	end
 

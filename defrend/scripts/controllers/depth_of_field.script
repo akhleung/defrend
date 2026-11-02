@@ -34,6 +34,8 @@ local focus_follows_view
 local focus_follows_mouse
 local function do_init(self)
 
+	self.camera_url = msg.url("#camera")
+
 	for _, property_name in ipairs(collision_property_names) do
 		local group = self[property_name]
 		if group ~= empty_hash then
@@ -57,11 +59,11 @@ end
 
 local raycast_options = { all = false }
 local function pick(self, x, y)
-	local near,	far	= defrend.screen_to_world(x, y)
+	local near,	far	= defrend.screen_to_world(self.camera_url, x, y)
 	local picks		= physics.raycast(near, far, pickables, raycast_options)
 	if picks then
 		local picked = picks[1].position
-		local focal_point = camera.get_view(settings.scene_camera_url) * vmath.vector4(picked.x, picked.y, picked.z, 1)
+		local focal_point = camera.get_view(self.camera_url) * vmath.vector4(picked.x, picked.y, picked.z, 1)
 		local focal_depth = -focal_point.z
 		return focal_depth
 	end
