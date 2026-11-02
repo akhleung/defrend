@@ -1,11 +1,8 @@
-local settings	= require("defrend.render.settings")
-local light		= settings.light
-local shadow	= settings.shadow
-local queue		= require("defrend.scripts.configurators.queue")
 local msgs		= require("defrend.messages")
 local lights	= require("defrend.render.lights")
 local viz		= require("defrend.render.visualizations")
 
+local do_init
 local do_update
 local get_minimal_bounding_box_for_camera_frustum
 local get_light_view_mtx_and_camera_frustum
@@ -14,6 +11,7 @@ local pad
 
 go.property("enabled", true)
 go.property("color", vmath.vector4(1))
+go.property("camera_url", msg.url())
 
 go.property("shadow_atlas", resource.render_target())
 -- set numeric properties to negative values to use the global defaults
@@ -25,15 +23,27 @@ go.property("partition_3_tint", vmath.vector4(0))
 go.property("partition_4_tint", vmath.vector4(0))
 go.property("cascade_transition_range", 10)
 go.property("light_frustum_z_padding", 0.5)
-go.property("pcf_samples", 8)
+go.property("pcf_samples", 4)
 go.property("poisson_disc_samples", 4)
-go.property("poisson_scale", 3000)
+go.property("poisson_scale", 3)
 go.property("hash_factor", 7879)
 go.property("hash_scale", 3)
 go.property("soft_penumbras", true)
 
 ---@param self Directional_Light
-local function do_init(self)
+function init(self)
+	self.url = msg.url(".")
+	self.id = self.url.path
+	self.init = do_init
+
+	lights.directional_lights[self] = true
+	do_init(self)
+end
+
+-- Provide this function as a method of Directional_Light, to be called by other modules in order to have more
+-- fine-grained control over the initialization / reinitialization order.
+---@param self Directional_Light
+do_init = function(self)
 	-- get the direction of the light
 	local rotation = go.get_world_rotation(self.url)
 	self.direction = vmath.normalize(vmath.rotate(rotation, vmath.vector3(0, 0, -1)))
@@ -65,10 +75,10 @@ local function do_init(self)
 	self.atlas_dimension	= math.ceil(math.sqrt(#active_cascade)) -- e.g., 2 for a 2x2 atlas
 	self.map_resolution		= self.atlas_resolution / self.atlas_dimension
 	-- compute metadata for each partition, as well as scene camera projections for each partition
-	local fov		= camera.get_fov(settings.scene_camera_url)
-	local aspect	= camera.get_aspect_ratio(settings.scene_camera_url)
-	local near		= camera.get_near_z(settings.scene_camera_url)
-	local far		= camera.get_far_z(settings.scene_camera_url)
+	local fov		= camera.get_fov(self.camera_url)
+	local aspect	= camera.get_aspect_ratio(self.camera_url)
+	local near		= camera.get_near_z(self.camera_url)
+	local far		= camera.get_far_z(self.camera_url)
 	local total		= far - near
 	self.partitions = {} -- vector4[] of x offsets, y offsets, far boundaries, biases
 	self.projections = {}
@@ -119,24 +129,10 @@ local function do_init(self)
 	self.uniforms.shadow_tints		= active_tints
 	-- this uniform may change on each frame update
 	self.uniforms.mtx_lights		= {}
-	-- put this light into a shared module for use by others
-	if self.enabled then
-		lights.directional_lights[self] = true
-	end
 	-- set the update method, which will be called by the render script
 	self.update = do_update
 
 	viz.set_shadow_map(self.attachment)
-end
-
----@param self Directional_Light
-function init(self)
-	self.url = msg.url(".")
-	self.id = self.url.path
-
-	queue.add_pending_directional_light(function ()
-		do_init(self)
-	end)
 end
 
 -- Provide this update function as a method of Directional_Light, to be called by the render script. We're doing it

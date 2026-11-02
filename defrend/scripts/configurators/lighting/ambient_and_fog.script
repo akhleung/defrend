@@ -8,10 +8,10 @@ go.property("fog_near", 800)
 go.property("fog_far", 1001)
 
 local function do_init(self)
-	settings.light.ambient_color	= self.ambient_color
-	settings.light.fog_color		= self.fog_color
-	settings.light.fog_near			= self.fog_near
-	settings.light.fog_far			= self.fog_far
+	settings.ambient_and_fog.ambient_color	= self.ambient_color
+	settings.ambient_and_fog.fog_color		= self.fog_color
+	settings.ambient_and_fog.fog_near			= self.fog_near
+	settings.ambient_and_fog.fog_far			= self.fog_far
 	uniforms.ambient_and_fog.init()
 end
 

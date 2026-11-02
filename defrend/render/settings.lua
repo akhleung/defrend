@@ -11,34 +11,14 @@ local M = {
 		decals_enabled = true,
 		skybox_enabled = true,
 	},
-	light = {
-		sunlight_enabled = true,
+	ambient_and_fog = {
 		fog_near = 800,
 		fog_far = 1001,
 		fog_color = vmath.vector4(0),
 		ambient_color = vmath.vector4(0.75, 0.75, 0.75, 1.0),
-		directional_color = vmath.vector4(1.0),
-		directional_to = vmath.vector4(-1, -1, -1, 1),
-		-- for saving the color when disabling the light
-		saved_color = vmath.vector4(),
 	},
-	shadow = {
+	directional_light = {
 		enabled = true,
-		pcf_samples = 8,
-		poisson_samples = 4,
-		poisson_scale = 3000,
-		soft_penumbras = true,
-		cascade = { 0.1, 0.2, 0.3, 0.4 },
-		biases = { 0.1, 0.15, 0.25, 0.4 },
-		tints = { vmath.vector4(0), vmath.vector4(0), vmath.vector4(0), vmath.vector4(0) },
-		transition_range = 10,
-		z_padding_factor = 0.5,
-		atlas_resolution = 4096,
-		-- the rest will be calculated from camera settings combined with the preceding
-		map_resolution = 1,
-		map_dimension = 1,
-		partitions = {},
-		projections = {},
 	},
 	point_light = {
 		enabled = true,

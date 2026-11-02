@@ -44,7 +44,7 @@ float	TEXEL_SIZE			= shadow_params3.z;
 float	poisson_scale		= POISSON_SCALE * TEXEL_SIZE;
 float	hash_scale			= HASH_SCALE * TEXEL_SIZE;
 
-vec2 pcf_kernel[8] = vec2[](
+const vec2 pcf_kernel[8] = vec2[](
 	vec2(-1, 0),
 	vec2(1,	0),
 	vec2(0, -1),
@@ -55,7 +55,7 @@ vec2 pcf_kernel[8] = vec2[](
 	vec2(-1, 1)
 );
 
-vec2 poisson_disc[16] = vec2[]( 
+const vec2 poisson_disc[16] = vec2[]( 
 	vec2(-0.94201624,	-0.39906216),
 	vec2(0.94558609,	-0.76890725),
 	vec2(-0.094184101,	-0.92938870),

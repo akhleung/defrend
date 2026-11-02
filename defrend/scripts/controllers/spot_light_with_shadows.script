@@ -1,6 +1,7 @@
-local settings	= require("defrend.render.settings").spot_light
-local queue		= require("defrend.scripts.configurators.queue")
+local lights	= require("defrend.render.lights")
 local msgs		= require("defrend.messages")
+
+local do_init
 
 local SOURCE	= vmath.vector4(0, 0, 0, 1)
 local TARGET	= vmath.vector4(0, -1, 0, 1)
@@ -9,54 +10,59 @@ local EDGE		= vmath.vector4(0.5, -1, 0, 1)
 go.property("enabled", true)
 
 go.property("shadow_map", resource.render_target())
--- set numeric properties to negative values to use the global defaults
 go.property("shadow_bias_near", 0.1)
 go.property("shadow_bias_far", 0.6)
-go.property("pcf_samples", 8)
+go.property("pcf_samples", 4)
 go.property("poisson_samples", 4)
-go.property("poisson_scale", 5)
+go.property("poisson_scale", 3)
 go.property("hash_factor", 7879)
-go.property("hash_scale", 5)
+go.property("hash_scale", 3)
 go.property("soft_penumbras", true)
-
-local function property_or_default(property, default)
-	if property < 0 then
-		return default
-	else
-		return property
-	end
-end
 
 local function vector4_to_vector3(v)
 	return vmath.vector3(v.x, v.y, v.z)
 end
 
-local function do_init(self)
+---@param self Spot_Light
+function init(self)
+	self.url = msg.url(".")
+	self.model = msg.url("#model")
+	self.init = do_init
+
+	lights.spot_lights[self] = true
+	do_init(self)
+end
+
+---@param self Spot_Light
+do_init = function(self)
 
 	local start_attn = go.get(self.model, "start_attn")
 	self.light_start = start_attn.x
 
 	local rt_info = resource.get_render_target_info(self.shadow_map)
 	local attachment = rt_info.attachments[1]
+	assert(attachment, "shadow map has no attachments")
+	assert(attachment.buffer_type == graphics.BUFFER_TYPE_DEPTH_BIT, "shadow map must be depth-only")
+	assert(attachment.width == attachment.height, "shadow map must be square")
+	self.render_target = rt_info.handle
 	self.texture = attachment.texture
-	self.texel_size = vmath.vector4(1 / attachment.width, 1 / attachment.height, 0, 0)
+	self.shadow_map_resolution = attachment.width
+	self.texel_size = vmath.vector4(1 / attachment.width, 0, 0, 0)
 
 	self.shadow_params1 = vmath.vector4()
-	self.shadow_params1.x = property_or_default(self.shadow_bias_near, settings.shadow_bias_near)
-	self.shadow_params1.y = property_or_default(self.shadow_bias_far, settings.shadow_bias_far)
+	self.shadow_params1.x = self.shadow_bias_near
+	self.shadow_params1.y = self.shadow_bias_far
 	self.shadow_params1.z = 0
 	if self.soft_penumbras then
 		self.shadow_params1.z = 1
 	end
-	self.shadow_params1.w = property_or_default(self.pcf_samples, settings.pcf_samples)
-
-	local avg_texel_size = (self.texel_size.x + self.texel_size.y) / 2
+	self.shadow_params1.w = self.pcf_samples
 
 	self.shadow_params2 = vmath.vector4()
-	self.shadow_params2.x = property_or_default(self.poisson_samples, settings.poisson_samples)
-	self.shadow_params2.y = property_or_default(self.poisson_scale, settings.poisson_scale) * avg_texel_size
-	self.shadow_params2.z = property_or_default(self.hash_factor, settings.hash_factor)
-	self.shadow_params2.w = property_or_default(self.hash_scale, settings.hash_scale) * avg_texel_size
+	self.shadow_params2.x = self.poisson_samples
+	self.shadow_params2.y = self.poisson_scale
+	self.shadow_params2.z = self.hash_factor
+	self.shadow_params2.w = self.hash_scale
 
 	local mtx_world	= go.get_world_transform(self.url)
 	local source	= vector4_to_vector3(mtx_world * SOURCE)
@@ -66,34 +72,20 @@ local function do_init(self)
 	local to_edge	= vmath.normalize(edge - source)
 	self.fov		= 2 * math.acos(vmath.dot(to_target, to_edge))
 
-	self.message.shadow_map = rt_info.handle
-	self.message.shadow_map_width = attachment.width
-	self.message.shadow_map_height = attachment.height
-
 	go.set(self.model, "shadow_params1", self.shadow_params1)
 	go.set(self.model, "shadow_params2", self.shadow_params2)
 	go.set(self.model, "texel_size", self.texel_size)
 	go.set(self.model, "texture2", self.texture)
 end
 
-function init(self)
-	self.url = msg.url(".")
-	self.model = msg.url("#model")
-	self.message = {}
-	self.message.id = self.url.path
-	self.message.url = self.url
-
-	queue.add_pending_spot_light(function ()
-		do_init(self)
-	end)
-end
-
+---@param self Spot_Light
 function late_update(self, dt)
 	if not self.enabled then
 		return
 	end
 
-	local mtx_world	= go.get_world_transform(self.url)
+	go.update_world_transform()
+	local mtx_world	= go.get_world_transform()
 	local source	= vector4_to_vector3(mtx_world * SOURCE)
 	local target	= vector4_to_vector3(mtx_world * TARGET)
 	local edge		= vector4_to_vector3(mtx_world * EDGE)
@@ -105,28 +97,28 @@ function late_update(self, dt)
 
 	go.set(self.model, "mtx_light", mtx_light) ---@diagnostic disable-line: param-type-mismatch
 
-	self.message.mtx_view = mtx_view
-	self.message.mtx_proj = mtx_proj
-	self.message.mtx_light = mtx_light
-
-	msg.post("@render:", msgs.UPDATE_SPOT_LIGHT, self.message)
+	self.mtx_view = mtx_view
+	self.mtx_proj = mtx_proj
+	self.mtx_light = mtx_light
 end
 
+---@param self Spot_Light
 function on_message(self, message_id, message, sender)
 	if message_id == msgs.ENABLE and not self.enabled then
 		self.enabled = true
 	elseif message_id == msgs.DISABLE and self.enabled then
-		msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
 		self.enabled = false
 	elseif message_id == msgs.REFRESH then
 		do_init(self)
 	end
 end
 
+---@param self Spot_Light
 function on_reload(self)
 	do_init(self)
 end
 
+---@param self Spot_Light
 function final(self)
-	msg.post("@render:", msgs.REMOVE_SPOT_LIGHT, self.message)
+	lights.spot_lights[self] = false
 end

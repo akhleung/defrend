@@ -1,7 +1,7 @@
 ---@diagnostic disable: param-type-mismatch
 local settings	= require("defrend.render.settings")
 local uniforms	= require("defrend.render.uniforms")
-local queue		= require("defrend.scripts.configurators.queue")
+local lights	= require("defrend.render.lights")
 
 local map_resolutions = { 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096 }
 
@@ -86,7 +86,9 @@ return function (self)
 
 	if uniforms_changed then
 		uniforms.point_light.init()
-		queue.init_pending_point_lights()
+		for light in pairs(lights.point_lights) do
+			light:init()
+		end
 		uniforms_changed = false
 	end
 

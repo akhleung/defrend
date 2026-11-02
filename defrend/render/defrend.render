@@ -32,8 +32,8 @@ render_resources {
   path: "/defrend/materials/geometry/light_volume/spot_light.material"
 }
 render_resources {
-  name: "resolve_lighting_material"
-  path: "/defrend/materials/screen/resolve_lighting/resolve_lighting.material"
+  name: "apply_lighting_material"
+  path: "/defrend/materials/screen/lighting/apply_lighting.material"
 }
 render_resources {
   name: "ssao_material"

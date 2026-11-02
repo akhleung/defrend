@@ -1,7 +1,5 @@
-local settings = require "defrend.render.settings"
-
-local MSG_ENABLE = hash("enable")
-local MSG_REFRESH = hash("refresh")
+local settings	= require("defrend.render.settings")
+local msgs		= require("defrend.messages")
 
 go.property("scene_camera_url", msg.url())
 -- TODO: consdier adding properties for a screen camera and gui camera (not really required though because they're
@@ -10,16 +8,15 @@ go.property("scene_camera_url", msg.url())
 local function do_init(self)
 	settings.scene_camera_url = self.scene_camera_url
 	settings.scene_camera_inv = vmath.inv(camera.get_view(settings.scene_camera_url))
-	msg.post(self.scene_camera_url, MSG_ENABLE)
+	msg.post(self.scene_camera_url, msgs.ENABLE)
 end
 
 function init(self)
 	do_init(self)
-	msg.post("/defrend/lighting#shadow", MSG_REFRESH)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == MSG_REFRESH then
+	if message_id == msgs.REFRESH then
 		do_init(self)
 	end
 end

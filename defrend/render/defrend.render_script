@@ -27,8 +27,8 @@ local screen_camera
 local gui_camera
 
 local DIRECTIONAL_LIGHTS = lights.directional_lights
-local POINT_LIGHTS = {}
-local SPOT_LIGHTS = {}
+local POINT_LIGHTS = lights.point_lights
+local SPOT_LIGHTS = lights.spot_lights
 
 function init(self)
 	settings.resolution_x = render.get_window_width()
@@ -198,7 +198,7 @@ function update(self)
 	render.set_camera()
 	render.set_view(screen_camera.view)
 	render.set_projection(screen_camera.proj)
-	if settings.light.sunlight_enabled then
+	if settings.directional_light.enabled then
 		for light, _ in pairs(DIRECTIONAL_LIGHTS) do
 			light.uniforms.frustum_corner = frustum_corner
 			light.uniforms.frustum_terms = frustum_terms
@@ -256,7 +256,7 @@ function update(self)
 	-- resolve all the lighting and shadows with the g-buffer to produce a fully-lit non-post-processed render
 	render_targets.ping_pong()
 	render.set_render_target(render_targets.get_post_target())
-	render.enable_material("resolve_lighting_material")
+	render.enable_material("apply_lighting_material")
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
 	render.enable_texture("albedo_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
 	render.enable_texture("normal_sampler", g_buffer, render_targets.G_BUFFER_NORMAL)
@@ -326,26 +326,12 @@ end
 function on_message(self, message_id, message)
 	if message_id == msgs.SET_VIEW_PROJ then
 		update_camera_uniforms()
-	elseif message_id == msgs.UPDATE_DIRECTIONAL_LIGHT then
-		DIRECTIONAL_LIGHTS[message.id] = message
-	elseif message_id == msgs.UPDATE_POINT_LIGHT then
-		POINT_LIGHTS[message.id] = message
-	elseif message_id == msgs.UPDATE_SPOT_LIGHT then
-		SPOT_LIGHTS[message.id] = message
-	elseif message_id == msgs.REMOVE_DIRECTIONAL_LIGHT then
-		DIRECTIONAL_LIGHTS[message.id] = nil
-	elseif message_id == msgs.REMOVE_POINT_LIGHT then
-		POINT_LIGHTS[message.id] = nil
-	elseif message_id == msgs.REMOVE_SPOT_LIGHT then
-		SPOT_LIGHTS[message.id] = nil
 	elseif message_id == msgs.WINDOW_RESIZED then
 		settings.resolution_x = render.get_window_width()
 		settings.resolution_y = render.get_window_height()
 		gui_camera.proj = vmath.matrix4_orthographic(0, settings.resolution_x, 0, settings.resolution_y, -1, 1)
 		self.valid = settings.resolution_x > 0 and settings.resolution_y > 0
 		render_targets.set_resolution(settings.resolution_x, settings.resolution_y)
-	elseif message_id == msgs.RESIZE_SHADOW_MAP then
-		render_targets.set_shadow_map_resolution(message.resolution)
 	end
 end
 
@@ -366,7 +352,7 @@ end
 render_directional_shadows = function ()
 	local cam_view = camera.get_view(settings.scene_camera_url)
 	local cam_view_inv = vmath.inv(cam_view)
-	for light, _ in pairs(DIRECTIONAL_LIGHTS) do
+	for light in pairs(DIRECTIONAL_LIGHTS) do
 		light:update(cam_view, cam_view_inv)
 		render.set_render_target(light.render_target)
 		render.clear(clear_options.clear_shadow_options)
@@ -404,8 +390,8 @@ render_point_light_shadows = function ()
 		render.enable_state(graphics.STATE_CULL_FACE)
 		render.set_cull_face(graphics.FACE_TYPE_BACK)
 	end
-	for _, light in pairs(POINT_LIGHTS) do
-		local shadow_map = light.shadow_map
+	for light in pairs(POINT_LIGHTS) do
+		local shadow_map = light.render_target
 		local resolution = light.shadow_map_resolution
 		local mtx_proj = light.mtx_proj
 		local mtx_views = light.mtx_views
@@ -427,13 +413,13 @@ render_point_light_shadows = function ()
 end
 
 render_spot_light_shadows = function ()
-	for _, light in pairs(SPOT_LIGHTS) do
-		render.set_render_target(light.shadow_map)
+	for light in pairs(SPOT_LIGHTS) do
+		render.set_render_target(light.render_target)
 		render.clear(clear_options.clear_shadow_options)
 		if settings.spot_light.shadows_enabled then
 			render.set_view(light.mtx_view)
 			render.set_projection(light.mtx_proj)
-			render.set_viewport(0, 0, light.shadow_map_width, light.shadow_map_height)
+			render.set_viewport(0, 0, light.shadow_map_resolution, light.shadow_map_resolution)
 			shadow_options.frustum = light.mtx_light
 			draw_shadow_casters("shadow_material", "particle_shadow_material")
 		end

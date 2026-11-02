@@ -1,4 +1,3 @@
-local settings	= require "defrend.render.settings"
 local uniforms	= require "defrend.render.uniforms"
 
 local M = {
@@ -32,9 +31,6 @@ function M.init()
 	M.shadow_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
 	M.shadow_options.sort_order				= render.SORT_FRONT_TO_BACK
 	M.shadow_options.constants				= render.constant_buffer()
-	M.shadow_options.constants.bias			= vmath.vector4(settings.shadow.biases[1]) ---@diagnostic disable-line: inject-field
-
-	-- M.directional_light_options.constants	= uniforms.light_and_shadow.uniforms
 
 	M.point_light_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
 	M.point_light_options.sort_order		= render.SORT_FRONT_TO_BACK

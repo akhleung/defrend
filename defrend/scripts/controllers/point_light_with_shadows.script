@@ -1,11 +1,11 @@
-local settings	= require("defrend.render.settings").point_light
-local queue		= require("defrend.scripts.configurators.queue")
+local lights	= require("defrend.render.lights")
 local msgs		= require("defrend.messages")
+
+local do_init
 
 go.property("enabled", true)
 
 go.property("shadow_map", resource.render_target())
--- set numeric properties to negative values to use the global defaults
 go.property("shadow_bias_near", 0.1)
 go.property("shadow_bias_far", 0.6)
 go.property("poisson_samples", 4)
@@ -27,94 +27,83 @@ local CUBE_FACES = { PX, NX, PY, NY, PZ, NZ, }
 local UP_VECTORS = { NY, NY, PZ, NZ, NY, NY, }
 local NEAR = 0.1
 
-local function property_or_default(property, default)
-	if property < 0 then
-		return default
-	else
-		return property
-	end
+---@param self Point_Light
+function init(self)
+	self.url = msg.url(".")
+	self.model = msg.url("#model")
+	self.mtx_views = {}
+	self.init = do_init
+
+	lights.point_lights[self] = true
+	do_init(self)
 end
 
-local function do_init(self)
+---@param self Point_Light
+do_init = function(self)
 
 	local rt_info = resource.get_render_target_info(self.shadow_map)
 	local attachment = rt_info.attachments[1]
+	self.render_target = rt_info.handle
 	self.texture = attachment.texture
-	self.texel_size = vmath.vector4()
+	self.shadow_map_resolution = attachment.width
 
 	self.shadow_params1 = vmath.vector4()
-	self.shadow_params1.x = property_or_default(self.shadow_bias_near, settings.shadow_bias_near)
-	self.shadow_params1.y = property_or_default(self.shadow_bias_far, settings.shadow_bias_far)
+	self.shadow_params1.x = self.shadow_bias_near
+	self.shadow_params1.y = self.shadow_bias_far
 	self.shadow_params1.z = 0
 	if self.soft_penumbras then
 		self.shadow_params1.z = 1
 	end
 
 	self.shadow_params2 = vmath.vector4()
-	self.shadow_params2.x = property_or_default(self.poisson_samples, settings.poisson_samples)
-	self.shadow_params2.y = property_or_default(self.poisson_scale, settings.poisson_scale)
-	self.shadow_params2.z = property_or_default(self.hash_factor, settings.hash_factor)
-	self.shadow_params2.w = property_or_default(self.hash_scale, settings.hash_scale)
+	self.shadow_params2.x = self.poisson_samples
+	self.shadow_params2.y = self.poisson_scale
+	self.shadow_params2.z = self.hash_factor
+	self.shadow_params2.w = self.hash_scale
 
-	self.mtx_lights = {}
-
-	self.message.shadow_map = rt_info.handle
-	self.message.shadow_map_resolution = attachment.width
 	go.set(self.model, "shadow_params1", self.shadow_params1)
 	go.set(self.model, "shadow_params2", self.shadow_params2)
 	go.set(self.model, "texture2", self.texture)
 end
 
-function init(self)
-	self.url = msg.url(".")
-	self.model = msg.url("#model")
-	self.mtx_views = {}
-
-	self.message = {}
-	self.message.id = self.url.path
-	self.message.url = self.url
-	self.message.mtx_views = self.mtx_views
-
-	queue.add_pending_point_light(function ()
-		do_init(self)
-	end)
-end
-
-function late_update(self)
+---@param self Point_Light
+function late_update(self, dt)
 	if not self.enabled then
 		return
 	end
 
-	local center = go.get_world_position(self.url)
-	local radius = go.get_world_scale_uniform(self.url) * 0.5
+	go.update_world_transform()
+	local center = go.get_world_position()
+	local radius = go.get_world_scale_uniform() * 0.5
 	self.mtx_proj = vmath.matrix4_perspective(HALF_PI, 1, NEAR, radius)
 	for face_index = 1, 6 do
 		self.mtx_views[face_index] = vmath.matrix4_look_at(center, center + CUBE_FACES[face_index], UP_VECTORS[face_index])
 	end
 
-	self.shadow_params1.w = 2 * radius / self.message.shadow_map_resolution -- texel size: cube face in world units / map resolution
+	self.shadow_params1.w = 2 * radius / self.shadow_map_resolution -- texel size: cube face in world units / map resolution
 	go.set(self.model, "shadow_params1", self.shadow_params1)
 
-	self.message.mtx_proj = self.mtx_proj
-	self.message.radius = radius
-	msg.post("@render:", msgs.UPDATE_POINT_LIGHT, self.message)
+	self.mtx_proj = self.mtx_proj
+	self.radius = radius
 end
 
+---@param self Point_Light
 function on_message(self, message_id, message, sender)
-	if message_id == msgs.ENABLE and self.disabled then
+	if message_id == msgs.ENABLE and not self.enabled then
 		self.enabled = true
 	elseif message_id == msgs.DISABLE and self.enabled then
-		msg.post("@render:", msgs.REMOVE_POINT_LIGHT, self.message)
 		self.enabled = false
 	elseif message_id == msgs.REFRESH then
 		do_init(self)
 	end
 end
 
+---@param self Point_Light
 function on_reload(self)
 	do_init(self)
 end
 
+---@param self Point_Light
 function final(self)
-	msg.post("@render:", msgs.REMOVE_POINT_LIGHT, self.message)
+	lights.point_lights[self] = false
 end
