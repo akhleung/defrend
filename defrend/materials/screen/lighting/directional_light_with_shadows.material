@@ -2,10 +2,6 @@ name: "directional_light_with_shadows"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/lighting/directional_light_with_shadows.vp"
 fragment_program: "/defrend/materials/screen/lighting/directional_light_with_shadows.fp"
-vertex_constants {
-  name: "mtx_viewproj"
-  type: CONSTANT_TYPE_VIEWPROJ
-}
 fragment_constants {
   name: "mtx_view"
   type: CONSTANT_TYPE_USER_MATRIX4

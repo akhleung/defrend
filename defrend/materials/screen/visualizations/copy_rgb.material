@@ -2,10 +2,6 @@ name: "reflectance_diffuse"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
 fragment_program: "/defrend/materials/screen/visualizations/copy_rgb.fp"
-vertex_constants {
-  name: "mtx_viewproj"
-  type: CONSTANT_TYPE_VIEWPROJ
-}
 samplers {
   name: "input_sampler"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE

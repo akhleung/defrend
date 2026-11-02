@@ -1,7 +1,6 @@
 #version 420 core
 
 uniform lighting_vp {
-	mat4 mtx_viewproj;
 	mat4 mtx_view;
 	vec4 direction; // from light to target
 };
@@ -14,7 +13,7 @@ out vec2 var_texcoord0;
 out vec3 to_light;
 
 void main() {
-	gl_Position		= mtx_viewproj * vec4(position.xyz, 1.0);
+	gl_Position		= position;
 	var_texcoord0	= texcoord0;
 	to_light		= normalize(mat3(mtx_view) * -direction.xyz);
 }
