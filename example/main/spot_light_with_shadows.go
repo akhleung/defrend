@@ -2,10 +2,6 @@ components {
   id: "spot_light_with_shadows"
   component: "/defrend/scripts/controllers/spot_light_with_shadows.script"
 }
-components {
-  id: "rotate"
-  component: "/example/main/rotate.script"
-}
 embedded_components {
   id: "model"
   type: "model"
@@ -26,7 +22,7 @@ embedded_components {
   "  attributes {\n"
   "    name: \"start_attn\"\n"
   "    double_values {\n"
-  "      v: 0.2\n"
+  "      v: 0.1\n"
   "      v: 5.0\n"
   "      v: 5.0\n"
   "      v: 0.0\n"
