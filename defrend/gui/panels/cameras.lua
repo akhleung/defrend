@@ -1,5 +1,5 @@
-local settings = require "defrend.render.settings"
-local SCRIPT_URL = "/defrend/lighting#shadow"
+local settings  = require("defrend.render.settings")
+local lights    = require("defrend.render.lights")
 
 return function (self)
 
@@ -43,7 +43,9 @@ return function (self)
     end
 
 	if camera_changed then
-		msg.post(SCRIPT_URL, "refresh")
+        for light in pairs(lights.directional_lights) do
+            light:init()
+        end
 	end
 
 	imgui.spacing()
