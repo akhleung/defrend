@@ -268,12 +268,11 @@ function update(self)
 	-- if a debugging visualization is enabled, then draw the relevant intermediate render target and return
 	if settings.visualize.option then
 		visualizations.update()
-		render.disable_material()
 		render_gui()
 		return
 	end
 
-	-- render all the post-processors
+	-- render all the post-processors and blit to the screen
 	post_processors.update()
 	render_targets.ping_pong()
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
@@ -282,7 +281,6 @@ function update(self)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
 
-	render.disable_material()
 	render_gui()
 end
 
@@ -413,6 +411,7 @@ end
 
 render_gui = function ()
 	geometry_options.frustum = gui_camera.viewproj
+	render.disable_material()
 	render.set_view(gui_camera.view)
 	render.set_projection(gui_camera.proj)
 	render.enable_state(graphics.STATE_STENCIL_TEST)
