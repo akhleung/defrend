@@ -1,5 +1,5 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings = require("defrend.render.settings")
+local uniforms = require("defrend.render.uniforms")
 
 return function (self)
 	local uniforms_changed = false

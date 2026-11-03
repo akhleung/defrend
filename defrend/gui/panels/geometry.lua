@@ -1,4 +1,4 @@
-local settings = require "defrend.render.settings"
+local settings = require("defrend.render.settings")
 
 return function (self)
 

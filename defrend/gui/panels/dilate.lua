@@ -1,5 +1,5 @@
-local settings = require "defrend.render.settings"
-local uniforms = require "defrend.render.uniforms"
+local settings = require("defrend.render.settings")
+local uniforms = require("defrend.render.uniforms")
 
 return function (self)
 	local uniforms_changed = false
@@ -10,25 +10,25 @@ return function (self)
 	end
 
 	local changed, value = imgui.input_float("Min threshold", settings.dilate.min_threshold, 0.05, 0.1)
-	if changed then
+	if changed and value then
 		settings.dilate.min_threshold = vmath.clamp(value, 0, settings.dilate.max_threshold - 0.05)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_float("Max threshold", settings.dilate.max_threshold, 0.05, 0.1)
-	if changed then
+	if changed and value then
 		settings.dilate.max_threshold = vmath.clamp(value, settings.dilate.min_threshold + 0.05, 1)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_int("Radius", settings.dilate.radius)
-	if changed then
+	if changed and value then
 		settings.dilate.radius = vmath.clamp(value, 0, 16)
 		uniforms_changed = true
 	end
 
 	local changed, value = imgui.input_float("Separation", settings.dilate.separation, 0.5, 1.0)
-	if changed then
+	if changed and value then
 		settings.dilate.separation = vmath.clamp(value, 1, 16)
 		uniforms_changed = true
 	end

@@ -1,5 +1,5 @@
-local settings = require "defrend.render.settings"
-local visualize = settings.visualize
+local settings	= require("defrend.render.settings")
+local visualize	= settings.visualize
 
 return function (self)
 
