@@ -94,7 +94,6 @@ function update(self)
 
 	if not self.valid then return end
 
-	local rx, ry = settings.resolution_x, settings.resolution_y
 	local cam = settings.scene_camera_url
 
 	render.set_depth_func(graphics.COMPARE_FUNC_LESS)
@@ -112,7 +111,7 @@ function update(self)
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
 	render.clear(clear_options.clear_color_options)
-	render.set_viewport(0, 0, rx, ry)
+	render.set_viewport(0, 0, settings.resolution_x, settings.resolution_y)
 	-- setup camera view and projection --
 	render.set_camera(cam, cull)
 
@@ -165,7 +164,7 @@ function update(self)
 	-- render the skybox --
 	render.set_depth_func(graphics.COMPARE_FUNC_LEQUAL)
 	render.set_cull_face(graphics.FACE_TYPE_FRONT)
-	render.set_camera(cam) -- call this again without a 2nd arg to disable frustum culling for the skybox
+	render.set_camera(cam) -- disable frustum culling for the skybox by omitting 2nd arg
 	if settings.geometry.skybox_enabled then
 		render.draw(predicates.skybox)
 	end
