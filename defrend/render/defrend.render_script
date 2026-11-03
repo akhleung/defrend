@@ -118,6 +118,7 @@ function update(self)
 	-- render geometries into g-buffer --
 	if settings.geometry.models_enabled then
 		render.draw(predicates.model, geometry_options)
+		render.draw(predicates.shadowless_model, geometry_options)
 	end
 	if settings.geometry.sprites_enabled then
 		render.draw(predicates.sprite, geometry_options)

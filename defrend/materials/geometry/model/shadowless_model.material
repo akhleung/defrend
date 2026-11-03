@@ -1,6 +1,5 @@
 name: "shadowless_model"
-tags: "model"
-tags: "shadowless"
+tags: "shadowless_model"
 vertex_program: "/defrend/materials/geometry/model/model.vp"
 fragment_program: "/defrend/materials/geometry/model/model.fp"
 vertex_space: VERTEX_SPACE_LOCAL

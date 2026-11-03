@@ -155,3 +155,7 @@ render_resources {
   name: "directional_light_with_shadows_material"
   path: "/defrend/materials/screen/lighting/directional_light_with_shadows.material"
 }
+render_resources {
+  name: "shadowless_model_material"
+  path: "/defrend/materials/geometry/model/shadowless_model.material"
+}

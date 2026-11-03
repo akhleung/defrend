@@ -1,6 +1,5 @@
 name: "shadowless_particle"
-tags: "particle"
-tags: "shadowless"
+tags: "shadowless_particle"
 vertex_program: "/defrend/materials/geometry/billboard_sprite/sprite.vp"
 fragment_program: "/defrend/materials/geometry/billboard_sprite/particle.fp"
 vertex_constants {

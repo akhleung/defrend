@@ -2,11 +2,11 @@ local M = {}
 
 function M.init()
 	M.model					= render.predicate({"model"})
-	M.shadowless_model		= render.predicate({"model", "shadowless"})
+	M.shadowless_model		= render.predicate({"shadowless_model"})
 	M.billboard				= render.predicate({"billboard"})
 	M.sprite				= render.predicate({"sprite"})
 	M.particle				= render.predicate({"particle"})
-	M.shadowless_particle	= render.predicate({"particle", "shadowless"})
+	M.shadowless_particle	= render.predicate({"shadowless_particle"})
 	M.decal					= render.predicate({"decal"})
 	M.skybox				= render.predicate({"skybox"})
 	M.point_light			= render.predicate({"point_light"})
