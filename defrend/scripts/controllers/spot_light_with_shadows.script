@@ -26,6 +26,7 @@ end
 ---@param self Spot_Light
 function init(self)
 	self.url = msg.url(".")
+	self.id = self.url.path
 	self.model = msg.url("#model")
 	self.init = do_init
 
