@@ -32,7 +32,17 @@ return function (self)
 	end
 	if current_light then
 		imgui.separator()
-		local changed, value = imgui.input_int("Poisson kernel samples", current_light.poisson_samples)
+		local changed, value = imgui.input_float("Shadow bias (near)", current_light.shadow_bias_near, 0.05, 0.1)
+		if changed and value then
+			current_light.shadow_bias_near = vmath.clamp(value, 0, 100)
+			uniforms_changed = true
+		end
+		local changed, value = imgui.input_float("Shadow bias (far)", current_light.shadow_bias_far, 0.05, 0.1)
+		if changed and value then
+			current_light.shadow_bias_far = vmath.clamp(value, 0, 100)
+			uniforms_changed = true
+		end
+		local changed, value = imgui.input_int("Poisson samples", current_light.poisson_samples)
 		if changed and value then
 			current_light.poisson_samples = vmath.clamp(value, 1, 16)
 			uniforms_changed = true

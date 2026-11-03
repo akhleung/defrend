@@ -116,9 +116,9 @@ return function (self)
 			current_light.pcf_samples = vmath.clamp(value, 0, 8)
 			uniforms_changed = true
 		end
-		local changed, value = imgui.input_int("Poisson disc samples", current_light.poisson_disc_samples)
+		local changed, value = imgui.input_int("Poisson samples", current_light.poisson_samples)
 		if changed and value then
-			current_light.poisson_disc_samples = vmath.clamp(value, 1, 16)
+			current_light.poisson_samples = vmath.clamp(value, 1, 16)
 			uniforms_changed = true
 		end
 		local changed, value = imgui.input_float("Poisson scale", current_light.poisson_scale, 0.1, 1.0)

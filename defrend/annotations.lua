@@ -15,7 +15,7 @@
 ---@field cascade_transition_range number
 ---@field light_frustum_z_padding number
 ---@field pcf_samples number
----@field poisson_disc_samples number
+---@field poisson_samples number
 ---@field poisson_scale number
 ---@field hash_factor number
 ---@field hash_scale number
