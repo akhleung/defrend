@@ -64,10 +64,10 @@ return function (self)
 		imgui.text("Partition biases:")
 		for i = 1, 4 do
 			imgui.push_id(("Partition %d bias"):format(i))
-			local changed, value = imgui.input_float(("Partition %d"):format(i), current_light.cascade[b_props[i]], 0.01, 0.05)
+			local changed, value = imgui.input_float(("Partition %d"):format(i), current_light.biases[b_props[i]], 0.01, 0.05)
 			imgui.pop_id()
 			if changed and value then
-				current_light.cascade[b_props[i]] = vmath.clamp(value, 0, 10)
+				current_light.biases[b_props[i]] = vmath.clamp(value, 0, 10)
 				uniforms_changed = true
 			end
 		end
