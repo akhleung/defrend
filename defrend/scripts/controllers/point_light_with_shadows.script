@@ -30,6 +30,7 @@ local NEAR = 0.1
 ---@param self Point_Light
 function init(self)
 	self.url = msg.url(".")
+	self.id = self.url.path
 	self.model = msg.url("#model")
 	self.mtx_views = {}
 	self.init = do_init

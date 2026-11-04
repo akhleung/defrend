@@ -24,7 +24,7 @@ go.property("partition_4_tint", vmath.vector4(0))
 go.property("cascade_transition_range", 10)
 go.property("light_frustum_z_padding", 0.5)
 go.property("pcf_samples", 4)
-go.property("poisson_disc_samples", 4)
+go.property("poisson_samples", 4)
 go.property("poisson_scale", 3)
 go.property("hash_factor", 7879)
 go.property("hash_scale", 3)
@@ -103,7 +103,7 @@ do_init = function(self)
 	shadow_params1.w		= self.cascade_transition_range
 	local shadow_params2	= vmath.vector4()
 	shadow_params2.x		= self.pcf_samples
-	shadow_params2.y		= self.poisson_disc_samples
+	shadow_params2.y		= self.poisson_samples
 	shadow_params2.z		= self.poisson_scale
 	shadow_params2.w		= 0
 	if self.soft_penumbras then

@@ -35,7 +35,7 @@ local rendering = {
 	{ name = "Cameras",				draw = cameras_panel },
 	{ name = "Geometry",			draw = geometry_panel },
 	{ name = "Ambient and fog",		draw = ambient_and_fog_panel },
-	{ name = "Directional light",	draw = directional_light_panel },
+	{ name = "Directional lights",	draw = directional_light_panel },
 	{ name = "Point lights",		draw = point_light_panel },
 	{ name = "Spot lights",			draw = spot_light_panel },
 	{ name = "SSAO",				draw = ssao_panel },
