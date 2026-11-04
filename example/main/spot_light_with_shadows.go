@@ -25,7 +25,7 @@ embedded_components {
   "      v: 0.1\n"
   "      v: 5.0\n"
   "      v: 5.0\n"
-  "      v: 0.0\n"
+  "      v: 5.0\n"
   "    }\n"
   "  }\n"
   "}\n"

@@ -131,8 +131,6 @@ do_init = function(self)
 	self.uniforms.mtx_lights		= {}
 	-- set the update method, which will be called by the render script
 	self.update = do_update
-
-	viz.set_shadow_map(self.attachment)
 end
 
 -- Provide this update function as a method of Directional_Light, to be called by the render script. We're doing it

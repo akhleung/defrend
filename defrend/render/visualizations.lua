@@ -40,7 +40,14 @@ local visualizations = {
 		get_render_target = render_targets.get_post_spare,
 		attachment = render_targets.POST_COLOR,
 	},
-	shadow_atlas_directional = {
+	directional_light_shadow = {
+		material = "copy_r_material",
+		get_render_target = function ()
+			return M.shadow_map
+		end,
+		attachment = render_targets.SHADOW_MAP_DEPTH,
+	},
+	spot_light_shadow = {
 		material = "copy_r_material",
 		get_render_target = function ()
 			return M.shadow_map
@@ -55,7 +62,7 @@ local visualizations = {
 }
 
 function M.update()
-	render.set_render_target(render.RENDER_TARGET_DEFAULT) ---@diagnostic disable-line: param-type-mismatch
+	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 	local v = visualizations[settings.visualize.option]
 	if not v then
 		return

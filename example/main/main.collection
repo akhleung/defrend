@@ -1344,14 +1344,39 @@ instances {
     y: 3.0
   }
   rotation {
-    z: -0.25121087
-    w: 0.96793234
+    z: -0.25881904
+    w: 0.9659258
   }
   component_properties {
     id: "spot_light_with_shadows"
     properties {
       id: "shadow_map"
       value: "/example/main/shadowmap1.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+  }
+  scale3 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
+  }
+}
+instances {
+  id: "spot_light_with_shadows1"
+  prototype: "/example/main/spot_light_with_shadows.go"
+  position {
+    x: -2.0
+    y: 3.0
+  }
+  rotation {
+    z: 0.25881904
+    w: 0.9659258
+  }
+  component_properties {
+    id: "spot_light_with_shadows"
+    properties {
+      id: "shadow_map"
+      value: "/example/main/shadowmap2.render_target"
       type: PROPERTY_TYPE_HASH
     }
   }
@@ -1638,11 +1663,6 @@ embedded_instances {
   "    type: PROPERTY_TYPE_NUMBER\n"
   "  }\n"
   "  properties {\n"
-  "    id: \"poisson_disc_samples\"\n"
-  "    value: \"4.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "  properties {\n"
   "    id: \"poisson_scale\"\n"
   "    value: \"2.0\"\n"
   "    type: PROPERTY_TYPE_NUMBER\n"
@@ -1709,11 +1729,6 @@ embedded_instances {
   "  }\n"
   "  properties {\n"
   "    id: \"pcf_samples\"\n"
-  "    value: \"4.0\"\n"
-  "    type: PROPERTY_TYPE_NUMBER\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"poisson_disc_samples\"\n"
   "    value: \"4.0\"\n"
   "    type: PROPERTY_TYPE_NUMBER\n"
   "  }\n"
@@ -4728,6 +4743,7 @@ embedded_instances {
   id: "point_light_with_shadows_pivot"
   children: "bulb"
   children: "spotlight"
+  children: "spotlight1"
   data: "components {\n"
   "  id: \"rotate\"\n"
   "  component: \"/example/main/rotate.script\"\n"
@@ -4753,7 +4769,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/shadowless_model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
@@ -4767,6 +4783,7 @@ embedded_instances {
   "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
   "  }\\n"
   "}\\n"
+  "create_go_bones: false\\n"
   "\"\n"
   "}\n"
   ""
@@ -4808,7 +4825,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/shadowless_model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
@@ -4822,6 +4839,7 @@ embedded_instances {
   "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
   "  }\\n"
   "}\\n"
+  "create_go_bones: false\\n"
   "\"\n"
   "}\n"
   ""
@@ -4839,7 +4857,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/shadowless_model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
@@ -4860,13 +4878,54 @@ embedded_instances {
   "    y: 3.0\n"
   "  }\n"
   "  rotation {\n"
-  "    z: -0.2512079\n"
-  "    w: 0.9679332\n"
+  "    z: -0.25881904\n"
+  "    w: 0.9659258\n"
   "  }\n"
   "}\n"
   ""
   position {
     x: 22.0
+    y: 14.0
+  }
+}
+embedded_instances {
+  id: "spotlight1"
+  children: "spot_light_with_shadows1"
+  data: "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/defrend/assets/lights/meshes/cone.glb\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"default\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/shadowless_model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "create_go_bones: false\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: -2.0\n"
+  "    y: 3.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    z: 0.25881904\n"
+  "    w: 0.9659258\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: -22.0
     y: 14.0
   }
 }
