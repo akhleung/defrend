@@ -159,3 +159,7 @@ render_resources {
   name: "shadowless_model_material"
   path: "/defrend/materials/geometry/model/shadowless_model.material"
 }
+render_resources {
+  name: "cubemap_r_material"
+  path: "/defrend/materials/screen/visualizations/cubemap_r.material"
+}

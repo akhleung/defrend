@@ -3,8 +3,7 @@ local lights			= require("defrend.render.lights")
 local visualizations	= require("defrend.render.visualizations")
 
 local visualize	= settings.visualize
-local directional_light
-local spot_light
+local directional_light, point_light, spot_light
 local prev_light
 
 ---@param id string
@@ -76,6 +75,23 @@ return function (self)
 	if visualize.option == "directional_light_shadow" and prev_light ~= directional_light then
 		visualizations.set_shadow_map(directional_light.render_target)
 		prev_light = directional_light
+	end
+
+	local first_point_light = next(lights.point_lights)
+	if first_point_light and not point_light then
+		point_light = first_point_light
+	end
+	if imgui.radio_button("Shadow cubemap (point light)", visualize.option == "point_light_shadow") and first_point_light then
+		visualize.option = "point_light_shadow"
+	end
+	if not first_point_light then
+		imgui.text("No point lights")
+	else
+		point_light = lights_menu("Point light ID", lights.point_lights, point_light)
+	end
+	if visualize.option == "point_light_shadow" and prev_light ~= point_light then
+		visualizations.set_shadow_map(point_light.render_target)
+		prev_light = point_light
 	end
 
 	local first_spot_light = next(lights.spot_lights)

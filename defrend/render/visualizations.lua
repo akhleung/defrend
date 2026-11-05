@@ -47,6 +47,13 @@ local visualizations = {
 		end,
 		attachment = render_targets.SHADOW_MAP_DEPTH,
 	},
+	point_light_shadow = {
+		material = "cubemap_r_material",
+		get_render_target = function ()
+			return M.shadow_map
+		end,
+		attachment = render_targets.SHADOW_MAP_DEPTH,
+	},
 	spot_light_shadow = {
 		material = "copy_r_material",
 		get_render_target = function ()

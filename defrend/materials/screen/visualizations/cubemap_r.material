@@ -1,0 +1,13 @@
+name: "cubemap_r"
+tags: "screen"
+vertex_program: "/defrend/materials/screen/screen.vp"
+fragment_program: "/defrend/materials/screen/visualizations/cubemap_r.fp"
+samplers {
+  name: "input_sampler"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
+}
