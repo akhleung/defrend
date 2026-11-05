@@ -49,3 +49,22 @@ void main() {
         frag_output = vec4(0.0, 0.0, 0.0, 1.0); // Render empty background spaces black
     }
 }
+
+/*
+const float PI = 3.14159265359;
+
+void main() {
+    // Map UV coordinates to spherical angles
+    float phi = var_texcoord0.x * 2.0 * PI;          // 0 to 2PI
+    float theta = (1.0 - var_texcoord0.y) * PI;      // 0 to PI
+
+    // Convert spherical angles back into a 3D Cartesian direction vector
+    vec3 dir;
+    dir.x = sin(theta) * sin(phi);
+    dir.y = cos(theta);
+    dir.z = sin(theta) * cos(phi);
+
+    // Sample the cubemap seamlessly
+    frag_output = texture(input_sampler, normalize(dir));
+}
+*/
