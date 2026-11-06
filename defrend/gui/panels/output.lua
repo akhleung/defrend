@@ -17,7 +17,7 @@ return function (self)
 		settings.enabled = checked
 	end
 
-	if imgui.begin_combo("Tonemapping mode", MODES[settings.mode]) then
+	if imgui.begin_combo("Tone mapping mode", MODES[settings.mode]) then
 		for i, mode in ipairs(MODES) do
 			if imgui.selectable(mode, settings.mode == i) then
 				settings.mode = i

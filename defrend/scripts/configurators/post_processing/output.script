@@ -10,7 +10,7 @@ local MODES = {
 }
 
 go.property("enabled", true)
-go.property("tonemapping_mode", "Linear")
+go.property("tone_mapping_mode", "Linear")
 go.property("exposure", 1.0)
 go.property("white_point", 1.0)
 go.property("brightness", 1.0)
@@ -20,7 +20,7 @@ go.property("gamma_correction", false)
 go.property("debanding", true)
 
 local function do_init(self)
-	settings.mode		= MODES[self.tonemapping_mode] or 1
+	settings.mode		= MODES[self.tone_mapping_mode] or 1
 	settings.exposure	= self.exposure
 	settings.white		= self.white_point
 	settings.brightness	= self.brightness
