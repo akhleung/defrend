@@ -144,6 +144,17 @@ local M = {
 		enabled = true,
 		iterations = 3,
 	},
+	output = {
+		enabled = true,
+		mode = 1,
+		exposure = 1,
+		white = 1,
+		brightness = 1,
+		contrast = 1,
+		saturation = 1,
+		gamma = false,
+		debanding = true,
+	},
 	visualize = {
 		option = nil,
 	},

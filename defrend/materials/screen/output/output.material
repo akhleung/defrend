@@ -1,0 +1,29 @@
+name: "output"
+vertex_program: "/defrend/materials/screen/screen.vp"
+fragment_program: "/defrend/materials/screen/output/output.fp"
+fragment_constants {
+  name: "tonemapping_params"
+  type: CONSTANT_TYPE_USER
+  value {
+    y: 1.0
+    z: 1.0
+  }
+}
+fragment_constants {
+  name: "adjustment_params"
+  type: CONSTANT_TYPE_USER
+  value {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+samplers {
+  name: "input_sampler"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
+}

@@ -1,0 +1,40 @@
+local settings	= require("defrend.render.settings").output
+local output_pp	= require("defrend.render.post_processors.output")
+
+local MODES = {
+	Linear		= 1,
+	Reinhard	= 2,
+	Filmic		= 3,
+	Aces		= 4,
+	AGX			= 5,
+}
+
+go.property("enabled", true)
+go.property("tone_mapping_mode", "Linear")
+go.property("exposure", 1.0)
+go.property("white_point", 1.0)
+go.property("brightness", 1.0)
+go.property("contrast", 1.0)
+go.property("saturation", 1.0)
+go.property("gamma_correction", false)
+go.property("debanding", true)
+
+local function do_init(self)
+	settings.mode		= MODES[self.tone_mapping_mode] or 1
+	settings.exposure	= self.exposure
+	settings.white		= self.white_point
+	settings.brightness	= self.brightness
+	settings.contrast	= self.contrast
+	settings.saturation	= self.saturation
+	settings.gamma		= self.gamma_correction
+	settings.debanding	= self.debanding
+	output_pp.init()
+end
+
+function init(self)
+	do_init(self)
+end
+
+function on_reload(self)
+	do_init(self)
+end

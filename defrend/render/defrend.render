@@ -20,10 +20,6 @@ render_resources {
   path: "/defrend/materials/geometry/model/model_shadow_map.material"
 }
 render_resources {
-  name: "blob_shadow_material"
-  path: "/defrend/materials/geometry/billboard_sprite/blob_shadow.material"
-}
-render_resources {
   name: "point_light_material"
   path: "/defrend/materials/geometry/light_volume/point_light.material"
 }
@@ -162,4 +158,8 @@ render_resources {
 render_resources {
   name: "cubemap_r_material"
   path: "/defrend/materials/screen/visualizations/cubemap_r.material"
+}
+render_resources {
+  name: "output_material"
+  path: "/defrend/materials/screen/output/output.material"
 }
