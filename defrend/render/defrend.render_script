@@ -5,6 +5,7 @@ local clear_options			= require("defrend.render.resources.clear_options")
 local draw_options			= require("defrend.render.resources.draw_options")
 local predicates			= require("defrend.render.resources.predicates")
 local post_processors		= require("defrend.render.post_processors")
+local output				= require("defrend.render.post_processors.output")
 local lights				= require("defrend.render.lights")
 local msgs					= require("defrend.messages")
 
@@ -275,12 +276,17 @@ function update(self)
 
 	-- render all the post-processors and blit to the screen
 	post_processors.update()
+
 	render_targets.ping_pong()
-	render.set_render_target(render.RENDER_TARGET_DEFAULT)
-	render.enable_material("copy_material")
-	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
-	render.draw(predicates.screen)
-	render.disable_texture("input_sampler")
+	if settings.output.enabled then
+		output.update()
+	else
+		render.set_render_target(render.RENDER_TARGET_DEFAULT)
+		render.enable_material("copy_material")
+		render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
+		render.draw(predicates.screen)
+		render.disable_texture("input_sampler")
+	end
 
 	render_gui()
 end

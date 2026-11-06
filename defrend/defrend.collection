@@ -85,6 +85,10 @@ embedded_instances {
   "  id: \"dual_kawase_blur\"\n"
   "  component: \"/defrend/scripts/configurators/post_processing/dual_kawase_blur.script\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"output\"\n"
+  "  component: \"/defrend/scripts/configurators/post_processing/output.script\"\n"
+  "}\n"
   ""
 }
 embedded_instances {

@@ -27,7 +27,6 @@ local targets
 local downsampling_level = 0 -- [0, 3]; scale is (1/(2^downsampling_level))^2
 local scale = 1
 local x, y
-local sr
 
 function M.init()
 	x, y = render.get_window_width(), render.get_window_height()

@@ -16,6 +16,7 @@ local gaussian_panel			= require("defrend.gui.panels.gaussian")
 local kawase_panel				= require("defrend.gui.panels.dual_kawase")
 local gamma_panel				= require("defrend.gui.panels.gamma")
 local fxaa_panel				= require("defrend.gui.panels.fxaa")
+local output_panel				= require("defrend.gui.panels.output")
 
 local post_processors	= require("defrend.render.post_processors")
 
@@ -138,6 +139,14 @@ function update(self, dt)
 			panel.draw(self)
 			imgui.tree_pop()
 		end
+	end
+
+	imgui.separator()
+
+	local opened = imgui.tree_node("Output adjustment")
+	if opened then
+		output_panel(self)
+		imgui.tree_pop()
 	end
 
 	imgui.end_window()
