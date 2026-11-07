@@ -14,14 +14,12 @@ local bloom_panel				= require("defrend.gui.panels.bloom")
 local dilate_panel				= require("defrend.gui.panels.dilate")
 local gaussian_panel			= require("defrend.gui.panels.gaussian")
 local kawase_panel				= require("defrend.gui.panels.dual_kawase")
-local gamma_panel				= require("defrend.gui.panels.gamma")
 local fxaa_panel				= require("defrend.gui.panels.fxaa")
 local output_panel				= require("defrend.gui.panels.output")
 
 local post_processors	= require("defrend.render.post_processors")
 
 local outline			= require("defrend.render.post_processors.outline")
-local gamma				= require("defrend.render.post_processors.gamma")
 local glow				= require("defrend.render.post_processors.glow")
 local bloom				= require("defrend.render.post_processors.bloom")
 local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
@@ -44,7 +42,6 @@ local rendering = {
 
 local post_processing_panels = {
 	[outline]			= { name = "Outline",			draw = outline_panel },
-	[gamma]				= { name = "Gamma correction",	draw = gamma_panel },
 	[glow]				= { name = "Glow",				draw = glow_panel },
 	[bloom]				= { name = "Bloom",				draw = bloom_panel },
 	[kuwahara_blur]		= { name = "Kuwahara blur",		draw = kuwahara_panel },

@@ -32,12 +32,12 @@ local visualizations = {
 	},
 	reflectance_diffuse = {
 		material = "copy_rgb_material",
-		get_render_target = render_targets.get_post_spare,
+		get_render_target = render_targets.get_spare,
 		attachment = render_targets.POST_COLOR,
 	},
 	reflectance_specular = {
 		material = "copy_a_material",
-		get_render_target = render_targets.get_post_spare,
+		get_render_target = render_targets.get_spare,
 		attachment = render_targets.POST_COLOR,
 	},
 	directional_light_shadow = {

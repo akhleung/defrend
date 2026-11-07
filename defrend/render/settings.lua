@@ -136,10 +136,6 @@ local M = {
 		coc_threshold = 0.005,
 		coc_visualization = 0,
 	},
-	gamma = {
-		enabled = false,
-		gamma = 2.2,
-	},
 	fxaa = {
 		enabled = true,
 		iterations = 3,
@@ -152,7 +148,7 @@ local M = {
 		brightness = 1,
 		contrast = 1,
 		saturation = 1,
-		gamma = false,
+		gamma = true,
 		debanding = true,
 	},
 	visualize = {

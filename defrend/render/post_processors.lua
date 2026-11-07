@@ -2,7 +2,6 @@ local settings          = require("defrend.render.settings")
 local render_targets	= require("defrend.render.resources.render_targets")
 
 local outline			= require("defrend.render.post_processors.outline")
-local gamma				= require("defrend.render.post_processors.gamma")
 local glow				= require("defrend.render.post_processors.glow")
 local bloom				= require("defrend.render.post_processors.bloom")
 local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
@@ -15,7 +14,6 @@ local M = {}
 
 local master_list = {
 	outline,
-	gamma,
 	glow,
 	bloom,
 	kuwahara_blur,
@@ -27,7 +25,6 @@ local master_list = {
 
 local processor_settings = {
 	[outline]			= settings.outline,
-	[gamma]				= settings.gamma,
 	[glow]				= settings.glow,
 	[bloom]				= settings.bloom,
 	[kuwahara_blur]		= settings.kuwahara_blur,

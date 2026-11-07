@@ -18,7 +18,6 @@ local M = {
 	dilate				= { uniforms = render.constant_buffer() },
 	dof_coc				= { uniforms = render.constant_buffer() },
 	dof_blur			= { uniforms = render.constant_buffer() },
-	gamma				= { uniforms = render.constant_buffer() },
 	kuwahara_blur		= { uniforms = render.constant_buffer() },
 	fxaa				= { uniforms = render.constant_buffer() },
 }
@@ -170,13 +169,6 @@ function M.dof_coc.init()
 	dof_blur_params.w = dof.coc_visualization
 	M.dof_coc.uniforms.params = dof_coc_params
 	M.dof_blur.uniforms.params = dof_blur_params
-end
-
-local gamma = settings.gamma
-local gamma_params = vmath.vector4()
-function M.gamma.init()
-	gamma_params.x = gamma.gamma
-	M.gamma.uniforms.params = gamma_params
 end
 
 local kuwahara_blur = settings.kuwahara_blur

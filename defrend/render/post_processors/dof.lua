@@ -16,7 +16,7 @@ function M.update()
 	params.x = settings.focal_depth
 	coc_draw_options.constants.params = params
 	-- pack the focused render into the spare buffer with CoCs
-	render.set_render_target(render_targets.get_post_spare())
+	render.set_render_target(render_targets.get_spare())
 	render.enable_material("dof_pack_coc_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)

@@ -13,7 +13,7 @@ end
 
 function M.update()
 	-- save the main render in a spare buffer
-	render.set_render_target(render_targets.get_post_spare())
+	render.set_render_target(render_targets.get_spare())
 	render.enable_material("copy_material")
 	render.enable_texture("input_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
 	render.draw(predicates.screen)
@@ -31,7 +31,7 @@ function M.update()
 	render_targets.ping_pong()
 	render.set_render_target(render_targets.get_post_target())
 	render.enable_material("copy_material")
-	render.enable_texture("input_sampler", render_targets.get_post_spare(), render_targets.POST_COLOR)
+	render.enable_texture("input_sampler", render_targets.get_spare(), render_targets.POST_COLOR)
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
 	-- add the blurred emissive texture to the main render

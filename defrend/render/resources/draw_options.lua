@@ -17,7 +17,6 @@ local M = {
 	dual_kawase_options			= {},
 	dilate_options				= {},
 	kuwahara_blur_options		= {},
-	gamma_options				= {},
 	dof_coc_options				= {},
 	dof_blur_options			= {},
 	fxaa_options				= {},
@@ -56,7 +55,6 @@ function M.init()
 	M.dual_kawase_options.constants			= uniforms.dual_kawase_blur.uniforms
 	M.dilate_options.constants				= uniforms.dilate.uniforms
 	M.kuwahara_blur_options.constants		= uniforms.kuwahara_blur.uniforms
-	M.gamma_options.constants				= uniforms.gamma.uniforms
 	M.dof_coc_options.constants				= uniforms.dof_coc.uniforms
 	M.dof_blur_options.constants			= uniforms.dof_blur.uniforms
 	M.fxaa_options.constants				= uniforms.fxaa.uniforms

@@ -16,7 +16,7 @@ go.property("white_point", 1.0)
 go.property("brightness", 1.0)
 go.property("contrast", 1.0)
 go.property("saturation", 1.0)
-go.property("gamma_correction", false)
+go.property("gamma_correction", true)
 go.property("debanding", true)
 
 local function do_init(self)
