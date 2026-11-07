@@ -1,9 +1,7 @@
-local settings = require "defrend.render.settings"
 local predicates = require "defrend.render.resources.predicates"
 
 local M = {}
 
-local shadow_map
 local g_buffer
 local source1
 local target1
@@ -26,108 +24,73 @@ local sources
 local targets
 local downsampling_level = 0 -- [0, 3]; scale is (1/(2^downsampling_level))^2
 local scale = 1
-local x, y
+local w, h
+
+local function ldr_params(w, h)
+	return {
+		format	= graphics.TEXTURE_FORMAT_RGBA,
+		width	= w,
+		height	= h,
+	}
+end
+
+local function hdr_params(w, h)
+	return {
+		format	= graphics.TEXTURE_FORMAT_RGBA16F,
+		width	= w,
+		height	= h,
+	}
+end
+
+local function depth_params(w, h)
+	return {
+		format	= graphics.TEXTURE_FORMAT_DEPTH,
+		width	= w,
+		height	= h,
+		flags	= render.TEXTURE_BIT,
+	}
+end
 
 function M.init()
-	x, y = render.get_window_width(), render.get_window_height()
-	local rgba_params = {
-		format	= graphics.TEXTURE_FORMAT_RGBA,
-		width	= render.get_window_width(),
-		height	= render.get_window_height(),
-	}
-	local depth_params = {
-		format	= graphics.TEXTURE_FORMAT_DEPTH,
-		width	= render.get_window_width(),
-		height	= render.get_window_height(),
-		flags	= graphics.TEXTURE_USAGE_FLAG_SAMPLE, -- was render.TEXTURE_BIT
-	}
-
-	g_buffer = render.render_target(
-		"g_buffer",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- albedo + emissive
-			[graphics.BUFFER_TYPE_COLOR1_BIT] = rgba_params, -- normal + specular
-			[graphics.BUFFER_TYPE_DEPTH_BIT]  = depth_params, -- depth
-		}
-	)
-	source1 = render.render_target(
-		"source1",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
-		}
-	)
-	target1 = render.render_target(
-		"target1",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
-		}
-	)
-	spare = render.render_target(
-		"spare",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = rgba_params, -- color
-		}
-	)
-	source4 = render.render_target(
-		"source4",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 2,
-				height = render.get_window_height() / 2,
-			}
-		}
-	)
-	target4 = render.render_target(
-		"target4",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 2,
-				height = render.get_window_height() / 2,
-			}
-		}
-	)
-	source16 = render.render_target(
-		"source16",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 4,
-				height = render.get_window_height() / 4,
-			}
-		}
-	)
-	target16 = render.render_target(
-		"target16",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 4,
-				height = render.get_window_height() / 4,
-			}
-		}
-	)
-	source64 = render.render_target(
-		"source64",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 8,
-				height = render.get_window_height() / 8,
-			}
-		}
-	)
-	target64 = render.render_target(
-		"target64",
-		{
-			[graphics.BUFFER_TYPE_COLOR0_BIT] = {
-				format = graphics.TEXTURE_FORMAT_RGBA,
-				width = render.get_window_width() / 8,
-				height = render.get_window_height() / 8,
-			}
-		}
-	)
+	w, h = render.get_window_width(), render.get_window_height()
+	-- g-buffer
+	g_buffer = render.render_target("g_buffer", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + emissive
+		[graphics.BUFFER_TYPE_COLOR1_BIT]	= ldr_params(w, h),   -- normal + specular
+		[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h), -- depth
+	})
+	-- spare target for misc
+	spare = render.render_target("spare", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w, h),
+	})
+	-- full-sized post-processing targets
+	source1 = render.render_target("source1", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w, h),
+	})
+	target1 = render.render_target("target1", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w, h),
+	})
+	-- quarter-sized post-processing targets
+	source4 = render.render_target("source4", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/2, h/2)
+	})
+	target4 = render.render_target("target4", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/2, h/2)
+	})
+	-- sixteenth-sized post-processing targets
+	source16 = render.render_target("source16", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/4, h/4)
+	})
+	target16 = render.render_target("target16", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/4, h/4)
+	})
+	-- sixtyfourth-sized post-processing targets
+	source64 = render.render_target("source64", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/8, h/8)
+	})
+	target64 = render.render_target("target64", {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/8, h/8)
+	})
 
 	source = source1
 	target = target1
@@ -141,19 +104,19 @@ function M.init()
 	targets	= { target1, target4, target16, target64 }
 end
 
-function M.set_resolution(w, h)
-	x, y = w, h
+function M.set_resolution(nw, nh)
+	w, h = nw, nh
 	for _, rt in ipairs(full_targets) do
 		render.set_render_target_size(rt, w, h)
 	end
 	for _, rt in ipairs(quarter_targets) do
-		render.set_render_target_size(rt, w / 2, h / 2)
+		render.set_render_target_size(rt, w/2, h/2)
 	end
 	for _, rt in ipairs(sixteenth_targets) do
-		render.set_render_target_size(rt, w / 4, h / 4)
+		render.set_render_target_size(rt, w/4, h/4)
 	end
 	for _, rt in ipairs(sixtyfourth_targets) do
-		render.set_render_target_size(rt, w / 8, h / 8)
+		render.set_render_target_size(rt, w/8, h/8)
 	end
 	render.set_viewport(0, 0, w, h)
 end
@@ -197,7 +160,7 @@ function M.downsample_source()
 	local next_target = targets[downsampling_level + 1]
 	scale = scale * 0.5
 	render.enable_material("copy_material")
-	render.set_viewport(0, 0, x * scale, y * scale)
+	render.set_viewport(0, 0, w * scale, h * scale)
 	render.set_render_target(next_source)
 	render.enable_texture("input_sampler", this_source, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.draw(predicates.screen)
@@ -218,7 +181,7 @@ function M.upsample_target()
 	downsampling_level = downsampling_level - 1
 	scale = scale * 2
 	render.enable_material("copy_material")
-	render.set_viewport(0, 0, x * scale, y * scale)
+	render.set_viewport(0, 0, w * scale, h * scale)
 	render.set_render_target(next_target)
 	render.enable_texture("input_sampler", this_target, graphics.BUFFER_TYPE_COLOR0_BIT)
 	render.draw(predicates.screen)
@@ -237,7 +200,7 @@ function M.downsample_source_with(callback)
 	local next_source = sources[downsampling_level + 1]
 	local next_target = targets[downsampling_level + 1]
 	scale = scale * 0.5
-	render.set_viewport(0, 0, x * scale, y * scale)
+	render.set_viewport(0, 0, w * scale, h * scale)
 	callback(this_source, next_source)
 	source, target = next_source, next_target
 	return true
@@ -253,7 +216,7 @@ function M.upsample_target_with(callback)
 	local next_source = sources[downsampling_level]
 	downsampling_level = downsampling_level - 1
 	scale = scale * 2
-	render.set_viewport(0, 0, x * scale, y * scale)
+	render.set_viewport(0, 0, w * scale, h * scale)
 	callback(this_target, next_target)
 	source, target = next_source, next_target
 	return true
@@ -262,7 +225,7 @@ end
 function M.reset()
 	scale = 1
 	downsampling_level = 0
-	render.set_viewport(0, 0, x * scale, y * scale)
+	render.set_viewport(0, 0, w * scale, h * scale)
 	source, target = sources[1], targets[1]
 end
 
