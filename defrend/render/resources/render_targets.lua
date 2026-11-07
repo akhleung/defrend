@@ -133,7 +133,7 @@ function M.get_post_target()
 	return target
 end
 
-function M.get_post_spare()
+function M.get_spare()
 	return spare
 end
 
@@ -232,6 +232,8 @@ end
 M.G_BUFFER_ALBEDO		= graphics.BUFFER_TYPE_COLOR0_BIT
 M.G_BUFFER_NORMAL		= graphics.BUFFER_TYPE_COLOR1_BIT
 M.G_BUFFER_DEPTH		= graphics.BUFFER_TYPE_DEPTH_BIT
+
+M.SPARE_COLOR			= graphics.BUFFER_TYPE_COLOR0_BIT
 
 M.POST_COLOR			= graphics.BUFFER_TYPE_COLOR0_BIT
 
