@@ -156,5 +156,5 @@ void main() {
 	// spec = clamp(spec * tint, 0, 1);
 
 	// we only support white specular highlights for now, so omit mat_spec
-	light_out = normal_sample == vec4(0) ? vec4(0) : clamp(vec4(diff * tint, spec * shadow), 0.0, 1.0);
+	light_out = normal_sample == vec4(0) ? vec4(0) : vec4(diff * tint, spec * shadow);
 }

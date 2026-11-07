@@ -25,6 +25,11 @@ layout(location = 0) out vec4 frag_color;
 float FOG_NEAR		= fog_params.x;
 float FOG_FAR		= fog_params.y;
 
+vec3 srgb_to_linear(vec3 color) {
+    // Approximation from http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
+    return color * (color * (color * 0.305306011 + 0.682171111) + 0.012522878);
+}
+
 void main() {
 	vec4 albedo_sample		= texture(albedo_sampler, var_texcoord0);
 	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
@@ -38,10 +43,10 @@ void main() {
 
 	float ao = texture(ssao_sampler, var_texcoord0).r;
 	float emissive = ceil(albedo_sample.a);
-	vec4 mat_diff = vec4(albedo_sample.rgb, 1.0);
+	vec4 mat_diff = vec4(srgb_to_linear(albedo_sample.rgb), 1.0);
 
 	vec4 color = ambient_color * mat_diff;
-	color += mat_diff * clamp(light_diff + emissive, 0, 1);
+	color += mat_diff * (light_diff + emissive);
 	color *= ao; // consider (ao + 1) / 2
 	color += light_spec; // we only support white specular highlights for now, so no mat_spec
 
@@ -52,5 +57,5 @@ void main() {
 	float fog_intensity = smoothstep(FOG_NEAR, FOG_FAR, -var_frag_pos.z);
 	color = mix(color, fog_color, fog_intensity);
 	color.a = mat_diff.a;
-	frag_color = normal_sample == vec4(0) ? mat_diff : clamp(color, 0, 1);
+	frag_color = normal_sample == vec4(0) ? mat_diff : color;
 }

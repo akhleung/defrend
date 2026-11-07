@@ -152,7 +152,7 @@ local M = {
 		brightness = 1,
 		contrast = 1,
 		saturation = 1,
-		gamma = false,
+		gamma = true,
 		debanding = true,
 	},
 	visualize = {
