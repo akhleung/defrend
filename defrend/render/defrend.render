@@ -44,10 +44,6 @@ render_resources {
   path: "/defrend/materials/screen/fxaa/fxaa.material"
 }
 render_resources {
-  name: "gamma_material"
-  path: "/defrend/materials/screen/gamma/gamma.material"
-}
-render_resources {
   name: "dilate_material"
   path: "/defrend/materials/screen/blur/dilate.material"
 }
