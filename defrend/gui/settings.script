@@ -26,7 +26,6 @@ local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
 local gaussian_blur		= require("defrend.render.post_processors.gaussian_blur")
 local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
 local dof				= require("defrend.render.post_processors.dof")
-local fxaa				= require("defrend.render.post_processors.fxaa")
 
 go.property("enabled", true)
 
@@ -48,7 +47,6 @@ local post_processing_panels = {
 	[gaussian_blur]		= { name = "Gaussian blur",		draw = gaussian_panel },
 	[dual_kawase_blur]	= { name = "Dual Kawase blur",	draw = kawase_panel },
 	[dof]				= { name = "Depth of field",	draw = dof_panel },
-	[fxaa]				= { name = "FXAA",				draw = fxaa_panel },
 }
 local ordered_list_copy = {}
 
@@ -140,9 +138,15 @@ function update(self, dt)
 
 	imgui.separator()
 
-	local opened = imgui.tree_node("Output adjustment")
+	local opened = imgui.tree_node("Color adjustment")
 	if opened then
 		output_panel(self)
+		imgui.tree_pop()
+	end
+
+	local opened = imgui.tree_node("FXAA")
+	if opened then
+		fxaa_panel(self)
 		imgui.tree_pop()
 	end
 

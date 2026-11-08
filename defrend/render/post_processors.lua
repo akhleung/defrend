@@ -8,7 +8,6 @@ local kuwahara_blur		= require("defrend.render.post_processors.kuwahara_blur")
 local gaussian_blur		= require("defrend.render.post_processors.gaussian_blur")
 local dual_kawase_blur	= require("defrend.render.post_processors.dual_kawase_blur")
 local dof				= require("defrend.render.post_processors.dof")
-local fxaa				= require("defrend.render.post_processors.fxaa")
 
 local M = {}
 
@@ -20,7 +19,6 @@ local master_list = {
 	gaussian_blur,
 	dual_kawase_blur,
 	dof,
-	fxaa,
 }
 
 local processor_settings = {
@@ -31,7 +29,6 @@ local processor_settings = {
 	[gaussian_blur]		= settings.gaussian_blur,
 	[dual_kawase_blur]	= settings.dual_kawase_blur,
 	[dof]				= settings.dof,
-	[fxaa]				= settings.fxaa,
 }
 
 local ordered_list = {} -- reflects the current ordering of the post-processors
