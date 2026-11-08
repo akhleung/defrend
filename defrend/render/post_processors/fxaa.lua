@@ -8,7 +8,7 @@ function M.init()
 end
 
 function M.update()
-    render.set_render_target(render_targets.get_post_target())
+    render.set_render_target(render.RENDER_TARGET_DEFAULT)
     render.enable_material("fxaa_material")
     render.enable_texture("color_sampler", render_targets.get_post_source(), render_targets.POST_COLOR)
     render.draw(predicates.screen, draw_options)
