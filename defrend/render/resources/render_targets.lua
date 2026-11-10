@@ -51,14 +51,23 @@ local function depth_params(w, h)
 	}
 end
 
-function M.init()
+function M.init(blinn_phong)
 	w, h = render.get_window_width(), render.get_window_height()
 	-- g-buffer
-	g_buffer = render.render_target("g_buffer", {
-		[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + emissive
-		[graphics.BUFFER_TYPE_COLOR1_BIT]	= ldr_params(w, h),   -- normal + specular
-		[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h), -- depth
-	})
+	if blinn_phong then
+		g_buffer = render.render_target("g_buffer", {
+			[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + emissive
+			[graphics.BUFFER_TYPE_COLOR1_BIT]	= ldr_params(w, h),   -- normal + specular
+			[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h), -- depth
+		})
+	else
+		g_buffer = render.render_target("g_buffer", {
+			[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + emissive
+			[graphics.BUFFER_TYPE_COLOR1_BIT]	= ldr_params(w, h),   -- orm (occlusion, roughness, metalness)
+			[graphics.BUFFER_TYPE_COLOR2_BIT]	= ldr_params(w, h),   -- normal + specular
+			[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h), -- depth
+		})
+	end
 	-- spare target for misc
 	spare = render.render_target("spare", {
 		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w, h),

@@ -1,0 +1,50 @@
+#version 420 core
+
+in vec4 position; // object-space
+in vec2 texcoord0;
+in vec3 normal;
+in mat4 mtx_world;
+
+uniform model_vp {
+    mat4 mtx_view;
+    mat4 mtx_proj;
+    mat4 mtx_view_inv;
+    vec4 params;
+};
+
+out vec3 var_frag_pos;
+out vec3 var_normal;
+out vec2 var_texcoord0;
+
+void main() {
+
+    bool preserve_z_rotation = bool(params.y);
+
+    float roll = 0, c = 0, s = 0;
+    float rolled_x = position.x, rolled_y = position.y;
+    if (preserve_z_rotation) {
+        roll = atan(mtx_world[1][0], mtx_world[0][0]);
+        c = cos(roll);
+        s = sin(roll);
+        rolled_x = position.x * c - position.y * s;
+        rolled_y = position.x * s + position.y * c;
+    }
+
+	mat4 mtx_worldview = mtx_view * mtx_world;
+	float x_scale = length(mtx_worldview[0]);
+	float y_scale = length(mtx_worldview[1]);
+	float z_scale = length(mtx_worldview[2]);
+
+    vec3 cam_R = mtx_view_inv[0].xyz;
+    vec3 cam_U = mtx_view_inv[1].xyz;
+    vec3 cam_F = mtx_view_inv[2].xyz;
+
+    vec3 center = (mtx_world * vec4(0, 0, 0, 1)).xyz;
+
+    vec3 position_w = center + rolled_x * cam_R * x_scale + rolled_y * cam_U * y_scale + position.z * cam_F * z_scale;
+    var_frag_pos = (mtx_view * vec4(position_w, 1.0)).xyz;
+    var_normal = -(mtx_view * vec4(center, 1.0)).xyz;
+    var_texcoord0 = texcoord0;
+
+    gl_Position = mtx_proj * vec4(var_frag_pos, 1.0);
+}
