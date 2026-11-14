@@ -1,7 +1,7 @@
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/defrend/assets/lights/meshes/cone.glb\"\n"
+  data: "mesh: \"/defrend/assets/gltf/cone.gltf\"\n"
   "name: \"{{NAME}}\"\n"
   "materials {\n"
   "  name: \"default\"\n"

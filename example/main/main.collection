@@ -184,81 +184,76 @@ instances {
   id: "point_light_soft_white30"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
+    x: 15.0
+    y: 15.0
+    z: 15.0
   }
 }
 instances {
   id: "point_light_emitter_white"
   prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 2.0
-    y: 2.0
-    z: 2.0
-  }
 }
 instances {
   id: "point_light_soft_white61"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
-    x: 20.0
-    y: 20.0
-    z: 20.0
+    x: 10.0
+    y: 10.0
+    z: 10.0
   }
 }
 instances {
   id: "point_light_emitter_white1"
   prototype: "/example/main/point_light_emitter_white.go"
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
 }
 instances {
   id: "point_light_soft_white62"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
-    x: 25.0
-    y: 25.0
-    z: 25.0
+    x: 15.0
+    y: 15.0
+    z: 15.0
   }
 }
 instances {
   id: "point_light_emitter_white2"
   prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 1.5
-    y: 1.5
-    z: 1.5
-  }
 }
 instances {
   id: "point_light_soft_white"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
-    x: 20.0
-    y: 20.0
-    z: 20.0
+    x: 10.0
+    y: 10.0
+    z: 10.0
   }
 }
 instances {
   id: "point_light_emitter_white3"
   prototype: "/example/main/point_light_emitter_white.go"
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 0.5
+  }
 }
 instances {
   id: "point_light_soft_white1"
   prototype: "/example/main/point_light_soft_white.go"
   scale3 {
-    x: 25.0
-    y: 25.0
-    z: 25.0
+    x: 15.0
+    y: 15.0
+    z: 15.0
   }
 }
 instances {
   id: "point_light_emitter_white4"
   prototype: "/example/main/point_light_emitter_white.go"
-  scale3 {
-    x: 1.5
-    y: 1.5
-    z: 1.5
-  }
 }
 instances {
   id: "logo1"
@@ -1314,9 +1309,9 @@ instances {
     }
   }
   scale3 {
-    x: 80.0
-    y: 80.0
-    z: 80.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
   }
 }
 instances {
@@ -1331,9 +1326,9 @@ instances {
     }
   }
   scale3 {
-    x: 80.0
-    y: 80.0
-    z: 80.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
   }
 }
 instances {
@@ -2550,20 +2545,12 @@ embedded_instances {
   data: "components {\n"
   "  id: \"cube_brick\"\n"
   "  component: \"/example/assets/cube_brick.model\"\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"cube_brick1\"\n"
   "  component: \"/example/assets/cube_brick.model\"\n"
   "  position {\n"
   "    y: 1.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
   "  }\n"
   "}\n"
   "components {\n"
@@ -2572,10 +2559,6 @@ embedded_instances {
   "  position {\n"
   "    y: 2.0\n"
   "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"cube_brick3\"\n"
@@ -2583,20 +2566,12 @@ embedded_instances {
   "  position {\n"
   "    y: 3.0\n"
   "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
-  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"cube_brick4\"\n"
   "  component: \"/example/assets/cube_brick.model\"\n"
   "  position {\n"
   "    y: 4.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: -0.70710677\n"
-  "    w: 0.70710677\n"
   "  }\n"
   "}\n"
   ""
@@ -2707,58 +2682,10 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/example/assets/models/ball.glb\\\"\\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/sphere.gltf\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
-  "  name: \\\"Blue\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Red.001\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"White.005\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
-  "  textures {\\n"
-  "    sampler: \\\"albedo_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-base.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"normal_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-normal.png\\\"\\n"
-  "  }\\n"
-  "  textures {\\n"
-  "    sampler: \\\"spec_glow_map\\\"\\n"
-  "    texture: \\\"/example/assets/images/broken-ice-spec-glow.png\\\"\\n"
-  "  }\\n"
-  "}\\n"
-  "materials {\\n"
-  "  name: \\\"Yellow.001\\\"\\n"
+  "  name: \\\"default\\\"\\n"
   "  material: \\\"/defrend/materials/geometry/model/model.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
@@ -4853,7 +4780,7 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/defrend/assets/lights/meshes/cone.glb\\\"\\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/cone.gltf\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
@@ -4894,7 +4821,7 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/defrend/assets/lights/meshes/cone.glb\\\"\\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/cone.gltf\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"

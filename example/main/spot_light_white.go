@@ -1,7 +1,7 @@
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/defrend/assets/lights/meshes/cone.glb\"\n"
+  data: "mesh: \"/defrend/assets/gltf/cone.gltf\"\n"
   "name: \"{{NAME}}\"\n"
   "materials {\n"
   "  name: \"default\"\n"
@@ -18,7 +18,4 @@ embedded_components {
   "}\n"
   "create_go_bones: false\n"
   ""
-  position {
-    y: -0.5
-  }
 }

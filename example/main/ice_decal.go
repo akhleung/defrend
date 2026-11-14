@@ -10,7 +10,7 @@ components {
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/builtins/assets/gltf/cube.gltf\"\n"
+  data: "mesh: \"/defrend/assets/gltf/cube.gltf\"\n"
   "name: \"{{NAME}}\"\n"
   "materials {\n"
   "  name: \"default\"\n"
