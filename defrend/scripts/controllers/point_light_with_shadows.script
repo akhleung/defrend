@@ -75,7 +75,7 @@ function late_update(self, dt)
 
 	go.update_world_transform()
 	local center = go.get_world_position()
-	local radius = go.get_world_scale_uniform() * 0.5
+	local radius = go.get_world_scale_uniform()
 	self.mtx_proj = vmath.matrix4_perspective(HALF_PI, 1, NEAR, radius)
 	for face_index = 1, 6 do
 		self.mtx_views[face_index] = vmath.matrix4_look_at(center, center + CUBE_FACES[face_index], UP_VECTORS[face_index])
