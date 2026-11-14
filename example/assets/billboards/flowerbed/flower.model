@@ -1,4 +1,4 @@
-mesh: "/builtins/assets/gltf/quad.gltf"
+mesh: "/defrend/assets/gltf/quad.gltf"
 name: "grass"
 materials {
   name: "default"

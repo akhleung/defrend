@@ -1,4 +1,4 @@
-mesh: "/builtins/assets/gltf/cube.gltf"
+mesh: "/defrend/assets/gltf/cube.gltf"
 name: "new-cube"
 materials {
   name: "default"
