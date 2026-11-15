@@ -2,7 +2,7 @@ mesh: "/example/assets/models/tree_bill.gltf"
 name: "tree_bill"
 materials {
   name: "material_0"
-  material: "/defrend/materials/geometry/billboard_sprite/billboard.material"
+  material: "/defrend/materials/geometry/billboard/billboard.material"
   textures {
     sampler: "albedo_map"
     texture: "/example/assets/models/texture.png"

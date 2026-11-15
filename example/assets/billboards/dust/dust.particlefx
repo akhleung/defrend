@@ -7,7 +7,7 @@ emitters {
   }
   tile_source: "/example/assets/billboards/dust/dust1.tilesource"
   animation: "anim"
-  material: "/defrend/materials/geometry/billboard_sprite/particle.material"
+  material: "/defrend/materials/geometry/billboard/particle.material"
   max_particle_count: 32
   type: EMITTER_TYPE_BOX
   properties {

@@ -1,7 +1,7 @@
 name: "billboard"
 tags: "billboard"
-vertex_program: "/defrend/materials/geometry/billboard_sprite/billboard.vp"
-fragment_program: "/defrend/materials/geometry/billboard_sprite/billboard.fp"
+vertex_program: "/defrend/materials/geometry/billboard/billboard.vp"
+fragment_program: "/defrend/materials/geometry/billboard/billboard.fp"
 vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_proj"

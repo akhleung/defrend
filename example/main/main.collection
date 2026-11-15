@@ -4866,7 +4866,7 @@ embedded_instances {
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
-  "  material: \\\"/defrend/materials/geometry/billboard_sprite/billboard.material\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/billboard/billboard.material\\\"\\n"
   "  textures {\\n"
   "    sampler: \\\"albedo_map\\\"\\n"
   "    texture: \\\"/example/assets/images/grey-brick.png\\\"\\n"
