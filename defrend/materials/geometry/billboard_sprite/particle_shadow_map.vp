@@ -43,7 +43,7 @@ void main() {
 
     vec3 position_w = center + rolled_x * cam_R * x_scale + rolled_y * cam_U * y_scale + position.z * cam_F * z_scale;
     var_frag_pos = (mtx_view * vec4(position_w, 1.0)).xyz;
-    var_normal = -(mtx_view * vec4(center, 1.0)).xyz;
+    var_normal = normalize(-(mtx_view * vec4(center, 1.0)).xyz);
     var_texcoord0 = texcoord0;
 
     gl_Position = mtx_proj * vec4(var_frag_pos, 1.0);

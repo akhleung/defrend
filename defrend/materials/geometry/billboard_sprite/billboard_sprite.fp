@@ -11,7 +11,7 @@ uniform sampler2D spec_glow_map;
 layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
 
-mat3 get_tbn_mtx() {
+mat3 get_tbn() {
 	vec3 d_vd_x = dFdx(var_frag_pos);
 	vec3 d_vd_y = dFdy(var_frag_pos);
 
@@ -28,16 +28,8 @@ mat3 get_tbn_mtx() {
 	return mat3(tangent * inv_max, bitangent * inv_max, var_normal);
 }
 
-vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
-	// mediump mat3 tbn_mtx = get_tbn_mtx(world_normal, -view_direction, texture_coord);
-	vec3 normal_map_color = texture(normal_map, texture_coord).xyz;
-	// mediump vec3 perturb_normal = normal_map_color * (255.0 / 127.0) - vec3(128.0 / 127.0);
-	vec3 perturb_normal = normal_map_color * 2.0 - 1.0;
-	// if (surface.z > 0.5) {
-	//     // This is the DirectX normals map format
-	//     perturb_normal.y = -perturb_normal.y;
-	// }
-	return normalize(tbn_mtx * perturb_normal);
+vec3 perturb_normal() {
+	return normalize(get_tbn() * (texture(normal_map, var_texcoord0).xyz * 2.0 - 1.0));
 }
 
 void main() {
@@ -45,7 +37,7 @@ void main() {
 	if (diffuse.a == 0) discard; // avoid writing to the depth buffer, normals, etc
 	vec4 spec_glow	= texture(spec_glow_map, var_texcoord0);
 	albedo_out		= vec4(diffuse.rgb, spec_glow.g);
-	normal_out		= vec4(get_perturb_normal(var_texcoord0, get_tbn_mtx()) * 0.5 + 0.5, spec_glow.r);
+	normal_out		= vec4(perturb_normal() * 0.5 + 0.5, spec_glow.r);
 
 	#ifdef EDITOR
 	// set alpha back to 1.0 to make things show up in the editor
