@@ -1,0 +1,72 @@
+#version 420 core
+
+in vec4 position;
+in vec2 texcoord0;
+in vec3 normal;
+// Uncomment the following two ifdefs if editor performance bogs down, since it doesn't handle instanced materials well.
+// #ifndef EDITOR
+in mat4 mtx_world;
+// #endif
+
+uniform model_vp {
+	// #ifdef EDITOR
+	// mat4 mtx_world;
+	// #endif
+	mat4 mtx_view;
+	mat4 mtx_proj;
+	mat4 mtx_view_inv;
+	vec4 params;
+};
+
+out vec3 var_frag_pos;
+out vec3 var_normal;
+out vec2 var_texcoord0;
+out mat3 var_tbn;
+
+float y_constraint_factor = params.x;
+bool preserve_z_rotation = bool(params.y);
+
+vec2 apply_roll(vec2 v) {
+	float roll = 0, c = 0, s = 0;
+	float rolled_x = v.x, rolled_y = v.y;
+	if (preserve_z_rotation) {
+		roll = atan(mtx_world[1][0], mtx_world[0][0]);
+		c = cos(roll);
+		s = sin(roll);
+		rolled_x = v.x * c - v.y * s;
+		rolled_y = v.x * s + v.y * c;
+	}
+	return vec2(rolled_x, rolled_y);
+}
+
+void main() {
+
+	mat3 mtx_view3 = mat3(mtx_view);
+	mat4 mtx_worldview = mtx_view * mtx_world;
+	vec3 center = (mtx_world * vec4(0, 0, 0, 1)).xyz;
+
+	vec3 scale = vec3(length(mtx_worldview[0]), length(mtx_worldview[1]), length(mtx_worldview[2]));
+	vec2 rolled = apply_roll(position.xy);
+
+	vec3 cam_R = mtx_view_inv[0].xyz;
+	vec3 cam_U = mix(mtx_view_inv[1].xyz, vec3(0, 1, 0), y_constraint_factor);
+	vec3 cam_F = mtx_view_inv[2].xyz;
+
+	vec3 position_w = center + rolled.x * cam_R * scale.x + rolled.y * cam_U * scale.y + position.z * cam_F * scale.z;
+
+	// construct a tangent frame by billboarding local UP and RIGHT vectors
+	vec2 rolled_T = apply_roll(vec2(1, 0));
+	vec3 T_w = rolled_T.x * cam_R + rolled_T.y * cam_U;
+	vec3 T = normalize(mtx_view3 * T_w);
+	vec2 rolled_B = apply_roll(vec2(0, 1));
+	vec3 B_w = rolled_B.x * cam_R + rolled_B.y * cam_U;
+	vec3 B = normalize(mtx_view3 * B_w);
+	vec3 N = normalize(-(mtx_view * vec4(center, 1.0)).xyz);
+	var_tbn = mat3(T, B, N);
+
+	var_frag_pos = (mtx_view * vec4(position_w, 1.0)).xyz;
+	var_normal = N;
+	var_texcoord0 = texcoord0;
+
+	gl_Position = mtx_proj * vec4(var_frag_pos, 1.0);
+}

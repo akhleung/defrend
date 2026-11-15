@@ -1,5 +1,5 @@
-go.property("mtl_shadow", resource.material("/defrend/materials/geometry/billboard_sprite/particle.material"))
-go.property("mtl_shadowless", resource.material("/defrend/materials/geometry/billboard_sprite/shadowless_particle.material"))
+go.property("mtl_shadow", resource.material("/defrend/materials/geometry/billboard/particle.material"))
+go.property("mtl_shadowless", resource.material("/defrend/materials/geometry/billboard/shadowless_particle.material"))
 
 function init(self)
 	self.shadow = true
