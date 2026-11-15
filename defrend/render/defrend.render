@@ -5,11 +5,11 @@ render_resources {
 }
 render_resources {
   name: "sprite_material"
-  path: "/defrend/materials/geometry/billboard_sprite/sprite.material"
+  path: "/defrend/materials/geometry/billboard/sprite.material"
 }
 render_resources {
   name: "billboard_material"
-  path: "/defrend/materials/geometry/billboard_sprite/billboard.material"
+  path: "/defrend/materials/geometry/billboard/billboard.material"
 }
 render_resources {
   name: "decal_material"
@@ -97,15 +97,15 @@ render_resources {
 }
 render_resources {
   name: "particle_material"
-  path: "/defrend/materials/geometry/billboard_sprite/particle.material"
+  path: "/defrend/materials/geometry/billboard/particle.material"
 }
 render_resources {
   name: "particle_shadow_map_material"
-  path: "/defrend/materials/geometry/billboard_sprite/particle_shadow_map.material"
+  path: "/defrend/materials/geometry/billboard/particle_shadow_map.material"
 }
 render_resources {
   name: "shadowless_particle_material"
-  path: "/defrend/materials/geometry/billboard_sprite/shadowless_particle.material"
+  path: "/defrend/materials/geometry/billboard/shadowless_particle.material"
 }
 render_resources {
   name: "ssao_blur_material"
@@ -141,7 +141,7 @@ render_resources {
 }
 render_resources {
   name: "particle_cubemap_material"
-  path: "/defrend/materials/geometry/billboard_sprite/particle_cubemap.material"
+  path: "/defrend/materials/geometry/billboard/particle_cubemap.material"
 }
 render_resources {
   name: "directional_light_with_shadows_material"

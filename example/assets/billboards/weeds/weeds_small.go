@@ -6,7 +6,7 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "default_animation: \"idle\"\n"
-  "material: \"/defrend/materials/geometry/billboard_sprite/sprite.material\"\n"
+  "material: \"/defrend/materials/geometry/billboard/sprite.material\"\n"
   "size {\n"
   "  x: 6.0\n"
   "  y: 6.0\n"

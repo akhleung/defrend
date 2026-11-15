@@ -1533,6 +1533,7 @@ embedded_instances {
 }
 embedded_instances {
   id: "scene1"
+  children: "brick_billboard"
   children: "decals"
   children: "duck"
   children: "dust"
@@ -4692,7 +4693,7 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/builtins/assets/gltf/sphere.gltf\\\"\\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/sphere.gltf\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
@@ -4748,7 +4749,7 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"model\"\n"
   "  type: \"model\"\n"
-  "  data: \"mesh: \\\"/builtins/assets/gltf/sphere.gltf\\\"\\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/sphere.gltf\\\"\\n"
   "name: \\\"{{NAME}}\\\"\\n"
   "materials {\\n"
   "  name: \\\"default\\\"\\n"
@@ -4854,5 +4855,44 @@ embedded_instances {
   position {
     x: -22.0
     y: 14.0
+  }
+}
+embedded_instances {
+  id: "brick_billboard"
+  data: "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/quad.gltf\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"default\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/billboard/billboard.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/grey-brick.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/example/assets/images/grey-brick-normal.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/black.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    y: 5.0
+    z: -7.0
+  }
+  rotation {
+    z: 0.70710677
+    w: 0.70710677
+  }
+  scale3 {
+    x: 10.0
+    y: 10.0
   }
 }

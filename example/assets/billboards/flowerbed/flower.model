@@ -2,7 +2,7 @@ mesh: "/defrend/assets/gltf/quad.gltf"
 name: "grass"
 materials {
   name: "default"
-  material: "/defrend/materials/geometry/billboard_sprite/billboard.material"
+  material: "/defrend/materials/geometry/billboard/billboard.material"
   textures {
     sampler: "albedo_map"
     texture: "/example/assets/billboards/flowerbed/flower.png"
