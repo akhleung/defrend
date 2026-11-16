@@ -82,7 +82,7 @@ void main() {
     float edge = 0.4825;
     vec3 rems = fract(floor(mags * 100) / 10);
     float line_thickness = 0.1;
-    if (var_vertex.z == -0.5) {
+    if (var_vertex.z == 0.5) {
         albedo_out = texture(albedo_map, var_texcoord0);
     } else if (mags.x > edge && mags.y > edge || mags.y > edge && mags.z > edge || mags.x > edge && mags.z > edge) {
 		albedo_out = vec4(1);
