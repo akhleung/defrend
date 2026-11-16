@@ -79,6 +79,12 @@ function M.ssao.init()
 	ssao_blur_params.y = ssao.blur_depth_threshold
 	ssao_blur_params.z = ssao.blur_normal_threshold
 	M.ssao_blur.uniforms.params = ssao_blur_params
+
+	fog_params.z = 0
+	if ssao.occlude_direct_light then
+		fog_params.z = 1
+	end
+	M.ambient_and_fog.uniforms.fog_params = fog_params
 end
 
 local outline = settings.outline

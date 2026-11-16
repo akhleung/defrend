@@ -12,6 +12,7 @@ go.property("attenuation", 1.0)
 go.property("radius", 2.0)
 go.property("granularity", 800) -- try 200 or less for a pixel-art friendly effect
 go.property("hash_factor", 100)
+go.property("occlude_direct_light", false)
 go.property("blur", true)
 go.property("blur_radius", 4)
 go.property("blur_depth_threshold", 0.2)
@@ -31,6 +32,7 @@ local function do_init(self)
 	settings.ssao.radius		= self.radius
 	settings.ssao.granularity	= self.granularity
 	settings.ssao.hash_factor	= self.hash_factor
+	settings.ssao.occlude_direct_light	= self.occlude_direct_light
 	settings.ssao.blur					= self.blur
 	settings.ssao.blur_radius			= self.blur_radius
 	settings.ssao.blur_depth_threshold	= self.blur_depth_threshold

@@ -63,6 +63,7 @@ local M = {
 		radius = 2.0,
 		granularity = 200,
 		hash_factor = 100,
+		occlude_direct_light = false,
 		blur = true,
 		blur_radius = 4,
 		blur_depth_threshold = 0.2,

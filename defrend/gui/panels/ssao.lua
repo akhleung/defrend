@@ -72,6 +72,12 @@ return function (self)
 		uniforms_changed = true
 	end
 
+	local changed, checked = imgui.checkbox("Occlude direct light", settings.ssao.occlude_direct_light)
+	if changed then
+		settings.ssao.occlude_direct_light = checked
+		uniforms_changed = true
+	end
+
 	local changed, checked = imgui.checkbox("Blur", settings.ssao.blur)
 	if changed then
 		settings.ssao.blur = checked

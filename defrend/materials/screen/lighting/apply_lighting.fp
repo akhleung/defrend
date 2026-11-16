@@ -24,6 +24,7 @@ layout(location = 0) out vec4 frag_color;
 
 float FOG_NEAR		= fog_params.x;
 float FOG_FAR		= fog_params.y;
+bool OCCLUDE_DIRECT	= bool(fog_params.z);
 
 vec3 srgb_to_linear(vec3 color) {
     // Approximation from http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
@@ -42,12 +43,14 @@ void main() {
 	vec3 var_frag_pos	= viewPosFromLinearDepth(z, var_texcoord0, frustum_corner.xyz);
 
 	float ao = texture(ssao_sampler, var_texcoord0).r;
+	float occ_amb = OCCLUDE_DIRECT ? 1 : ao;
+	float occ_all = OCCLUDE_DIRECT ? ao : 1;
 	float emissive = ceil(albedo_sample.a);
 	vec4 mat_diff = vec4(srgb_to_linear(albedo_sample.rgb), 1.0);
 
-	vec4 color = ambient_color * mat_diff;
+	vec4 color = ambient_color * occ_amb * mat_diff;
 	color += mat_diff * (light_diff + emissive);
-	color *= ao; // consider (ao + 1) / 2
+	color *= occ_all; // consider (ao + 1) / 2
 	color += light_spec; // we only support white specular highlights for now, so no mat_spec
 
 	// vec4 color = ambient_color * mat_diff * ao;
