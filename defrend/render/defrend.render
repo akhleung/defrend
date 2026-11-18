@@ -68,8 +68,8 @@ render_resources {
   path: "/defrend/materials/geometry/skybox/skybox.material"
 }
 render_resources {
-  name: "depth_buffer_copy_material"
-  path: "/defrend/materials/screen/depth_buffer_copy/depth_buffer_copy.material"
+  name: "depth_normal_copy_material"
+  path: "/defrend/materials/screen/depth_normal_copy/depth_normal_copy.material"
 }
 render_resources {
   name: "copy_material"

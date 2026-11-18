@@ -4,11 +4,13 @@ in vec4 position;
 in vec2 texcoord0;
 #ifndef EDITOR
 in mat4 mtx_world;
+in mat4 mtx_normal;
 #endif
 
 uniform decal_vp {
     #ifdef EDITOR
     mat4 mtx_world;
+    mat4 mtx_normal;
     #endif
     mat4 mtx_view;
     mat4 mtx_proj;
@@ -16,6 +18,7 @@ uniform decal_vp {
 
 out mat4 mtx_worldview_inv;
 out vec3 var_frag_pos;
+out vec3 var_T; // tangent
 out vec2 var_texcoord0;
 #ifdef EDITOR
 out vec3 var_vertex;
@@ -28,6 +31,9 @@ void main() {
     var_frag_pos = p.xyz;
     var_texcoord0 = texcoord0;
     gl_Position = mtx_proj * p;
+
+    // construct a tangent relative to the front face of the projector box
+    var_T = normalize(mat3(mtx_normal) * vec3(1, 0, 0));
 
     #ifdef EDITOR // visualization for viewing decal projector boxes in the editor
     var_vertex = position.xyz;

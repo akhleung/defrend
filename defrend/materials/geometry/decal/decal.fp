@@ -5,6 +5,7 @@
 
 in mat4 mtx_worldview_inv;
 in vec3 var_frag_pos;
+in vec3 var_T;
 in vec2 var_texcoord0;
 #ifdef EDITOR
 in vec3 var_vertex;
@@ -15,7 +16,8 @@ uniform sampler2D albedo_map;
 uniform sampler2D normal_map;
 uniform sampler2D spec_glow_map;
 
-// sampler from the g-buffer
+// samplers from the g-buffer
+uniform sampler2D g_normal_map;
 uniform sampler2D depth_buffer;
 
 uniform decal_fp {
@@ -26,28 +28,13 @@ uniform decal_fp {
 layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
 
-mat3 get_tbn_mtx(vec3 view_pos, vec2 texcoord) {
-    vec3 d_vd_x = dFdx(view_pos);
-    vec3 d_vd_y = dFdy(view_pos);
-    vec3 normal = normalize(cross(d_vd_x, d_vd_y));
-
-    vec2 d_tc_x = dFdx(texcoord);
-    vec2 d_tc_y = dFdy(texcoord);
-
-    vec3 d_vd_y_cross = cross(d_vd_y, normal);
-    vec3 d_vd_x_cross = cross(normal, d_vd_x);
-
-    vec3 tangent = d_vd_y_cross * d_tc_x.x + d_vd_x_cross * d_tc_y.x;
-    vec3 bitangent = d_vd_y_cross * d_tc_x.y + d_vd_x_cross * d_tc_y.y;
-
-    float inv_max = inversesqrt(max(dot(tangent, tangent), dot(bitangent, bitangent)));
-    return mat3(tangent * inv_max, bitangent * inv_max, normal);
-}
-
-vec3 get_perturb_normal(vec2 texture_coord, mat3 tbn_mtx) {
-    vec3 normal_map_color = texture(normal_map, texture_coord).xyz;
-    vec3 perturb_normal = normal_map_color * 2.0 - 1.0;
-    return normalize(tbn_mtx * perturb_normal);
+vec3 perturb_normal(vec2 texcoord) {
+    // construct a tangent frame based on the decal tangent, orthogonalized to the scene normal
+    vec3 N = texelFetch(g_normal_map, ivec2(gl_FragCoord.xy), 0).xyz * 2.0 - 1.0;
+    vec3 T = normalize(var_T - dot(var_T, N) * N);
+    vec3 B = cross(N, T);
+    mat3 TBN = mat3(T, B, N);
+    return normalize(TBN * (texture(normal_map, texcoord).xyz * 2.0 - 1.0));
 }
 
 void main() {
@@ -73,8 +60,7 @@ void main() {
     albedo_out = vec4(decal_color.rgb, decal_spec_glow.g);
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
-    mat3 tbn = get_tbn_mtx(g_position.xyz, d_position.xy);
-    vec3 decal_normal = get_perturb_normal(d_position.xy, tbn) * 0.5 + 0.5;
+    vec3 decal_normal = perturb_normal(d_position.xy) * 0.5 + 0.5;
     normal_out = vec4(decal_normal, decal_spec_glow.r);
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor

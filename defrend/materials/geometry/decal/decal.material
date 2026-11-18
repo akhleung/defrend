@@ -15,6 +15,10 @@ vertex_constants {
   name: "mtx_world"
   type: CONSTANT_TYPE_WORLD
 }
+vertex_constants {
+  name: "mtx_normal"
+  type: CONSTANT_TYPE_NORMAL
+}
 samplers {
   name: "albedo_map"
   wrap_u: WRAP_MODE_REPEAT
@@ -38,6 +42,15 @@ samplers {
   max_anisotropy: 0.0
 }
 samplers {
+  name: "g_normal_map"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+  wrap_w: WRAP_MODE_CLAMP_TO_EDGE
+}
+samplers {
   name: "depth_buffer"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
   wrap_v: WRAP_MODE_CLAMP_TO_EDGE
@@ -50,4 +63,9 @@ attributes {
   semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
   step_function: VERTEX_STEP_FUNCTION_INSTANCE
   vector_type: VECTOR_TYPE_MAT4
+}
+attributes {
+  name: "mtx_normal"
+  semantic_type: SEMANTIC_TYPE_NORMAL_MATRIX
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
 }

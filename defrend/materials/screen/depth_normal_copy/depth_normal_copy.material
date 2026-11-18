@@ -1,7 +1,15 @@
 name: "depth_buffer_copy"
 tags: "screen"
 vertex_program: "/defrend/materials/screen/screen.vp"
-fragment_program: "/defrend/materials/screen/depth_buffer_copy/depth_buffer_copy.fp"
+fragment_program: "/defrend/materials/screen/depth_normal_copy/depth_normal_copy.fp"
+samplers {
+  name: "normal_map"
+  wrap_u: WRAP_MODE_CLAMP_TO_EDGE
+  wrap_v: WRAP_MODE_CLAMP_TO_EDGE
+  filter_min: FILTER_MODE_MIN_NEAREST
+  filter_mag: FILTER_MODE_MAG_NEAREST
+  max_anisotropy: 0.0
+}
 samplers {
   name: "depth_buffer"
   wrap_u: WRAP_MODE_CLAMP_TO_EDGE
