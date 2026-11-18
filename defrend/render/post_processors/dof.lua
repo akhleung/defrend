@@ -45,6 +45,7 @@ function M.update()
 	render.draw(predicates.screen, blur_draw_options)
 	render.disable_texture("focused_sampler")
 	render.disable_texture("blurred_sampler")
+	render_targets.ping_pong_spare() -- swap the spare target back where it should be
 end
 
 return M

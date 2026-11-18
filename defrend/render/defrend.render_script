@@ -118,7 +118,7 @@ function update(self)
 
 	render.set_render_target(g_buffer)
 	render.set_stencil_mask(0xff)
-	render.clear(clear_options.clear_color_options)
+	render.clear(clear_options.color_and_depth)
 	render.set_viewport(0, 0, settings.resolution_x, settings.resolution_y)
 	-- setup camera view and projection --
 	render.set_camera(cam, cull)
@@ -139,11 +139,9 @@ function update(self)
 		render.draw(predicates.shadowless_particle, geometry_options)
 	end
 
-	-- copy depth buffer to avoid feedback loop when rendering decals into g-buffer --
-	render.disable_state(graphics.STATE_CULL_FACE)
-	render.set_render_target(render_targets.get_post_target())
-	render.set_depth_mask(false)
-	render.disable_state(graphics.STATE_DEPTH_TEST)
+	-- copy normals and depth buffer to avoid feedback loop when rendering decals into g-buffer --
+	render.set_render_target(render_targets.get_spare())
+	render.clear(clear_options.color_and_depth)
 	render.set_camera()
 	render.set_view(screen_camera.view)
 	render.set_projection(screen_camera.proj)
@@ -160,12 +158,11 @@ function update(self)
 	-- necessary to use collision triggers to detect when the camera is inside a projector, and mark it so that it can
 	-- be rendered separately.
 	render_targets.ping_pong()
+	render.set_depth_mask(false)
 	render.set_render_target(g_buffer)
-	render.enable_state(graphics.STATE_DEPTH_TEST)
-	render.enable_state(graphics.STATE_CULL_FACE)
 	render.set_camera(cam, cull)
 	if settings.geometry.decals_enabled then
-		render.enable_texture("depth_buffer", render_targets.get_post_source(), render_targets.POST_COLOR)
+		render.enable_texture("depth_buffer", render_targets.get_spare(), render_targets.SPARE_DEPTH)
 		render.draw(predicates.decal, geometry_options)
 		render.disable_texture("depth_buffer")
 	end
@@ -181,13 +178,15 @@ function update(self)
 	render.draw_debug3d()
 
 	-- render light volumes into the light reflectance buffer --
-	-- Depth testing is useless here because we're rendering the lights into an empty buffer. On a positive note, we
-	-- can cull front faces, which will allow the camera to move inside light volumes without causing them to be
-	-- culled. If overdraw becomes a big problem, it may be an acceptable tradeoff to render the whole scene into this
-	-- buffer first.
+	-- Since we copied g-buffer depth into the spare target's depth buffer for decal rendering, the latter can be used
+	-- for the early depth test when rendering light volumes into the spare target. In order to allow the camera to
+	-- move inside light volumes without culling them, we'll use front-face culling and reverse the depth test. While
+	-- this has the disadvantage of rendering and discarding fully occluded lights, it also has the compensating
+	-- advantage of only rendering the parts of visible lights that intersect receiving geometry.
 	render.set_camera(cam, cull)
 	render.set_render_target(render_targets.get_spare())
-	render.clear(clear_options.clear_color_options)
+	render.clear(clear_options.color_only) -- clear the color attachment and preserve the depth buffer
+	render.set_depth_func(graphics.COMPARE_FUNC_GEQUAL)
 	render.enable_state(graphics.STATE_BLEND)
 	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE)
 	render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
@@ -220,7 +219,7 @@ function update(self)
 	render.disable_state(graphics.STATE_BLEND)
 
 	render.set_render_target(render_targets.get_post_target())
-	render.clear(clear_options.clear_ssao_options)
+	render.clear(clear_options.ssao)
 	if settings.ssao.enabled then
 		render.enable_material("ssao_material")
 		render.enable_texture("depth_buffer", g_buffer, render_targets.G_BUFFER_DEPTH)
@@ -361,7 +360,7 @@ render_directional_shadows = function ()
 	for light in pairs(DIRECTIONAL_LIGHTS) do
 		light:update(cam_view, cam_view_inv)
 		render.set_render_target(light.render_target)
-		render.clear(clear_options.clear_shadow_options)
+		render.clear(clear_options.shadows)
 		local partitions = light.partitions
 		local atlas_resolution = light.atlas_resolution
 		local map_resolution = light.map_resolution
@@ -403,7 +402,7 @@ render_point_light_shadows = function ()
 		for face_index = 1, 6 do
 			cubemap_options.face = CUBE_FACES[face_index]
 			render.set_render_target(shadow_map, cubemap_options)
-			render.clear(clear_options.clear_shadow_options)
+			render.clear(clear_options.shadows)
 			if settings.point_light.shadows_enabled then
 				render.set_view(mtx_views[face_index])
 				render.set_projection(mtx_proj)
@@ -417,7 +416,7 @@ end
 render_spot_light_shadows = function ()
 	for light in pairs(SPOT_LIGHTS) do
 		render.set_render_target(light.render_target)
-		render.clear(clear_options.clear_shadow_options)
+		render.clear(clear_options.shadows)
 		if settings.spot_light.shadows_enabled then
 			render.set_view(light.mtx_view)
 			render.set_projection(light.mtx_proj)

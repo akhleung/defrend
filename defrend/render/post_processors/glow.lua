@@ -35,6 +35,7 @@ function M.update()
 	render.draw(predicates.screen)
 	render.disable_texture("input_sampler")
 	render.disable_state(graphics.STATE_BLEND)
+	render_targets.ping_pong_spare() -- swap the spare target back where it should be
 end
 
 return M

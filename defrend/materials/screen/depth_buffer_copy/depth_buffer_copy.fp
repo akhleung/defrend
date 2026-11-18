@@ -5,10 +5,12 @@
 
 in vec2 var_texcoord0;
 
+uniform sampler2D normal_map;
 uniform sampler2D depth_buffer;
 
 layout(location = 0) out vec4 fragColor;
 
 void main() {
-	fragColor = float_to_rgba(texture(depth_buffer, var_texcoord0).r);
+	fragColor = texture(normal_map, var_texcoord0);
+	gl_FragDepth = texture(depth_buffer, var_texcoord0).r;
 }

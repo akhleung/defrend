@@ -62,15 +62,17 @@ function M.init(blinn_phong)
 		})
 	else
 		g_buffer = render.render_target("g_buffer", {
-			[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + emissive
+			[graphics.BUFFER_TYPE_COLOR0_BIT]	= ldr_params(w, h),   -- albedo + alpha
 			[graphics.BUFFER_TYPE_COLOR1_BIT]	= ldr_params(w, h),   -- orm (occlusion, roughness, metalness)
-			[graphics.BUFFER_TYPE_COLOR2_BIT]	= ldr_params(w, h),   -- normal + specular
+			[graphics.BUFFER_TYPE_COLOR2_BIT]	= ldr_params(w, h),   -- emissiveness
+			[graphics.BUFFER_TYPE_COLOR3_BIT]	= ldr_params(w, h),   -- normal
 			[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h), -- depth
 		})
 	end
 	-- spare target for misc
 	spare = render.render_target("spare", {
 		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w, h),
+		[graphics.BUFFER_TYPE_DEPTH_BIT]	= depth_params(w, h)
 	})
 	-- full-sized post-processing targets
 	source1 = render.render_target("source1", {
@@ -93,7 +95,7 @@ function M.init(blinn_phong)
 	target16 = render.render_target("target16", {
 		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/4, h/4)
 	})
-	-- sixtyfourth-sized post-processing targets
+	-- sixty-fourth-sized post-processing targets
 	source64 = render.render_target("source64", {
 		[graphics.BUFFER_TYPE_COLOR0_BIT]	= hdr_params(w/8, h/8)
 	})
@@ -243,6 +245,7 @@ M.G_BUFFER_NORMAL		= graphics.BUFFER_TYPE_COLOR1_BIT
 M.G_BUFFER_DEPTH		= graphics.BUFFER_TYPE_DEPTH_BIT
 
 M.SPARE_COLOR			= graphics.BUFFER_TYPE_COLOR0_BIT
+M.SPARE_DEPTH			= graphics.BUFFER_TYPE_DEPTH_BIT
 
 M.POST_COLOR			= graphics.BUFFER_TYPE_COLOR0_BIT
 
