@@ -383,7 +383,7 @@ instances {
     z: -9.0
   }
   rotation {
-    x: 0.70710677
+    x: -0.70710677
     w: 0.70710677
   }
   scale3 {
@@ -400,7 +400,7 @@ instances {
     z: 9.0
   }
   rotation {
-    x: 0.70710677
+    x: -0.70710677
     w: 0.70710677
   }
   scale3 {
@@ -1379,6 +1379,23 @@ instances {
     x: 50.0
     y: 50.0
     z: 50.0
+  }
+}
+instances {
+  id: "point_light_with_shadows2"
+  prototype: "/example/main/point_light_with_shadows.go"
+  component_properties {
+    id: "point_light"
+    properties {
+      id: "shadow_map"
+      value: "/example/main/point_light_shadowmap3.render_target"
+      type: PROPERTY_TYPE_HASH
+    }
+  }
+  scale3 {
+    x: 40.0
+    y: 40.0
+    z: 40.0
   }
 }
 collection_instances {
@@ -3847,6 +3864,7 @@ embedded_instances {
   children: "ice_cube2"
   children: "point_light_with_shadows_pivot"
   children: "point_light_with_shadows_pivot1"
+  children: "point_light_with_shadows_pivot2"
   data: ""
   position {
     x: -50.0
@@ -4895,4 +4913,43 @@ embedded_instances {
     x: 10.0
     y: 10.0
   }
+}
+embedded_instances {
+  id: "point_light_with_shadows_pivot2"
+  children: "bulb2"
+  data: ""
+  position {
+    x: 1.0
+    y: 1.0
+    z: 9.0
+  }
+}
+embedded_instances {
+  id: "bulb2"
+  children: "point_light_with_shadows2"
+  data: "embedded_components {\n"
+  "  id: \"model\"\n"
+  "  type: \"model\"\n"
+  "  data: \"mesh: \\\"/defrend/assets/gltf/sphere.gltf\\\"\\n"
+  "name: \\\"{{NAME}}\\\"\\n"
+  "materials {\\n"
+  "  name: \\\"default\\\"\\n"
+  "  material: \\\"/defrend/materials/geometry/model/shadowless_model.material\\\"\\n"
+  "  textures {\\n"
+  "    sampler: \\\"albedo_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"normal_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/flat.png\\\"\\n"
+  "  }\\n"
+  "  textures {\\n"
+  "    sampler: \\\"spec_glow_map\\\"\\n"
+  "    texture: \\\"/defrend/assets/textures/white.png\\\"\\n"
+  "  }\\n"
+  "}\\n"
+  "create_go_bones: false\\n"
+  "\"\n"
+  "}\n"
+  ""
 }

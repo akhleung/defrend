@@ -1,6 +1,10 @@
+color_attachments {
+  width: 512
+  height: 512
+  format: TEXTURE_FORMAT_R16F
+}
 depth_stencil_attachment {
   width: 512
   height: 512
-  texture_storage: true
 }
 type: TYPE_CUBEMAP

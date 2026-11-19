@@ -406,7 +406,7 @@ render_point_light_shadows = function ()
 		for face_index = 1, 6 do
 			cubemap_options.face = CUBE_FACES[face_index]
 			render.set_render_target(shadow_map, cubemap_options)
-			render.clear(clear_options.shadows)
+			render.clear(clear_options.linear_shadows)
 			if settings.point_light.shadows_enabled then
 				render.set_view(mtx_views[face_index])
 				render.set_projection(mtx_proj)

@@ -24,11 +24,17 @@ function M.init()
 		[graphics.BUFFER_TYPE_DEPTH_BIT]	= 1,
 		[graphics.BUFFER_TYPE_STENCIL_BIT]	= 0
 	}
+	local linear_shadows = {
+		[graphics.BUFFER_TYPE_COLOR0_BIT]	= vmath.vector4(1, 1, 1, 1),
+		[graphics.BUFFER_TYPE_DEPTH_BIT]	= 1,
+		[graphics.BUFFER_TYPE_STENCIL_BIT]	= 0
+	}
 
 	M.color_and_depth	= color_and_depth
 	M.color_only		= color_only
 	M.ssao				= ssao
 	M.shadows			= shadows
+	M.linear_shadows	= linear_shadows
 end
 
 return M

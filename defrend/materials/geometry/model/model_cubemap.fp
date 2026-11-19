@@ -6,7 +6,9 @@ uniform shadow_fp {
 	vec4 radius;
 };
 
+layout(location = 0) out float frag_out;
+
 void main() {
-	// write linear depth for cubemap/omnidirectional shadow mapping
-	gl_FragDepth = length(var_frag_pos) / radius.x;
+	// write linear distance to the light origin for cubemap/omnidirectional shadow mapping
+	frag_out = length(var_frag_pos) / radius.x;
 }

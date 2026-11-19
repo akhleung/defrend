@@ -60,8 +60,7 @@ void main() {
     albedo_out = vec4(decal_color.rgb, decal_spec_glow.g);
 
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
-    vec3 decal_normal = perturb_normal(d_position.xy) * 0.5 + 0.5;
-    normal_out = vec4(decal_normal, decal_spec_glow.r);
+    normal_out = vec4(perturb_normal(d_position.xy) * 0.5 + 0.5, decal_spec_glow.r);
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
     vec3 mags = abs(var_vertex);

@@ -52,7 +52,7 @@ local visualizations = {
 		get_render_target = function ()
 			return M.shadow_map
 		end,
-		attachment = render_targets.SHADOW_MAP_DEPTH,
+		attachment = render_targets.SHADOW_MAP_LINEAR,
 	},
 	spot_light_shadow = {
 		material = "copy_r_material",
