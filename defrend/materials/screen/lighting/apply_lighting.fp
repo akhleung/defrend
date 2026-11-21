@@ -8,6 +8,7 @@ in vec2 var_texcoord0;
 uniform sampler2D depth_buffer;
 uniform sampler2D albedo_sampler;
 uniform sampler2D normal_sampler;
+uniform sampler2D emissive_sampler;
 uniform sampler2D ssao_sampler;
 uniform sampler2D light_sampler;
 
@@ -34,6 +35,7 @@ vec3 srgb_to_linear(vec3 color) {
 void main() {
 	vec4 albedo_sample		= texture(albedo_sampler, var_texcoord0);
 	vec4 normal_sample		= texture(normal_sampler, var_texcoord0);
+	vec4 emissive_sample	= texture(emissive_sampler, var_texcoord0);
 	vec4 light_sample		= texture(light_sampler, var_texcoord0);
 	vec4 light_diff			= vec4(light_sample.rgb, 1.0);
 	vec4 light_spec			= vec4(light_sample.rgb * light_sample.a, 1.0);
@@ -45,10 +47,10 @@ void main() {
 	float ao = texture(ssao_sampler, var_texcoord0).r;
 	float occ_amb = OCCLUDE_DIRECT ? 1 : ao;
 	float occ_all = OCCLUDE_DIRECT ? ao : 1;
-	float emissive = ceil(albedo_sample.a);
-	vec4 mat_diff = vec4(srgb_to_linear(albedo_sample.rgb), 1.0);
+	float emissive = ceil(emissive_sample.r);
+	vec4 mat_diff = vec4(srgb_to_linear(albedo_sample.rgb), albedo_sample.a);
 
-	vec4 color = ambient_color * occ_amb * mat_diff;
+	vec4 color = ambient_color * occ_amb * mat_diff; // TODO: omit alpha from the calculations
 	color += mat_diff * (light_diff + emissive);
 	color *= occ_all; // consider (ao + 1) / 2
 	color += light_spec; // we only support white specular highlights for now, so no mat_spec

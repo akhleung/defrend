@@ -27,6 +27,8 @@ uniform decal_fp {
 
 layout(location = 0) out vec4 albedo_out;
 layout(location = 1) out vec4 normal_out;
+layout(location = 2) out vec4 orm_out;
+layout(location = 3) out vec4 emissive_out;
 
 vec3 perturb_normal(vec2 texcoord) {
     // construct a tangent frame based on the decal tangent, orthogonalized to the scene normal
@@ -57,10 +59,11 @@ void main() {
     #ifndef EDITOR
     if (decal_color.a == 0) discard; // avoid writing normals, etc
     #endif
-    albedo_out = vec4(decal_color.rgb, decal_spec_glow.g);
-
+    albedo_out      = decal_color;
     // calculate the decal fragment's normal relative to the underlying scene fragment's normal
-    normal_out = vec4(perturb_normal(d_position.xy) * 0.5 + 0.5, decal_spec_glow.r);
+    normal_out      = vec4(perturb_normal(d_position.xy) * 0.5 + 0.5, decal_spec_glow.r);
+	orm_out			= vec4(0);
+	emissive_out	= vec4(decal_color.rgb * decal_spec_glow.g, 1.0);
 
 	#ifdef EDITOR // visualization for viewing decal projector boxes in the editor
     vec3 mags = abs(var_vertex);

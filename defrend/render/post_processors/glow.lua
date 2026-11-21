@@ -14,12 +14,12 @@ end
 function M.update()
 	-- swap the main render to the spare buffer; source is now scratch
 	render_targets.ping_pong_spare()
-	-- multiply emissive strength and color from g-buffer to target
+	-- copy emissiveness from g-buffer to target (this is redundant; we can modify the blur to read from the g-buffer)
 	render.set_render_target(render_targets.get_post_target())
-	render.enable_material("glow_color_material")
-	render.enable_texture("color_sampler", g_buffer, render_targets.G_BUFFER_ALBEDO)
+	render.enable_material("copy_material")
+	render.enable_texture("input_sampler", g_buffer, render_targets.G_BUFFER_EMISSIVE)
 	render.draw(predicates.screen)
-	render.disable_texture("color_sampler")
+	render.disable_texture("input_sampler")
 	-- blur the emissive texture
 	render_targets.ping_pong() -- swap glow texture to source and then blur it into target
 	dual_kawase_blur.update(settings, draw_options)
