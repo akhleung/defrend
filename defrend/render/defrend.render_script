@@ -73,12 +73,38 @@ function init(self)
 	}
 
 	shadow_map_materials = {
-		model_shadow_map_material = predicates.model,
-		particle_shadow_map_material = predicates.particle,
+		{
+			name = "model_shadow_map_material",
+			predicate = predicates.model,
+			flag = "models_enabled",
+		},
+		{
+			name = "billboard_shadow_map_material",
+			predicate = predicates.billboard,
+			flag = "billboards_enabled",
+		},
+		{
+			name = "sprite_shadow_map_material",
+			predicate = predicates.sprite,
+			flag = "sprites_enabled"
+		},
 	}
 	cubemap_materials = {
-		model_cubemap_material = predicates.model,
-		particle_cubemap_material = predicates.particle,
+		{
+			name = "model_cubemap_material",
+			predicate = predicates.model,
+			flag = "models_enabled",
+		},
+		{
+			name = "billboard_cubemap_material",
+			predicate = predicates.billboard,
+			flag = "billboards_enabled",
+		},
+		{
+			name = "sprite_cubemap_material",
+			predicate = predicates.sprite,
+			flag = "sprites_enabled"
+		},
 	}
 end
 
@@ -128,15 +154,13 @@ function update(self)
 		render.draw(predicates.model, geometry_options)
 		render.draw(predicates.shadowless_model, geometry_options)
 	end
-	if settings.geometry.sprites_enabled then
-		render.draw(predicates.sprite, geometry_options)
-	end
 	if settings.geometry.billboards_enabled then
 		render.draw(predicates.billboard, geometry_options)
+		render.draw(predicates.shadowless_billboard, geometry_options)
 	end
-	if settings.geometry.particles_enabled then
-		render.draw(predicates.particle, geometry_options)
-		render.draw(predicates.shadowless_particle, geometry_options)
+	if settings.geometry.sprites_enabled then
+		render.draw(predicates.sprite, geometry_options)
+		render.draw(predicates.shadowless_sprite, geometry_options)
 	end
 
 	-- copy normals and depth buffer to avoid feedback loop when rendering decals into g-buffer --
@@ -352,9 +376,11 @@ function on_message(self, message_id, message)
 end
 
 local function draw_shadow_casters(materials)
-	for mtl, pred in pairs(materials) do
-		render.enable_material(mtl)
-		render.draw(pred, shadow_options)
+	for _, mtl in ipairs(materials) do
+		if settings.geometry[mtl.flag] then
+			render.enable_material(mtl.name)
+			render.draw(mtl.predicate, shadow_options)
+		end
 	end
 end
 

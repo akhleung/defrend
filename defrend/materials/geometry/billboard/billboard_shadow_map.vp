@@ -15,18 +15,18 @@ uniform model_vp {
 out vec3 var_frag_pos;
 out vec2 var_texcoord0;
 
-bool preserve_z_rotation = bool(params.y);
+float y_constraint_factor = params.x;
+bool ignore_z_rotation = bool(params.y);
 
 vec2 apply_roll(vec2 v) {
-	float roll = 0, c = 0, s = 0;
-	float rolled_x = v.x, rolled_y = v.y;
-	if (preserve_z_rotation) {
-		roll = atan(mtx_world[1][0], mtx_world[0][0]);
-		c = cos(roll);
-		s = sin(roll);
-		rolled_x = v.x * c - v.y * s;
-		rolled_y = v.x * s + v.y * c;
+	if (ignore_z_rotation) {
+		return v;
 	}
+	float roll = atan(mtx_world[1][0], mtx_world[0][0]);
+	float cos_roll = cos(roll);
+	float sin_roll = sin(roll);
+	float rolled_x = v.x * cos_roll - v.y * sin_roll;
+	float rolled_y = v.x * sin_roll + v.y * cos_roll;
 	return vec2(rolled_x, rolled_y);
 }
 
@@ -39,7 +39,7 @@ void main() {
 	vec3 rolled = vec3(apply_roll(position.xy), 1);
 
     vec3 cam_R = mtx_view_inv[0].xyz;
-    vec3 cam_U = mtx_view_inv[1].xyz;
+    vec3 cam_U = mix(mtx_view_inv[1].xyz, vec3(0, 1, 0), y_constraint_factor);
     vec3 cam_F = mtx_view_inv[2].xyz;
 
     vec3 position_w = center + rolled.x * cam_R * scale.x + rolled.y * cam_U * scale.y + position.z * cam_F * scale.z;

@@ -1,7 +1,7 @@
-name: "particle-shadow"
-tags: "particle"
-vertex_program: "/defrend/materials/geometry/billboard/particle_shadow_map.vp"
-fragment_program: "/defrend/materials/geometry/billboard/particle_shadow_map.fp"
+name: "cubemap-particle-shadow"
+tags: "sprite"
+vertex_program: "/defrend/materials/geometry/billboard/billboard_shadow_map.vp"
+fragment_program: "/defrend/materials/geometry/billboard/billboard_cubemap.fp"
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION

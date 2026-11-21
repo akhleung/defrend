@@ -1,7 +1,8 @@
 name: "cubemap-particle-shadow"
-tags: "particle"
-vertex_program: "/defrend/materials/geometry/billboard/particle_shadow_map.vp"
-fragment_program: "/defrend/materials/geometry/billboard/particle_cubemap.fp"
+tags: "billboard"
+vertex_program: "/defrend/materials/geometry/billboard/billboard_shadow_map.vp"
+fragment_program: "/defrend/materials/geometry/billboard/billboard_cubemap.fp"
+vertex_space: VERTEX_SPACE_LOCAL
 vertex_constants {
   name: "mtx_proj"
   type: CONSTANT_TYPE_PROJECTION
@@ -35,12 +36,9 @@ samplers {
   max_anisotropy: 0.0
 }
 attributes {
-  name: "position"
-  semantic_type: SEMANTIC_TYPE_POSITION
-}
-attributes {
   name: "mtx_world"
   semantic_type: SEMANTIC_TYPE_WORLD_MATRIX
   coordinate_space: COORDINATE_SPACE_WORLD
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
   vector_type: VECTOR_TYPE_MAT4
 }

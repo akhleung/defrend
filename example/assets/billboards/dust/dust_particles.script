@@ -1,10 +1,11 @@
-go.property("mtl_shadow", resource.material("/defrend/materials/geometry/billboard/particle.material"))
-go.property("mtl_shadowless", resource.material("/defrend/materials/geometry/billboard/shadowless_particle.material"))
+go.property("mtl_shadow", resource.material("/defrend/materials/geometry/billboard/sprite.material"))
+go.property("mtl_shadowless", resource.material("/defrend/materials/geometry/billboard/shadowless_sprite.material"))
 
 function init(self)
 	self.shadow = true
 	particlefx.play("#dust")
-	particlefx.set_constant("#dust", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
+	-- particlefx.set_constant("#dust", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
+	particlefx.set_constant("#dust", "emitter", "params", vmath.vector4(0))
 
 	timer.delay(5, true, function (self, handle, time_elapsed)
 		if self.shadow then
@@ -19,6 +20,7 @@ function init(self)
 			particlefx.play("#dust")
 		end
 		self.shadow = not self.shadow
-		particlefx.set_constant("#dust", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
+		-- particlefx.set_constant("#dust", "emitter", "spec_glow_dith", vmath.vector4(0, 0, 1, 0))
+		particlefx.set_constant("#dust", "emitter", "params", vmath.vector4(0))
 	end)
 end

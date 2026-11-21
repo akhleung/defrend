@@ -96,16 +96,8 @@ render_resources {
   path: "/defrend/materials/screen/visualizations/copy_r.material"
 }
 render_resources {
-  name: "particle_material"
-  path: "/defrend/materials/geometry/billboard/particle.material"
-}
-render_resources {
-  name: "particle_shadow_map_material"
-  path: "/defrend/materials/geometry/billboard/particle_shadow_map.material"
-}
-render_resources {
-  name: "shadowless_particle_material"
-  path: "/defrend/materials/geometry/billboard/shadowless_particle.material"
+  name: "billboard_shadow_map_material"
+  path: "/defrend/materials/geometry/billboard/billboard_shadow_map.material"
 }
 render_resources {
   name: "ssao_blur_material"
@@ -140,8 +132,8 @@ render_resources {
   path: "/defrend/materials/geometry/model/model_cubemap.material"
 }
 render_resources {
-  name: "particle_cubemap_material"
-  path: "/defrend/materials/geometry/billboard/particle_cubemap.material"
+  name: "billboard_cubemap_material"
+  path: "/defrend/materials/geometry/billboard/billboard_cubemap.material"
 }
 render_resources {
   name: "directional_light_with_shadows_material"
@@ -158,4 +150,12 @@ render_resources {
 render_resources {
   name: "output_material"
   path: "/defrend/materials/screen/output/output.material"
+}
+render_resources {
+  name: "sprite_shadow_map_material"
+  path: "/defrend/materials/geometry/billboard/sprite_shadow_map.material"
+}
+render_resources {
+  name: "sprite_cubemap_material"
+  path: "/defrend/materials/geometry/billboard/sprite_cubemap.material"
 }

@@ -24,19 +24,19 @@ local M = {
 
 function M.init()
 	M.geometry_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
-	M.geometry_options.sort_order			= render.SORT_FRONT_TO_BACK
+	M.geometry_options.sort_order			= render.SORT_NONE
 	M.geometry_options.constants			= uniforms.geometry.uniforms
 
 	M.shadow_options.frustum_planes			= render.FRUSTUM_PLANES_ALL
-	M.shadow_options.sort_order				= render.SORT_FRONT_TO_BACK
+	M.shadow_options.sort_order				= render.SORT_NONE
 	M.shadow_options.constants				= render.constant_buffer()
 
 	M.point_light_options.frustum_planes	= render.FRUSTUM_PLANES_ALL
-	M.point_light_options.sort_order		= render.SORT_FRONT_TO_BACK
+	M.point_light_options.sort_order		= render.SORT_NONE
 	M.point_light_options.constants			= uniforms.point_light.uniforms
 
 	M.spot_light_options.frustum_planes		= render.FRUSTUM_PLANES_ALL
-	M.spot_light_options.sort_order			= render.SORT_FRONT_TO_BACK
+	M.spot_light_options.sort_order			= render.SORT_NONE
 	M.spot_light_options.constants			= uniforms.spot_light.uniforms
 
 	M.copy_options.constants				= render.constant_buffer()
