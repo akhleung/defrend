@@ -21,9 +21,9 @@ local visualizations = {
 		attachment = render_targets.G_BUFFER_NORMAL,
 	},
 	g_emissive = {
-		material = "copy_a_material",
+		material = "copy_rgb_material",
 		get_render_target = render_targets.get_g_buffer,
-		attachment = render_targets.G_BUFFER_ALBEDO,
+		attachment = render_targets.G_BUFFER_EMISSIVE,
 	},
 	g_depth = {
 		material = "copy_r_material",
